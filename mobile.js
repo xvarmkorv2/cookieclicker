@@ -1,9 +1,9 @@
 var LaunchMobile=function()
 {
 	Game.m={fileSystem:{}};//handle for every thing mobile
-
+	
 	//docs for this stuff : http://docs.phonegap.com/en/3.0.0/cordova_file_file.md.html
-
+	
 	Game.m.readSaveRequest=function()
 	{
 		Debug('Load save request');
@@ -19,8 +19,8 @@ var LaunchMobile=function()
 		Debug('Write save request');
 		Game.m.fileSystem.root.getFile(Game.SaveTo+'.txt',{create:true,exclusive: false},Game.m.writeFileEntry,Game.m.fail);
 	}
-
-
+	
+	
 	Game.m.onDeviceReady=function()
 	{
 		Debug('Ready');
@@ -50,8 +50,8 @@ var LaunchMobile=function()
 		};
 		reader.readAsText(file);
 	}
-
-
+	
+	
 
 	Game.m.writeFileEntry=function(fileEntry)
 	{
@@ -67,7 +67,7 @@ var LaunchMobile=function()
 		writer.write(Game.saveData);//well oh my goodness I think we're done here
 	}
 
-
+	
 
 	Game.m.fail=function(evt)//well I guess something went wrong
 	{
@@ -75,7 +75,7 @@ var LaunchMobile=function()
 		console.log(evt.target.error.code);
 		Game.Popup(evt.target.error.code);
 	}
-
+	
 	//Wait for device API libraries to load
 	Debug('Readying mobile');
 	document.addEventListener('deviceready',Game.m.onDeviceReady,false);

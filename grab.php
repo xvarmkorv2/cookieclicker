@@ -27,7 +27,7 @@ $result = curl_exec($ch);
 
 //close connection
 curl_close($ch);
-header("Access-Control-Allow-Origin: https://xvarmkorv2.github.io")
+header("Access-Control-Allow-Origin: https://xvarmkorv2.github.io");
 echo $result;
 exit
 ?>

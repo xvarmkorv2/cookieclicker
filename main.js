@@ -56,7 +56,7 @@ function shuffle(array)
 	return array;
 }
 
-var sinArray=[];
+/*var sinArray=[];
 for (var i=0;i<360;i++)
 {
 	//let's make a lookup table
@@ -70,7 +70,7 @@ function quickSin(x)
 	return sinArray[Math.round(
 		(Math.abs(x)*360/Math.PI/2)%360
 	)]*sign;
-}
+}*/
 
 /*function ajax(url,callback){
 	var ajaxRequest;
@@ -14481,6 +14481,7 @@ window.onload=function()
 				'About to cheat in some cookies or just checking for bugs?',
 				'Remember : cheated cookies taste awful!',
 				'Hey, Orteil here. Cheated cookies taste awful... or do they?',
+				'Yahaha! you found me!',
 			])+' ===]');
 			Game.Load();
 			//try {Game.Load();}

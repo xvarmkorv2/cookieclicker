@@ -34,7 +34,7 @@ function disguise_curl($url)
   curl_setopt($curl, CURLOPT_TIMEOUT, 10);
 
   $html = curl_exec($curl); // execute the curl command
-  $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+  $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
   $header = substr($curl, 0, $header_size);
   $body = substr($curl, $header_size);
   echo $header; 

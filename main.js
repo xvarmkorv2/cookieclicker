@@ -482,7 +482,7 @@ var Pic=function(what)
 }
 
 var Sounds=[];
-var OldPlaySound=function(url,vol)
+/*var OldPlaySound=function(url,vol)
 {
 	var volume=1;
 	if (vol!==undefined) volume=vol;
@@ -490,7 +490,7 @@ var OldPlaySound=function(url,vol)
 	if (!Sounds[url]) {Sounds[url]=new Audio(url);Sounds[url].onloadeddata=function(e){e.target.volume=Math.pow(volume*Game.volume/100,2);}}
 	else if (Sounds[url].readyState>=2) {Sounds[url].currentTime=0;Sounds[url].volume=Math.pow(volume*Game.volume/100,2);}
 	Sounds[url].play();
-}
+}*/
 var SoundInsts=[];
 var SoundI=0;
 for (var i=0;i<12;i++){SoundInsts[i]=new Audio();}
@@ -3016,7 +3016,6 @@ Game.Launch=function()
 			if (context=='stats' && (Game.Has('Neuromancy') || (Game.sesame && me.pool=='debug'))) neuromancy=1;
 			var mysterious=0;
 			var clickStr='';
-			
 			if (me.type=='upgrade')
 			{
 				var canBuy=(context=='store'?me.canBuy():true);
@@ -3837,30 +3836,36 @@ Game.Launch=function()
 			if (!Game.canLumps()) return;
 			Game.lumpT=Date.now();
 			var total=amount;
-			if (Game.lumpCurrentType==1 && Game.Has('Sucralosia Inutilis') && Math.random()<0.05) total*=2;
-			else if (Game.lumpCurrentType==1) total*=choose([1,2]);
-			else if (Game.lumpCurrentType==2)
-			{
-				total*=choose([2,3,4,5,6,7]);
-				Game.gainBuff('sugar blessing',24*60*60,1);
-				Game.Earn(Math.min(Game.cookiesPs*60*60*24,Game.cookies));
-				if (Game.prefs.popups) Game.Popup('Sugar blessing activated!');
-				else Game.Notify('Sugar blessing activated!','Your cookies have been doubled.<br>+10% golden cookies for the next 24 hours.',[29,16]);
-			}
-			else if (Game.lumpCurrentType==3) total*=choose([0,0,1,2,2]);
-			else if (Game.lumpCurrentType==4)
-			{
-				total*=choose([1,2,3]);
-				Game.lumpRefill=0;//Date.now()-Game.getLumpRefillMax();
-				if (Game.prefs.popups) Game.Popup('Sugar lump cooldowns cleared!');
-				else Game.Notify('Sugar lump cooldowns cleared!','',[29,27]);
+			switch(Game.lumpCurrentType){
+				case 1:
+					if(Game.Has('Sucralosia Inutilis') && Math.random()<0.05) total*=2;
+					else total*=choose([1,2]);
+					break;
+				case 2:
+					total*=choose([2,3,4,5,6,7]);
+					Game.gainBuff('sugar blessing',24*60*60,1);
+					Game.Earn(Math.min(Game.cookiesPs*60*60*24,Game.cookies));
+					if (Game.prefs.popups) Game.Popup('Sugar blessing activated!');
+					else Game.Notify('Sugar blessing activated!','Your cookies have been doubled.<br>+10% golden cookies for the next 24 hours.',[29,16]);
+					break;
+				case 3:
+					total*=choose([0,0,1,2,2]);
+					break;
+				case 4:
+					total*=choose([1,2,3]);
+					Game.lumpRefill=0;//Date.now()-Game.getLumpRefillMax();
+					if (Game.prefs.popups) Game.Popup('Sugar lump cooldowns cleared!');
+					else Game.Notify('Sugar lump cooldowns cleared!','',[29,27]);
+					break;
 			}
 			total=Math.floor(total);
 			Game.gainLumps(total);
-			if (Game.lumpCurrentType==1) Game.Win('Sugar sugar');
-			else if (Game.lumpCurrentType==2) Game.Win('All-natural cane sugar');
-			else if (Game.lumpCurrentType==3) Game.Win('Sweetmeats');
-			else if (Game.lumpCurrentType==4) Game.Win('Maillard reaction');
+			switch(Game.lumpCurrentType){
+				case 1: Game.Win('Sugar sugar'); 	break;
+				case 2: Game.Win('All-natural cane sugar'); break;
+				case 3: Game.Win('Sweetmeats'); break;
+				case 4: Game.Win('Maillard reaction'); break;
+			}
 			
 			if (!silent)
 			{
@@ -4311,29 +4316,38 @@ Game.Launch=function()
 			if (Game.hasGod)
 			{
 				var godLvl=Game.hasGod('asceticism');
-				if (godLvl==1) mult*=1.15;
-				else if (godLvl==2) mult*=1.1;
-				else if (godLvl==3) mult*=1.05;
+				switch(godLvl){
+					case 1: mult*=1.15; break;
+					case 2: mult*=1.1; break;
+					case 3: mult*=1.05; break;
+				}
 				
 				var godLvl=Game.hasGod('ages');
-				if (godLvl==1) mult*=1+0.15*Math.sin((Date.now()/1000/(60*60*3))*Math.PI*2);
-				else if (godLvl==2) mult*=1+0.15*Math.sin((Date.now()/1000/(60*60*12))*Math.PI*2);
-				else if (godLvl==3) mult*=1+0.15*Math.sin((Date.now()/1000/(60*60*24))*Math.PI*2);
-				
+				switch(godLvl){
+					case 1: mult*=1+0.15*Math.sin((Date.now()/1000/(60*60*3))*Math.PI*2); break;
+					case 2: mult*=1+0.15*Math.sin((Date.now()/1000/(60*60*12))*Math.PI*2); break;
+					case 3: mult*=1+0.15*Math.sin((Date.now()/1000/(60*60*24))*Math.PI*2); break;
+				}
 				var godLvl=Game.hasGod('decadence');
-				if (godLvl==1) buildMult*=0.93;
-				else if (godLvl==2) buildMult*=0.95;
-				else if (godLvl==3) buildMult*=0.98;
+				switch(godLvl){
+					case 1: buildMult*=0.93; break;
+					case 2: buildMult*=0.95; break;
+					case 3: buildMult*=0.98; break;
+				}
 				
 				var godLvl=Game.hasGod('industry');
-				if (godLvl==1) buildMult*=1.1;
-				else if (godLvl==2) buildMult*=1.06;
-				else if (godLvl==3) buildMult*=1.03;
+				switch(godLvl){
+					case 1: buildMult*=1.1; break;
+					case 2: buildMult*=1.06; break;
+					case 3: buildMult*=1.03; break;
+				}
 				
 				var godLvl=Game.hasGod('labor');
-				if (godLvl==1) buildMult*=0.97;
-				else if (godLvl==2) buildMult*=0.98;
-				else if (godLvl==3) buildMult*=0.99;
+				switch(godLvl){
+					case 1: buildMult*=0.97; break;
+					case 2: buildMult*=0.98; break;
+					case 3: buildMult*=0.99; break;
+				}
 			}
 			
 			if (Game.Has('Santa\'s legacy')) mult*=1+(Game.santaLevel+1)*0.03;
@@ -4347,9 +4361,11 @@ Game.Launch=function()
 			if (Game.hasGod)
 			{
 				var godLvl=Game.hasGod('mother');
-				if (godLvl==1) milkMult*=1.1;
-				else if (godLvl==2) milkMult*=1.05;
-				else if (godLvl==3) milkMult*=1.03;
+				switch(godLvl){
+					case 1: milkMult*=1.1; break;
+					case 2: milkMult*=1.05; break;
+					case 3: milkMult*=1.03; break;
+				}
 			}
 			milkMult*=Game.eff('milk');
 			
@@ -4653,23 +4669,21 @@ Game.Launch=function()
 					{
 						me.wrath=0;
 					}
-					
-					if (Game.season=='valentines')
-					{
-						bgPic='img/hearts.png';
-						picX=Math.floor(Math.random()*8);
-					}
-					else if (Game.season=='fools')
-					{
-						bgPic='img/contract.png';
-						if (me.wrath) bgPic='img/wrathContract.png';
-					}
-					else if (Game.season=='easter')
-					{
-						bgPic='img/bunnies.png';
-						picX=Math.floor(Math.random()*4);
-						picY=0;
-						if (me.wrath) picY=1;
+					switch(Game.season){
+						case 'valentines':
+							bgPic='img/hearts.png';
+							picX=Math.floor(Math.random()*8);
+							break;
+						case 'fools':
+							bgPic='img/contract.png';
+							if (me.wrath) bgPic='img/wrathContract.png';
+							break;
+						case 'easter':
+							bgPic='img/bunnies.png';
+							picX=Math.floor(Math.random()*4);
+							picY=0;
+							if (me.wrath) picY=1;
+							break;
 					}
 					
 					me.x=Math.floor(Math.random()*Math.max(0,(Game.bounds.right-300)-Game.bounds.left-128)+Game.bounds.left+64)-64;
@@ -14187,9 +14201,17 @@ Game.Launch=function()
 				str+='Your prestige level is currently <b>'+Beautify(Game.prestige)+'</b>.<br>(CpS +'+Beautify(Game.prestige)+'%)';
 				str+='<div class="line"></div>';
 			}
-			if (ascendNowToGet<1) str+='Ascending now would grant you no prestige.';
-			else if (ascendNowToGet<2) str+='Ascending now would grant you<br><b>1 prestige level</b> (+1% CpS)<br>and <b>1 heavenly chip</b> to spend.';
-			else str+='Ascending now would grant you<br><b>'+Beautify(ascendNowToGet)+' prestige levels</b> (+'+Beautify(ascendNowToGet)+'% CpS)<br>and <b>'+Beautify(ascendNowToGet)+' heavenly chips</b> to spend.';
+			switch(ascendNowToGet){
+				case 0:
+					str+='Ascending now would grant you no prestige.';
+					break;
+				case 1:
+					str+='Ascending now would grant you<br><b>1 prestige level</b> (+1% CpS)<br>and <b>1 heavenly chip</b> to spend.';
+					break;
+				default:
+					str+='Ascending now would grant you<br><b>'+Beautify(ascendNowToGet)+' prestige levels</b> (+'+Beautify(ascendNowToGet)+'% CpS)<br>and <b>'+Beautify(ascendNowToGet)+' heavenly chips</b> to spend.';
+					break;
+			}
 			str+='<div class="line"></div>';
 			str+='You need <b>'+Beautify(cookiesToNext)+' more cookies</b> for the next level.<br>';
 			l('ascendTooltip').innerHTML=str;

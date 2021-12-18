@@ -18,7 +18,7 @@ $fields_string = rtrim($fields_string,'&');
 $ch = curl_init();
 
 //set the url, number of POST vars, POST data
-curl_setopt($ch,CURLOPT_URL,$url.fields_string);
+curl_setopt($ch,CURLOPT_URL,$url.$fields_string);
 curl_setopt($ch,CURLOPT_HTTPGET,true);
 curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 

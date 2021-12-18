@@ -41,7 +41,6 @@ function disguise_curl($url)
         return $len;
 
       $headers[strtolower(trim($header[0]))][] = trim($header[1]);
-      echo $header;
       return $len;
     }
 );

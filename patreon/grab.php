@@ -21,6 +21,10 @@ $ch = curl_init();
 curl_setopt($ch,CURLOPT_URL,$url.$fields_string);
 curl_setopt($ch,CURLOPT_HTTPGET,true);
 curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+curl_setopt($cURL,CURLOPT_HTTPHEADER,array (
+    "Accept: application/json"
+));
+
 
 //execute post
 $result = curl_exec($ch);
@@ -28,6 +32,6 @@ $result = curl_exec($ch);
 //close connection
 curl_close($ch);
 header("Access-Control-Allow-Origin: https://xvarmkorv2.github.io");
-
+echo $result;
 exit
 ?>

@@ -1,5 +1,4 @@
 <?php 
-header("Access-Control-Allow-Origin: https://xvarmkorv2.github.io")
 //extract data from the post
 extract($_GET);
 
@@ -29,4 +28,22 @@ $result = curl_exec($ch);
 //close connection
 curl_close($ch);
 echo $result;
+
+exit
+?>
+<?php
+header("Access-Control-Allow-Origin: https://xvarmkorv2.github.io")
+$url = "https://orteil.dashnet.org/patreon/grab.php";
+
+$curl = curl_init($url);
+curl_setopt($curl, CURLOPT_URL, $url);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+//for debug only!
+curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+
+$resp = curl_exec($curl);
+curl_close($curl);
+var_dump($resp);
 ?>

@@ -29,4 +29,5 @@ $result = curl_exec($ch);
 //close connection
 curl_close($ch);
 echo $result;
+exit
 ?>

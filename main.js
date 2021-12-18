@@ -11926,17 +11926,10 @@ Game.Launch=function()
 		});
 		
 		//end of buffs
-		
-		
-		
-		
-		
 		BeautifyAll();
 		Game.vanilla=0;//everything we create beyond this will not be saved in the default save
 		
-		
 		Game.runModHook('create');
-		
 		
 		/*=====================================================================================
 		GRANDMAPOCALYPSE
@@ -12097,9 +12090,11 @@ Game.Launch=function()
 					if (Game.hasGod)
 					{
 						var godLvl=Game.hasGod('scorn');
-						if (godLvl==1) chance*=2.5;
-						else if (godLvl==2) chance*=2;
-						else if (godLvl==3) chance*=1.5;
+						switch(godLvl){
+							case 1: chance*=2.5; break;
+							case 2: chance*=2; break;
+							case 3: chance*=1.5; break;
+						}
 					}
 					if (Game.Has('Wrinkler doormat')) chance=0.1;
 					if (Math.random()<chance)//respawn
@@ -12200,9 +12195,11 @@ Game.Launch=function()
 					if (Game.hasGod)
 					{
 						var godLvl=Game.hasGod('scorn');
-						if (godLvl==1) me.sucked*=1.15;
-						else if (godLvl==2) me.sucked*=1.1;
-						else if (godLvl==3) me.sucked*=1.05;
+						switch(godLvl){
+							case 1: me.sucked*=1.15; break;
+							case 2: me.sucked*=1.1; break;
+							case 3: me.sucked*=1.05; break;
+						}
 					}
 					if (me.sucked>0.5)
 					{
@@ -12220,9 +12217,11 @@ Game.Launch=function()
 							if (Game.hasGod)
 							{
 								var godLvl=Game.hasGod('seasons');
-								if (godLvl==1) failRate*=0.9;
-								else if (godLvl==2) failRate*=0.95;
-								else if (godLvl==3) failRate*=0.97;
+								switch(godLvl){
+									case 1: failRate*=0.9; break;
+									case 2: failRate*=0.95; break;
+									case 3: failRate*=0.97; break;
+								}
 							}
 							if (me.type==1) failRate*=0.9;
 							if (Math.random()>failRate)//halloween cookie drops

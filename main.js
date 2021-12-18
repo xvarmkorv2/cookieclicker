@@ -1876,7 +1876,7 @@ Game.Launch=function()
 		
 		Game.GrabData=function()
 		{
-			ajax('https://orteil.dashnet.org/patreon/grab.php',Game.GrabDataResponse);
+			ajax('https://cookie-clicker-thing.herokuapp.com/patreon/grab.php',Game.GrabDataResponse);
 		}
 		Game.GrabDataResponse=function(response)
 		{

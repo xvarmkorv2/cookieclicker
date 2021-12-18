@@ -6,7 +6,6 @@
 **/
  
 var Base64 = {
- 
 	// private property
 	_keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
  
@@ -19,7 +18,6 @@ var Base64 = {
 		input = Base64._utf8_encode(input);
  
 		while (i < input.length) {
- 
 			chr1 = input.charCodeAt(i++);
 			chr2 = input.charCodeAt(i++);
 			chr3 = input.charCodeAt(i++);
@@ -35,10 +33,8 @@ var Base64 = {
 				enc4 = 64;
 			}
  
-			output = output +
-			this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
-			this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
- 
+			output += this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) + this._keyStr.charAt(enc3)
+			+ this._keyStr.charAt(enc4);
 		}
  
 		return output;
@@ -54,7 +50,6 @@ var Base64 = {
 		input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
  
 		while (i < input.length) {
- 
 			enc1 = this._keyStr.indexOf(input.charAt(i++));
 			enc2 = this._keyStr.indexOf(input.charAt(i++));
 			enc3 = this._keyStr.indexOf(input.charAt(i++));
@@ -64,15 +59,14 @@ var Base64 = {
 			chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
 			chr3 = ((enc3 & 3) << 6) | enc4;
  
-			output = output + String.fromCharCode(chr1);
+			output += String.fromCharCode(chr1);
  
 			if (enc3 != 64) {
-				output = output + String.fromCharCode(chr2);
+				output += String.fromCharCode(chr2);
 			}
 			if (enc4 != 64) {
-				output = output + String.fromCharCode(chr3);
+				output += String.fromCharCode(chr3);
 			}
- 
 		}
  
 		output = Base64._utf8_decode(output);
@@ -102,9 +96,7 @@ var Base64 = {
 				utftext += String.fromCharCode(((c >> 6) & 63) | 128);
 				utftext += String.fromCharCode((c & 63) | 128);
 			}
- 
 		}
- 
 		return utftext;
 	},
  
@@ -115,8 +107,7 @@ var Base64 = {
 		var c = c1 = c2 = 0;
  
 		while ( i < utftext.length ) {
- 
-			c = utftext.charCodeAt(i);
+ 			c = utftext.charCodeAt(i);
  
 			if (c < 128) {
 				string += String.fromCharCode(c);
@@ -133,10 +124,8 @@ var Base64 = {
 				string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
 				i += 3;
 			}
- 
 		}
  
 		return string;
 	}
- 
 }

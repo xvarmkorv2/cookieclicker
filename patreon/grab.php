@@ -3,7 +3,7 @@ header("Access-Control-Allow-Origin: https://xvarmkorv2.github.io");
 //set POST variables
 $url = 'https://orteil.dashnet.org/patreon/grab.php';
 $fields_string = "";
-/url-ify the data for the POST
+//url-ify the data for the POST
 foreach($_GET as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
 $fields_string = rtrim($fields_string,'&');
 

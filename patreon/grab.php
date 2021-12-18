@@ -30,17 +30,24 @@ function disguise_curl($url)
   curl_setopt($curl, CURLOPT_ENCODING, 'gzip,deflate,br');
   curl_setopt($curl, CURLOPT_AUTOREFERER, true);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-  curl_setopt($curl, CURLOPT_HEADER, 1);
   curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+  curl_setopt($ch, CURLOPT_HEADERFUNCTION,
+  function($curl, $header) use (&$headers)
+    {
+      $len = strlen($header);
+      $header = explode(':', $header, 2);
+      if (count($header) < 2) // ignore invalid headers
+        return $len;
 
+      $headers[strtolower(trim($header[0]))][] = trim($header[1]);
+
+      return $len;
+    }
+);
   $html = curl_exec($curl); // execute the curl command
-  $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
-  $header = substr($curl, 0, $header_size);
-  $body = substr($curl, $header_size);
-  echo $header; 
   curl_close($curl); // close the connection
 
-  return $body; // and finally, return $html
+  return $html; // and finally, return $html
 }
 
 // uses the function and displays the text off the website

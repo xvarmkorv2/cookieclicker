@@ -40,5 +40,6 @@ function disguise_curl($url)
 
 // uses the function and displays the text off the website
 $text = disguise_curl($url);
+header("Access-Control-Allow-Origin: https://xvarmkorv2.github.io")
 echo $text;
 ?>

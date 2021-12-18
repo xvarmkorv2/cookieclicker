@@ -29,15 +29,15 @@ function disguise_curl($url)
   curl_setopt($curl, CURLOPT_REFERER, 'https://orteil.dashnet.org/cookieclicker/');
   curl_setopt($curl, CURLOPT_ENCODING, 'gzip,deflate,br');
   curl_setopt($curl, CURLOPT_AUTOREFERER, true);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-  curl_setopt($ch, CURLOPT_HEADER, 1);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($curl, CURLOPT_HEADER, 1);
   curl_setopt($curl, CURLOPT_TIMEOUT, 10);
 
   $html = curl_exec($curl); // execute the curl command
   $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-  $header = substr($response, 0, $header_size);
-  $body = substr($response, $header_size);
-  echo $header;
+  $header = substr($curl, 0, $header_size);
+  $body = substr($curl, $header_size);
+  echo $header; 
   curl_close($curl); // close the connection
 
   return $body; // and finally, return $html

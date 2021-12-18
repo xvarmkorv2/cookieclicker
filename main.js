@@ -1153,8 +1153,7 @@ Game.Launch=function()
 	'<div class="listing">&bull; kinda starting to regret it</div>'+
 	'<div class="listing">&bull; ah well</div>'+
 	'</div>'+
-	'</div>'
-	;
+	'</div>';
 	
 	Game.ready=0;
 	

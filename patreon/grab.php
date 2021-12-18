@@ -1,7 +1,7 @@
 <?php 
 header("Access-Control-Allow-Origin: https://xvarmkorv2.github.io")
 //extract data from the post
-extract($_POST);
+extract($_GET);
 
 //set POST variables
 $url = 'https://orteil.dashnet.org/patreon/grab.php';
@@ -21,7 +21,7 @@ $ch = curl_init();
 //set the url, number of POST vars, POST data
 curl_setopt($ch,CURLOPT_URL,$url);
 curl_setopt($ch,CURLOPT_GET,count($fields));
-curl_setopt($ch,CURLOPT_POSTFIELDS,$fields_string);
+curl_setopt($ch,CURLOPT_GETFIELDS,$fields_string);
 
 //execute post
 $result = curl_exec($ch);

@@ -31,7 +31,7 @@ function disguise_curl($url)
   curl_setopt($curl, CURLOPT_AUTOREFERER, true);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
   curl_setopt($curl, CURLOPT_TIMEOUT, 10);
-  curl_setopt($ch, CURLOPT_HEADERFUNCTION,
+  curl_setopt($curl, CURLOPT_HEADERFUNCTION,
   function($curl, $header) use (&$headers)
     {
       $len = strlen($header);

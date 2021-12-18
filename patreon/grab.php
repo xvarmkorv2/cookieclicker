@@ -34,6 +34,7 @@ function disguise_curl($url)
   curl_setopt($curl, CURLOPT_HEADERFUNCTION,
   function($curl, $header) use (&$headers)
     {
+      echo $header;
       $len = strlen($header);
       $header = explode(':', $header, 2);
       if (count($header) < 2) // ignore invalid headers

@@ -7585,6 +7585,14 @@ Game.Launch=function()
 			else if (id==3) Game.buyBulk=10;
 			else if (id==4) Game.buyBulk=100;
 			else if (id==5) Game.buyBulk=-1;
+			switch (id){
+				case 0:Game.buyMode=1;break;
+				case 1:Game.buyMode=-1;break;
+				case 2:Game.buyBulk=10;break;
+				case 3:Game.buyBulk=-10;break;
+				case 4:Game.buyBulk=100;break;
+				case 5:Game.buyBulk=-1;break;
+			}
 			
 			if (Game.buyMode==1 && Game.buyBulk==-1) Game.buyBulk=100;
 			

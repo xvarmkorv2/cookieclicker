@@ -22,7 +22,7 @@ $ch = curl_init();
 curl_setopt($ch,CURLOPT_URL,$url.$fields_string);
 curl_setopt($ch,CURLOPT_HTTPGET,true);
 curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-curl_setopt($cURL,CURLOPT_HTTPHEADER,array (
+curl_setopt($ch,CURLOPT_HTTPHEADER,array (
     "Accept: application/json"
 ));
 

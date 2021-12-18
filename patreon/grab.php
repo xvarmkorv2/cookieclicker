@@ -26,8 +26,8 @@ function disguise_curl($url)
   curl_setopt($curl, CURLOPT_URL, $url);
   curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.45 Safari/537.3');
   curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
-  curl_setopt($curl, CURLOPT_REFERER, 'http://www.google.com');
-  curl_setopt($curl, CURLOPT_ENCODING, 'gzip,deflate');
+  curl_setopt($curl, CURLOPT_REFERER, 'https://orteil.dashnet.org/cookieclicker/');
+  curl_setopt($curl, CURLOPT_ENCODING, 'gzip,deflate,br');
   curl_setopt($curl, CURLOPT_AUTOREFERER, true);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
   curl_setopt($curl, CURLOPT_TIMEOUT, 10);

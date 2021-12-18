@@ -1,4 +1,5 @@
 <?php
+header("Access-Control-Allow-Origin: https://xvarmkorv2.github.io");
 echo "why:";
 //extract data from the post
 extract($_GET);
@@ -25,6 +26,7 @@ curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 curl_setopt($ch,CURLOPT_HTTPHEADER,array (
     "Accept: application/json"
 ));
+curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER["HTTP_USER_AGENT"]);
 
 
 //execute post
@@ -32,7 +34,6 @@ $result = curl_exec($ch);
 
 //close connection
 curl_close($ch);
-header("Access-Control-Allow-Origin: https://xvarmkorv2.github.io");
 echo $result;
 echo ":why";
 exit;

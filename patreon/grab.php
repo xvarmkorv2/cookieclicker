@@ -27,7 +27,9 @@ curl_setopt($ch,CURLOPT_HTTPHEADER,array (
     "Accept: application/json"
 ));
 curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER["HTTP_USER_AGENT"]);
-
+foreach (getallheaders() as $name => $value) {
+    echo "$name: $value <br>";
+}
 
 //execute post
 $result = curl_exec($ch);

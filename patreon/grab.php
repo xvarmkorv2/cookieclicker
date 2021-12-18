@@ -1,5 +1,4 @@
-<?php 
-header("Access-Control-Allow-Origin: https://xvarmkorv2.github.io")
+<?php
 //extract data from the post
 extract($_GET);
 
@@ -20,14 +19,14 @@ $ch = curl_init();
 
 //set the url, number of POST vars, POST data
 curl_setopt($ch,CURLOPT_URL,$url);
-curl_setopt($ch,CURLOPT_GET,count($fields));
-curl_setopt($ch,CURLOPT_GETFIELDS,$fields_string);
+curl_setopt($ch,CURLOPT_HTTPGET,count($fields));
 
 //execute post
 $result = curl_exec($ch);
 
 //close connection
 curl_close($ch);
+header("Access-Control-Allow-Origin: https://xvarmkorv2.github.io")
 echo $result;
 exit
 ?>

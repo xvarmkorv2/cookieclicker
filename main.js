@@ -7582,10 +7582,10 @@ Game.Launch=function()
 			switch (id){
 				case 0:Game.buyMode=1;break;
 				case 1:Game.buyMode=-1;break;
-				case 2:Game.buyMode=10;break;
-				case 3:Game.buyMode=-10;break;
+				case 2:Game.buyMode=1;break;
+				case 3:Game.buyMode=10;break;
 				case 4:Game.buyMode=100;break;
-				case 5:Game.buyMode=-100;break;
+				case 5:Game.buyMode=-1;break;
 			}
 			
 			if (Game.buyMode==1 && Game.buyBulk==-1) Game.buyBulk=100;

@@ -1,4 +1,5 @@
 <?php
+echo "why:"
 //extract data from the post
 extract($_GET);
 
@@ -33,5 +34,6 @@ $result = curl_exec($ch);
 curl_close($ch);
 header("Access-Control-Allow-Origin: https://xvarmkorv2.github.io");
 echo $result;
+echo ":why"
 exit
 ?>

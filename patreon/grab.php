@@ -20,6 +20,7 @@ $ch = curl_init();
 //set the url, number of POST vars, POST data
 curl_setopt($ch,CURLOPT_URL,$url);
 curl_setopt($ch,CURLOPT_HTTPGET,count($fields));
+curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 
 //execute post
 $result = curl_exec($ch);

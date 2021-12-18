@@ -4805,9 +4805,11 @@ Game.Launch=function()
 					if (Game.hasGod)
 					{
 						var godLvl=Game.hasGod('decadence');
-						if (godLvl==1) effectDurMod*=1.07;
-						else if (godLvl==2) effectDurMod*=1.05;
-						else if (godLvl==3) effectDurMod*=1.02;
+						switch(godLvl){
+							case 1: effectDurMod*=1.07; break;
+							case 2: effectDurMod*=1.05; break;
+							case 3: effectDurMod*=1.02; break;
+						}
 					}
 					
 					//effect multiplier (from lucky etc)
@@ -4847,113 +4849,102 @@ Game.Launch=function()
 							}
 						}
 					}
-					
-					if (choice=='free sugar lump')
+					if (choice != 'building special')
 					{
-						Game.gainLumps(1);
-						popup='Sweet!<div style="font-size:65%;">Found 1 sugar lump!</div>';
-					}
-					else if (choice=='frenzy')
-					{
-						buff=Game.gainBuff('frenzy',Math.ceil(77*effectDurMod),7);
-					}
-					else if (choice=='dragon harvest')
-					{
-						buff=Game.gainBuff('dragon harvest',Math.ceil(60*effectDurMod),15);
-					}
-					else if (choice=='everything must go')
-					{
-						buff=Game.gainBuff('everything must go',Math.ceil(8*effectDurMod),5);
-					}
-					else if (choice=='multiply cookies')
-					{
-						var moni=mult*Math.min(Game.cookies*0.15,Game.cookiesPs*60*15)+13;//add 15% to cookies owned (+13), or 15 minutes of cookie production - whichever is lowest
-						Game.Earn(moni);
-						popup='Lucky!<div style="font-size:65%;">+'+Beautify(moni)+' cookies!</div>';
-					}
-					else if (choice=='ruin cookies')
-					{
-						var moni=Math.min(Game.cookies*0.05,Game.cookiesPs*60*10)+13;//lose 5% of cookies owned (-13), or 10 minutes of cookie production - whichever is lowest
-						moni=Math.min(Game.cookies,moni);
-						Game.Spend(moni);
-						popup='Ruin!<div style="font-size:65%;">Lost '+Beautify(moni)+' cookies!</div>';
-					}
-					else if (choice=='blood frenzy')
-					{
-						buff=Game.gainBuff('blood frenzy',Math.ceil(6*effectDurMod),666);
-					}
-					else if (choice=='clot')
-					{
-						buff=Game.gainBuff('clot',Math.ceil(66*effectDurMod),0.5);
-					}
-					else if (choice=='cursed finger')
-					{
-						buff=Game.gainBuff('cursed finger',Math.ceil(10*effectDurMod),Game.cookiesPs*Math.ceil(10*effectDurMod));
-					}
-					else if (choice=='click frenzy')
-					{
-						buff=Game.gainBuff('click frenzy',Math.ceil(13*effectDurMod),777);
-					}
-					else if (choice=='dragonflight')
-					{
-						buff=Game.gainBuff('dragonflight',Math.ceil(10*effectDurMod),1111);
-						if (Math.random()<0.8) Game.killBuff('Click frenzy');
-					}
-					else if (choice=='chain cookie')
-					{
-						//fix by Icehawk78
-						if (this.chain==0) this.totalFromChain=0;
-						this.chain++;
-						var digit=me.wrath?6:7;
-						if (this.chain==1) this.chain+=Math.max(0,Math.ceil(Math.log(Game.cookies)/Math.LN10)-10);
-						
-						var maxPayout=Math.min(Game.cookiesPs*60*60*6,Game.cookies*0.5)*mult;
-						var moni=Math.max(digit,Math.min(Math.floor(1/9*Math.pow(10,this.chain)*digit*mult),maxPayout));
-						var nextMoni=Math.max(digit,Math.min(Math.floor(1/9*Math.pow(10,this.chain+1)*digit*mult),maxPayout));
-						this.totalFromChain+=moni;
-						var moniStr=Beautify(moni);
-
-						//break the chain if we're above 5 digits AND it's more than 50% of our bank, it grants more than 6 hours of our CpS, or just a 1% chance each digit (update : removed digit limit)
-						if (Math.random()<0.01 || nextMoni>=maxPayout)
-						{
-							this.chain=0;
-							popup='Cookie chain<div style="font-size:65%;">+'+moniStr+' cookies!<br>Cookie chain over. You made '+Beautify(this.totalFromChain)+' cookies.</div>';
+						switch(choice){
+							case 'free sugar lump':
+								Game.gainLumps(1);
+								popup='Sweet!<div style="font-size:65%;">Found 1 sugar lump!</div>';
+								break;
+							case 'frenzy':
+								buff=Game.gainBuff('frenzy',Math.ceil(77*effectDurMod),7);
+								break;
+							case 'dragon harvest':
+								buff=Game.gainBuff('dragon harvest',Math.ceil(60*effectDurMod),15);
+								break;
+							case 'everything must go':
+								buff=Game.gainBuff('everything must go',Math.ceil(8*effectDurMod),5);
+								break;
+							case 'multiply cookies':
+								var moni=mult*Math.min(Game.cookies*0.15,Game.cookiesPs*60*15)+13;//add 15% to cookies owned (+13), or 15 minutes of cookie production - whichever is lowest
+								Game.Earn(moni);
+								popup='Lucky!<div style="font-size:65%;">+'+Beautify(moni)+' cookies!</div>';
+								break;
+							case 'ruin cookies':
+								var moni=Math.min(Game.cookies*0.05,Game.cookiesPs*60*10)+13;//lose 5% of cookies owned (-13), or 10 minutes of cookie production - whichever is lowest
+								moni=Math.min(Game.cookies,moni);
+								Game.Spend(moni);
+								popup='Ruin!<div style="font-size:65%;">Lost '+Beautify(moni)+' cookies!</div>';
+								break;
+							case 'blood frenzy':
+								buff=Game.gainBuff('blood frenzy',Math.ceil(6*effectDurMod),666);
+								break;
+							case 'clot':
+								buff=Game.gainBuff('clot',Math.ceil(66*effectDurMod),0.5);
+								break;
+							case 'cursed finger':
+								buff=Game.gainBuff('cursed finger',Math.ceil(10*effectDurMod),Game.cookiesPs*Math.ceil(10*effectDurMod));
+								break;
+							case 'click frenzy':
+								buff=Game.gainBuff('click frenzy',Math.ceil(13*effectDurMod),777);
+								break;
+							case 'dragonflight':
+								buff=Game.gainBuff('dragonflight',Math.ceil(10*effectDurMod),1111);
+								if (Math.random()<0.8) Game.killBuff('Click frenzy');
+								break;
+							case 'chain cookie':
+								//fix by Icehawk78
+								if (this.chain==0) this.totalFromChain=0;
+								this.chain++;
+								var digit=me.wrath?6:7;
+								if (this.chain==1) this.chain+=Math.max(0,Math.ceil(Math.log(Game.cookies)/Math.LN10)-10);
+								
+								var maxPayout=Math.min(Game.cookiesPs*60*60*6,Game.cookies*0.5)*mult;
+								var moni=Math.max(digit,Math.min(Math.floor(1/9*Math.pow(10,this.chain)*digit*mult),maxPayout));
+								var nextMoni=Math.max(digit,Math.min(Math.floor(1/9*Math.pow(10,this.chain+1)*digit*mult),maxPayout));
+								this.totalFromChain+=moni;
+								var moniStr=Beautify(moni);
+	
+								//break the chain if we're above 5 digits AND it's more than 50% of our bank, it grants more than 6 hours of our CpS, or just a 1% chance each digit (update : removed digit limit)
+								if (Math.random()<0.01 || nextMoni>=maxPayout)
+								{
+									this.chain=0;
+									popup='Cookie chain<div style="font-size:65%;">+'+moniStr+' cookies!<br>Cookie chain over. You made '+Beautify(this.totalFromChain)+' cookies.</div>';
+								}
+								else
+								{
+									popup='Cookie chain<div style="font-size:65%;">+'+moniStr+' cookies!</div>';//
+								}
+								Game.Earn(moni);
+								break;
+							case 'cookie storm':
+								buff=Game.gainBuff('cookie storm',Math.ceil(7*effectDurMod),7);
+								break;
+							case 'cookie storm drop':
+								var moni=Math.max(mult*(Game.cookiesPs*60*Math.floor(Math.random()*7+1)),Math.floor(Math.random()*7+1));//either 1-7 cookies or 1-7 minutes of cookie production, whichever is highest
+								Game.Earn(moni);
+								popup='<div style="font-size:75%;">+'+Beautify(moni)+' cookies!</div>';
+								break;
+							case 'blab':
+								var str=choose([
+									'Cookie crumbliness x3 for 60 seconds!',
+									'Chocolatiness x7 for 77 seconds!',
+									'Dough elasticity halved for 66 seconds!',
+									'Golden cookie shininess doubled for 3 seconds!',
+									'World economy halved for 30 seconds!',
+									'Grandma kisses 23% stingier for 45 seconds!',
+									'Thanks for clicking!',
+									'Fooled you! This one was just a test.',
+									'Golden cookies clicked +1!',
+									'Your click has been registered. Thank you for your cooperation.',
+									'Thanks! That hit the spot!',
+									'Thank you. A team has been dispatched.',
+									'They know.',
+									'Oops. This was just a chocolate cookie with shiny aluminium foil.'
+									]);
+									popup=str;
+								break;
 						}
-						else
-						{
-							popup='Cookie chain<div style="font-size:65%;">+'+moniStr+' cookies!</div>';//
-						}
-						Game.Earn(moni);
-					}
-					else if (choice=='cookie storm')
-					{
-						buff=Game.gainBuff('cookie storm',Math.ceil(7*effectDurMod),7);
-					}
-					else if (choice=='cookie storm drop')
-					{
-						var moni=Math.max(mult*(Game.cookiesPs*60*Math.floor(Math.random()*7+1)),Math.floor(Math.random()*7+1));//either 1-7 cookies or 1-7 minutes of cookie production, whichever is highest
-						Game.Earn(moni);
-						popup='<div style="font-size:75%;">+'+Beautify(moni)+' cookies!</div>';
-					}
-					else if (choice=='blab')//sorry (it's really rare)
-					{
-						var str=choose([
-						'Cookie crumbliness x3 for 60 seconds!',
-						'Chocolatiness x7 for 77 seconds!',
-						'Dough elasticity halved for 66 seconds!',
-						'Golden cookie shininess doubled for 3 seconds!',
-						'World economy halved for 30 seconds!',
-						'Grandma kisses 23% stingier for 45 seconds!',
-						'Thanks for clicking!',
-						'Fooled you! This one was just a test.',
-						'Golden cookies clicked +1!',
-						'Your click has been registered. Thank you for your cooperation.',
-						'Thanks! That hit the spot!',
-						'Thank you. A team has been dispatched.',
-						'They know.',
-						'Oops. This was just a chocolate cookie with shiny aluminium foil.'
-						]);
-						popup=str;
 					}
 					
 					if (popup=='' && buff && buff.name && buff.desc) popup=buff.name+'<div style="font-size:65%;">'+buff.desc+'</div>';
@@ -5008,28 +4999,36 @@ Game.Launch=function()
 					if (Game.hasGod)
 					{
 						var godLvl=Game.hasGod('industry');
-						if (godLvl==1) m*=1.1;
-						else if (godLvl==2) m*=1.06;
-						else if (godLvl==3) m*=1.03;
+						switch(godLvl){
+							case 1: m*=1.1; break;
+							case 2: m*=1.06; break;
+							case 3: m*=1.03; break;
+						}
 						var godLvl=Game.hasGod('mother');
-						if (godLvl==1) m*=1.15;
-						else if (godLvl==2) m*=1.1;
-						else if (godLvl==3) m*=1.05;
+						switch(godLvl){
+							case 1: m*=1.16; break;
+							case 2: m*=1.1; break;
+							case 3: m*=1.05; break;
+						}
 						
 						if (Game.season!='')
 						{
 							var godLvl=Game.hasGod('seasons');
 							if (Game.season!='fools')
 							{
-								if (godLvl==1) m*=0.97;
-								else if (godLvl==2) m*=0.98;
-								else if (godLvl==3) m*=0.99;
+								switch(godLvl){
+									case 1: m*=0.97; break;
+									case 2: m*=0.98; break;
+									case 3: m*=0.99; break;
+								}
 							}
 							else
 							{
-								if (godLvl==1) m*=0.955;
-								else if (godLvl==2) m*=0.97;
-								else if (godLvl==3) m*=0.985;
+								switch(godLvl){
+									case 1: m*=0.955; break;
+									case 2: m*=0.97; break;
+									case 3: m*=0.985; break;
+								}
 							}
 						}
 					}
@@ -5158,9 +5157,11 @@ Game.Launch=function()
 					if (Game.hasGod)
 					{
 						var godLvl=Game.hasGod('seasons');
-						if (godLvl==1) m*=0.9;
-						else if (godLvl==2) m*=0.95;
-						else if (godLvl==3) m*=0.97;
+						switch(godLvl){
+							case 1: m*=0.9; break;
+							case 2: m*=0.95; break;
+							case 3: m*=0.97; break;
+						}
 					}
 					m*=1/Game.eff('reindeerFreq');
 					if (Game.Has('Reindeer season')) m=0.01;
@@ -5808,64 +5809,60 @@ Game.Launch=function()
 				str+='<div class="close menuClose" '+Game.clickStr+'="Game.ShowMenu();">x</div>';
 				//str+='<div style="position:absolute;top:8px;right:8px;cursor:pointer;font-size:16px;" '+Game.clickStr+'="Game.ShowMenu();">X</div>';
 			}
-			if (Game.onMenu=='prefs')
-			{
-				str+='<div class="section">Options</div>'+
-				'<div class="subsection">'+
-				'<div class="title">General</div>'+
-				'<div class="listing"><a class="option" '+Game.clickStr+'="Game.toSave=true;PlaySound(\'snd/tick.mp3\');">Save</a><label>Save manually (the game autosaves every 60 seconds; shortcut : ctrl+S)</label></div>'+
-				'<div class="listing"><a class="option" '+Game.clickStr+'="Game.ExportSave();PlaySound(\'snd/tick.mp3\');">Export save</a><a class="option" '+Game.clickStr+'="Game.ImportSave();PlaySound(\'snd/tick.mp3\');">Import save</a><label>You can use this to backup your save or to transfer it to another computer (shortcut for import : ctrl+O)</label></div>'+
-				'<div class="listing"><a class="option" '+Game.clickStr+'="Game.FileSave();PlaySound(\'snd/tick.mp3\');">Save to file</a><a class="option" style="position:relative;"><input id="FileLoadInput" type="file" style="cursor:pointer;opacity:0;position:absolute;left:0px;top:0px;width:100%;height:100%;" onchange="Game.FileLoad(event);" '+Game.clickStr+'="PlaySound(\'snd/tick.mp3\');"/>Load from file</a><label>Use this to keep backups on your computer</label></div>'+
-				
-				'<div class="listing"><a class="option warning" '+Game.clickStr+'="Game.HardReset();PlaySound(\'snd/tick.mp3\');">Wipe save</a><label>Delete all your progress, including your achievements</label></div>'+
-				'<div class="title">Settings</div>'+
-				'<div class="listing">'+
-				Game.WriteSlider('volumeSlider','Volume','[$]%',function(){return Game.volume;},'Game.setVolume(Math.round(l(\'volumeSlider\').value));l(\'volumeSliderRightText\').innerHTML=Game.volume+\'%\';')+'<br>'+
-				Game.WriteButton('fancy','fancyButton','Fancy graphics ON','Fancy graphics OFF','Game.ToggleFancy();')+'<label>(visual improvements; disabling may improve performance)</label><br>'+
-				Game.WriteButton('filters','filtersButton','CSS filters ON','CSS filters OFF','Game.ToggleFilters();')+'<label>(cutting-edge visual improvements; disabling may improve performance)</label><br>'+
-				Game.WriteButton('particles','particlesButton','Particles ON','Particles OFF')+'<label>(cookies falling down, etc; disabling may improve performance)</label><br>'+
-				Game.WriteButton('numbers','numbersButton','Numbers ON','Numbers OFF')+'<label>(numbers that pop up when clicking the cookie)</label><br>'+
-				Game.WriteButton('milk','milkButton','Milk ON','Milk OFF')+'<label>(only appears with enough achievements)</label><br>'+
-				Game.WriteButton('cursors','cursorsButton','Cursors ON','Cursors OFF')+'<label>(visual display of your cursors)</label><br>'+
-				Game.WriteButton('wobbly','wobblyButton','Wobbly cookie ON','Wobbly cookie OFF')+'<label>(your cookie will react when you click it)</label><br>'+
-				Game.WriteButton('cookiesound','cookiesoundButton','Alt cookie sound ON','Alt cookie sound OFF')+'<label>(how your cookie sounds when you click on it)</label><br>'+
-				Game.WriteButton('crates','cratesButton','Icon crates ON','Icon crates OFF')+'<label>(display boxes around upgrades and achievements in stats)</label><br>'+
-				Game.WriteButton('monospace','monospaceButton','Alt font ON','Alt font OFF')+'<label>(your cookies are displayed using a monospace font)</label><br>'+
-				Game.WriteButton('format','formatButton','Short numbers OFF','Short numbers ON','BeautifyAll();Game.RefreshStore();Game.upgradesToRebuild=1;',1)+'<label>(shorten big numbers)</label><br>'+
-				Game.WriteButton('notifs','notifsButton','Fast notes ON','Fast notes OFF')+'<label>(notifications disappear much faster)</label><br>'+
-				//Game.WriteButton('autoupdate','autoupdateButton','Offline mode OFF','Offline mode ON',0,1)+'<label>(disables update notifications)</label><br>'+
-				Game.WriteButton('warn','warnButton','Closing warning ON','Closing warning OFF')+'<label>(the game will ask you to confirm when you close the window)</label><br>'+
-				Game.WriteButton('focus','focusButton','Defocus OFF','Defocus ON',0,1)+'<label>(the game will be less resource-intensive when out of focus)</label><br>'+
-				Game.WriteButton('extraButtons','extraButtonsButton','Extra buttons ON','Extra buttons OFF','Game.ToggleExtraButtons();')+'<label>(add Mute buttons on buildings)</label><br>'+
-				Game.WriteButton('askLumps','askLumpsButton','Lump confirmation ON','Lump confirmation OFF')+'<label>(the game will ask you to confirm before spending sugar lumps)</label><br>'+
-				Game.WriteButton('customGrandmas','customGrandmasButton','Custom grandmas ON','Custom grandmas OFF')+'<label>(some grandmas will be named after Patreon supporters)</label><br>'+
-				Game.WriteButton('timeout','timeoutButton','Sleep mode timeout ON','Sleep mode timeout OFF')+'<label>(on slower computers, the game will put itself in sleep mode when it\'s inactive and starts to lag out; offline CpS production kicks in during sleep mode)</label><br>'+
-				'</div>'+
-				//'<div class="listing">'+Game.WriteButton('autosave','autosaveButton','Autosave ON','Autosave OFF')+'</div>'+
-				'<div class="listing"><a class="option" '+Game.clickStr+'="Game.CheckModData();PlaySound(\'snd/tick.mp3\');">Check mod data</a><label>(view and delete save data created by mods)</label></div>'+
-				
-				'<div style="padding-bottom:128px;"></div>'+
-				'</div>'
-				;
-			}
-			else if (Game.onMenu=='main')
-			{
-				str+=
-				'<div class="listing">This isn\'t really finished</div>'+
-				'<div class="listing"><a class="option big title" '+Game.clickStr+'="Game.ShowMenu(\'prefs\');">Menu</a></div>'+
-				'<div class="listing"><a class="option big title" '+Game.clickStr+'="Game.ShowMenu(\'stats\');">Stats</a></div>'+
-				'<div class="listing"><a class="option big title" '+Game.clickStr+'="Game.ShowMenu(\'log\');">Updates</a></div>'+
-				'<div class="listing"><a class="option big title" '+Game.clickStr+'="">Quit</a></div>'+
-				'<div class="listing"><a class="option big title" '+Game.clickStr+'="Game.ShowMenu(Game.onMenu);">Resume</a></div>';
-			}
-			else if (Game.onMenu=='log')
-			{
-				str+=replaceAll('[bakeryName]',Game.bakeryName,Game.updateLog);
-				if (!Game.HasAchiev('Olden days')) str+='<div style="text-align:right;width:100%;"><div '+Game.clickStr+'="Game.SparkleAt(Game.mouseX,Game.mouseY);PlaySound(\'snd/tick.mp3\');PlaySound(\'snd/shimmerClick.mp3\');Game.Win(\'Olden days\');Game.UpdateMenu();" class="icon" style="display:inline-block;transform:scale(0.5);cursor:pointer;width:48px;height:48px;background-position:'+(-12*48)+'px '+(-3*48)+'px;"></div></div>';
-			}
-			else if (Game.onMenu=='stats')
-			{
-				var buildingsOwned=0;
+			switch(Game.onMenu){
+				case 'prefs':
+					str+='<div class="section">Options</div>'+
+					'<div class="subsection">'+
+					'<div class="title">General</div>'+
+					'<div class="listing"><a class="option" '+Game.clickStr+'="Game.toSave=true;PlaySound(\'snd/tick.mp3\');">Save</a><label>Save manually (the game autosaves every 60 seconds; shortcut : ctrl+S)</label></div>'+
+					'<div class="listing"><a class="option" '+Game.clickStr+'="Game.ExportSave();PlaySound(\'snd/tick.mp3\');">Export save</a><a class="option" '+Game.clickStr+'="Game.ImportSave();PlaySound(\'snd/tick.mp3\');">Import save</a><label>You can use this to backup your save or to transfer it to another computer (shortcut for import : ctrl+O)</label></div>'+
+					'<div class="listing"><a class="option" '+Game.clickStr+'="Game.FileSave();PlaySound(\'snd/tick.mp3\');">Save to file</a><a class="option" style="position:relative;"><input id="FileLoadInput" type="file" style="cursor:pointer;opacity:0;position:absolute;left:0px;top:0px;width:100%;height:100%;" onchange="Game.FileLoad(event);" '+Game.clickStr+'="PlaySound(\'snd/tick.mp3\');"/>Load from file</a><label>Use this to keep backups on your computer</label></div>'+
+					
+					'<div class="listing"><a class="option warning" '+Game.clickStr+'="Game.HardReset();PlaySound(\'snd/tick.mp3\');">Wipe save</a><label>Delete all your progress, including your achievements</label></div>'+
+					'<div class="title">Settings</div>'+
+					'<div class="listing">'+
+					Game.WriteSlider('volumeSlider','Volume','[$]%',function(){return Game.volume;},'Game.setVolume(Math.round(l(\'volumeSlider\').value));l(\'volumeSliderRightText\').innerHTML=Game.volume+\'%\';')+'<br>'+
+					Game.WriteButton('fancy','fancyButton','Fancy graphics ON','Fancy graphics OFF','Game.ToggleFancy();')+'<label>(visual improvements; disabling may improve performance)</label><br>'+
+					Game.WriteButton('filters','filtersButton','CSS filters ON','CSS filters OFF','Game.ToggleFilters();')+'<label>(cutting-edge visual improvements; disabling may improve performance)</label><br>'+
+					Game.WriteButton('particles','particlesButton','Particles ON','Particles OFF')+'<label>(cookies falling down, etc; disabling may improve performance)</label><br>'+
+					Game.WriteButton('numbers','numbersButton','Numbers ON','Numbers OFF')+'<label>(numbers that pop up when clicking the cookie)</label><br>'+
+					Game.WriteButton('milk','milkButton','Milk ON','Milk OFF')+'<label>(only appears with enough achievements)</label><br>'+
+					Game.WriteButton('cursors','cursorsButton','Cursors ON','Cursors OFF')+'<label>(visual display of your cursors)</label><br>'+
+					Game.WriteButton('wobbly','wobblyButton','Wobbly cookie ON','Wobbly cookie OFF')+'<label>(your cookie will react when you click it)</label><br>'+
+					Game.WriteButton('cookiesound','cookiesoundButton','Alt cookie sound ON','Alt cookie sound OFF')+'<label>(how your cookie sounds when you click on it)</label><br>'+
+					Game.WriteButton('crates','cratesButton','Icon crates ON','Icon crates OFF')+'<label>(display boxes around upgrades and achievements in stats)</label><br>'+
+					Game.WriteButton('monospace','monospaceButton','Alt font ON','Alt font OFF')+'<label>(your cookies are displayed using a monospace font)</label><br>'+
+					Game.WriteButton('format','formatButton','Short numbers OFF','Short numbers ON','BeautifyAll();Game.RefreshStore();Game.upgradesToRebuild=1;',1)+'<label>(shorten big numbers)</label><br>'+
+					Game.WriteButton('notifs','notifsButton','Fast notes ON','Fast notes OFF')+'<label>(notifications disappear much faster)</label><br>'+
+					//Game.WriteButton('autoupdate','autoupdateButton','Offline mode OFF','Offline mode ON',0,1)+'<label>(disables update notifications)</label><br>'+
+					Game.WriteButton('warn','warnButton','Closing warning ON','Closing warning OFF')+'<label>(the game will ask you to confirm when you close the window)</label><br>'+
+					Game.WriteButton('focus','focusButton','Defocus OFF','Defocus ON',0,1)+'<label>(the game will be less resource-intensive when out of focus)</label><br>'+
+					Game.WriteButton('extraButtons','extraButtonsButton','Extra buttons ON','Extra buttons OFF','Game.ToggleExtraButtons();')+'<label>(add Mute buttons on buildings)</label><br>'+
+					Game.WriteButton('askLumps','askLumpsButton','Lump confirmation ON','Lump confirmation OFF')+'<label>(the game will ask you to confirm before spending sugar lumps)</label><br>'+
+					Game.WriteButton('customGrandmas','customGrandmasButton','Custom grandmas ON','Custom grandmas OFF')+'<label>(some grandmas will be named after Patreon supporters)</label><br>'+
+					Game.WriteButton('timeout','timeoutButton','Sleep mode timeout ON','Sleep mode timeout OFF')+'<label>(on slower computers, the game will put itself in sleep mode when it\'s inactive and starts to lag out; offline CpS production kicks in during sleep mode)</label><br>'+
+					'</div>'+
+					//'<div class="listing">'+Game.WriteButton('autosave','autosaveButton','Autosave ON','Autosave OFF')+'</div>'+
+					'<div class="listing"><a class="option" '+Game.clickStr+'="Game.CheckModData();PlaySound(\'snd/tick.mp3\');">Check mod data</a><label>(view and delete save data created by mods)</label></div>'+
+					
+					'<div style="padding-bottom:128px;"></div>'+
+					'</div>';
+					break;
+				case 'main':
+					str+=
+					'<div class="listing">This isn\'t really finished</div>'+
+					'<div class="listing"><a class="option big title" '+Game.clickStr+'="Game.ShowMenu(\'prefs\');">Menu</a></div>'+
+					'<div class="listing"><a class="option big title" '+Game.clickStr+'="Game.ShowMenu(\'stats\');">Stats</a></div>'+
+					'<div class="listing"><a class="option big title" '+Game.clickStr+'="Game.ShowMenu(\'log\');">Updates</a></div>'+
+					'<div class="listing"><a class="option big title" '+Game.clickStr+'="">Quit</a></div>'+
+					'<div class="listing"><a class="option big title" '+Game.clickStr+'="Game.ShowMenu(Game.onMenu);">Resume</a></div>';
+					break;
+				case 'log':
+					str+=replaceAll('[bakeryName]',Game.bakeryName,Game.updateLog);
+					if (!Game.HasAchiev('Olden days')) str+='<div style="text-align:right;width:100%;"><div '+Game.clickStr+'="Game.SparkleAt(Game.mouseX,Game.mouseY);PlaySound(\'snd/tick.mp3\');PlaySound(\'snd/shimmerClick.mp3\');Game.Win(\'Olden days\');Game.UpdateMenu();" class="icon" style="display:inline-block;transform:scale(0.5);cursor:pointer;width:48px;height:48px;background-position:'+(-12*48)+'px '+(-3*48)+'px;"></div></div>';
+					break;
+				case 'stats':
+					var buildingsOwned=0;
 				buildingsOwned=Game.BuildingsOwned;
 				var upgrades='';
 				var cookieUpgrades='';
@@ -6100,8 +6097,8 @@ Game.Launch=function()
 				'<div class="listing"><small style="opacity:0.75;">(Milk is gained with each achievement. It can unlock unique upgrades over time.)</small></div>'+
 				achievementsStr+
 				'</div>'+
-				'<div style="padding-bottom:128px;"></div>'
-				;
+				'<div style="padding-bottom:128px;"></div>';
+				break;
 			}
 			//str='<div id="selectionKeeper" class="selectable">'+str+'</div>';
 			l('menu').innerHTML=str;
@@ -6763,22 +6760,21 @@ Game.Launch=function()
 				PlaySound('snd/fortune.mp3',1);
 				Game.SparkleAt(Game.mouseX,Game.mouseY);
 				var effect=Game.TickerEffect.sub;
-				if (effect=='fortuneGC')
-				{
-					Game.Notify('Fortune!','A golden cookie has appeared.',[10,32]);
-					Game.fortuneGC=1;
-					var newShimmer=new Game.shimmer('golden',{noWrath:true});
-				}
-				else if (effect=='fortuneCPS')
-				{
-					Game.Notify('Fortune!','You gain <b>one hour</b> of your CpS (capped at double your bank).',[10,32]);
-					Game.fortuneCPS=1;
-					Game.Earn(Math.min(Game.cookiesPs*60*60,Game.cookies));
-				}
-				else
-				{
-					Game.Notify(effect.name,'You\'ve unlocked a new upgrade.',effect.icon);
-					effect.unlock();
+				switch(effect) {
+					case 'fortuneGC':
+						Game.Notify('Fortune!','A golden cookie has appeared.',[10,32]);
+						Game.fortuneGC=1;
+						var newShimmer=new Game.shimmer('golden',{noWrath:true});
+						break;
+					case 'fortuneCPS':
+						Game.Notify('Fortune!','You gain <b>one hour</b> of your CpS (capped at double your bank).',[10,32]);
+						Game.fortuneCPS=1;
+						Game.Earn(Math.min(Game.cookiesPs*60*60,Game.cookies));
+						break;
+					default:
+						Game.Notify(effect.name,'You\'ve unlocked a new upgrade.',effect.icon);
+						effect.unlock();
+
 				}
 			}
 			
@@ -7583,12 +7579,14 @@ Game.Launch=function()
 		
 		Game.storeBulkButton=function(id)
 		{
-			if (id==0) Game.buyMode=1;
-			else if (id==1) Game.buyMode=-1;
-			else if (id==2) Game.buyBulk=1;
-			else if (id==3) Game.buyBulk=10;
-			else if (id==4) Game.buyBulk=100;
-			else if (id==5) Game.buyBulk=-1;
+			switch (id){
+				case 0:Game.buyMode=1;break;
+				case 1:Game.buyMode=-1;break;
+				case 2:Game.buyMode=10;break;
+				case 3:Game.buyMode=-10;break;
+				case 4:Game.buyMode=100;break;
+				case 5:Game.buyMode=-100;break;
+			}
 			
 			if (Game.buyMode==1 && Game.buyBulk==-1) Game.buyBulk=100;
 			

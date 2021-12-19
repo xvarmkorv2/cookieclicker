@@ -6545,28 +6545,35 @@ Game.Launch=function()
 			//if (Game.elderWrath>0 && (Game.pledges==0 || Math.random()<0.2))
 			if (Game.elderWrath>0 && (((Game.pledges==0 && Game.resets==0) && Math.random()<0.5) || Math.random()<0.05))
 			{
-				list=[];
-				if (Game.elderWrath==1) list.push(choose([
-					'News : millions of old ladies reported missing!',
-					'News : processions of old ladies sighted around cookie facilities!',
-					'News : families around the continent report agitated, transfixed grandmothers!',
-					'News : doctors swarmed by cases of old women with glassy eyes and a foamy mouth!',
-					'News : nurses report "strange scent of cookie dough" around female elderly patients!'
-				]));
-				if (Game.elderWrath==2) list.push(choose([
-					'News : town in disarray as strange old ladies break into homes to abduct infants and baking utensils!',
-					'News : sightings of old ladies with glowing eyes terrify local population!',
-					'News : retirement homes report "female residents slowly congealing in their seats"!',
-					'News : whole continent undergoing mass exodus of old ladies!',
-					'News : old women freeze in place in streets, ooze warm sugary syrup!'
-				]));
-				if (Game.elderWrath==3) list.push(choose([
-					'News : large "flesh highways" scar continent, stretch between various cookie facilities!',
-					'News : wrinkled "flesh tendrils" visible from space!',
-					'News : remains of "old ladies" found frozen in the middle of growing fleshy structures!', 
-					'News : all hope lost as writhing mass of flesh and dough engulfs whole city!',
-					'News : nightmare continues as wrinkled acres of flesh expand at alarming speeds!'
-				]));
+				switch(Game.elderWrath){
+					case 1:
+						list.push(choose([
+							'News : millions of old ladies reported missing!',
+							'News : processions of old ladies sighted around cookie facilities!',
+							'News : families around the continent report agitated, transfixed grandmothers!',
+							'News : doctors swarmed by cases of old women with glassy eyes and a foamy mouth!',
+							'News : nurses report "strange scent of cookie dough" around female elderly patients!'
+						]));
+						break
+					case 2:
+						list.push(choose([
+							'News : town in disarray as strange old ladies break into homes to abduct infants and baking utensils!',
+							'News : sightings of old ladies with glowing eyes terrify local population!',
+							'News : retirement homes report "female residents slowly congealing in their seats"!',
+							'News : whole continent undergoing mass exodus of old ladies!',
+							'News : old women freeze in place in streets, ooze warm sugary syrup!'
+						]));
+						break
+					case 3:
+						list.push(choose([
+							'News : large "flesh highways" scar continent, stretch between various cookie facilities!',
+							'News : wrinkled "flesh tendrils" visible from space!',
+							'News : remains of "old ladies" found frozen in the middle of growing fleshy structures!', 
+							'News : all hope lost as writhing mass of flesh and dough engulfs whole city!',
+							'News : nightmare continues as wrinkled acres of flesh expand at alarming speeds!'
+						]));
+						break
+				}
 			}
 			
 			if (Game.season=='fools')
@@ -6590,15 +6597,16 @@ Game.Launch=function()
 				
 				if (Game.TickerN%2==0 || Game.cookiesEarned>=10100000000)
 				{
-					if (Game.Objects['Grandma'].amount>0) list.push(choose([
-					'Your rolling pins are rolling and pinning!',
-					'Production is steady!'
-					]));
-					
-					if (Game.Objects['Grandma'].amount>0) list.push(choose([
-					'Your ovens are diligently baking more and more cookies.',
-					'Your ovens burn a whole batch. Ah well! Still good.'
-					]));
+					if (Game.Objects['Grandma'].amount>0) {
+						list.push(choose([
+							'Your rolling pins are rolling and pinning!',
+							'Production is steady!'
+						]));
+						list.push(choose([
+						'Your ovens are diligently baking more and more cookies.',
+						'Your ovens burn a whole batch. Ah well! Still good.'
+						]));
+					}
 					
 					if (Game.Objects['Farm'].amount>0) list.push(choose([
 					'Scores of cookies come out of your kitchens.',
@@ -7004,15 +7012,19 @@ Game.Launch=function()
 					var old=Game.hasBuff('Devastation');
 					if (old)
 					{
-						if (godLvl==1) old.multClick+=sold*0.01;
-						else if (godLvl==2) old.multClick+=sold*0.005;
-						else if (godLvl==3) old.multClick+=sold*0.0025;
+						switch(godLvl){
+							case 1: old.multClick+=sold*0.01; break;
+							case 2: old.multClick+=sold*0.005; break;
+							case 3: old.multClick+=sold*0.0025; break;
+						}
 					}
 					else
 					{
-						if (godLvl==1) Game.gainBuff('devastation',10,1+sold*0.01);
-						else if (godLvl==2) Game.gainBuff('devastation',10,1+sold*0.005);
-						else if (godLvl==3) Game.gainBuff('devastation',10,1+sold*0.0025);
+						switch(godLvl){
+							case 1: Game.gainBuff('devastation',10,1+sold*0.01); break;
+							case 2: Game.gainBuff('devastation',10,1+sold*0.005); break;
+							case 3: Game.gainBuff('devastation',10,1+sold*0.0025); break;
+						}
 					}
 				}
 				if (success && Game.shimmerTypes['golden'].n<=0 && Game.auraMult('Dragon Orbs')>0)

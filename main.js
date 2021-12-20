@@ -3282,9 +3282,11 @@ Game.Launch=function()
 			if (Game.hasGod)
 			{
 				var godLvl=Game.hasGod('creation');
-				if (godLvl==1) heavenlyMult*=0.7;
-				else if (godLvl==2) heavenlyMult*=0.8;
-				else if (godLvl==3) heavenlyMult*=0.9;
+				switch(godLvl){
+					case 1: heavenlyMult*=0.7; break;
+					case 2: heavenlyMult*=0.8; break;
+					case 3: heavenlyMult*=0.9; break;
+				}
 			}
 			return heavenlyMult;
 		}
@@ -3770,9 +3772,11 @@ Game.Launch=function()
 			if (Game.hasGod && Game.BuildingsOwned%10==0)
 			{
 				var godLvl=Game.hasGod('order');
-				if (godLvl==1) Game.lumpRipeAge-=hour;
-				else if (godLvl==2) Game.lumpRipeAge-=(hour/3)*2;
-				else if (godLvl==3) Game.lumpRipeAge-=(hour/3);
+				switch(godLvl){
+					case 1: Game.lumpRipeAge-=hour; break;
+					case 2: Game.lumpRipeAge-=(hour/3)*2; break;
+					case 3: Game.lumpRipeAge-=(hour/3); break;
+				}
 			}
 			//if (Game.hasAura('Dragon\'s Curve')) {Game.lumpMatureAge/=1.05;Game.lumpRipeAge/=1.05;}
 			Game.lumpMatureAge/=1+Game.auraMult('Dragon\'s Curve')*0.05;Game.lumpRipeAge/=1+Game.auraMult('Dragon\'s Curve')*0.05;
@@ -4075,9 +4079,11 @@ Game.Launch=function()
 			if (Game.hasGod)
 			{
 				var godLvl=Game.hasGod('labor');
-				if (godLvl==1) mult*=1.15;
-				else if (godLvl==2) mult*=1.1;
-				else if (godLvl==3) mult*=1.05;
+				switch(godLvl){
+					case 1: mult*=1.15; break;
+					case 2: mult*=1.1; break;
+					case 3: mult*=1.05; break;
+				}
 			}
 			
 			for (var i in Game.buffs)
@@ -5110,9 +5116,11 @@ Game.Launch=function()
 					if (Game.hasGod)
 					{
 						var godLvl=Game.hasGod('seasons');
-						if (godLvl==1) failRate*=0.9;
-						else if (godLvl==2) failRate*=0.95;
-						else if (godLvl==3) failRate*=0.97;
+						switch(godLvl){
+							case 1: mult*=failRate*=0.9; break;
+							case 2: mult*=failRate*=0.95; break;
+							case 3: mult*=failRate*=0.97; break;
+						}
 					}
 					if (Math.random()>failRate)//christmas cookie drops
 					{
@@ -7581,9 +7589,11 @@ Game.Launch=function()
 			if (Game.hasGod)
 			{
 				var godLvl=Game.hasGod('creation');
-				if (godLvl==1) price*=0.93;
-				else if (godLvl==2) price*=0.95;
-				else if (godLvl==3) price*=0.98;
+				switch(godLvl){
+					case 1: price*=0.93; break;
+					case 1: price*=0.95; break;
+					case 1: price*=0.98; break;
+				}
 			}
 			return price;
 		}
@@ -9007,9 +9017,11 @@ Game.Launch=function()
 			if (Game.hasGod)
 			{
 				var godLvl=Game.hasGod('seasons');
-				if (godLvl==1) pow*=1.3;
-				else if (godLvl==2) pow*=1.2;
-				else if (godLvl==3) pow*=1.1;
+				switch(godLvl){
+					case 1: pow*=1.3; break;
+					case 1: pow*=1.2; break;
+					case 1: pow*=1.1; break;
+				}
 			}
 			return pow;
 		};
@@ -9161,9 +9173,11 @@ Game.Launch=function()
 			if (Game.hasGod)
 			{
 				var godLvl=Game.hasGod('seasons');
-				if (godLvl==1) failRate*=0.9;
-				else if (godLvl==2) failRate*=0.95;
-				else if (godLvl==3) failRate*=0.97;
+				switch(godLvl){
+					case 1: failRate*=0.9; break;
+					case 1: failRate*=0.95; break;
+					case 1: failRate*=0.97; break;
+				}
 			}
 			if (Math.random()>=failRate)
 			{
@@ -10383,9 +10397,11 @@ Game.Launch=function()
 					if (Game.hasGod)
 					{
 						var godLvl=Game.hasGod('seasons');
-						if (godLvl==1) m*=2;
-						else if (godLvl==2) m*=1.50;
-						else if (godLvl==3) m*=1.25;
+						switch(godLvl){
+							case 1: m*=2; break;
+							case 1: m*=1.5; break;
+							case 1: m*=1.25; break;
+						}
 					}
 					//return Game.seasonTriggerBasePrice*Math.pow(2,Game.seasonUses)*m;
 					//return Game.cookiesPs*60*Math.pow(1.5,Game.seasonUses)*m;

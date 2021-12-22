@@ -565,7 +565,7 @@ Timer.track=function(label)
 	var now=Date.now();
 	if (!Timer.smoothed[label]) Timer.smoothed[label]=0;
 	Timer.smoothed[label]+=((now-Timer.t)-Timer.smoothed[label])*0.1;
-	Timer.labels.push('<div style="padding-left:8px;">'+label+' : '+Math.round(Timer.smoothed[label])+'ms</div>';)
+	Timer.labels.push('<div style="padding-left:8px;">'+label+' : '+Math.round(Timer.smoothed[label])+'ms</div>');
 	Timer.t=now;
 }
 Timer.clean=function()
@@ -577,7 +577,7 @@ Timer.clean=function()
 Timer.say=function(label)
 {
 	if (!Game.sesame) return;
-	Timer.labels.push('<div style="border-top:1px solid #ccc;">'+label+'</div>';)
+	Timer.labels.push('<div style="border-top:1px solid #ccc;">'+label+'</div>');
 }
 
 

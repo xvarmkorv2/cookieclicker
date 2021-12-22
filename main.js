@@ -13294,7 +13294,7 @@ Game.Launch=function()
 							if (fancy) w+=Math.sin((n+Game.T*0.01)*Math.PI/2)*4;
 							var x=0;
 							var y=(140/* *Game.BigCookieSize*/+n*16+w)-16;
-							if (inRect(x,y,Game.LeftBackgroundObj.getBoundingClientRect())) {
+							//if (inRect(x,y,Game.LeftBackgroundObj.getBoundingClientRect())) {
 								var rot=7.2;//(1/50)*360
 								if (i==0 && fancy) rot-=Game.T*0.1;
 								if (i%50==0) rot+=7.2/2;
@@ -13310,7 +13310,7 @@ Game.Launch=function()
 									if (Game.CanClick && ctx && Math.abs(Game.mouseX-x)<16 && Math.abs(Game.mouseY-y)<16) Game.mousePointer=1;
 								}*/
 							}
-						}
+						//}
 						ctx.restore();
 						Timer.track('cursors');
 					}

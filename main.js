@@ -12898,7 +12898,8 @@ Game.Launch=function()
 				Game.Background=l('backgroundCanvas').getContext('2d');
 				Game.Background.canvas.width=Game.Background.canvas.parentNode.offsetWidth;
 				Game.Background.canvas.height=Game.Background.canvas.parentNode.offsetHeight;
-				Game.LeftBackground=l('backgroundLeftCanvas').getContext('2d');
+				Game.LeftBackgroundObj=l('backgroundLeftCanvas')
+				Game.LeftBackground=Game.LeftBackgroundObj.getContext('2d');
 				Game.LeftBackground.canvas.width=Game.LeftBackground.canvas.parentNode.offsetWidth;
 				Game.LeftBackground.canvas.height=Game.LeftBackground.canvas.parentNode.offsetHeight;
 					//preload ascend animation bits so they show up instantly
@@ -13293,21 +13294,21 @@ Game.Launch=function()
 							if (fancy) w+=Math.sin((n+Game.T*0.01)*Math.PI/2)*4;
 							var x=0;
 							var y=(140/* *Game.BigCookieSize*/+n*16+w)-16;
-							if (inRect(x,y,ctx.parentNode.getBoundingClientRect())) {
-							var rot=7.2;//(1/50)*360
-							if (i==0 && fancy) rot-=Game.T*0.1;
-							if (i%50==0) rot+=7.2/2;
-							ctx.rotate((rot/360)*Math.PI*2);
-							ctx.drawImage(pic,0,0,32,32,x,y,32,32);
-							//ctx.drawImage(pic,32*(i==spe),0,32,32,x,y,32,32);
-							
-							/*if (i==spe)
-							{
-								y+=16;
-								x=Game.cookieOriginX+Math.sin(-((r-5)/360)*Math.PI*2)*y;
-								y=Game.cookieOriginY+Math.cos(-((r-5)/360)*Math.PI*2)*y;
-								if (Game.CanClick && ctx && Math.abs(Game.mouseX-x)<16 && Math.abs(Game.mouseY-y)<16) Game.mousePointer=1;
-							}*/
+							if (inRect(x,y,Game.LeftBackgroundObj.getBoundingClientRect())) {
+								var rot=7.2;//(1/50)*360
+								if (i==0 && fancy) rot-=Game.T*0.1;
+								if (i%50==0) rot+=7.2/2;
+								ctx.rotate((rot/360)*Math.PI*2);
+								ctx.drawImage(pic,0,0,32,32,x,y,32,32);
+								//ctx.drawImage(pic,32*(i==spe),0,32,32,x,y,32,32);
+								
+								/*if (i==spe)
+								{
+									y+=16;
+									x=Game.cookieOriginX+Math.sin(-((r-5)/360)*Math.PI*2)*y;
+									y=Game.cookieOriginY+Math.cos(-((r-5)/360)*Math.PI*2)*y;
+									if (Game.CanClick && ctx && Math.abs(Game.mouseX-x)<16 && Math.abs(Game.mouseY-y)<16) Game.mousePointer=1;
+								}*/
 							}
 						}
 						ctx.restore();

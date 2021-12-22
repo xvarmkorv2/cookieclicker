@@ -565,7 +565,7 @@ Timer.track=function(label)
 	var now=Date.now();
 	if (!Timer.smoothed[label]) Timer.smoothed[label]=0;
 	Timer.smoothed[label]+=((now-Timer.t)-Timer.smoothed[label])*0.1;
-	Timer.labels[label]='<div style="padding-left:8px;">'+label+' : '+Math.round(Timer.smoothed[label])+'ms</div>';
+	Timer.labels.push('<div style="padding-left:8px;">'+label+' : '+Math.round(Timer.smoothed[label])+'ms</div>';)
 	Timer.t=now;
 }
 Timer.clean=function()
@@ -577,7 +577,7 @@ Timer.clean=function()
 Timer.say=function(label)
 {
 	if (!Game.sesame) return;
-	Timer.labels[label]='<div style="border-top:1px solid #ccc;">'+label+'</div>';
+	Timer.labels.push('<div style="border-top:1px solid #ccc;">'+label+'</div>';)
 }
 
 
@@ -14411,6 +14411,12 @@ Game.Launch=function()
 				Game.l.style.transform='scale('+(1.02-0.02*pulse)+','+(1.02-0.02*pulse)+') rotate('+(Math.sin(Game.T*0.5)*0.5)+'deg)';
 				l('wrapper').style.overflowX='hidden';
 				l('wrapper').style.overflowY='hidden';
+			} else {
+				Game.l.style.filter='';
+				Game.l.style.webkitFilter='';
+				Game.l.style.transform='';
+				l('wrapper').style.overflowX='';
+				l('wrapper').style.overflowY='';
 			}
 			
 			Timer.clean();

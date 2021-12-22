@@ -13293,7 +13293,7 @@ Game.Launch=function()
 							if (fancy) w+=Math.sin((n+Game.T*0.01)*Math.PI/2)*4;
 							var x=0;
 							var y=(140/* *Game.BigCookieSize*/+n*16+w)-16;
-							if (inRect(xy,ctx.parentNode.getBoundingClientRect())) {
+							if (inRect(x,y,ctx.parentNode.getBoundingClientRect())) {
 							var rot=7.2;//(1/50)*360
 							if (i==0 && fancy) rot-=Game.T*0.1;
 							if (i%50==0) rot+=7.2/2;

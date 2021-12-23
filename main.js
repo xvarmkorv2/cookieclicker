@@ -14324,6 +14324,7 @@ Game.Launch=function()
 	
 	Game.Draw=function()
 	{
+		Timer.say('DRAW');
 		Game.DrawBackground();Timer.track('end of background');
 		
 		if (!Game.OnAscend)
@@ -14438,6 +14439,7 @@ Game.Launch=function()
 		Game.runModHook('draw');
 		
 		Game.drawT++;
+		Timer.say('END DRAW');
 		//if (Game.prefs.altDraw) requestAnimationFrame(Game.Draw);
 	}
 	
@@ -14480,10 +14482,8 @@ Game.Launch=function()
 		if (!Game.prefs.altDraw)
 		{
 			var hasFocus=document.hasFocus();
-			Timer.say('DRAW');
 			if (hasFocus || Game.prefs.focus || Game.loopT%10==0) requestAnimationFrame(Game.Draw);
 			//if (document.hasFocus() || Game.loopT%5==0) Game.Draw();
-			Timer.say('END DRAW');
 		}
 		else requestAnimationFrame(Game.Draw);
 		

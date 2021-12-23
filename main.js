@@ -14356,9 +14356,8 @@ Game.Launch=function()
 			l('compactCookies').innerHTML=str;
 			Timer.track('cookie amount');
 			
-			for (var i in Game.Objects)
+			for (var me of Game.Objects)
 			{
-				var me=Game.Objects[i];
 				if (me.onMinigame && me.minigame.draw && !me.muted && !Game.onMenu) me.minigame.draw();
 			}
 			Timer.track('draw minigames');
@@ -14367,10 +14366,8 @@ Game.Launch=function()
 			{
 				//if (Game.prefs.monospace) {l('cookies').className='title monospace';} else {l('cookies').className='title';}
 				var lastLocked=0;
-				for (var i in Game.Objects)
+				for (var me of Game.Objects)
 				{
-					var me=Game.Objects[i];
-					
 					//make products full-opacity if we can buy them
 					var classes='product';
 					var price=me.bulkPrice;
@@ -14383,9 +14380,8 @@ Game.Launch=function()
 				
 				//make upgrades full-opacity if we can buy them
 				var lastPrice=0;
-				for (var i in Game.UpgradesInStore)
+				for (var me of Game.UpgradesInStore)
 				{
-					var me=Game.UpgradesInStore[i];
 					if (!me.bought)
 					{
 						var price=me.getPrice();

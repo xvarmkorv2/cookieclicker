@@ -14502,7 +14502,7 @@ Game.Launch=function()
 			
 			l('fpsCounter').textContent=Game.currentFps+' fps';
 			var str='';
-			for (var i of Timer.labels) {str+=Timer.labels[i];}
+			for (var i of Timer.labels) {str+=i;} 
 			if (Game.debugTimersOn) l('debugLog').style.display='block';
 			else l('debugLog').style.display='none';
 			l('debugLog').innerHTML=str;

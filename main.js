@@ -552,11 +552,13 @@ var Debug=function(what)
 
 var Timer={};
 Timer.t=Date.now();
-Timer.labels=[];
-Timer.smoothed=[];
+Timer.labels={};
+Timer.order=[];
+Timer.smoothed={};
 Timer.reset=function()
 {
 	Timer.labels=[];
+	Timer.order=[];
 	Timer.t=Date.now();
 }
 Timer.track=function(label)
@@ -564,8 +566,9 @@ Timer.track=function(label)
 	if (!Game.sesame) return;
 	var now=Date.now();
 	if (!Timer.smoothed[label]) Timer.smoothed[label]=0;
+	Timer.order.push(label)
 	Timer.smoothed[label]+=((now-Timer.t)-Timer.smoothed[label])*0.1;
-	Timer.labels.push('<div style="padding-left:8px;">'+label+' : '+Math.round(Timer.smoothed[label])+'ms</div>');
+	Timer.labels[label]='<div style="padding-left:8px;">'+label+' : '+Math.round(Timer.smoothed[label])+'ms</div>';
 	Timer.t=now;
 }
 Timer.clean=function()
@@ -577,7 +580,8 @@ Timer.clean=function()
 Timer.say=function(label)
 {
 	if (!Game.sesame) return;
-	Timer.labels.push('<div style="border-top:1px solid #ccc;">'+label+'</div>');
+	Timer.order.push(label)
+	Timer.labels[label]='<div style="border-top:1px solid #ccc;">'+label+'</div>';
 }
 
 
@@ -14502,7 +14506,7 @@ Game.Launch=function()
 			
 			l('fpsCounter').textContent=Game.currentFps+' fps';
 			var str='';
-			for (var i=1;i<Timer.labels.length;i++) {str+=Timer.labels[i];}
+			for (var i in Timer.order) {str+=Timer.labels[i];}
 			if (Game.debugTimersOn) l('debugLog').style.display='block';
 			else l('debugLog').style.display='none';
 			l('debugLog').innerHTML=str;

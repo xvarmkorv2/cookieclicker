@@ -13284,7 +13284,7 @@ Game.Launch=function()
 						if (showDragon) ctx.globalAlpha=0.25;
 						//
 						var amount=Game.Objects['Cursor'].amount;
-						var rect={w:100,h:200,r:(-me.r)*Math.PI/180,o:10};
+						var rect={w:100,h:200,r:0,o:10};
 						//var spe=-1;
 						for (var i=0;i<amount;i++)
 						{

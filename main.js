@@ -13725,11 +13725,14 @@ Game.Launch=function()
 			else if (bypass==2)
 			{
 				if (confirm("Are you REALLY sure you want to proceed with this?")) {
-					var Input = l('devConsoleExecutorInput').value
+					var Input = l('devConsoleExecutorInput').value;
+					console.log(Input);
 					try{
-						eval(Input)
+						var func = Function(Input)
+						console.log(func)
+						func();
 					} catch (error) {
-						console.error(error)
+						console.error(error);
 					}
 				}
 			}

@@ -624,7 +624,8 @@ Game.Launch=function()
 		if (day>=easterDay-7 && day<=easterDay) Game.baseSeason='easter';
 	}
 	
-	Game.updateLog=
+	{
+		Game.updateLog=
 	'<div class="selectable">'+
 	'<div class="section">Info</div>'+
 	'<div class="subsection">'+
@@ -1158,6 +1159,7 @@ Game.Launch=function()
 	'<div class="listing">&bull; ah well</div>'+
 	'</div>'+
 	'</div>';
+	}
 	
 	Game.ready=0;
 	
@@ -13811,7 +13813,7 @@ Game.Launch=function()
 				}
 			}
 		}
-		
+
 		Game.EditAscend=function()
 		{
 			if (!Game.DebuggingPrestige)

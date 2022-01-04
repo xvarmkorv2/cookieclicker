@@ -13712,9 +13712,27 @@ Game.Launch=function()
 		
 		Game.debugTimersOn=0;
 		Game.sesame=0;
-		Game.SesameCodeExecutorHandler=function()
+		Game.SesameCodeExecutorHandler=function(bypass)
 		{
-			l('devConsoleExecutorInput')
+			if (!bypass)
+			{
+				Game.Prompt('<h3>Execute Code</h3><div class="block">Are you REALLY sure you want to execute this code?<br><small>This could mess with the game and/or break your save-file.</small></div>',[['Yes!','Game.ClosePrompt();Game.SesameCodeExecutorHandler(1);'],'No']);
+			}
+			else if (bypass==1)
+			{
+				Game.Prompt('<h3>Execute Code</h3><div class="block">Whoah now, are you really, <b><i>REALLY</i></b> sure you want to go through with this?<br><small>Don\'t say we didn\'t warn you!</small></div>',[['Do it!','Game.ClosePrompt();Game.SesameCodeExecutorHandler(2);'],'No']);
+			}
+			else if (bypass==2)
+			{
+				if (confirm("Are you REALLY sure you want to proceed with this?")) {
+					var Input = l('devConsoleExecutorInput').value
+					try{
+						eval(Input)
+					} catch (error) {
+						console.error(error)
+					}
+				}
+			}
 		}
 		Game.OpenSesame=function()
 		{
@@ -13760,7 +13778,7 @@ Game.Launch=function()
 			}
 			str+='<div class="line"></div>';
 			str+='<div class="title" style="font-size:13px;margin:6px;">Code Executor</div>';
-			str+='<textarea id="devConsoleExecutorInput" rows="5" cols="33"></textarea>'
+			str+='<textarea id="devConsoleExecutorInput" rows="2" cols="15"></textarea>'
 			str+='<a class="option neato" '+Game.clickStr+'="Game.SesameCodeExecutorHandler()">Executor</a>';
 			str+='</div>';
 			

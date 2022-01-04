@@ -13712,6 +13712,10 @@ Game.Launch=function()
 		
 		Game.debugTimersOn=0;
 		Game.sesame=0;
+		Game.SesameCodeExecutorHandler=function()
+		{
+			l('devConsoleExecutorInput')
+		}
 		Game.OpenSesame=function()
 		{
 			var str='';
@@ -13754,6 +13758,10 @@ Game.Launch=function()
 				//str+='<a class="option neato" '+Game.clickStr+'="Game.goldenCookie.force=\''+Game.goldenCookie.choices[i*2+1]+'\';Game.goldenCookie.spawn();">'+Game.goldenCookie.choices[i*2]+'</a>';
 				//str+='<a class="option neato" '+Game.clickStr+'="Game.goldenCookie.click(0,\''+Game.goldenCookie.choices[i*2+1]+'\');">'+Game.goldenCookie.choices[i*2]+'</a>';
 			}
+			str+='<div class="line"></div>';
+			str+='<div class="title" style="font-size:13px;margin:6px;">Code Executor</div>';
+			str+='<input type="text" id="devConsoleExecutorInput">'
+			str+='<a class="option neato" '+Game.clickStr+'="Game.SesameCodeExecutorHandler()">Executor</a>';
 			str+='</div>';
 			
 			l('devConsole').innerHTML=str;

@@ -13712,31 +13712,6 @@ Game.Launch=function()
 		
 		Game.debugTimersOn=0;
 		Game.sesame=0;
-		Game.SesameCodeExecutorHandler=function(bypass)
-		{
-			if (!bypass)
-			{
-				Game.Prompt('<h3>Execute Code</h3><div class="block">Are you REALLY sure you want to execute this code?<br><small>This could mess with the game and/or break your save-file.</small></div>',[['Yes!','Game.ClosePrompt();Game.SesameCodeExecutorHandler(1);'],'No']);
-			}
-			else if (bypass==1)
-			{
-				Game.Prompt('<h3>Execute Code</h3><div class="block">Whoah now, are you really, <b><i>REALLY</i></b> sure you want to go through with this?<br><small>Don\'t say we didn\'t warn you!</small></div>',[['Do it!','Game.ClosePrompt();Game.SesameCodeExecutorHandler(2);'],'No']);
-			}
-			else if (bypass==2)
-			{
-				if (confirm("Are you REALLY sure you want to proceed with this?")) {
-					var Input = l('devConsoleExecutorInput').value;
-					console.log(Input);
-					try{
-						var func = Function(Input)
-						console.log(func)
-						func();
-					} catch (error) {
-						console.error(error);
-					}
-				}
-			}
-		}
 		Game.OpenSesame=function()
 		{
 			var str='';
@@ -13809,6 +13784,32 @@ Game.Launch=function()
 			l('debug').style.display='block';
 			Game.sesame=1;
 			Game.Achievements['Cheated cookies taste awful'].won=1;
+		}
+		
+		Game.SesameCodeExecutorHandler=function(bypass)
+		{
+			if (!bypass)
+			{
+				Game.Prompt('<h3>Execute Code</h3><div class="block">Are you REALLY sure you want to execute this code?<br><small>This could mess with the game and/or break your save-file.</small></div>',[['Yes!','Game.ClosePrompt();Game.SesameCodeExecutorHandler(1);'],'No']);
+			}
+			else if (bypass==1)
+			{
+				Game.Prompt('<h3>Execute Code</h3><div class="block">Whoah now, are you really, <b><i>REALLY</i></b> sure you want to go through with this?<br><small>Don\'t say we didn\'t warn you!</small></div>',[['Do it!','Game.ClosePrompt();Game.SesameCodeExecutorHandler(2);'],'No']);
+			}
+			else if (bypass==2)
+			{
+				if (confirm("Are you REALLY sure you want to proceed with this?")) {
+					var Input = l('devConsoleExecutorInput').value;
+					console.log(Input);
+					try{
+						var func = Function(Input)
+						console.log(func)
+						func();
+					} catch (error) {
+						console.error(error);
+					}
+				}
+			}
 		}
 		
 		Game.EditAscend=function()

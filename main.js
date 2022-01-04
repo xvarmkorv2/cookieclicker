@@ -13760,7 +13760,7 @@ Game.Launch=function()
 			}
 			str+='<div class="line"></div>';
 			str+='<div class="title" style="font-size:13px;margin:6px;">Code Executor</div>';
-			str+='<input type="text" id="devConsoleExecutorInput">'
+			str+='<textarea id="devConsoleExecutorInput" rows="5" cols="33">'
 			str+='<a class="option neato" '+Game.clickStr+'="Game.SesameCodeExecutorHandler()">Executor</a>';
 			str+='</div>';
 			

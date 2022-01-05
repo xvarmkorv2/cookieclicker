@@ -1252,11 +1252,12 @@ Game.Launch=function()
 		Game.getFps=function()
 		{
 			Game.frameNumber++;
-			var currentTime=(Date.now()-Game.fpsStartTime )/1000;
+			var date = Date.now()
+			var currentTime=(date-Game.fpsStartTime )/1000;
 			var result=Math.floor((Game.frameNumber/currentTime));
 			if (currentTime>1)
 			{
-				Game.fpsStartTime=Date.now();
+				Game.fpsStartTime=date
 				Game.frameNumber=0;
 			}
 			return result;
@@ -3750,11 +3751,23 @@ Game.Launch=function()
 			var phase=(age/Game.lumpOverripeAge)*7;
 			if (phase>=3)
 			{
-				if (Game.lumpCurrentType!=0) str+='<div class="line"></div>';
-				if (Game.lumpCurrentType==1) str+='This sugar lump grew to be <b>bifurcated</b>; harvesting it has a 50% chance of yielding two lumps.';
-				else if (Game.lumpCurrentType==2) str+='This sugar lump grew to be <b>golden</b>; harvesting it will yield 2 to 7 lumps, your current cookies will be doubled (capped to a gain of 24 hours of your CpS), and you will find 10% more golden cookies for the next 24 hours.';
-				else if (Game.lumpCurrentType==3) str+='This sugar lump was affected by the elders and grew to be <b>meaty</b>; harvesting it will yield between 0 and 2 lumps.';
-				else if (Game.lumpCurrentType==4) str+='This sugar lump is <b>caramelized</b>, its stickiness binding it to unexpected things; harvesting it will yield between 1 and 3 lumps and will refill your sugar lump cooldowns.';
+				switch(Game.lumpCurrentType){
+					case 1:
+						str+='This sugar lump grew to be <b>bifurcated</b>; harvesting it has a 50% chance of yielding two lumps.';
+						break;
+					case 2:
+						str+='This sugar lump grew to be <b>golden</b>; harvesting it will yield 2 to 7 lumps, your current cookies will be doubled (capped to a gain of 24 hours of your CpS), and you will find 10% more golden cookies for the next 24 hours.';
+						break;
+					case 3:
+						str+='This sugar lump was affected by the elders and grew to be <b>meaty</b>; harvesting it will yield between 0 and 2 lumps.';
+						break;
+					case 4:
+						str+='This sugar lump is <b>caramelized</b>, its stickiness binding it to unexpected things; harvesting it will yield between 1 and 3 lumps and will refill your sugar lump cooldowns.';
+						break;
+					default:
+						str+='<div class="line"></div>';
+
+				}
 			}
 			
 			str+='<div class="line"></div>';

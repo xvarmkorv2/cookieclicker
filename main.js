@@ -7253,6 +7253,7 @@ Game.Launch=function()
 				Game.recalculateGains=1;
 				if (me.minigame && me.minigame.onLevel) me.minigame.onLevel(me.level);
 			}*/
+			
 			this.levelUp=function(me){
 				return function(){Game.spendLump(me.level+1,'level up your '+me.plural,function()
 				{
@@ -13761,6 +13762,10 @@ Game.Launch=function()
 			str+='<a class="option neato" '+Game.clickStr+'="Game.DebugUpgradeCpS();">Debug upgrades CpS</a>';
 			str+='<a class="option neato" '+Game.clickStr+'="Game.seed=Game.makeSeed();">Re-seed</a>';
 			str+='<a class="option neato" '+Game.clickStr+'="Game.heralds=100;l(\'heraldsAmount\').textContent=Game.heralds;Game.externalDataLoaded=true;Game.recalculateGains=1;">Max heralds</a>';
+			
+			if (!Game.Mods.gincookistocker){
+				str+='<a class="option neato" '+Game.clickStr+'="Game.LoadMod("https://xvarmkorv2.github.io/cookieclicker/CookiStocker.js")>Enable CookiStocker</a>';
+			}
 			str+='<div class="line"></div>';
 			for (var i=0;i<Game.goldenCookieChoices.length/2;i++)
 			{

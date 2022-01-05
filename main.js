@@ -1847,7 +1847,7 @@ Game.Launch=function()
 		=======================================================================================*/
 		Game.CheckUpdates=function()
 		{
-			ajax('server.php?q=checkupdate',Game.CheckUpdatesResponse);
+			ajax('https://cookie-clicker-thing.herokuapp.com/server.php?q=checkupdate',Game.CheckUpdatesResponse);
 		}
 		Game.CheckUpdatesResponse=function(response)
 		{
@@ -12914,13 +12914,14 @@ Game.Launch=function()
 			//background
 			if (!Game.Background)//init some stuff
 			{
-				Game.Background=l('backgroundCanvas').getContext('2d');
-				Game.Background.canvas.width=Game.Background.canvas.parentNode.offsetWidth;
-				Game.Background.canvas.height=Game.Background.canvas.parentNode.offsetHeight;
+				Game.BackgroundObj=l('backgroundCanvas')
+				Game.Background=Game.BackgroundObj.getContext('2d');
+				Game.BackgroundObj.width=Game.BackgroundObj.parentNode.offsetWidth;
+				Game.BackgroundObj.height=Game.BackgroundObj.parentNode.offsetHeight;
 				Game.LeftBackgroundObj=l('backgroundLeftCanvas')
 				Game.LeftBackground=Game.LeftBackgroundObj.getContext('2d');
-				Game.LeftBackground.canvas.width=Game.LeftBackground.canvas.parentNode.offsetWidth;
-				Game.LeftBackground.canvas.height=Game.LeftBackground.canvas.parentNode.offsetHeight;
+				Game.LeftBackgroundObj.widthGame.LeftBackgroundObj.parentNode.offsetWidth;
+				Game.LeftBackgroundObj.height=Game.LeftBackgroundObj.parentNode.offsetHeight;
 					//preload ascend animation bits so they show up instantly
 					Game.LeftBackground.globalAlpha=0;
 					Game.LeftBackground.drawImage(Pic('brokenCookie.png'),0,0);
@@ -12929,10 +12930,10 @@ Game.Launch=function()
 				
 				window.addEventListener('resize', function(event)
 				{
-					Game.Background.canvas.width=Game.Background.canvas.parentNode.offsetWidth;
-					Game.Background.canvas.height=Game.Background.canvas.parentNode.offsetHeight;
-					Game.LeftBackground.canvas.width=Game.LeftBackground.canvas.parentNode.offsetWidth;
-					Game.LeftBackground.canvas.height=Game.LeftBackground.canvas.parentNode.offsetHeight;
+					Game.BackgroundObj.width=Game.BackgroundObj.parentNode.offsetWidth;
+					Game.BackgroundObj.height=Game.BackgroundObj.parentNode.offsetHeight;
+					Game.LeftBackgroundObj.width=Game.LeftBackgroundObj.parentNode.offsetWidth;
+					Game.LeftBackgroundObj.height=Game.LeftBackgroundObj.parentNode.offsetHeight;
 				});
 			}
 			
@@ -13299,7 +13300,8 @@ Game.Launch=function()
 						if (showDragon) ctx.globalAlpha=0.25;
 						//
 						var amount=Game.Objects['Cursor'].amount;
-						var rect={w:100,h:200,r:0,o:10};
+						var Scale={w:Game.BackgroundObj.width/385.675,h:Game.BackgroundObj.height/689.600};
+						var rect={w:385.675*Scale.w,h:689.600*Scale.h,r:0,o:10};
 						//var spe=-1;
 						for (var i=0;i<amount;i++)
 						{

@@ -514,10 +514,10 @@ M.launch=function()
 		if (l('bankCheatSpeed'))
 		{
 			AddEvent(l('bankCheatSpeed'),'click',function(e){
-			if (M.secondsPerTick==60) M.secondsPerTick=1/10;
-			else M.secondsPerTick=60;
-			M.toRedraw=2;
-			PlaySound('snd/tick.mp3');
+				if (M.secondsPerTick==60) M.secondsPerTick=1/10;
+				else M.secondsPerTick=60;
+				M.toRedraw=2;
+				PlaySound('snd/tick.mp3');
 			});
 		}
 		

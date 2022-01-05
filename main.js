@@ -12918,7 +12918,7 @@ Game.Launch=function()
 				Game.BackgroundObj.height=Game.BackgroundObj.parentNode.offsetHeight;
 				Game.LeftBackgroundObj=l('backgroundLeftCanvas')
 				Game.LeftBackground=Game.LeftBackgroundObj.getContext('2d');
-				Game.LeftBackgroundObj.widthGame.LeftBackgroundObj.parentNode.offsetWidth;
+				Game.LeftBackgroundObj.width=Game.LeftBackgroundObj.parentNode.offsetWidth;
 				Game.LeftBackgroundObj.height=Game.LeftBackgroundObj.parentNode.offsetHeight;
 					//preload ascend animation bits so they show up instantly
 					Game.LeftBackground.globalAlpha=0;

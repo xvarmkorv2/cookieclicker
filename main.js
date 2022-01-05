@@ -13809,12 +13809,7 @@ Game.Launch=function()
 			}
 			else if (bypass==1)
 			{
-				Game.Prompt('<h3>Execute Code</h3><div class="block">Whoah now, are you really, <b><i>REALLY</i></b> sure you want to go through with this?<br><small>Don\'t say we didn\'t warn you!</small></div>',[['Do it!','Game.ClosePrompt();Game.SesameCodeExecutorHandler(2);'],'No']);
-			}
-			else if (bypass==2)
-			{
-				if (confirm("Are you REALLY sure you want to proceed with this?")) {
-					var Input = l('devConsoleExecutorInput').value;
+				var Input = l('devConsoleExecutorInput').value;
 					console.log(Input);
 					try{
 						var func = Function(Input)
@@ -13823,7 +13818,6 @@ Game.Launch=function()
 					} catch (error) {
 						console.error(error);
 					}
-				}
 			}
 		}
 

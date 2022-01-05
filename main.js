@@ -4040,10 +4040,8 @@ Game.Launch=function()
 		}
 		Game.Dissolve=function(howmuch)
 		{
-			Game.cookies-=howmuch;
-			Game.cookiesEarned-=howmuch;
-			Game.cookies=Math.max(0,Game.cookies);
-			Game.cookiesEarned=Math.max(0,Game.cookiesEarned);
+			Game.cookies=Math.max(0,Game.cookies-howmuch);
+			Game.cookiesEarned=Math.max(0,Game.cookiesEarned-howmuch);
 		}
 		Game.mouseCps=function()
 		{

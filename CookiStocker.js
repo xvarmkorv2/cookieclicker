@@ -71,7 +71,7 @@ var goodIcons = [
     [34, 33]
 ];
 
-function stockerTimeBeautifier(duration) {
+var stockerTimeBeautifier = function stockerTimeBeautifier(duration) {
     var milliseconds = Math.floor((duration % 1000) / 100),
         //seconds = Math.floor((duration / 1000) % 60),
         minutes = Math.floor((duration / (1000 * 60)) % 60),
@@ -99,8 +99,7 @@ function stockerTimeBeautifier(duration) {
     }
 }
 
-
-setTimeout(function waitForGame() {
+var waitForGame = function waitForGame() {
     if (typeof Game === 'object' && Game.ready) {
 
         Game.registerMod("gincookistocker", {
@@ -241,4 +240,5 @@ setTimeout(function waitForGame() {
         });
 
     } else setTimeout(waitForGame, 100)
-})
+}
+setTimeout(waitForGame)

@@ -13,9 +13,7 @@ function disguise_curl($url)
   $curl = curl_init();
 
   // Setup headers - I used the same headers from Firefox version 2.0.0.6
-  // below was split up because php.net said the line was too long. :/
-  $header[0] = "Accept: text/xml,application/xml,application/xhtml+xml,";
-  $header[0] .= "text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5";
+  $header[0] = "Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5";
   $header[] = "Cache-Control: max-age=0";
   $header[] = "Connection: keep-alive";
   $header[] = "Keep-Alive: 300";
@@ -34,7 +32,6 @@ function disguise_curl($url)
   curl_setopt($curl, CURLOPT_HEADERFUNCTION,
   function($curl, $header) use (&$headers)
     {
-      echo $header;
       $len = strlen($header);
       $header = explode(':', $header, 2);
       if (count($header) < 2) // ignore invalid headers

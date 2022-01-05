@@ -13298,8 +13298,7 @@ Game.Launch=function()
 						if (showDragon) ctx.globalAlpha=0.25;
 						//
 						var amount=Game.Objects['Cursor'].amount;
-						var Scale={w:Game.BackgroundObj.width/385.675,h:Game.BackgroundObj.height/689.600};
-						var rect={w:385.675*Scale.w,h:689.600*Scale.h,r:0,o:10};
+						var rect={w:Game.BackgroundObj.width,h:Game.BackgroundObj.height};
 						//var spe=-1;
 						for (var i=0;i<amount;i++)
 						{

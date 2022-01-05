@@ -13763,7 +13763,7 @@ Game.Launch=function()
 			str+='<a class="option neato" '+Game.clickStr+'="Game.seed=Game.makeSeed();">Re-seed</a>';
 			str+='<a class="option neato" '+Game.clickStr+'="Game.heralds=100;l(\'heraldsAmount\').textContent=Game.heralds;Game.externalDataLoaded=true;Game.recalculateGains=1;">Max heralds</a>';
 			
-			if (!Game.Mods.gincookistocker){
+			if (!Game.mods.gincookistocker){
 				str+='<a class="option neato" '+Game.clickStr+'="Game.LoadMod("https://xvarmkorv2.github.io/cookieclicker/CookiStocker.js")>Enable CookiStocker</a>';
 			}
 			str+='<div class="line"></div>';

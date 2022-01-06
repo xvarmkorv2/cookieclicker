@@ -2408,7 +2408,11 @@ Game.Launch=function()
 							if (spl[i])
 							{
 								var mestr=spl[i].toString().split(',');
-								me.amount=parseInt(mestr[0]);me.bought=parseInt(mestr[1]);me.totalCookies=parseFloat(mestr[2]);me.level=parseInt(mestr[3]||0);me.highest=(version>=2.024?parseInt(mestr[6]):me.amount);
+								me.amount=new BigInt(mestr[0]);
+								me.bought=new BigInt(mestr[1]);
+								me.totalCookies=parseFloat(mestr[2]);
+								me.level=new BigInt(mestr[3]||0);
+								me.highest=(version>=2.024?parseInt(mestr[6]):me.amount);
 								if (me.minigame && me.minigameLoaded && me.minigame.reset) {me.minigame.reset(true);me.minigame.load(mestr[4]||'');} else me.minigameSave=(mestr[4]||0);
 								me.muted=parseInt(mestr[5])||0;
 								Game.BuildingsOwned+=me.amount;
@@ -6847,11 +6851,11 @@ Game.Launch=function()
 			this.extraName=commonName[3];
 			this.extraPlural=commonName[4];
 			this.desc=desc;
-			this.basePrice=price;
-			this.price=this.basePrice;
-			this.bulkPrice=this.price;
-			this.cps=cps;
-			this.baseCps=this.cps;
+			this.basePrice=new BigInt(price);
+			this.price=new BigInt(this.basePrice);
+			this.bulkPrice=new BigInt(this.price);
+			this.cps=new BigInt(cps);
+			this.baseCps=new BigInt(this.cps);
 			this.mouseOn=false;
 			this.mousePos=[-100,-100];
 			this.productionAchievs=[];

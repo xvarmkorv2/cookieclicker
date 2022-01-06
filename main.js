@@ -1262,7 +1262,7 @@ Game.Launch=function()
 			return result;
 		}
 		
-		Game.cookiesEarned=new BigInt("0");;//all cookies earned during gameplay
+		Game.cookiesEarned=new BigInt("0");//all cookies earned during gameplay
 		Game.cookies=new BigInt("0");//cookies
 		Game.cookiesd=new BigInt("0");;//cookies display
 		Game.cookiesPs=1;//cookies per second (to recalculate with every new purchase)

@@ -167,7 +167,6 @@ for (var i in suffixes)
 }
 formatShort[10]='Dc';
 
-
 var numberFormatters=
 [
 	formatEveryThirdPower(formatShort),
@@ -1263,9 +1262,9 @@ Game.Launch=function()
 			return result;
 		}
 		
-		Game.cookiesEarned=0;//all cookies earned during gameplay
-		Game.cookies=0;//cookies
-		Game.cookiesd=0;//cookies display
+		Game.cookiesEarned=new BigInt("0");;//all cookies earned during gameplay
+		Game.cookies=new BigInt("0");//cookies
+		Game.cookiesd=new BigInt("0");;//cookies display
 		Game.cookiesPs=1;//cookies per second (to recalculate with every new purchase)
 		Game.cookiesPsRaw=0;//raw cookies per second
 		Game.cookiesPsRawHighest=0;//highest raw cookies per second this ascension
@@ -2346,8 +2345,8 @@ Game.Launch=function()
 						Game.prefs.timeout=spl[20]?parseInt(spl[20]):0;
 						BeautifyAll();
 						spl=str[4].split(';');//cookies and lots of other stuff
-						Game.cookies=parseFloat(spl[0]);
-						Game.cookiesEarned=parseFloat(spl[1]);
+						Game.cookies=new BigInt(spl[0]);
+						Game.cookiesEarned=new BigInt(spl[1]);
 						Game.cookieClicks=spl[2]?parseInt(spl[2]):0;
 						Game.goldenClicks=spl[3]?parseInt(spl[3]):0;
 						Game.handmadeCookies=spl[4]?parseFloat(spl[4]):0;

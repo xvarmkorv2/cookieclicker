@@ -6965,7 +6965,7 @@ Game.Launch=function()
 				}
 				price=Game.modifyBuildingPrice(this,price);
 				price*=this.getSellMultiplier();
-				return Math.ceil(price);
+				return Math.min(Math.ceil(price), 1e60);
 			}
 			this.getSellMultiplier=function()
 			{

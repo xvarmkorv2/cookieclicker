@@ -6944,7 +6944,7 @@ Game.Launch=function()
 			{
 				var price=this.basePrice*Math.pow(Game.priceIncrease,Math.max(0,this.amount-this.free));
 				price=Game.modifyBuildingPrice(this,price);
-				return Math.min(Math.ceil(price), 999999999999999999999999999);
+				return Math.min(Math.ceil(price), 1e60);
 			}
 			this.getSumPrice=function(amount)//return how much it would cost to buy [amount] more of this building
 			{
@@ -6954,7 +6954,7 @@ Game.Launch=function()
 					price+=this.basePrice*Math.pow(Game.priceIncrease,Math.max(0,i-this.free));
 				}
 				price=Game.modifyBuildingPrice(this,price);
-				return Math.min(Math.ceil(price), 999999999999999999999999999);
+				return Math.min(Math.ceil(price), 1e60);
 			}
 			this.getReverseSumPrice=function(amount)//return how much you'd get from selling [amount] of this building
 			{

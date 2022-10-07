@@ -1239,17 +1239,6 @@ Game.Launch=function()
 		
 		Game.lastActivity=Date.now();//reset on mouse move, key press or click
 		
-		Game.Focus = true;
-		Game.LastFocusCheck = Date.now();
-		
-		Game.CheckFocus=function(){
-			let Time = Date.now();
-			if (Time-Game.LastFocusCheck > 300) {
-				Game.Focus = document.hasFocus();
-				Game.LastFocusCheck = Time;
-			}
-			return Game.Focus
-		}
 		//latency compensator stuff
 		Game.time=Date.now();
 		Game.accumulatedDelay=0;
@@ -1273,6 +1262,16 @@ Game.Launch=function()
 			return result;
 		}
 		
+		Game.Focus = true;
+		Game.LastFocusCheck = Date.now();
+		
+		Game.CheckFocus=function(){
+			if (Game.Time-Game.LastFocusCheck > 300) {
+				Game.Focus = document.hasFocus();
+				Game.LastFocusCheck = Game.Time;
+			}
+			return Game.Focus
+		}
 		Game.cookiesEarned=0;//all cookies earned during gameplay
 		Game.cookies=0;//cookies
 		Game.cookiesd=0;;//cookies display

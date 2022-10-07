@@ -1244,7 +1244,7 @@ Game.Launch=function()
 		
 		Game.CheckFocus=function(){
 			let Time = Date.now();
-			if (Time-Game.LastFocusCheck > 30) {
+			if (Time-Game.LastFocusCheck > 300) {
 				Game.Focus = document.hasFocus();
 				Game.LastFocusCheck = Time;
 			}

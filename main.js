@@ -1214,7 +1214,7 @@ Game.Launch=function()
 		Game.drawT=0;
 		Game.loopT=0;
 		Game.fps=30;
-		
+
 		Game.season=Game.baseSeason;
 		
 		Game.l=l('game');
@@ -1239,6 +1239,17 @@ Game.Launch=function()
 		
 		Game.lastActivity=Date.now();//reset on mouse move, key press or click
 		
+		Game.Focus = true;
+		Game.LastFocusCheck = Date.now();
+		
+		Game.CheckFocus=function(){
+			let Time = Date.now();
+			if (Time-Game.LastFocusCheck > 30) {
+				Game.Focus = document.hasFocus();
+				Game.LastFocusCheck = Time;
+			}
+			return Game.Focus
+		}
 		//latency compensator stuff
 		Game.time=Date.now();
 		Game.accumulatedDelay=0;
@@ -2200,7 +2211,7 @@ Game.Launch=function()
 							if (Game.prefs.popups) Game.Popup('Error while saving.<br>Export your save instead!');
 							else Game.Notify('Error while saving','Export your save instead!');
 						}
-						else if (document.hasFocus())
+						else if (Game.CheckFocus())
 						{
 							if (Game.prefs.popups) Game.Popup('Game saved');
 							else Game.Notify('Game saved','','',1,1);
@@ -2223,7 +2234,7 @@ Game.Launch=function()
 						if (Game.prefs.popups) Game.Popup('Error while saving.<br>Export your save instead!');
 						else Game.Notify('Error while saving','Export your save instead!','',0,1);
 					}
-					else if (document.hasFocus())
+					else if (Game.CheckFocus())
 					{
 						if (Game.prefs.popups) Game.Popup('Game saved');
 						else Game.Notify('Game saved','','',1,1);
@@ -14492,6 +14503,8 @@ Game.Launch=function()
 	/*=====================================================================================
 	MAIN LOOP
 	=======================================================================================*/
+	
+	
 	Game.Loop=function()
 	{
 		if (Game.timedout) return false;
@@ -14525,17 +14538,16 @@ Game.Launch=function()
 		Game.catchupLogic=0;
 		Timer.track('logic');
 		Timer.say('END LOGIC');
-		var hasFocus=document.hasFocus();
-		if (hasFocus || Game.prefs.focus) {
+		if (Game.prefs.focus || Game.CheckFocus) {
 			if (!Game.prefs.altDraw)
 			{
 				if (Game.loopT%10==0) requestAnimationFrame(Game.Draw);
-				//if (document.hasFocus() || Game.loopT%5==0) Game.Draw();
+				//if (Game.CheckFocus() || Game.loopT%5==0) Game.Draw();
 			}
 			else requestAnimationFrame(Game.Draw);
 		}
 		
-		//if (!hasFocus) Game.tooltip.hide();
+		//if (!Game.CheckFocus) Game.tooltip.hide();
 		
 		Timer.say('END');
 		if (Game.sesame)

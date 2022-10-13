@@ -7777,16 +7777,15 @@ Game.Launch=function()
 		
 		Game.magicCpS=function(what)
 		{
-			/*
+			
 			if (Game.Objects[what].amount>=250)
 			{
-				//this makes buildings give 1% more cookies for every building over 250.
+				//this makes buildings give 1% more cookies for every 250th building over 250.
 				//this turns out to be rather stupidly overpowered.
-				var n=Game.Objects[what].amount-250;
+				var n = Math.floor(Game.Objects[what].amount/250);
 				return 1+Math.pow(1.01,n);
 			}
-			else return 1;
-			*/
+			
 			return 1;
 		}
 		
@@ -7806,7 +7805,7 @@ Game.Launch=function()
 			var mult=1;
 			var num=0;
 			for (var i in Game.Objects) {if (Game.Objects[i].name!='Cursor') num+=Game.Objects[i].amount;}
-			add=add*num;
+			add*=num;
 			mult*=Game.GetTieredCpsMult(me);
 			mult*=Game.magicCpS('Cursor');
 			mult*=Game.eff('cursorCps');
@@ -12919,38 +12918,35 @@ Game.Launch=function()
 		
 		Game.cookieOriginX=0;
 		Game.cookieOriginY=0;
+
+		//background
+		//init some stuff
+		Game.BackgroundObj=l('backgroundCanvas')
+		Game.Background=Game.BackgroundObj.getContext('2d');
+		Game.BackgroundObj.width=Game.BackgroundObj.parentNode.offsetWidth;
+		Game.BackgroundObj.height=Game.BackgroundObj.parentNode.offsetHeight;
+		Game.LeftBackgroundObj=l('backgroundLeftCanvas')
+		Game.LeftBackground=Game.LeftBackgroundObj.getContext('2d');
+		Game.LeftBackgroundObj.width=Game.LeftBackgroundObj.parentNode.offsetWidth;
+		Game.LeftBackgroundObj.height=Game.LeftBackgroundObj.parentNode.offsetHeight;
+		//preload ascend animation bits so they show up instantly
+		Game.LeftBackground.globalAlpha=0;
+		Game.LeftBackground.drawImage(Pic('brokenCookie.png'),0,0);
+		Game.LeftBackground.drawImage(Pic('brokenCookieHalo.png'),0,0);
+		Game.LeftBackground.drawImage(Pic('starbg.jpg'),0,0);
+		AddEvent(window, 'resize', function(event)
+		{
+			Game.BackgroundObj.width=Game.BackgroundObj.parentNode.offsetWidth;
+			Game.BackgroundObj.height=Game.BackgroundObj.parentNode.offsetHeight;
+			Game.LeftBackgroundObj.width=Game.LeftBackgroundObj.parentNode.offsetWidth;
+			Game.LeftBackgroundObj.height=Game.LeftBackgroundObj.parentNode.offsetHeight;
+		});
 		Game.DrawBackground=function()
 		{
 			
 			Timer.clean();
-			//background
-			if (!Game.Background)//init some stuff
-			{
-				Game.BackgroundObj=l('backgroundCanvas')
-				Game.Background=Game.BackgroundObj.getContext('2d');
-				Game.BackgroundObj.width=Game.BackgroundObj.parentNode.offsetWidth;
-				Game.BackgroundObj.height=Game.BackgroundObj.parentNode.offsetHeight;
-				Game.LeftBackgroundObj=l('backgroundLeftCanvas')
-				Game.LeftBackground=Game.LeftBackgroundObj.getContext('2d');
-				Game.LeftBackgroundObj.width=Game.LeftBackgroundObj.parentNode.offsetWidth;
-				Game.LeftBackgroundObj.height=Game.LeftBackgroundObj.parentNode.offsetHeight;
-					//preload ascend animation bits so they show up instantly
-					Game.LeftBackground.globalAlpha=0;
-					Game.LeftBackground.drawImage(Pic('brokenCookie.png'),0,0);
-					Game.LeftBackground.drawImage(Pic('brokenCookieHalo.png'),0,0);
-					Game.LeftBackground.drawImage(Pic('starbg.jpg'),0,0);
-				
-				window.addEventListener('resize', function(event)
-				{
-					Game.BackgroundObj.width=Game.BackgroundObj.parentNode.offsetWidth;
-					Game.BackgroundObj.height=Game.BackgroundObj.parentNode.offsetHeight;
-					Game.LeftBackgroundObj.width=Game.LeftBackgroundObj.parentNode.offsetWidth;
-					Game.LeftBackgroundObj.height=Game.LeftBackgroundObj.parentNode.offsetHeight;
-				});
-			}
 			
 			var ctx=Game.LeftBackground;
-			
 			if (Game.OnAscend)
 			{
 				Timer.clean();

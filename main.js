@@ -1277,8 +1277,8 @@ Game.Launch = function () {
 
 		Game.windowW = window.innerWidth;
 		Game.windowH = window.innerHeight;
-
-		window.addEventListener('resize', function (event) {
+		
+		AddEvent(window, 'resize', function (event) {
 			Game.windowW = window.innerWidth;
 			Game.windowH = window.innerHeight;
 
@@ -12148,8 +12148,8 @@ Game.Launch = function () {
 					//Game.Background.globalCompositeOperation='source-over';
 					Timer.track('star layer 2');
 
-					x = x + Game.AscendOffX * Game.AscendZoom;
-					y = y + Game.AscendOffY * Game.AscendZoom;
+					x += Game.AscendOffX * Game.AscendZoom;
+					y += Game.AscendOffY * Game.AscendZoom;
 					//wispy nebula around the center
 					Game.Background.save();
 					Game.Background.globalAlpha = 0.5;
@@ -12311,21 +12311,22 @@ Game.Launch = function () {
 							ctx.fillPattern(Pic(pic), 0, 0, ctx.canvas.width, ctx.canvas.height + 512, 512, 512, 0, y);
 							ctx.globalAlpha = 1;
 						}
-						//snow
-						if (Game.season == 'christmas') {
-							var y = (Math.floor(Game.T * 2.5) % 512);
-							ctx.globalAlpha = 0.75;
-							ctx.globalCompositeOperation = 'lighter';
-							ctx.fillPattern(Pic('snow2.jpg'), 0, 0, ctx.canvas.width, ctx.canvas.height + 512, 512, 512, 0, y);
-							ctx.globalCompositeOperation = 'source-over';
-							ctx.globalAlpha = 1;
-						}
-						//hearts
-						if (Game.season == 'valentines') {
-							var y = (Math.floor(Game.T * 2.5) % 512);
-							ctx.globalAlpha = 1;
-							ctx.fillPattern(Pic('heartStorm.png'), 0, 0, ctx.canvas.width, ctx.canvas.height + 512, 512, 512, 0, y);
-							ctx.globalAlpha = 1;
+						switch(Game.season) {
+							case 'christmas': {//snow
+								var y = (Math.floor(Game.T * 2.5) % 512);
+								ctx.globalAlpha = 0.75;
+								ctx.globalCompositeOperation = 'lighter';
+								ctx.fillPattern(Pic('snow2.jpg'), 0, 0, ctx.canvas.width, ctx.canvas.height + 512, 512, 512, 0, y);
+								ctx.globalCompositeOperation = 'source-over';
+								ctx.globalAlpha = 1;
+							}
+
+							case 'valentines': {//hearts
+								var y = (Math.floor(Game.T * 2.5) % 512);
+								ctx.globalAlpha = 1;
+								ctx.fillPattern(Pic('heartStorm.png'), 0, 0, ctx.canvas.width, ctx.canvas.height + 512, 512, 512, 0, y);
+								ctx.globalAlpha = 1;
+							}
 						}
 						Timer.track('left background');
 
@@ -13028,9 +13029,17 @@ Game.Launch = function () {
 				Game.BigCookieSize = Math.max(0.1, Game.BigCookieSize);
 			}
 			else {
-				if (Game.BigCookieState == 1) Game.BigCookieSize += (0.98 - Game.BigCookieSize) * 0.5;
-				else if (Game.BigCookieState == 2) Game.BigCookieSize += (1.05 - Game.BigCookieSize) * 0.5;
-				else Game.BigCookieSize += (1 - Game.BigCookieSize) * 0.5;
+				switch (Game.BigCookieState ) {
+					case 1: {
+						Game.BigCookieSize += (0.98 - Game.BigCookieSize) * 0.5;
+					}
+					case 2: {
+						Game.BigCookieSize += (1.05 - Game.BigCookieSize) * 0.5;
+					}
+					default: {
+						Game.BigCookieSize += (1 - Game.BigCookieSize) * 0.5;
+					}
+				}
 			}
 			Game.particlesUpdate();
 

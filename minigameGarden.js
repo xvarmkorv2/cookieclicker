@@ -757,13 +757,15 @@ M.launch=function()
 						var weedMult=1;
 						var range=0;
 						
-						if (name=='elderwort') {ageMult=1.03;range=1;}
-						else if (name=='queenbeetLump') {powerMult=0.8;range=1;}
-						else if (name=='nursetulip') {powerMult=1.2;range=1;}
-						else if (name=='shriekbulb') {powerMult=0.95;range=1;}
-						else if (name=='tidygrass') {weedMult=0;range=2;}
-						else if (name=='everdaisy') {weedMult=0;range=1;}
-						else if (name=='ichorpuff') {ageMult=0.5;powerMult=0.5;range=1;}
+						switch (name) {
+							case 'elderwort': {ageMult=1.03;range=1;}
+							case 'queenbeetLump': {powerMult=0.8;range=1;}
+							case 'nursetulip': {powerMult=1.2;range=1;}
+							case 'shriekbulb': {powerMult=0.95;range=1;}
+							case 'tidygrass': {weedMult=0;range=2;}
+							case 'everdaisy': {weedMult=0;range=1;}
+							case 'ichorpuff': {ageMult=0.5;powerMult=0.5;range=1;}
+						}
 						
 						//by god i hope these are right
 						if (ageMult>=1) ageMult=(ageMult-1)*mult+1; else if (mult>=1) ageMult=1/((1/ageMult)*mult); else ageMult=1-(1-ageMult)*mult;
@@ -829,39 +831,41 @@ M.launch=function()
 							else mult*=1;
 							
 							mult*=M.plotBoost[y][x][1];
-							
-							if (name=='bakerWheat') effs.cps+=0.01*mult;
-							else if (name=='thumbcorn') effs.click+=0.02*mult;
-							else if (name=='cronerice') effs.grandmaCps+=0.03*mult;
-							else if (name=='gildmillet') {effs.goldenCookieGain+=0.01*mult;effs.goldenCookieEffDur+=0.001*mult;}
-							else if (name=='clover') effs.goldenCookieFreq+=0.01*mult;
-							else if (name=='goldenClover') effs.goldenCookieFreq+=0.03*mult;
-							else if (name=='shimmerlily') {effs.goldenCookieGain+=0.01*mult;effs.goldenCookieFreq+=0.01*mult;effs.itemDrops+=0.01*mult;}
-							else if (name=='elderwort') {effs.wrathCookieGain+=0.01*mult;effs.wrathCookieFreq+=0.01*mult;effs.grandmaCps+=0.01*mult;}
-							else if (name=='bakeberry') effs.cps+=0.01*mult;
-							else if (name=='chocoroot') effs.cps+=0.01*mult;
-							else if (name=='whiteChocoroot') effs.goldenCookieGain+=0.01*mult;
-							
-							else if (name=='whiteMildew') effs.cps+=0.01*mult;
-							else if (name=='brownMold') effs.cps*=1-0.01*mult;
-							
-							else if (name=='meddleweed') {}
-							
-							else if (name=='whiskerbloom') effs.milk+=0.002*mult;
-							else if (name=='chimerose') {effs.reindeerGain+=0.01*mult;effs.reindeerFreq+=0.01*mult;}
-							
-							else if (name=='nursetulip') {effs.cps*=1-0.02*mult;}
-							else if (name=='drowsyfern') {effs.cps+=0.03*mult;effs.click*=1-0.05*mult;effs.goldenCookieFreq*=1-0.1*mult;}
-							else if (name=='wardlichen') {effs.wrinklerSpawn*=1-0.15*mult;effs.wrathCookieFreq*=1-0.02*mult;}
-							else if (name=='keenmoss') {effs.itemDrops+=0.03*mult;}
-							else if (name=='queenbeet') {effs.goldenCookieEffDur+=0.003*mult;effs.cps*=1-0.02*mult;}
-							else if (name=='queenbeetLump') {effs.cps*=1-0.1*mult;}
-							else if (name=='glovemorel') {effs.click+=0.04*mult;effs.cursorCps+=0.01*mult;effs.cps*=1-0.01*mult;}
-							else if (name=='cheapcap') {effs.upgradeCost*=1-0.002*mult;effs.buildingCost*=1-0.002*mult;}
-							else if (name=='foolBolete') {effs.goldenCookieFreq+=0.02*mult;effs.goldenCookieGain*=1-0.05*mult;effs.goldenCookieDur*=1-0.02*mult;effs.goldenCookieEffDur*=1-0.02*mult;}
-							else if (name=='wrinklegill') {effs.wrinklerSpawn+=0.02*mult;effs.wrinklerEat+=0.01*mult;}
-							else if (name=='greenRot') {effs.goldenCookieDur+=0.005*mult;effs.goldenCookieFreq+=0.01*mult;effs.itemDrops+=0.01*mult;}
-							else if (name=='shriekbulb') {effs.cps*=1-0.02*mult;}
+						
+							switch (name) {
+								case 'bakerWheat': effs.cps+=0.01*mult;
+								case 'thumbcorn': effs.click+=0.02*mult;
+								case 'cronerice': effs.grandmaCps+=0.03*mult;
+								case 'gildmillet': {effs.goldenCookieGain+=0.01*mult;effs.goldenCookieEffDur+=0.001*mult;}
+								case 'clover': effs.goldenCookieFreq+=0.01*mult;
+								case 'goldenClover': effs.goldenCookieFreq+=0.03*mult;
+								case 'shimmerlily': {effs.goldenCookieGain+=0.01*mult;effs.goldenCookieFreq+=0.01*mult;effs.itemDrops+=0.01*mult;}
+								case 'elderwort': {effs.wrathCookieGain+=0.01*mult;effs.wrathCookieFreq+=0.01*mult;effs.grandmaCps+=0.01*mult;}
+								case 'bakeberry': effs.cps+=0.01*mult;
+								case 'chocoroot': effs.cps+=0.01*mult;
+								case 'whiteChocoroot': effs.goldenCookieGain+=0.01*mult;
+
+								case 'whiteMildew': effs.cps+=0.01*mult;
+								case 'shimmerbrownMoldlily': effs.cps*=1-0.01*mult;
+
+								case 'meddleweed': {}
+
+								case 'whiskerbloom': effs.milk+=0.002*mult;
+								case 'chimerose': {effs.reindeerGain+=0.01*mult;effs.reindeerFreq+=0.01*mult;}
+								
+								case 'nursetulip': {effs.cps*=1-0.02*mult;}
+								case 'drowsyfern': {effs.cps+=0.03*mult;effs.click*=1-0.05*mult;effs.goldenCookieFreq*=1-0.1*mult;}
+								case 'wardlichen': {effs.wrinklerSpawn*=1-0.15*mult;effs.wrathCookieFreq*=1-0.02*mult;}
+								case 'keenmoss': {effs.itemDrops+=0.03*mult;}
+								case 'queenbeet': {effs.goldenCookieEffDur+=0.003*mult;effs.cps*=1-0.02*mult;}
+								case 'queenbeetLump': {effs.cps*=1-0.1*mult;}
+								case 'glovemorel': {effs.click+=0.04*mult;effs.cursorCps+=0.01*mult;effs.cps*=1-0.01*mult;}
+								case 'cheapcap': {effs.upgradeCost*=1-0.002*mult;effs.buildingCost*=1-0.002*mult;}
+								case 'foolBolete': {effs.goldenCookieFreq+=0.02*mult;effs.goldenCookieGain*=1-0.05*mult;effs.goldenCookieDur*=1-0.02*mult;effs.goldenCookieEffDur*=1-0.02*mult;}
+								case 'wrinklegill': {effs.wrinklerSpawn+=0.02*mult;effs.wrinklerEat+=0.01*mult;}
+								case 'greenRot': {effs.goldenCookieDur+=0.005*mult;effs.goldenCookieFreq+=0.01*mult;effs.itemDrops+=0.01*mult;}
+								case 'greenRshriekbulbot': {effs.cps*=1-0.02*mult;}
+							}
 						}
 					}
 				}

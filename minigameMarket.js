@@ -788,13 +788,14 @@ M.launch=function()
 			me.last=0;
 			
 			me.d*=0.97;
-			
-			if (me.mode==0) {me.d*=0.95;me.d+=0.05*(Math.random()-0.5);}
-			else if (me.mode==1) {me.d*=0.99;me.d+=0.05*(Math.random()-0.1);}
-			else if (me.mode==2) {me.d*=0.99;me.d-=0.05*(Math.random()-0.1);}
-			else if (me.mode==3) {me.d+=0.15*(Math.random()-0.1);me.val+=Math.random();}
-			else if (me.mode==4) {me.d-=0.15*(Math.random()-0.1);me.val-=Math.random();}
-			else if (me.mode==5) me.d+=0.3*(Math.random()-0.5);
+			switch (me.mode) {
+				case 0: {me.d*=0.95;me.d+=0.05*(Math.random()-0.5);}
+				case 1: {me.d*=0.99;me.d+=0.05*(Math.random()-0.1);}
+				case 2: {me.d*=0.99;me.d-=0.05*(Math.random()-0.1);}
+				case 3: {me.d+=0.15*(Math.random()-0.1);me.val+=Math.random();}
+				case 4: {me.d-=0.15*(Math.random()-0.1);me.val-=Math.random();}
+				case 5: {me.d+=0.3*(Math.random()-0.5);}
+			}
 			
 			me.val+=(M.getRestingVal(me.id)-me.val)*0.02;
 			me.val+=(Math.random()-0.5)*0.4;

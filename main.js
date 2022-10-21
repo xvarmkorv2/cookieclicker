@@ -2566,11 +2566,13 @@ Game.Launch = function () {
 					if (version < Game.version) l('logButton').classList.add('hasUpdate');
 
 					if (Game.season != '' && Game.season == Game.baseSeason) {
-						if (Game.season == 'valentines') Game.Notify('Valentine\'s Day!', 'It\'s <b>Valentine\'s season</b>!<br>Love\'s in the air and cookies are just that much sweeter!', [20, 3], 60 * 3);
-						else if (Game.season == 'fools') Game.Notify('Business Day!', 'It\'s <b>Business season</b>!<br>Don\'t panic! Things are gonna be looking a little more corporate for a few days.', [17, 6], 60 * 3);
-						else if (Game.season == 'halloween') Game.Notify('Halloween!', 'It\'s <b>Halloween season</b>!<br>Everything is just a little bit spookier!', [13, 8], 60 * 3);
-						else if (Game.season == 'christmas') Game.Notify('Christmas time!', 'It\'s <b>Christmas season</b>!<br>Bring good cheer to all and you just may get cookies in your stockings!', [12, 10], 60 * 3);
-						else if (Game.season == 'easter') Game.Notify('Easter!', 'It\'s <b>Easter season</b>!<br>Keep an eye out and you just might click a rabbit or two!', [0, 12], 60 * 3);
+						switch(Game.season) {
+							case 'valentines': Game.Notify('Valentine\'s Day!', 'It\'s <b>Valentine\'s season</b>!<br>Love\'s in the air and cookies are just that much sweeter!', [20, 3], 60 * 3);
+							case "fools": Game.Notify('Valentine\'s Day!', 'It\'s <b>Valentine\'s season</b>!<br>Love\'s in the air and cookies are just that much sweeter!', [20, 3], 60 * 3);
+							case 'halloween': Game.Notify('Halloween!', 'It\'s <b>Halloween season</b>!<br>Everything is just a little bit spookier!', [13, 8], 60 * 3);
+							case 'christmas': Game.Notify('Christmas time!', 'It\'s <b>Christmas season</b>!<br>Bring good cheer to all and you just may get cookies in your stockings!', [12, 10], 60 * 3);
+							case 'easter':Game.Notify('Easter!', 'It\'s <b>Easter season</b>!<br>Keep an eye out and you just might click a rabbit or two!', [0, 12], 60 * 3);
+						}
 					}
 
 					Game.heralds = actualHeralds;

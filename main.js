@@ -2902,12 +2902,14 @@ Game.Launch = function () {
 			if (context == 'stats' && (Game.Has('Neuromancy') || (Game.sesame && me.pool == 'debug'))) neuromancy = 1;
 
 			if (me.type == 'upgrade') {
-				if (me.pool == 'prestige') tags.push('Heavenly', '#efa438');
-				else if (me.pool == 'tech') tags.push('Tech', '#36a4ff');
-				else if (me.pool == 'cookie') tags.push('Cookie', 0);
-				else if (me.pool == 'debug') tags.push('Debug', '#00c462');
-				else if (me.pool == 'toggle') tags.push('Switch', 0);
-				else tags.push('Upgrade', 0);
+				switch(me.pool){
+					case 'prestige': tags.push('Heavenly', '#efa438');
+					case 'tech': tags.push('Tech', '#36a4ff');
+					case 'cookie': tags.push('Cookie', 0);
+					case 'debug': tags.push('Debug', '#00c462');
+					case 'toggle': tags.push('Switch', 0);
+					default: tags.push('Upgrade', 0);
+				}
 
 				if (me.tier != 0 && Game.Has('Label printer')) tags.push('Tier : ' + Game.Tiers[me.tier].name, Game.Tiers[me.tier].color);
 				if (me.name == 'Label printer' && Game.Has('Label printer')) tags.push('Tier : Self-referential', '#ff00ea');

@@ -40,9 +40,11 @@ M.launch = function () {
 				activeDescFunc: function () {
 					var godLvl = Game.hasGod('ages');
 					var mult = 1;
-					if (godLvl == 1) mult *= 0.15 * Math.sin((Date.now() / 1000 / (60 * 60 * 3)) * Math.PI * 2);
-					else if (godLvl == 2) mult *= 0.15 * Math.sin((Date.now() / 1000 / (60 * 60 * 12)) * Math.PI * 2);
-					else if (godLvl == 3) mult *= 0.15 * Math.sin((Date.now() / 1000 / (60 * 60 * 24)) * Math.PI * 2);
+					switch(godLvl){
+						case 1: mult *= 0.15 * Math.sin((Date.now() / 1000 / (60 * 60 * 3)) * Math.PI * 2);
+						case 2: mult *= 0.15 * Math.sin((Date.now() / 1000 / (60 * 60 * 12)) * Math.PI * 2);
+						case 3: ult *= 0.15 * Math.sin((Date.now() / 1000 / (60 * 60 * 24)) * Math.PI * 2);
+					}
 					return 'Current bonus : ' + (mult < 0 ? '-' : '+') + Beautify(Math.abs(mult) * 100, 2) + '%.';
 				},
 				descBefore: 'CpS bonus fluctuating between <span class="green">+15%</span> and <span class="red">-15%</span> over time.',

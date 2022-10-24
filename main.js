@@ -13605,7 +13605,7 @@ Game.Launch = function () {
 		Timer.say('END LOGIC');
 		if (Game.prefs.focus || Game.CheckFocus()) {
 			if (!Game.prefs.altDraw) {
-				if (Game.loopT % 10 == 0) Game.Draw();
+				if (Game.loopT % 10 == 0) requestAnimationFrame(Game.Draw);
 				//if (Game.CheckFocus() || Game.loopT%5==0) Game.Draw();
 			}
 			else requestAnimationFrame(Game.Draw);

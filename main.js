@@ -13603,15 +13603,13 @@ Game.Launch = function () {
 		Game.catchupLogic = 0;
 		Timer.track('logic');
 		Timer.say('END LOGIC');
-		if (Game.prefs.focus || Game.CheckFocus()) {
-			if (!Game.prefs.altDraw) {
-				if (Game.loopT % 10 == 0) requestAnimationFrame(Game.Draw);
-				//if (Game.CheckFocus() || Game.loopT%5==0) Game.Draw();
-			}
-			else requestAnimationFrame(Game.Draw);
+		if (!Game.prefs.altDraw) {t
+			if (Game.prefs.focus || Game.CheckFocus() || Game.loopT % 10 == 0) requestAnimationFrame(Game.Draw);
+			//if (document.hasFocus() || Game.loopT%5==0) Game.Draw();
 		}
+		else requestAnimationFrame(Game.Draw);
 
-		//if (!Game.CheckFocus) Game.tooltip.hide();
+		//if (!Game.CheckFocus()) Game.tooltip.hide();
 
 		Timer.say('END');
 		if (Game.sesame) {

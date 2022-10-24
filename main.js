@@ -1320,7 +1320,7 @@ Game.Launch = function () {
 			Game.prefs.filters = 0;//CSS filter effects (might be heavy on some browsers)
 			Game.prefs.cookiesound = 1;//use new cookie click sound
 			Game.prefs.crates = 0;//show crates around icons in stats
-			Game.prefs.altDraw = 1;//use requestAnimationFrame to update drawing instead of fixed 30 fps setTimeout
+			Game.prefs.altDraw = 0;//use requestAnimationFrame to update drawing instead of fixed 30 fps setTimeout
 			Game.prefs.showBackupWarning = 1;//if true, show a "Have you backed up your save?" message on save load; set to false when save is exported
 			Game.prefs.extraButtons = 1;//if true, show Mute buttons and the building master bar
 			Game.prefs.askLumps = 0;//if true, show a prompt before spending lumps
@@ -13605,7 +13605,7 @@ Game.Launch = function () {
 		Timer.say('END LOGIC');
 		if (Game.prefs.focus || Game.CheckFocus()) {
 			if (!Game.prefs.altDraw) {
-				if (Game.loopT % 10 == 0) requestAnimationFrame(Game.Draw);
+				if (Game.loopT % 10 == 0) Game.Draw();
 				//if (Game.CheckFocus() || Game.loopT%5==0) Game.Draw();
 			}
 			else requestAnimationFrame(Game.Draw);

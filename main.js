@@ -13603,7 +13603,7 @@ Game.Launch = function () {
 		Game.catchupLogic = 0;
 		Timer.track('logic');
 		Timer.say('END LOGIC');
-		if (!Game.prefs.altDraw) {t
+		if (!Game.prefs.altDraw) {
 			if (Game.prefs.focus || Game.CheckFocus() || Game.loopT % 10 == 0) requestAnimationFrame(Game.Draw);
 			//if (document.hasFocus() || Game.loopT%5==0) Game.Draw();
 		}

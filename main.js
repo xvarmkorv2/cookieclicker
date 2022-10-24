@@ -1207,7 +1207,7 @@ Game.Launch = function () {
 		if (!document.hasFocus) document.hasFocus = function () { return document.hidden; };//for Opera
 
 		Game.CheckFocus = function () {
-			if (Game.Time - Game.LastFocusCheck > 300) {
+			if (Game.Time - Game.LastFocusCheck > 3000) {
 				Game.Focus = document.hasFocus();
 				Game.LastFocusCheck = Game.Time;
 			}

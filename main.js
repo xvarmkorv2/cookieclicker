@@ -3946,14 +3946,13 @@ Game.Launch = function () {
 		AddEvent(window, 'keydown', function (e) {
 			if (!Game.OnAscend && Game.AscendTimer == 0) {
 				if (e.ctrlKey) {
-					if (e.keyCode == 83) { 
+					if (e.keyCode == 83) { //ctrl-s saves the game
 						Game.toSave = true; 
 						e.preventDefault(); 
-					}//ctrl-s saves the game
-					else if (e.keyCode == 79) { 
+					} else if (e.keyCode == 79) { //ctrl-o opens the import menu
 						Game.ImportSave(); 
 						e.preventDefault(); 
-					}//ctrl-o opens the import menu
+					}
 				}
 			}
 			if ((e.keyCode == 16 || e.keyCode == 17) && Game.tooltip.dynamic) Game.tooltip.update();

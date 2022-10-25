@@ -3946,12 +3946,15 @@ Game.Launch = function () {
 		AddEvent(window, 'keydown', function (e) {
 			if (!Game.OnAscend && Game.AscendTimer == 0) {
 				if (e.ctrlKey) {
-					if (e.keyCode == 83) { //ctrl-s saves the game
-						Game.toSave = true; 
-						e.preventDefault(); 
-					} else if (e.keyCode == 79) { //ctrl-o opens the import menu
-						Game.ImportSave(); 
-						e.preventDefault(); 
+					switch (e.keyCode) {
+						case 83: { //ctrl-s saves the game
+							Game.toSave = true;
+							e.preventDefault();
+						}
+						case 79: { //ctrl-o opens the import menu
+							Game.ImportSave();
+							e.preventDefault();
+						}
 					}
 				}
 			}

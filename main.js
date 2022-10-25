@@ -3705,25 +3705,23 @@ Game.Launch = function () {
 			var row = 14;
 			var row2 = 14;
 			var type = Game.lumpCurrentType;
-			if (type == 1)//double
-			{
-				//if (phase>=6) row=15;
-				if (phase2 >= 6) row2 = 15;
-			}
-			else if (type == 2)//golden
-			{
-				if (phase >= 4) row = 16;
-				if (phase2 >= 4) row2 = 16;
-			}
-			else if (type == 3)//meaty
-			{
-				if (phase >= 4) row = 17;
-				if (phase2 >= 4) row2 = 17;
-			}
-			else if (type == 4)//caramelized
-			{
-				if (phase >= 4) row = 27;
-				if (phase2 >= 4) row2 = 27;
+			switch(type) {
+				case 1: {//double
+					//if (phase>=6) row=15;
+					if (phase2 >= 6) row2 = 15;
+				}
+				case 2: {//golden
+					if (phase >= 4) row = 16;
+					if (phase2 >= 4) row2 = 16;
+				}
+				case 3: {//meaty
+					if (phase >= 4) row = 17;
+					if (phase2 >= 4) row2 = 17;
+				}
+				case 4: {//caramelized
+					if (phase >= 4) row = 27;
+					if (phase2 >= 4) row2 = 27;
+				}
 			}
 			var icon = [23 + Math.min(phase, 5), row];
 			var icon2 = [23 + phase2, row2];

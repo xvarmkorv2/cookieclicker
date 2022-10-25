@@ -3950,10 +3950,12 @@ Game.Launch = function () {
 						case 83: { //ctrl-s saves the game
 							Game.toSave = true;
 							e.preventDefault();
+							break;
 						}
 						case 79: { //ctrl-o opens the import menu
 							Game.ImportSave();
 							e.preventDefault();
+							break;
 						}
 					}
 				}

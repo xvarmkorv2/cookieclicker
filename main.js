@@ -6456,7 +6456,7 @@ Game.Launch = function () {
 				}
 				price = Game.modifyBuildingPrice(this, price);
 				price *= this.getSellMultiplier();
-				return Math.min(Math.ceil(price), 1e60);
+				return Math.min(Math.ceil(price), 2e60);
 			}
 			this.getSellMultiplier = function () {
 				var giveBack = 0.25;

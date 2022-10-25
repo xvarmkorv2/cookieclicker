@@ -3945,8 +3945,16 @@ Game.Launch = function () {
 		});
 		AddEvent(window, 'keydown', function (e) {
 			if (!Game.OnAscend && Game.AscendTimer == 0) {
-				if (e.ctrlKey && e.keyCode == 83) { Game.toSave = true; e.preventDefault(); }//ctrl-s saves the game
-				else if (e.ctrlKey && e.keyCode == 79) { Game.ImportSave(); e.preventDefault(); }//ctrl-o opens the import menu
+				if (e.ctrlKey) {
+					if (e.keyCode == 83) { 
+						Game.toSave = true; 
+						e.preventDefault(); 
+					}//ctrl-s saves the game
+					else if (e.keyCode == 79) { 
+						Game.ImportSave(); 
+						e.preventDefault(); 
+					}//ctrl-o opens the import menu
+				}
 			}
 			if ((e.keyCode == 16 || e.keyCode == 17) && Game.tooltip.dynamic) Game.tooltip.update();
 			Game.keys[e.keyCode] = 1;

@@ -422,7 +422,7 @@ var Loader = function ()//asset-loading system
 }
 
 var Pic = function (what) {
-	switch(Game.Loader.assetsLoaded.indexOf(what) ) {
+	switch (Game.Loader.assetsLoaded.indexOf(what)) {
 		case -1: Game.Loader.Load([what]); return Game.Loader.blank;
 		default: return Game.Loader.assets[what];
 	}
@@ -443,7 +443,7 @@ var SoundI = 0;
 for (var i = 0; i < 12; i++) { SoundInsts[i] = new Audio(); }
 var pitchSupport = false;
 //note : Chrome turns out to not support webkitPreservesPitch despite the specifications claiming otherwise, and Firefox clips some short sounds when changing playbackRate, so i'm turning the feature off completely until browsers get it together
-if (SoundInsts[0].preservesPitch || SoundInsts[0].mozPreservesPitch || SoundInsts[0].webkitPreservesPitch) pitchSupport=true;
+if (SoundInsts[0].preservesPitch || SoundInsts[0].mozPreservesPitch || SoundInsts[0].webkitPreservesPitch) pitchSupport = true;
 
 var PlaySound = function (url, vol, pitchVar) {
 	//url : the url of the sound to play (will be cached so it only loads once)
@@ -554,18 +554,18 @@ Game.Launch = function () {
 	else if (day >= 349 + leap && day <= 365 + leap) Game.baseSeason = 'christmas';
 	else {
 		//easter is a pain goddamn
-		var easterDay = function (Y) { 
-			var C = Math.floor(Y / 100); 
-			var N = Y - 19 * Math.floor(Y / 19); 
-			var K = Math.floor((C - 17) / 25); 
-			var I = C - Math.floor(C / 4) - Math.floor((C - K) / 3) + 19 * N + 15; 
-			I = I - 30 * Math.floor((I / 30)); 
-			I = I - Math.floor(I / 28) * (1 - Math.floor(I / 28) * Math.floor(29 / (I + 1)) * Math.floor((21 - N) / 11)); 
-			var J = Y + Math.floor(Y / 4) + I + 2 - C + Math.floor(C / 4); J = J - 7 * Math.floor(J / 7); 
-			var L = I - J; 
-			var M = 3 + Math.floor((L + 40) / 44); 
-			var D = L + 28 - 31 * Math.floor(M / 4); 
-			return new Date(Y, M - 1, D); 
+		var easterDay = function (Y) {
+			var C = Math.floor(Y / 100);
+			var N = Y - 19 * Math.floor(Y / 19);
+			var K = Math.floor((C - 17) / 25);
+			var I = C - Math.floor(C / 4) - Math.floor((C - K) / 3) + 19 * N + 15;
+			I = I - 30 * Math.floor((I / 30));
+			I = I - Math.floor(I / 28) * (1 - Math.floor(I / 28) * Math.floor(29 / (I + 1)) * Math.floor((21 - N) / 11));
+			var J = Y + Math.floor(Y / 4) + I + 2 - C + Math.floor(C / 4); J = J - 7 * Math.floor(J / 7);
+			var L = I - J;
+			var M = 3 + Math.floor((L + 40) / 44);
+			var D = L + 28 - 31 * Math.floor(M / 4);
+			return new Date(Y, M - 1, D);
 		}(year);
 		easterDay = Math.floor((easterDay - new Date(easterDay.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
 		if (day >= easterDay - 7 && day <= easterDay) Game.baseSeason = 'easter';
@@ -1115,7 +1115,28 @@ Game.Launch = function () {
 		Game.Loader = new Loader();
 		Game.Loader.domain = 'img/';
 		Game.Loader.loaded = Game.Init;
-		Game.Loader.Load(['filler.png']);
+		Game.Loader.Load(
+			[
+				'filler.png',
+				'cookieShower1.png',
+				'cookieShower2.png',
+				'cookieShower3.png',
+				'shine.png',
+				'shineGold.png',
+				'shineRed.png',
+				'perfectCookie.png',
+				'panelBG.png',
+				'panelGradientBottom.png',
+				'panelGradientLeft.png',
+				'panelGradientRight.png',
+				'panelGradientTop.png',
+				'panelHorizontal.png',
+				'panelMenu.png',
+				'panelMenu2.png',
+				'panelMenu3.png',
+				'panelVertical.png'
+			]
+		);
 	}
 	Game.ErrorFrame = function () {
 		l('javascriptError').innerHTML =
@@ -2567,12 +2588,12 @@ Game.Launch = function () {
 					if (version < Game.version) l('logButton').classList.add('hasUpdate');
 
 					if (Game.season != '' && Game.season == Game.baseSeason) {
-						switch(Game.season) {
+						switch (Game.season) {
 							case 'valentines': Game.Notify('Valentine\'s Day!', 'It\'s <b>Valentine\'s season</b>!<br>Love\'s in the air and cookies are just that much sweeter!', [20, 3], 60 * 3);
 							case "fools": Game.Notify('Valentine\'s Day!', 'It\'s <b>Valentine\'s season</b>!<br>Love\'s in the air and cookies are just that much sweeter!', [20, 3], 60 * 3);
 							case 'halloween': Game.Notify('Halloween!', 'It\'s <b>Halloween season</b>!<br>Everything is just a little bit spookier!', [13, 8], 60 * 3);
 							case 'christmas': Game.Notify('Christmas time!', 'It\'s <b>Christmas season</b>!<br>Bring good cheer to all and you just may get cookies in your stockings!', [12, 10], 60 * 3);
-							case 'easter':Game.Notify('Easter!', 'It\'s <b>Easter season</b>!<br>Keep an eye out and you just might click a rabbit or two!', [0, 12], 60 * 3);
+							case 'easter': Game.Notify('Easter!', 'It\'s <b>Easter season</b>!<br>Keep an eye out and you just might click a rabbit or two!', [0, 12], 60 * 3);
 						}
 					}
 
@@ -2903,7 +2924,7 @@ Game.Launch = function () {
 			if (context == 'stats' && (Game.Has('Neuromancy') || (Game.sesame && me.pool == 'debug'))) neuromancy = 1;
 
 			if (me.type == 'upgrade') {
-				switch(me.pool){
+				switch (me.pool) {
 					case 'prestige': tags.push('Heavenly', '#efa438');
 					case 'tech': tags.push('Tech', '#36a4ff');
 					case 'cookie': tags.push('Cookie', 0);
@@ -3706,7 +3727,7 @@ Game.Launch = function () {
 			var row = 14;
 			var row2 = 14;
 			var type = Game.lumpCurrentType;
-			switch(type) {
+			switch (type) {
 				case 1: {//double
 					//if (phase>=6) row=15;
 					if (phase2 >= 6) row2 = 15;

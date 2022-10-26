@@ -422,9 +422,10 @@ var Loader = function ()//asset-loading system
 }
 
 var Pic = function (what) {
-	if (Game.Loader.assetsLoaded.indexOf(what) != -1) return Game.Loader.assets[what];
-	else if (Game.Loader.assetsLoading.indexOf(what) == -1) Game.Loader.Load([what]);
-	return Game.Loader.blank;
+	switch(Game.Loader.assetsLoaded.indexOf(what) ) {
+		case -1: Game.Loader.Load([what]); return Game.Loader.blank;
+		default: return Game.Loader.assets[what];
+	}
 }
 
 var Sounds = [];

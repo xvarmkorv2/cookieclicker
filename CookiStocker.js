@@ -1,11 +1,11 @@
 // ===========================================================================================
 /*			
-		Hello there.
-	This is the console version of the CookiStocker mod.
-	To use it, sinply copy-paste the entire thing in your Cookie Clicker console.
-	If you have any questions about the algorithm at hand or are having troubles running it
-	- you can just ask Gingerguy#2580 for help on discord on steam guide comments.
-		https://steamcommunity.com/sharedfiles/filedetails/?id=2599187047
+        Hello there.
+    This is the console version of the CookiStocker mod.
+    To use it, sinply copy-paste the entire thing in your Cookie Clicker console.
+    If you have any questions about the algorithm at hand or are having troubles running it
+    - you can just ask Gingerguy#2580 for help on discord on steam guide comments.
+        https://steamcommunity.com/sharedfiles/filedetails/?id=2599187047
 */
 
 //		Version 1.5
@@ -103,11 +103,11 @@ var waitForGame = function waitForGame() {
     if (typeof Game === 'object' && Game.ready) {
 
         Game.registerMod("gincookistocker", {
-            init: function() {
+            init: function () {
 
                 this.startStocking();
             },
-            startStocking: function() {
+            startStocking: function () {
                 if (!Game.ObjectsById[5].minigame) {
                     console.log('=====$$$== Stock Market minigame has not initialised yet! Will try again in 500 ms.');
                     setTimeout(() => {
@@ -141,7 +141,7 @@ var waitForGame = function waitForGame() {
                 }
 
                 if (stockerActivityReport) {
-                    var stockerReportInterval = setInterval(function() {
+                    var stockerReportInterval = setInterval(function () {
                         var stockerUptime = new Date() - stockList.sessionStart;
                         if ((stockList.sessionPurchases + stockList.sessionSales) == 0) {
                             Game.Notify(
@@ -160,8 +160,7 @@ var waitForGame = function waitForGame() {
                     }, stockerActivityReportFrequency);
                 }
 
-                var stockerLoop = setInterval(function() {
-
+                var stockerLoop = setInterval(function () {
                     if (stockerForceLoopUpdates) Game.ObjectsById[5].minigame.tick();
                     // setting stockerForceLoopUpdates to true will make the logic loop force the market to tick every time it triggers,
                     // making this an obvious cheat, and i will personally resent you.
@@ -227,7 +226,7 @@ var waitForGame = function waitForGame() {
                                 Game.ObjectsById[5].minigame.sellGood(i, 10000);
                                 stockList.sessionSales++;
                                 if (stockerTransactionNotifications) Game.Notify('Selling ' + stockList.goods[i].name, 'At a profit of ' + Math.floor(stockList.goods[i].currentPrice - stockList.goods[i].priceBought) + '$ per unit (total ' + Math.floor(stockList.goods[i].currentPrice - stockList.goods[i].priceBought) * stockList.goods[i].stock + '$ profit), and is ' + modeDecoder[stockList.goods[i].mode] + ' now.', goodIcons[i], stockerFastNotifications);
-                                if (stockerConsoleAnnouncements)('=====$$$== Selling ' + stockList.goods[i].name + ' at a profit of ' + (stockList.goods[i].currentPrice - stockList.goods[i].priceBought).toFixed(2));
+                                if (stockerConsoleAnnouncements) ('=====$$$== Selling ' + stockList.goods[i].name + ' at a profit of ' + (stockList.goods[i].currentPrice - stockList.goods[i].priceBought).toFixed(2));
 
                             }
 

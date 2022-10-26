@@ -1125,6 +1125,7 @@ Game.Launch = function () {
 				'shineGold.png',
 				'shineRed.png',
 				'perfectCookie.png',
+				'milk.png',
 				'panelBG.png',
 				'panelGradientBottom.png',
 				'panelGradientLeft.png',
@@ -1167,7 +1168,19 @@ Game.Launch = function () {
 		console.log('[=== Game resumed! Data was loaded. ===]');
 	}
 
+	Game.Focus = true;
+	Game.LastFocusCheck = Date.now();
 
+	if (!document.hasFocus) document.hasFocus = function () { return document.hidden; };//for Opera
+
+	Game.CheckFocus = function () {
+		if (Game.Time - Game.LastFocusCheck > 3000) {
+			Game.Focus = document.hasFocus();
+			Game.LastFocusCheck = Game.Time;
+		}
+		return Game.Focus
+	}
+	
 	Game.Init = function () {
 		Game.ready = 1;
 
@@ -1223,18 +1236,6 @@ Game.Launch = function () {
 			return result;
 		}
 
-		Game.Focus = true;
-		Game.LastFocusCheck = Date.now();
-
-		if (!document.hasFocus) document.hasFocus = function () { return document.hidden; };//for Opera
-
-		Game.CheckFocus = function () {
-			if (Game.Time - Game.LastFocusCheck > 3000) {
-				Game.Focus = document.hasFocus();
-				Game.LastFocusCheck = Game.Time;
-			}
-			return Game.Focus
-		}
 		Game.cookiesEarned = 0;//all cookies earned during gameplay
 		Game.cookies = 0;//cookies
 		Game.cookiesd = 0;;//cookies display

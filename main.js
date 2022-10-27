@@ -1742,7 +1742,7 @@ Game.Launch = function () {
 				func = function () { return str; };
 			}
 			origin = (origin ? origin : 'middle');
-			AddEvent(el, 'mouseover', function () { Game.tooltip.dynamic = 1; Game.tooltip.draw(el, func, origin); };);
+			AddEvent(el, 'mouseover', function () { Game.tooltip.dynamic = 1; Game.tooltip.draw(el, func, origin); });
 			AddEvent(el, 'mouseout', function () { Game.tooltip.shouldHide = 1; });
 		}
 		Game.tooltip.wobble = function () {

@@ -1180,7 +1180,7 @@ Game.Launch = function () {
 		}
 		return Game.Focus
 	}
-	
+
 	Game.Init = function () {
 		Game.ready = 1;
 

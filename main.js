@@ -6749,19 +6749,17 @@ Game.Launch = function () {
 				if (me.minigame && me.minigame.onLevel) me.minigame.onLevel(me.level);
 			}*/
 
-			this.levelUp = function (me) {
-				return function () {
-					Game.spendLump(me.level + 1, 'level up your ' + me.plural, function () {
-						me.level += 1;
-						if (me.level >= 10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);
-						PlaySound('snd/upgrade.mp3', 0.6);
-						Game.LoadMinigames();
-						me.refresh();
-						if (l('productLevel' + me.id)) { var rect = l('productLevel' + me.id).getBoundingClientRect(); Game.SparkleAt((rect.left + rect.right) / 2, (rect.top + rect.bottom) / 2 - 24); }
-						if (me.minigame && me.minigame.onLevel) me.minigame.onLevel(me.level);
-					})();
-				};
-			}(this);
+			this.levelUp = function () {
+				Game.spendLump(this.level + 1, 'level up your ' + this.plural, function () {
+					this.level += 1;
+					if (this.level >= 10 && this.levelAchiev10) Game.Win(this.levelAchiev10.name);
+					PlaySound('snd/upgrade.mp3', 0.6);
+					Game.LoadMinigames();
+					this.refresh();
+					if (l('productLevel' + this.id)) { var rect = l('productLevel' + this.id).getBoundingClientRect(); Game.SparkleAt((rect.left + rect.right) / 2, (rect.top + rect.bottom) / 2 - 24); }
+					if (this.minigame && this.minigame.onLevel) this.minigame.onLevel(this.level);
+				})();
+			};
 
 			this.refresh = function ()//show/hide the building display based on its amount, and redraw it
 			{

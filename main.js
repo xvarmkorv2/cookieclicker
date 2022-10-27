@@ -1739,11 +1739,11 @@ Game.Launch = function () {
 		Game.attachTooltip = function (el, func, origin) {
 			if (typeof func === 'string') {
 				var str = func;
-				func = function (str) { return function () { return str; }; }(str);
+				func = function () { return str; };
 			}
 			origin = (origin ? origin : 'middle');
-			AddEvent(el, 'mouseover', function (func, el, origin) { return function () { Game.tooltip.dynamic = 1; Game.tooltip.draw(el, func, origin); }; }(func, el, origin));
-			AddEvent(el, 'mouseout', function () { return function () { Game.tooltip.shouldHide = 1; }; }());
+			AddEvent(el, 'mouseover', function () { Game.tooltip.dynamic = 1; Game.tooltip.draw(el, func, origin); };);
+			AddEvent(el, 'mouseout', function () { Game.tooltip.shouldHide = 1; });
 		}
 		Game.tooltip.wobble = function () {
 			//disabled because this effect doesn't look good with the slight slowdown it might or might not be causing.
@@ -3297,17 +3297,13 @@ Game.Launch = function () {
 			if (Game.DebuggingPrestige) {
 				for (var i in Game.PrestigeUpgrades) {
 					var me = Game.PrestigeUpgrades[i];
-					AddEvent(l('heavenlyUpgrade' + me.id), 'mousedown', function (me) {
-						return function () {
-							if (!Game.DebuggingPrestige) return;
-							Game.SelectedHeavenlyUpgrade = me;
-						}
-					}(me));
-					AddEvent(l('heavenlyUpgrade' + me.id), 'mouseup', function (me) {
-						return function () {
-							if (Game.SelectedHeavenlyUpgrade == me) { Game.SelectedHeavenlyUpgrade = 0; Game.BuildAscendTree(); }
-						}
-					}(me));
+					AddEvent(l('heavenlyUpgrade' + me.id), 'mousedown', function () {
+						if (!Game.DebuggingPrestige) return;
+						Game.SelectedHeavenlyUpgrade = me;
+					});
+					AddEvent(l('heavenlyUpgrade' + me.id), 'mouseup', function () {
+						if (Game.SelectedHeavenlyUpgrade == me) { Game.SelectedHeavenlyUpgrade = 0; Game.BuildAscendTree(); }
+					});
 				}
 			}
 
@@ -6749,19 +6745,18 @@ Game.Launch = function () {
 				if (me.minigame && me.minigame.onLevel) me.minigame.onLevel(me.level);
 			}*/
 
-			this.levelUp = function (me) {
-				return function () {
-					Game.spendLump(me.level + 1, 'level up your ' + me.plural, function () {
-						me.level += 1;
-						if (me.level >= 10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);
-						PlaySound('snd/upgrade.mp3', 0.6);
-						Game.LoadMinigames();
-						me.refresh();
-						if (l('productLevel' + me.id)) { var rect = l('productLevel' + me.id).getBoundingClientRect(); Game.SparkleAt((rect.left + rect.right) / 2, (rect.top + rect.bottom) / 2 - 24); }
-						if (me.minigame && me.minigame.onLevel) me.minigame.onLevel(me.level);
-					})();
-				};
-			}(this);
+			this.levelUp = function () {
+				var me = this
+				Game.spendLump(me.level + 1, 'level up your ' + me.plural, function () {
+					me.level += 1;
+					if (me.level >= 10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);
+					PlaySound('snd/upgrade.mp3', 0.6);
+					Game.LoadMinigames();
+					me.refresh();
+					if (l('productLevel' + me.id)) { var rect = l('productLevel' + me.id).getBoundingClientRect(); Game.SparkleAt((rect.left + rect.right) / 2, (rect.top + rect.bottom) / 2 - 24); }
+					if (me.minigame && me.minigame.onLevel) me.minigame.onLevel(me.level);
+				})();
+			};
 
 			this.refresh = function ()//show/hide the building display based on its amount, and redraw it
 			{
@@ -7164,10 +7159,10 @@ Game.Launch = function () {
 
 				//these are a bit messy but ah well
 				if (!Game.touchEvents) {
-					AddEvent(me.l, 'click', function (what) { return function (e) { Game.ClickProduct(what); e.preventDefault(); }; }(me.id));
+					AddEvent(me.l, 'click', function (e) { Game.ClickProduct(me.id); e.preventDefault(); });
 				}
 				else {
-					AddEvent(me.l, 'touchend', function (what) { return function (e) { Game.ClickProduct(what); e.preventDefault(); }; }(me.id));
+					AddEvent(me.l, 'touchend', function (e) { Game.ClickProduct(me.id); e.preventDefault(); });
 				}
 			}
 		}
@@ -7196,20 +7191,18 @@ Game.Launch = function () {
 					//we're only loading the minigame scripts that aren't loaded yet and which have enough building level
 					//we call this function on building level up and on load
 					//console.log('Loading script '+me.minigameUrl+'...');
-					setTimeout(function (me) {
-						return function () {
-							var script = document.createElement('script');
-							script.id = 'minigameScript-' + me.id;
-							Game.scriptBindings['minigameScript-' + me.id] = me;
-							script.setAttribute('src', me.minigameUrl + '?r=' + Game.version);
-							script.onload = function (me, script) {
-								return function () {
-									if (!me.minigameLoaded) Game.scriptLoaded(me, script);
-								}
-							}(me, 'minigameScript-' + me.id);
-							document.head.appendChild(script);
-						}
-					}(me), 10);
+					setTimeout(function () {
+						var script = document.createElement('script');
+						script.id = 'minigameScript-' + me.id;
+						Game.scriptBindings['minigameScript-' + me.id] = me;
+						script.setAttribute('src', me.minigameUrl + '?r=' + Game.version);
+						script.onload = function (me, script) {
+							return function () {
+								if (!me.minigameLoaded) Game.scriptLoaded(me, script);
+							}
+						}(me, 'minigameScript-' + me.id);
+						document.head.appendChild(script);
+					}, 10);
 				}
 			}
 		}
@@ -7568,9 +7561,9 @@ Game.Launch = function () {
 				muteStr += '<div class="tinyProductIcon" id="mutedProduct' + me.id + '" style="display:none;background-position:-' + icon[0] + 'px -' + icon[1] + 'px;" ' + Game.clickStr + '="Game.ObjectsById[' + me.id + '].mute(0);PlaySound(Game.ObjectsById[' + me.id + '].muted?\'snd/clickOff.mp3\':\'snd/clickOn.mp3\');" ' + Game.getDynamicTooltip('Game.mutedBuildingTooltip(' + me.id + ')', 'this') + '></div>';
 				//muteStr+='<div class="tinyProductIcon" id="mutedProduct'+me.id+'" style="display:none;background-position:-'+icon[0]+'px -'+icon[1]+'px;" '+Game.clickStr+'="Game.ObjectsById['+me.id+'].mute(0);PlaySound(Game.ObjectsById['+me.id+'].muted?\'snd/clickOff.mp3\':\'snd/clickOn.mp3\');" '+Game.getTooltip('<div style="width:150px;text-align:center;font-size:11px;"><b>Unmute '+me.plural+'</b><br>(Display this building)</div>')+'></div>';
 
-				AddEvent(me.canvas, 'mouseover', function (me) { return function () { me.mouseOn = true; } }(me));
-				AddEvent(me.canvas, 'mouseout', function (me) { return function () { me.mouseOn = false; } }(me));
-				AddEvent(me.canvas, 'mousemove', function (me) { return function (e) { var box = this.getBoundingClientRect(); me.mousePos[0] = e.pageX - box.left; me.mousePos[1] = e.pageY - box.top; } }(me));
+				AddEvent(me.canvas, 'mouseover', function () { me.mouseOn = true; });
+				AddEvent(me.canvas, 'mouseout', function () { me.mouseOn = false; });
+				AddEvent(me.canvas, 'mousemove', function (e) { var box = this.getBoundingClientRect(); me.mousePos[0] = e.pageX - box.left; me.mousePos[1] = e.pageY - box.top; });
 			}
 		}
 		Game.mutedBuildingTooltip = function (id) {
@@ -8651,13 +8644,11 @@ Game.Launch = function () {
 
 		var slots = ['Permanent upgrade slot I', 'Permanent upgrade slot II', 'Permanent upgrade slot III', 'Permanent upgrade slot IV', 'Permanent upgrade slot V'];
 		for (var i = 0; i < slots.length; i++) {
-			Game.Upgrades[slots[i]].descFunc = function (i) {
-				return function (context) {
-					if (Game.permanentUpgrades[i] == -1) return this.desc + (context == 'stats' ? '' : '<br><b>Click to activate.</b>');
-					var upgrade = Game.UpgradesById[Game.permanentUpgrades[i]];
-					return '<div style="text-align:center;">' + 'Current : <div class="icon" style="vertical-align:middle;display:inline-block;' + (upgrade.icon[2] ? 'background-image:url(' + upgrade.icon[2] + ');' : '') + 'background-position:' + (-upgrade.icon[0] * 48) + 'px ' + (-upgrade.icon[1] * 48) + 'px;transform:scale(0.5);margin:-16px;"></div> <b>' + upgrade.name + '</b><div class="line"></div></div>' + this.desc + (context == 'stats' ? '' : '<br><b>Click to activate.</b>');
-				};
-			}(i);
+			Game.Upgrades[slots[i]].descFunc = function (context) {
+				if (Game.permanentUpgrades[i] == -1) return this.desc + (context == 'stats' ? '' : '<br><b>Click to activate.</b>');
+				var upgrade = Game.UpgradesById[Game.permanentUpgrades[i]];
+				return '<div style="text-align:center;">' + 'Current : <div class="icon" style="vertical-align:middle;display:inline-block;' + (upgrade.icon[2] ? 'background-image:url(' + upgrade.icon[2] + ');' : '') + 'background-position:' + (-upgrade.icon[0] * 48) + 'px ' + (-upgrade.icon[1] * 48) + 'px;transform:scale(0.5);margin:-16px;"></div> <b>' + upgrade.name + '</b><div class="line"></div></div>' + this.desc + (context == 'stats' ? '' : '<br><b>Click to activate.</b>');
+			};
 		}
 
 		Game.PermanentSlotIcon = function (slot) {
@@ -9231,7 +9222,7 @@ Game.Launch = function () {
 		for (var i in gardenDrops)//scale by CpS
 		{
 			var it = Game.Upgrades[gardenDrops[i]];
-			it.priceFunc = function (cost) { return function () { return cost * Game.cookiesPs * 60; } }(it.basePrice);
+			it.priceFunc = function () { return it.basePrice * Game.cookiesPs * 60; };
 			it.baseDesc = it.baseDesc.replace('<q>', '<br>Cost scales with CpS.<q>');
 			it.desc = BeautifyInText(it.baseDesc);
 			it.lasting = true;
@@ -9801,29 +9792,27 @@ Game.Launch = function () {
 					else Game.Notify(str, '', this.icon, 4);
 				}
 
-				me.clickFunction = function (me) {
-					return function () {
-						//undo season
-						if (me.bought && Game.season && me == Game.seasons[Game.season].triggerUpgrade) {
-							me.lose();
-							var str = Game.seasons[Game.season].over;
-							if (Game.prefs.popups) Game.Popup(str);
-							else Game.Notify(str, '', Game.seasons[Game.season].triggerUpgrade.icon);
-							if (Game.Has('Season switcher')) { Game.Unlock(Game.seasons[Game.season].trigger); Game.seasons[Game.season].triggerUpgrade.bought = 0; }
+				me.clickFunction = function () {
+					//undo season
+					if (me.bought && Game.season && me == Game.seasons[Game.season].triggerUpgrade) {
+						me.lose();
+						var str = Game.seasons[Game.season].over;
+						if (Game.prefs.popups) Game.Popup(str);
+						else Game.Notify(str, '', Game.seasons[Game.season].triggerUpgrade.icon);
+						if (Game.Has('Season switcher')) { Game.Unlock(Game.seasons[Game.season].trigger); Game.seasons[Game.season].triggerUpgrade.bought = 0; }
 
-							Game.upgradesToRebuild = 1;
-							Game.recalculateGains = 1;
-							Game.season = Game.baseSeason;
-							Game.seasonT = -1;
-							PlaySound('snd/tick.mp3');
-							return false;
-						}
-						else return true;
-					};
-				}(me);
+						Game.upgradesToRebuild = 1;
+						Game.recalculateGains = 1;
+						Game.season = Game.baseSeason;
+						Game.seasonT = -1;
+						PlaySound('snd/tick.mp3');
+						return false;
+					}
+					else return true;
+				};
 
 				me.displayFuncWhenOwned = function () { return '<div style="text-align:center;">Time remaining :<br><b>' + (Game.Has('Eternal seasons') ? 'forever' : Game.sayTime(Game.seasonT, -1)) + '</b><div style="font-size:80%;">(Click again to cancel season)</div></div>'; }
-				me.timerDisplay = function (upgrade) { return function () { if (!Game.Upgrades[upgrade.name].bought || Game.Has('Eternal seasons')) return -1; else return 1 - Game.seasonT / Game.getSeasonDuration(); } }(me);
+				me.timerDisplay = function () { if (!Game.Upgrades[me.name].bought || Game.Has('Eternal seasons')) return -1; else return 1 - Game.seasonT / Game.getSeasonDuration(); };
 			}
 		}
 		Game.getSeasonDuration = function () { return Game.fps * 60 * 60 * 24; }

@@ -1739,11 +1739,11 @@ Game.Launch = function () {
 		Game.attachTooltip = function (el, func, origin) {
 			if (typeof func === 'string') {
 				var str = func;
-				func = function (str) { return function () { return str; }; }(str);
+				func = function () { return str; };
 			}
 			origin = (origin ? origin : 'middle');
-			AddEvent(el, 'mouseover', function (func, el, origin) { return function () { Game.tooltip.dynamic = 1; Game.tooltip.draw(el, func, origin); }; }(func, el, origin));
-			AddEvent(el, 'mouseout', function () { return function () { Game.tooltip.shouldHide = 1; }; }());
+			AddEvent(el, 'mouseover', function () { Game.tooltip.dynamic = 1; Game.tooltip.draw(el, func, origin); });
+			AddEvent(el, 'mouseout', function () { Game.tooltip.shouldHide = 1; });
 		}
 		Game.tooltip.wobble = function () {
 			//disabled because this effect doesn't look good with the slight slowdown it might or might not be causing.
@@ -3297,17 +3297,13 @@ Game.Launch = function () {
 			if (Game.DebuggingPrestige) {
 				for (var i in Game.PrestigeUpgrades) {
 					var me = Game.PrestigeUpgrades[i];
-					AddEvent(l('heavenlyUpgrade' + me.id), 'mousedown', function (me) {
-						return function () {
-							if (!Game.DebuggingPrestige) return;
-							Game.SelectedHeavenlyUpgrade = me;
-						}
-					}(me));
-					AddEvent(l('heavenlyUpgrade' + me.id), 'mouseup', function (me) {
-						return function () {
-							if (Game.SelectedHeavenlyUpgrade == me) { Game.SelectedHeavenlyUpgrade = 0; Game.BuildAscendTree(); }
-						}
-					}(me));
+					AddEvent(l('heavenlyUpgrade' + me.id), 'mousedown', function () {
+						if (!Game.DebuggingPrestige) return;
+						Game.SelectedHeavenlyUpgrade = me;
+					});
+					AddEvent(l('heavenlyUpgrade' + me.id), 'mouseup', function () {
+						if (Game.SelectedHeavenlyUpgrade == me) { Game.SelectedHeavenlyUpgrade = 0; Game.BuildAscendTree(); }
+					});
 				}
 			}
 
@@ -4258,8 +4254,8 @@ Game.Launch = function () {
 
 			this.l = document.createElement('div');
 			this.l.className = 'shimmer';
-			if (!Game.touchEvents) { AddEvent(this.l, 'click', function (what) { return function (event) { what.pop(event); }; }(this)); }
-			else { AddEvent(this.l, 'touchend', function (what) { return function (event) { what.pop(event); }; }(this)); }//touch events
+			if (!Game.touchEvents) { AddEvent(this.l, 'click', function (event) { this.pop(event); }); }
+			else { AddEvent(this.l, 'touchend', function (event) { this.pop(event); }); }//touch events
 
 			this.x = 0;
 			this.y = 0;
@@ -9799,26 +9795,24 @@ Game.Launch = function () {
 					else Game.Notify(str, '', this.icon, 4);
 				}
 
-				me.clickFunction = function (me) {
-					return function () {
-						//undo season
-						if (me.bought && Game.season && me == Game.seasons[Game.season].triggerUpgrade) {
-							me.lose();
-							var str = Game.seasons[Game.season].over;
-							if (Game.prefs.popups) Game.Popup(str);
-							else Game.Notify(str, '', Game.seasons[Game.season].triggerUpgrade.icon);
-							if (Game.Has('Season switcher')) { Game.Unlock(Game.seasons[Game.season].trigger); Game.seasons[Game.season].triggerUpgrade.bought = 0; }
+				me.clickFunction = function () {
+					//undo season
+					if (me.bought && Game.season && me == Game.seasons[Game.season].triggerUpgrade) {
+						me.lose();
+						var str = Game.seasons[Game.season].over;
+						if (Game.prefs.popups) Game.Popup(str);
+						else Game.Notify(str, '', Game.seasons[Game.season].triggerUpgrade.icon);
+						if (Game.Has('Season switcher')) { Game.Unlock(Game.seasons[Game.season].trigger); Game.seasons[Game.season].triggerUpgrade.bought = 0; }
 
-							Game.upgradesToRebuild = 1;
-							Game.recalculateGains = 1;
-							Game.season = Game.baseSeason;
-							Game.seasonT = -1;
-							PlaySound('snd/tick.mp3');
-							return false;
-						}
-						else return true;
-					};
-				}(me);
+						Game.upgradesToRebuild = 1;
+						Game.recalculateGains = 1;
+						Game.season = Game.baseSeason;
+						Game.seasonT = -1;
+						PlaySound('snd/tick.mp3');
+						return false;
+					}
+					else return true;
+				};
 
 				me.displayFuncWhenOwned = function () { return '<div style="text-align:center;">Time remaining :<br><b>' + (Game.Has('Eternal seasons') ? 'forever' : Game.sayTime(Game.seasonT, -1)) + '</b><div style="font-size:80%;">(Click again to cancel season)</div></div>'; }
 				me.timerDisplay = function (upgrade) { return function () { if (!Game.Upgrades[upgrade.name].bought || Game.Has('Eternal seasons')) return -1; else return 1 - Game.seasonT / Game.getSeasonDuration(); } }(me);

@@ -7521,6 +7521,15 @@ Game.Launch = function () {
 			if (this.amount >= Game.SpecialGrandmaUnlock && Game.Objects['Grandma'].amount > 0) Game.Unlock(this.grandma.name);
 		});
 
+		new Game.Object('Tester', 'tester|testers|tested|[X] tester|[X] testers', 'There\'s been countless other idle universes running alongside our own. You\'ve finally found a way to hijack their production and convert whatever they\'ve been making into cookies!', 3, 2, { base: 'farm', xV: 8, yV: 8, w: 64, rows: 2, x: 0, y: 16 }, 12345678987654321, function (me) {
+			var mult = 1;
+			mult *= Game.GetTieredCpsMult(me);
+			mult *= Game.magicCpS(me.name);
+			return me.baseCps * mult;
+		}, function () {
+			Game.UnlockTiered(this);
+		});
+
 		Game.foolObjects = {
 			'Unknown': { name: 'Investment', desc: 'You\'re not sure what this does, you just know it means profit.', icon: 0 },
 			'Cursor': { name: 'Rolling pin', desc: 'Essential in flattening dough. The first step in cookie-making.', icon: 0 },

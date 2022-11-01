@@ -7082,12 +7082,6 @@ Game.Launch = function () {
 		}
 
 		Game.storeBulkButton = function (id) {
-			if (id == 0) Game.buyMode = 1;
-			else if (id == 1) Game.buyMode = -1;
-			else if (id == 2) Game.buyBulk = 1;
-			else if (id == 3) Game.buyBulk = 10;
-			else if (id == 4) Game.buyBulk = 100;
-			else if (id == 5) Game.buyBulk = -1;
 			switch (id) {
 				case 0: Game.buyMode = 1; break;
 				case 1: Game.buyMode = -1; break;

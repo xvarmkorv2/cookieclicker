@@ -3098,7 +3098,7 @@ Game.Launch = function () {
 		Game.ascensionModes = {
 			0: { name: 'None', desc: 'No special modifiers.', icon: [10, 0] },
 			1: { name: 'Born again', desc: 'This run will behave as if you\'d just started the game from scratch. Prestige levels and heavenly upgrades will have no effect, as will sugar lumps and building levels. Perma-upgrades and minigames will be unavailable.<div class="line"></div>Some achievements are only available in this mode.', icon: [2, 7] }/*,
-		2:{name:'Trigger finger',desc:'In this run, scrolling your mouse wheel on the cookie counts as clicking it. Some upgrades introduce new clicking behaviors.<br>No clicking achievements may be obtained in this mode.<div class="line"></div>Reaching 1 quadrillion cookies in this mode unlocks a special heavenly upgrade.',icon:[12,0]}*/
+			2: {name:'Trigger finger',desc:'In this run, scrolling your mouse wheel on the cookie counts as clicking it. Some upgrades introduce new clicking behaviors.<br>No clicking achievements may be obtained in this mode.<div class="line"></div>Reaching 1 quadrillion cookies in this mode unlocks a special heavenly upgrade.',icon:[12,0]}*/
 		};
 
 		Game.ascendMeterPercent = 0;
@@ -13057,8 +13057,10 @@ Game.Launch = function () {
 			Game.UpdateGrandmapocalypse();
 
 			//these are kinda fun
-			//if (Game.BigCookieState==2 && !Game.promptOn && Game.Scroll!=0) Game.ClickCookie();
-			//if (Game.BigCookieState==1 && !Game.promptOn) Game.ClickCookie();
+			if (Game.ascensionMode == 3) {
+				if (Game.BigCookieState==2 && !Game.promptOn && Game.Scroll!=0) Game.ClickCookie();
+				if (Game.BigCookieState==1 && !Game.promptOn) Game.ClickCookie();
+			}
 
 			//handle graphic stuff
 			if (Game.prefs.wobbly) {

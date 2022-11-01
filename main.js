@@ -6503,21 +6503,19 @@ Game.Launch = function () {
 				if (amount == -1) amount = 1000;
 				for (var i = 0; i < amount; i++) {
 					var price = this.getPrice();
-					if (Game.cookies >= price) {
-						bought++;
-						moni += price;
-						Game.Spend(price);
-						this.amount++;
-						this.bought++;
-						price = this.getPrice();
-						this.price = price;
-						if (this.buyFunction) this.buyFunction();
-						Game.recalculateGains = 1;
-						if (this.amount == 1 && this.id != 0) l('row' + this.id).classList.add('enabled');
-						this.highest = Math.max(this.highest, this.amount);
-						Game.BuildingsOwned++;
-						success = 1;
-					}
+					if (Game.cookies < price) {break;}
+					bought++;
+					moni += price;
+					Game.Spend(price);
+					this.amount++;
+					this.bought++;
+					this.price = this.getPrice();
+					if (this.buyFunction) this.buyFunction();
+					Game.recalculateGains = 1;
+					if (this.amount == 1 && this.id != 0) l('row' + this.id).classList.add('enabled');
+					this.highest = Math.max(this.highest, this.amount);
+					Game.BuildingsOwned++;
+					success = 1;
 				}
 				if (success) { PlaySound('snd/buy' + choose([1, 2, 3, 4]) + '.mp3', 0.75); this.refresh(); }
 				//if (moni>0 && amount>1) Game.Notify(this.name,'Bought <b>'+bought+'</b> for '+Beautify(moni)+' cookies','',2);

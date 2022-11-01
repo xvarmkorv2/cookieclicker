@@ -6530,20 +6530,19 @@ Game.Launch = function () {
 					var price = this.getPrice();
 					var giveBack = this.getSellMultiplier();
 					price = Math.floor(price * giveBack);
-					if (this.amount > 0) {
-						sold++;
-						moni += price;
-						Game.cookies += price;
-						Game.cookiesEarned = Math.max(Game.cookies, Game.cookiesEarned);//this is to avoid players getting the cheater achievement when selling buildings that have a higher price than they used to
-						this.amount--;
-						price = this.getPrice();
-						this.price = price;
-						if (this.sellFunction) this.sellFunction();
-						Game.recalculateGains = 1;
-						if (this.amount == 0 && this.id != 0) l('row' + this.id).classList.remove('enabled');
-						Game.BuildingsOwned--;
-						success = 1;
-					}
+					if (this.amount < 0) {break;}
+					sold++;
+					moni += price;
+					Game.cookies += price;
+					Game.cookiesEarned = Math.max(Game.cookies, Game.cookiesEarned);//this is to avoid players getting the cheater achievement when selling buildings that have a higher price than they used to
+					this.amount--;
+					price = this.getPrice();
+					this.price = price;
+					if (this.sellFunction) this.sellFunction();
+					Game.recalculateGains = 1;
+					if (this.amount == 0 && this.id != 0) l('row' + this.id).classList.remove('enabled');
+					Game.BuildingsOwned--;
+					success = 1;
 				}
 				if (success && Game.hasGod) {
 					var godLvl = Game.hasGod('ruin');
@@ -6588,20 +6587,19 @@ Game.Launch = function () {
 				for (var i = 0; i < amount; i++) {
 					var price = this.getPrice();
 					price = Math.floor(price * 0.5);
-					if (this.amount > 0) {
-						sold++;
-						//moni+=price;
-						//Game.cookies+=price;
-						//Game.cookiesEarned=Math.max(Game.cookies,Game.cookiesEarned);
-						this.amount--;
-						price = this.getPrice();
-						this.price = price;
-						if (this.sellFunction) this.sellFunction();
-						Game.recalculateGains = 1;
-						if (this.amount == 0 && this.id != 0) l('row' + this.id).classList.remove('enabled');
-						Game.BuildingsOwned--;
-						success = 1;
-					}
+					if (this.amount < 0) { break;}
+					sold++;
+					//moni+=price;
+					//Game.cookies+=price;
+					//Game.cookiesEarned=Math.max(Game.cookies,Game.cookiesEarned);
+					this.amount--;
+					price = this.getPrice();
+					this.price = price;
+					if (this.sellFunction) this.sellFunction();
+					Game.recalculateGains = 1;
+					if (this.amount == 0 && this.id != 0) l('row' + this.id).classList.remove('enabled');
+					Game.BuildingsOwned--;
+					success = 1;
 				}
 				if (success) { this.refresh(); }
 				//if (moni>0) Game.Notify(this.name,'Sold <b>'+sold+'</b> for '+Beautify(moni)+' cookies','',2);

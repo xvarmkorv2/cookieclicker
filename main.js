@@ -6530,7 +6530,7 @@ Game.Launch = function () {
 					var price = this.getPrice();
 					var giveBack = this.getSellMultiplier();
 					price = Math.floor(price * giveBack);
-					if (this.amount < 0) {break;}
+					if (this.amount > 0) {break;}
 					sold++;
 					moni += price;
 					Game.cookies += price;

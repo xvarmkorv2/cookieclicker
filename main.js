@@ -1073,6 +1073,18 @@ var Game = {};
 	//check out the "UNLOCKING STUFF" section to see how unlocking achievs and upgrades is done
 })();
 
+Game.useLocalStorage = 1;
+Game.localStorageGet = function (key) {
+	var local = 0;
+	try { local = window.localStorage.getItem(key); } catch (exception) { }
+	return local;
+}
+Game.localStorageSet = function (key, str) {
+	var local = 0;
+	try { local = window.localStorage.setItem(key, str); } catch (exception) { }
+	return local;
+}
+
 Game.Launch = function () {
 	Game.version = VERSION;
 	Game.beta = BETA;
@@ -1710,7 +1722,7 @@ Game.Launch = function () {
 	Game.ready = 0;
 
 	Game.Load = function () {
-		//l('javascriptError').innerHTML='<div style="padding:64px 128px;"><div class="title">Loading...</div></div>';
+		//l('offGameMessage').innerHTML='<div style="padding:64px 128px;"><div class="title">Loading...</div></div>';
 		Game.Loader = new Loader();
 		Game.Loader.domain = 'img/';
 		Game.Loader.loaded = Game.Init;
@@ -1739,7 +1751,7 @@ Game.Launch = function () {
 		);
 	}
 	Game.ErrorFrame = function () {
-		l('javascriptError').innerHTML =
+		l('offGameMessage').innerHTML =
 			'<div class="title">Oops. Wrong address!</div>' +
 			'<div>It looks like you\'re accessing Cookie Clicker from another URL than the official one.<br>' +
 			'You can <a href="//orteil.dashnet.org/cookieclicker/" target="_blank">play Cookie Clicker over here</a>!<br>' +
@@ -1749,15 +1761,15 @@ Game.Launch = function () {
 	Game.Timeout = function () {
 		Game.WriteSave();
 		Game.killShimmers();
-		l('javascriptError').innerHTML = 'Cookie Clicker is in sleep mode' + (Game.Has('Twin Gates of Transcendence') ? ' and generating offline cookies' : '') + '.<br><a ' + Game.clickStr + '="Game.Resume();">Click here</a> to resume from your save file.<br><div style="font-style:italic;font-size:65%;line-height:110%;opacity:0.75;">(this happens when too many frames are skipped at once,<br>usually when the game has been running in the background for a while)<br>(you can turn this feature off in the settings menu)</div>';
-		l('javascriptError').style.display = 'block';
-		Game.timedout = true;
+		l('offGameMessage').innerHTML = '<div class="title">' + (Game.Has('Twin Gates of Transcendence') ? loc("Cookie Clicker is in sleep mode and generating offline cookies.") : loc("Cookie Clicker is in sleep mode.")) + '</div>' + loc("%1 to resume from your save file.", '<a ' + Game.clickStr + '="Game.Resume();">' + loc("Click here") + '</a>') + '<br><div style="font-style:italic;font-size:65%;line-height:110%;opacity:0.75;">' + loc("(this happens when too many frames are skipped at once,<br>usually when the game has been running in the background for a while)<br>(you can turn this feature off in the settings menu)") + '</div>';
+		l('offGameMessageWrap').style.display = 'table';
+        Game.timedout = true;
 		console.log('[=== Game timed out and has been put in sleep mode. Data was saved. ===]');
 	}
 	Game.Resume = function () {
-		l('javascriptError').innerHTML = '';
-		l('javascriptError').style.display = 'none';
-		Game.timedout = false;
+		l('offGameMessage').innerHTML = '';
+		l('offGameMessageWrap').style.display = 'none';
+       Game.timedout = false;
 		Game.time = Date.now();
 		Game.accumulatedDelay = 0;
 		Game.delayTimeouts = 0;
@@ -1780,18 +1792,6 @@ Game.Launch = function () {
 		return Game.Focus
 	}
 
-	Game.useLocalStorage = 1;
-	Game.localStorageGet = function (key) {
-		var local = 0;
-		try { local = window.localStorage.getItem(key); } catch (exception) { }
-		return local;
-	}
-	Game.localStorageSet = function (key, str) {
-		var local = 0;
-		try { local = window.localStorage.setItem(key, str); } catch (exception) { }
-		return local;
-	}
-		
 	Game.Init = function () {
 		Game.ready = 1;
 
@@ -2029,7 +2029,7 @@ Game.Launch = function () {
 		Game.showBackupWarning = function () {
 			Game.Notify('Back up your save!', 'Hello again! Just a reminder that you may want to back up your Cookie Clicker save every once in a while, just in case.<br>To do so, go to Options and hit "Export save" or "Save to file"!<div class="line"></div><a style="float:right;" onclick="Game.prefs.showBackupWarning=0;==CLOSETHIS()==">Don\'t show this again</a>', [25, 7]);
 		}
-		
+
 		//replacing an existing canvas picture with a new one at runtime : Game.Loader.Replace('perfectCookie.png','imperfectCookie.png');
 		//upgrades and achievements can use other pictures than icons.png; declare their icon with [posX,posY,'http://example.com/myIcons.png']
 		//check out the "UNLOCKING STUFF" section to see how unlocking achievs and upgrades is done
@@ -5938,7 +5938,7 @@ Game.Launch = function () {
 			Game.volumeMusic = what;
 			if (Music) Music.setVolume(what / 100);
 		}
-		
+
 		Game.setWubMusic = function (what) {
 			if (Music) Music.setFilter(what / 100);
 		}
@@ -14037,8 +14037,8 @@ Game.Launch = function () {
 
 		Game.ready = 1;
 		setTimeout(function () { if (typeof showAds === 'undefined' && (!l('detectAds') || l('detectAds').clientHeight < 1) || true) Game.addClass('noAds'); }, 500);
-		l('javascriptError').innerHTML = '';
-		l('javascriptError').style.display = 'none';
+		l('offGameMessage').innerHTML = '';
+		l('offGameMessageWrap').style.display = 'none';
 		Game.Loop();
 		Game.Draw();
 
@@ -14149,7 +14149,7 @@ Game.Launch = function () {
 				if (!Game.Has(Game.UpgradesById[Game.nextResearch].name)) {
 					Game.Unlock(Game.UpgradesById[Game.nextResearch].name);
 					Game.Notify(loc("Research complete"), loc("You have discovered: <b>%1</b>.", Game.UpgradesById[Game.nextResearch].dname), Game.UpgradesById[Game.nextResearch].icon);
-                }
+				}
 				Game.nextResearch = 0;
 				Game.researchT = -1;
 				Game.recalculateGains = 1;
@@ -14161,7 +14161,7 @@ Game.Launch = function () {
 			if (Game.seasonT <= 0 && Game.season != '' && Game.season != Game.baseSeason && !Game.Has('Eternal seasons')) {
 				var str = Game.seasons[Game.season].over;
 				Game.Notify(Game.seasons[Game.season].over, '', Game.seasons[Game.season].triggerUpgrade.icon);
-                if (Game.Has('Season switcher')) { Game.Unlock(Game.seasons[Game.season].trigger); Game.seasons[Game.season].triggerUpgrade.bought = 0; }
+				if (Game.Has('Season switcher')) { Game.Unlock(Game.seasons[Game.season].trigger); Game.seasons[Game.season].triggerUpgrade.bought = 0; }
 				Game.season = Game.baseSeason;
 				Game.seasonT = -1;
 			}
@@ -14423,7 +14423,7 @@ Game.Launch = function () {
 			if (Game.season == 'fools') title = 'Cookie Baker';
 			document.title = (Game.OnAscend ? (EN ? 'Ascending! ' : (loc("Ascending") + ' | ')) : '') + loc("%1 cookie", LBeautify(Game.cookies)) + ' - ' + title;
 		}
-        if (Game.T % 15 == 0) {
+		if (Game.T % 15 == 0) {
 			//written through the magic of "hope for the best" maths
 			var chipsOwned = Game.HowMuchPrestige(Game.cookiesReset);
 			var ascendNowToOwn = Math.floor(Game.HowMuchPrestige(Game.cookiesReset + Game.cookiesEarned));
@@ -14485,7 +14485,7 @@ Game.Launch = function () {
 		}
 		//Game.ascendMeter.style.right=Math.floor(Math.max(0,1-Game.ascendMeterPercent)*100)+'px';
 		Game.ascendMeter.style.backgroundPosition = (-Game.T * 0.5 - Game.ascendMeterPercent * 100) + 'px';
-    	Game.ascendMeter.style.transform = 'translate(' + Math.floor(-Math.max(0, 1 - Game.ascendMeterPercent) * 100) + 'px,0px)';
+		Game.ascendMeter.style.transform = 'translate(' + Math.floor(-Math.max(0, 1 - Game.ascendMeterPercent) * 100) + 'px,0px)';
 		Game.ascendMeterPercent += (Game.ascendMeterPercentT - Game.ascendMeterPercent) * 0.1;
 
 		Game.NotesLogic();
@@ -14561,7 +14561,7 @@ Game.Launch = function () {
 
 			if (Game.prefs.monospace) str = '<span class="monospace">' + str + '</span>';
 			str = str + '<div id="cookiesPerSecond"' + (Game.cpsSucked > 0 ? ' class="wrinkled"' : '') + '>' + loc("per second:") + ' ' + Beautify(Game.cookiesPs * (1 - Game.cpsSucked), 1) + '</div>';
-           l('cookies').innerHTML = str;
+			l('cookies').innerHTML = str;
 			l('compactCookies').innerHTML = str;
 			Timer.track('cookie amount');
 
@@ -14672,8 +14672,8 @@ Game.Launch = function () {
 
 		Game.accumulatedDelay = Math.min(Game.accumulatedDelay, 1000 * 5);//don't compensate over 5 seconds; if you do, something's probably very wrong
 		Game.time = time;
-		
-		
+
+
 		while (Game.accumulatedDelay > 0) {
 			Game.Logic();
 			Game.accumulatedDelay -= 1000 / Game.fps;//as long as we're detecting latency (slower than target fps), execute logic (this makes drawing slower but makes the logic behave closer to correct target fps)
@@ -14724,7 +14724,8 @@ Game.Launch = function () {
 /*=====================================================================================
 LAUNCH THIS THING
 =======================================================================================*/
-Game.Launch();
+//Game.Launch();
+
 //try {Game.Launch();}
 //catch(err) {console.log('ERROR : '+err.message);}
 

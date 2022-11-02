@@ -6503,7 +6503,7 @@ Game.Launch = function () {
 				if (amount == -1) amount = 1000;
 				for (var i = 0; i < amount; i++) {
 					var price = this.getPrice();
-					if (Game.cookies < price) {break;}
+					if (Game.cookies > price) {break;}
 					bought++;
 					moni += price;
 					Game.Spend(price);

@@ -7143,7 +7143,7 @@ Game.Launch = function () {
 			}
 
 			for (let i in Game.Objects) {
-				let me = Game.Objects[i];
+				const me = Game.Objects[i];
 				me.l = l('product' + me.id);
 
 				//these are a bit messy but ah well
@@ -7559,8 +7559,8 @@ Game.Launch = function () {
 
 		//build object displays
 		var muteStr = '<div style="position:absolute;left:8px;bottom:12px;opacity:0.5;">Muted :</div>';
-		for (var i in Game.Objects) {
-			var me = Game.Objects[i];
+		for (let i in Game.Objects) {
+			let me = Game.Objects[i];
 			if (me.id > 0) {
 				me.canvas = l('rowCanvas' + me.id);
 				me.ctx = me.canvas.getContext('2d', { alpha: false });

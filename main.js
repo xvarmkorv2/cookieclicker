@@ -6950,7 +6950,7 @@ Game.Launch = function () {
 							const marginW = -18;
 							const marginH = -10;
 							for (let i = 0; i < len; i++) {
-								var pic = this.pics[i];
+								let pic = this.pics[i];
 								if (this.mousePos[0] >= pic.x - marginW && this.mousePos[0] < pic.x + 64 + marginW && this.mousePos[1] >= pic.y - marginH && this.mousePos[1] < pic.y + 64 + marginH) selected = i;
 							}
 							if (Game.prefs.customGrandmas && Game.customGrandmaNames.length > 0) {

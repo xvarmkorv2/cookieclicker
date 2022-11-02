@@ -6530,7 +6530,7 @@ Game.Launch = function () {
 					var price = this.getPrice();
 					var giveBack = this.getSellMultiplier();
 					price = Math.floor(price * giveBack);
-					if (this.amount > 0) {break;}
+					if (this.amount < 0) {break;}
 					sold++;
 					moni += price;
 					Game.cookies += price;
@@ -7560,19 +7560,19 @@ Game.Launch = function () {
 
 		//build object displays
 		var muteStr = '<div style="position:absolute;left:8px;bottom:12px;opacity:0.5;">Muted :</div>';
-		for (var i in Game.Objects) {
-			var me = Game.Objects[i];
+		for (let i in Game.Objects) {
+			let me = Game.Objects[i];
 			if (me.id > 0) {
 				me.canvas = l('rowCanvas' + me.id);
 				me.ctx = me.canvas.getContext('2d', { alpha: false });
 				me.pics = [];
-				var icon = [0 * 64, me.icon * 64];
+				let icon = [0 * 64, me.icon * 64];
 				muteStr += '<div class="tinyProductIcon" id="mutedProduct' + me.id + '" style="display:none;background-position:-' + icon[0] + 'px -' + icon[1] + 'px;" ' + Game.clickStr + '="Game.ObjectsById[' + me.id + '].mute(0);PlaySound(Game.ObjectsById[' + me.id + '].muted?\'snd/clickOff.mp3\':\'snd/clickOn.mp3\');" ' + Game.getDynamicTooltip('Game.mutedBuildingTooltip(' + me.id + ')', 'this') + '></div>';
 				//muteStr+='<div class="tinyProductIcon" id="mutedProduct'+me.id+'" style="display:none;background-position:-'+icon[0]+'px -'+icon[1]+'px;" '+Game.clickStr+'="Game.ObjectsById['+me.id+'].mute(0);PlaySound(Game.ObjectsById['+me.id+'].muted?\'snd/clickOff.mp3\':\'snd/clickOn.mp3\');" '+Game.getTooltip('<div style="width:150px;text-align:center;font-size:11px;"><b>Unmute '+me.plural+'</b><br>(Display this building)</div>')+'></div>';
 
 				AddEvent(me.canvas, 'mouseover', function () { me.mouseOn = true; });
 				AddEvent(me.canvas, 'mouseout', function () { me.mouseOn = false; });
-				AddEvent(me.canvas, 'mousemove', function (e) { var box = this.getBoundingClientRect(); me.mousePos[0] = e.pageX - box.left; me.mousePos[1] = e.pageY - box.top; });
+				AddEvent(me.canvas, 'mousemove', function (e) { let box = this.getBoundingClientRect(); me.mousePos[0] = e.pageX - box.left; me.mousePos[1] = e.pageY - box.top; });
 			}
 		}
 		Game.mutedBuildingTooltip = function (id) {

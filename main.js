@@ -6904,15 +6904,14 @@ Game.Launch = function () {
 			Game.TickerN++;
 			Game.TickerDraw();
 		}
-		Game.tickerL = l('commentsText');
-		Game.tickerBelowL = l('commentsTextBelow');
-		Game.tickerCompactL = l('compactCommentsText');
+		Game.tickerL = l('commentsText1');
+		Game.tickerBelowL = l('commentsText2');
+		Game.tickerTooNarrow = 900;
 		Game.TickerDraw = function () {
 			var str = '';
 			if (Game.Ticker != '') str = Game.Ticker;
 			Game.tickerBelowL.innerHTML = Game.tickerL.innerHTML;
 			Game.tickerL.innerHTML = str;
-			Game.tickerCompactL.innerHTML = str;
 
 			Game.tickerBelowL.className = 'commentsText';
 			void Game.tickerBelowL.offsetWidth;

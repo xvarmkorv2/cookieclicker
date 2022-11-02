@@ -6900,13 +6900,13 @@ Game.Launch = function () {
 					}
 					ctx.globalAlpha=1;
 					*/
-					let maxI = Math.floor(this.canvas.width / (w / rows) + 1);
-					let iT = Math.min(this.amount, maxI);
-					let i = this.pics.length;
+					var maxI = Math.floor(this.canvas.width / (w / rows) + 1);
+					var iT = Math.min(this.amount, maxI);
+					var i = this.pics.length;
 
 
 					let x = 0;
-					let y = 0;
+					var y = 0;
 					var added = 0;
 					if (i != iT) {
 						//for (var iter=0;iter<3;iter++)

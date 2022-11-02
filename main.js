@@ -6853,7 +6853,8 @@ Game.Launch = function () {
 
 				this.toResize = true;
 				this.redraw = function () {
-					this.pics = [];
+					var me = this;
+					me.pics = [];
 				}
 				this.draw = function () {
 					if (this.amount <= 0) return false;
@@ -6862,7 +6863,7 @@ Game.Launch = function () {
 						this.canvas.height = this.canvas.clientHeight;
 						this.toResize = false;
 					}
-					let ctx = this.ctx;
+					var ctx = this.ctx;
 					//clear
 					//ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
 					ctx.globalAlpha = 1;
@@ -6877,16 +6878,16 @@ Game.Launch = function () {
 					//rows : if >1, arrange the pictures in rows containing this many pictures
 					//frames : if present, slice the pic in [frames] horizontal slices and pick one at random
 
-					let pic = this.art.pic;
-					let bg = this.art.bg;
-					let xV = this.art.xV || 0;
-					let yV = this.art.yV || 0;
-					let w = this.art.w || 48;
-					let h = this.art.h || 48;
-					let offX = this.art.x || 0;
-					let offY = this.art.y || 0;
-					let rows = this.art.rows || 1;
-					let frames = this.art.frames || 1;
+					var pic = this.art.pic;
+					var bg = this.art.bg;
+					var xV = this.art.xV || 0;
+					var yV = this.art.yV || 0;
+					var w = this.art.w || 48;
+					var h = this.art.h || 48;
+					var offX = this.art.x || 0;
+					var offY = this.art.y || 0;
+					var rows = this.art.rows || 1;
+					var frames = this.art.frames || 1;
 
 					if (typeof (bg) == 'string') ctx.fillPattern(Pic(this.art.bg), 0, 0, this.canvas.width, this.canvas.height, 128, 128);
 					else bg(this, ctx);
@@ -6950,7 +6951,7 @@ Game.Launch = function () {
 							const marginW = -18;
 							const marginH = -10;
 							for (let i = 0; i < len; i++) {
-								let pic = this.pics[i];
+								var pic = this.pics[i];
 								if (this.mousePos[0] >= pic.x - marginW && this.mousePos[0] < pic.x + 64 + marginW && this.mousePos[1] >= pic.y - marginH && this.mousePos[1] < pic.y + 64 + marginH) selected = i;
 							}
 							if (Game.prefs.customGrandmas && Game.customGrandmaNames.length > 0) {
@@ -7143,7 +7144,7 @@ Game.Launch = function () {
 			}
 
 			for (let i in Game.Objects) {
-				const me = Game.Objects[i];
+				let me = Game.Objects[i];
 				me.l = l('product' + me.id);
 
 				//these are a bit messy but ah well
@@ -7559,8 +7560,8 @@ Game.Launch = function () {
 
 		//build object displays
 		var muteStr = '<div style="position:absolute;left:8px;bottom:12px;opacity:0.5;">Muted :</div>';
-		for (let i in Game.Objects) {
-			let me = Game.Objects[i];
+		for (var i in Game.Objects) {
+			var me = Game.Objects[i];
 			if (me.id > 0) {
 				me.canvas = l('rowCanvas' + me.id);
 				me.ctx = me.canvas.getContext('2d', { alpha: false });

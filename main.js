@@ -5934,6 +5934,11 @@ Game.Launch = function () {
 			}*/
 		}
 
+		Game.setVolumeMusic = function (what) {
+			Game.volumeMusic = what;
+			if (Music) Music.setVolume(what / 100);
+		}
+		
 		Game.setWubMusic = function (what) {
 			if (Music) Music.setFilter(what / 100);
 		}

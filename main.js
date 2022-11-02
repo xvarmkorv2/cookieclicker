@@ -71,7 +71,7 @@ function shuffle(array) {
 }
 
 Element.prototype.getBounds = function () {
-	var bounds = this.getBounds();
+	var bounds = this.getBoundingClientRect();
 	var s = Game.scale;
 	bounds.x /= s;
 	bounds.y /= s;

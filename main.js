@@ -6972,21 +6972,21 @@ Game.Launch = function () {
 
 					Math.seedrandom();
 
-					for (let i = 0; i < len; i++) {
-						let pic = this.pics[i];
-						let sprite = Pic(pic.pic);
+					for (var i = 0; i < len; i++) {
+						var pic = this.pics[i];
+						var sprite = Pic(pic.pic);
 						if (selected == i && this.name == 'Grandma') {
 							ctx.font = '14px Merriweather';
 							ctx.textAlign = 'center';
 							Math.seedrandom(Game.seed + ' ' + pic.id/*+' '+pic.id*/);//(Game.seed+' '+pic.id+' '+pic.x+' '+pic.y);
-							let years = ((Date.now() - new Date(2013, 7, 8)) / (1000 * 60 * 60 * 24 * 365)) + Math.random();//the grandmas age with the game
-							let name = choose(Game.grandmaNames);
-							let custom = false;
+							var years = ((Date.now() - new Date(2013, 7, 8)) / (1000 * 60 * 60 * 24 * 365)) + Math.random();//the grandmas age with the game
+							var name = choose(Game.grandmaNames);
+							var custom = false;
 							if (Game.prefs.customGrandmas && Game.customGrandmaNames.length > 0 && Math.random() < 0.2) { name = choose(Game.customGrandmaNames); custom = true; }
-							let text = name + ', age ' + Beautify(Math.floor(70 + Math.random() * 30 + years + this.level));
-							let width = ctx.measureText(text).width + 12;
-							let x = Math.max(0, Math.min(pic.x + 32 - width / 2 + Math.random() * 32 - 16, this.canvas.width - width));
-							let y = 4 + Math.random() * 8 - 4;
+							var text = name + ', age ' + Beautify(Math.floor(70 + Math.random() * 30 + years + this.level));
+							var width = ctx.measureText(text).width + 12;
+							var x = Math.max(0, Math.min(pic.x + 32 - width / 2 + Math.random() * 32 - 16, this.canvas.width - width));
+							var y = 4 + Math.random() * 8 - 4;
 							Math.seedrandom();
 							ctx.fillStyle = '#000';
 							ctx.strokeStyle = '#000';

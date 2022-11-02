@@ -6905,7 +6905,7 @@ Game.Launch = function () {
 					var i = this.pics.length;
 
 
-					let x = 0;
+					var x = 0;
 					var y = 0;
 					var added = 0;
 					if (i != iT) {

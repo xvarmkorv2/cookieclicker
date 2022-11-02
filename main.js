@@ -6303,18 +6303,6 @@ Game.Launch = function () {
 		Game.ascendNumber = l('ascendNumber');
 
 		Game.lastPanel = '';
-		if (Game.touchEvents) {
-			AddEvent(l('focusLeft'), 'touchend', function () { Game.ShowMenu(''); Game.ShowPanel('Left'); });
-			AddEvent(l('focusMiddle'), 'touchend', function () { Game.ShowMenu(''); Game.ShowPanel('Middle'); });
-			AddEvent(l('focusRight'), 'touchend', function () { Game.ShowMenu(''); Game.ShowPanel('Right'); });
-			AddEvent(l('focusMenu'), 'touchend', function () { Game.ShowMenu('main'); Game.ShowPanel('Menu'); });
-		}
-		else {
-			AddEvent(l('focusLeft'), 'click', function () { Game.ShowMenu(''); Game.ShowPanel('Left'); });
-			AddEvent(l('focusMiddle'), 'click', function () { Game.ShowMenu(''); Game.ShowPanel('Middle'); });
-			AddEvent(l('focusRight'), 'click', function () { Game.ShowMenu(''); Game.ShowPanel('Right'); });
-			AddEvent(l('focusMenu'), 'click', function () { Game.ShowMenu('main'); Game.ShowPanel('Menu'); });
-		}
 		//AddEvent(l('focusMenu'),'touchend',function(){if (Game.onPanel=='Menu' && Game.lastPanel!='') {Game.ShowMenu('main');Game.ShowPanel(Game.lastPanel);} else {Game.lastPanel=Game.onPanel;Game.ShowMenu('main');Game.ShowPanel('Menu');}});
 
 		/*=====================================================================================

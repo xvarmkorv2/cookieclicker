@@ -6853,8 +6853,7 @@ Game.Launch = function () {
 
 				this.toResize = true;
 				this.redraw = function () {
-					var me = this;
-					me.pics = [];
+					this.pics = [];
 				}
 				this.draw = function () {
 					if (this.amount <= 0) return false;
@@ -6863,7 +6862,7 @@ Game.Launch = function () {
 						this.canvas.height = this.canvas.clientHeight;
 						this.toResize = false;
 					}
-					var ctx = this.ctx;
+					let ctx = this.ctx;
 					//clear
 					//ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
 					ctx.globalAlpha = 1;
@@ -6878,16 +6877,16 @@ Game.Launch = function () {
 					//rows : if >1, arrange the pictures in rows containing this many pictures
 					//frames : if present, slice the pic in [frames] horizontal slices and pick one at random
 
-					var pic = this.art.pic;
-					var bg = this.art.bg;
-					var xV = this.art.xV || 0;
-					var yV = this.art.yV || 0;
-					var w = this.art.w || 48;
-					var h = this.art.h || 48;
-					var offX = this.art.x || 0;
-					var offY = this.art.y || 0;
-					var rows = this.art.rows || 1;
-					var frames = this.art.frames || 1;
+					let pic = this.art.pic;
+					let bg = this.art.bg;
+					let xV = this.art.xV || 0;
+					let yV = this.art.yV || 0;
+					let w = this.art.w || 48;
+					let h = this.art.h || 48;
+					let offX = this.art.x || 0;
+					let offY = this.art.y || 0;
+					let rows = this.art.rows || 1;
+					let frames = this.art.frames || 1;
 
 					if (typeof (bg) == 'string') ctx.fillPattern(Pic(this.art.bg), 0, 0, this.canvas.width, this.canvas.height, 128, 128);
 					else bg(this, ctx);
@@ -6900,13 +6899,13 @@ Game.Launch = function () {
 					}
 					ctx.globalAlpha=1;
 					*/
-					var maxI = Math.floor(this.canvas.width / (w / rows) + 1);
-					var iT = Math.min(this.amount, maxI);
-					var i = this.pics.length;
+					let maxI = Math.floor(this.canvas.width / (w / rows) + 1);
+					let iT = Math.min(this.amount, maxI);
+					let i = this.pics.length;
 
 
-					var x = 0;
-					var y = 0;
+					let x = 0;
+					let y = 0;
 					var added = 0;
 					if (i != iT) {
 						//for (var iter=0;iter<3;iter++)
@@ -6948,14 +6947,14 @@ Game.Launch = function () {
 						var selected = -1;
 						if (this.name == 'Grandma') {
 							//mouse detection only fits grandma sprites for now
-							var marginW = -18;
-							var marginH = -10;
-							for (var i = 0; i < len; i++) {
+							const marginW = -18;
+							const marginH = -10;
+							for (let i = 0; i < len; i++) {
 								var pic = this.pics[i];
 								if (this.mousePos[0] >= pic.x - marginW && this.mousePos[0] < pic.x + 64 + marginW && this.mousePos[1] >= pic.y - marginH && this.mousePos[1] < pic.y + 64 + marginH) selected = i;
 							}
 							if (Game.prefs.customGrandmas && Game.customGrandmaNames.length > 0) {
-								var str = 'Names in white were submitted by our supporters on Patreon.';
+								const str = 'Names in white were submitted by our supporters on Patreon.';
 								ctx.globalAlpha = 0.75;
 								ctx.fillStyle = '#000';
 								ctx.font = '9px Merriweather';
@@ -6972,21 +6971,21 @@ Game.Launch = function () {
 
 					Math.seedrandom();
 
-					for (var i = 0; i < len; i++) {
-						var pic = this.pics[i];
-						var sprite = Pic(pic.pic);
+					for (let i = 0; i < len; i++) {
+						let pic = this.pics[i];
+						let sprite = Pic(pic.pic);
 						if (selected == i && this.name == 'Grandma') {
 							ctx.font = '14px Merriweather';
 							ctx.textAlign = 'center';
 							Math.seedrandom(Game.seed + ' ' + pic.id/*+' '+pic.id*/);//(Game.seed+' '+pic.id+' '+pic.x+' '+pic.y);
-							var years = ((Date.now() - new Date(2013, 7, 8)) / (1000 * 60 * 60 * 24 * 365)) + Math.random();//the grandmas age with the game
-							var name = choose(Game.grandmaNames);
-							var custom = false;
+							let years = ((Date.now() - new Date(2013, 7, 8)) / (1000 * 60 * 60 * 24 * 365)) + Math.random();//the grandmas age with the game
+							let name = choose(Game.grandmaNames);
+							let custom = false;
 							if (Game.prefs.customGrandmas && Game.customGrandmaNames.length > 0 && Math.random() < 0.2) { name = choose(Game.customGrandmaNames); custom = true; }
-							var text = name + ', age ' + Beautify(Math.floor(70 + Math.random() * 30 + years + this.level));
-							var width = ctx.measureText(text).width + 12;
-							var x = Math.max(0, Math.min(pic.x + 32 - width / 2 + Math.random() * 32 - 16, this.canvas.width - width));
-							var y = 4 + Math.random() * 8 - 4;
+							let text = name + ', age ' + Beautify(Math.floor(70 + Math.random() * 30 + years + this.level));
+							let width = ctx.measureText(text).width + 12;
+							let x = Math.max(0, Math.min(pic.x + 32 - width / 2 + Math.random() * 32 - 16, this.canvas.width - width));
+							let y = 4 + Math.random() * 8 - 4;
 							Math.seedrandom();
 							ctx.fillStyle = '#000';
 							ctx.strokeStyle = '#000';
@@ -7125,8 +7124,8 @@ Game.Launch = function () {
 				'<div id="storeBulk100" class="storePreButton storeBulkAmount" ' + Game.clickStr + '="Game.storeBulkButton(4);">100</div>' +
 				'<div id="storeBulkMax" class="storePreButton storeBulkAmount" ' + Game.clickStr + '="Game.storeBulkButton(5);">all</div>' +
 				'</div>';
-			for (var i in Game.Objects) {
-				var me = Game.Objects[i];
+			for (let i in Game.Objects) {
+				let me = Game.Objects[i];
 				str += '<div class="product toggledOff" ' + Game.getDynamicTooltip('Game.ObjectsById[' + me.id + '].tooltip', 'store') + ' id="product' + me.id + '"><div class="icon off" id="productIconOff' + me.id + '" style=""></div><div class="icon" id="productIcon' + me.id + '" style=""></div><div class="content"><div class="lockedTitle">???</div><div class="title" id="productName' + me.id + '"></div><span class="priceMult" id="productPriceMult' + me.id + '"></span><span class="price" id="productPrice' + me.id + '"></span><div class="title owned" id="productOwned' + me.id + '"></div></div>' +
 					/*'<div class="buySell"><div style="left:0px;" id="buttonBuy10-'+me.id+'">Buy 10</div><div style="left:100px;" id="buttonSell-'+me.id+'">Sell 1</div><div style="left:200px;" id="buttonSellAll-'+me.id+'">Sell all</div></div>'+*/
 					'</div>';
@@ -7143,8 +7142,8 @@ Game.Launch = function () {
 				Game.ObjectsById[what].buy();
 			}
 
-			for (var i in Game.Objects) {
-				var me = Game.Objects[i];
+			for (let i in Game.Objects) {
+				let me = Game.Objects[i];
 				me.l = l('product' + me.id);
 
 				//these are a bit messy but ah well

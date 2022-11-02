@@ -10,4 +10,4 @@ var waitForGame = function waitForGame() {
         }
     } else setTimeout(waitForGame, 100)
 }
-setTimeout(waitForGame)
+//setTimeout(waitForGame)

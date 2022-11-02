@@ -14667,6 +14667,12 @@ Game.Launch = function () {
                 Game.l.style.transform = 'scale(' + (1.02 - 0.02 * pulse) + ',' + (1.02 - 0.02 * pulse) + ') rotate(' + (Math.sin(Game.T * 0.5) * 0.5) + 'deg)';
                 Game.wrapper.style.overflowX = 'hidden';
                 Game.wrapper.style.overflowY = 'hidden';
+            } else {
+                Game.l.style.filter = '';
+                Game.l.style.webkitFilter = '';
+                Game.l.style.transform = '';
+                Game.wrapper.style.overflowX = '';
+                Game.wrapper.style.overflowY = '';
             }
 
             Timer.clean();

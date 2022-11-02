@@ -71,7 +71,7 @@ function shuffle(array) {
 }
 
 Element.prototype.getBounds = function () {
-	var bounds = this.getBoundingClientRect();
+	var bounds = this.getBounds();
 	var s = Game.scale;
 	bounds.x /= s;
 	bounds.y /= s;
@@ -866,6 +866,213 @@ GAME INITIALIZATION
 =======================================================================================*/
 var Game = {};
 
+(function () {
+	/*=====================================================================================
+	MODDING API
+	=======================================================================================*/
+	/*
+		to use:
+		-(NOTE: this functions a little differently in the standalone/Steam version; have a look in the game's /mods folder for example mods - though most of the information below still applies)
+		-have your mod call Game.registerMod("unique id",mod object)
+		-the "unique id" value is a string the mod will use to index and retrieve its save data; special characters are ignored
+		-the "mod object" value is an object structured like so:
+			{
+				init:function(){
+					//this function is called as soon as the mod is registered
+					//declare hooks here
+				},
+				save:function(){
+					//use this to store persistent data associated with your mod
+					return 'a string to be saved';
+				},
+				load:function(str){
+					//do stuff with the string data you saved previously
+				},
+			}
+		-the mod object may also contain any other data or functions you want, for instance to make them accessible to other mods
+		-your mod and its data can be accessed with Game.mods['mod id']
+		-hooks are functions the game calls automatically in certain circumstances, like when calculating cookies per click or when redrawing the screen
+		-to add a hook: Game.registerHook('hook id',yourFunctionHere) - note: you can also declare whole arrays of hooks, ie. Game.registerHook('hook id',[function1,function2,...])
+		-to remove a hook: Game.removeHook('hook id',theSameFunctionHere)
+		-some hooks are fed a parameter you can use in the function
+		-list of valid hook ids:
+			'logic' - called every logic tick
+			'draw' - called every draw tick
+			'reset' - called whenever the player resets; parameter is true if this is a hard reset, false if it's an ascension
+			'reincarnate' - called when the player has reincarnated after an ascension
+			'ticker' - called when determining news ticker text; should return an array of possible choices to add
+			'cps' - called when determining the CpS; parameter is the current CpS; should return the modified CpS
+			'cookiesPerClick' - called when determining the cookies per click; parameter is the current value; should return the modified value
+			'click' - called when the big cookie is clicked
+			'create' - called after the game declares all buildings, buffs, upgrades and achievs; use this to declare your own - note that while the game distinguishes between vanilla and non-vanilla content, saving/loading functionality for custom content (including stuff like active buffs or permanent upgrade slotting) is not explicitly implemented and may be unpredictable and broken
+			'check' - called every few seconds when we check for upgrade/achiev unlock conditions; you can also use this for other checks that you don't need happening every logic frame
+		-function hooks are provided for convenience and more advanced mod functionality will probably involve manual code injection
+		-please be mindful of the length of the data you save, as it does inflate the export-save-to-string feature
+		
+		NOTE: modding API is susceptible to change and may not always function super-well
+	*/
+	Game.mods = {};
+	Game.sortedMods = [];
+	Game.brokenMods = [];
+	Game.modSaveData = {};
+	Game.modHooks = {};
+	Game.modHooksNames = ['logic', 'draw', 'reset', 'reincarnate', 'ticker', 'cps', 'cookiesPerClick', 'click', 'create', 'check'];
+	for (var i = 0; i < Game.modHooksNames.length; i++) { Game.modHooks[Game.modHooksNames[i]] = []; }
+	Game.registerMod = function (id, mod) {
+		id = id.replace(/\W+/g, ' ');
+		if (id == 'META') return false;
+		if (Game.mods[id]) { console.log('ERROR: mod already registered with the id "' + id + '".'); return false; }
+		Game.mods[id] = mod;
+		Game.sortedMods.push(mod);
+		mod.id = id;
+		mod.name = mod.name || id;
+		if (App) App.registerMod(mod);
+		console.log('Mod "' + id + '" added.');
+		if (Game.ready && mod.init) {
+			if (!App && Game.Win) Game.Win('Third-party');
+			mod.init();
+			if (mod.load && Game.modSaveData[id]) mod.load(Game.modSaveData[id]);
+			mod.init = 0;
+		}
+	}
+	Game.launchMods = function () {
+		if (Game.brokenMods.length > 0) {
+			Game.Notify('<span class="warning">' + loc("Some mods couldn't be loaded:") + '</span>', '[' + Game.brokenMods.join(', ') + ']', [32, 17]);
+		}
+		for (var i = 0; i < Game.sortedMods.length; i++) {
+			var mod = Game.sortedMods[i];
+			if (mod.init) {
+				console.log('===initializing mod', mod.id);
+				mod.init();
+				mod.init = 0;
+				//if (mod.load && Game.modSaveData[mod.id]) mod.load(Game.modSaveData[mod.id]);
+			}
+		}
+		if (!App && Game.sortedMods.length > 0) Game.Win('Third-party');
+	}
+	Game.registerHook = function (hook, func) {
+		if (func.constructor === Array) {
+			for (var i = 0; i < func.length; i++) { Game.registerHook(hook, func[i]); }
+			return;
+		}
+		if (typeof func !== 'function') return;
+		if (typeof Game.modHooks[hook] !== 'undefined') Game.modHooks[hook].push(func);
+		else console.log('Error: a mod tried to register a non-existent hook named "' + hook + '".');
+	}
+	Game.removeHook = function (hook, func) {
+		if (func.constructor === Array) {
+			for (var i = 0; i < func.length; i++) { Game.removeHook(hook, func[i]); }
+			return;
+		}
+		if (typeof func !== 'function') return;
+		if (typeof Game.modHooks[hook] !== 'undefined' && Game.modHooks[hook].indexOf(func) != -1) Game.modHooks[hook].splice(Game.modHooks[hook].indexOf(func), 1);
+		else console.log('Error: a mod tried to remove a non-existent hook named "' + hook + '".');
+	}
+	Game.runModHook = function (hook, param) {
+		for (var i = 0; i < Game.modHooks[hook].length; i++) {
+			Game.modHooks[hook][i](param);
+		}
+	}
+	Game.runModHookOnValue = function (hook, val) {
+		for (var i = 0; i < Game.modHooks[hook].length; i++) {
+			val = Game.modHooks[hook][i](val);
+		}
+		return val;
+	}
+	Game.safeSaveString = function (str) {
+		//look as long as it works
+		str = replaceAll('|', '[P]', str);
+		str = replaceAll(';', '[S]', str);
+		return str;
+	}
+	Game.safeLoadString = function (str) {
+		str = replaceAll('[P]', '|', str);
+		str = replaceAll('[S]', ';', str);
+		return str;
+	}
+	Game.saveModData = function () {
+		var str = '';
+		for (var i = 0; i < Game.sortedMods.length; i++) {
+			if (Game.sortedMods[i]['save']) {
+				var data = Game.sortedMods[i]['save']();
+				if (typeof data !== 'undefined') Game.modSaveData[Game.sortedMods[i].id] = data;
+			}
+		}
+		for (var i in Game.modSaveData) {
+			str += i + ':' + Game.safeSaveString(Game.modSaveData[i]) + ';';
+		}
+		if (App && App.saveMods) str += App.saveMods();
+		return str;
+	}
+	Game.loadModData = function () {
+		for (var i in Game.modSaveData) {
+			if (Game.mods[i] && Game.mods[i]['load']) Game.mods[i]['load'](Game.modSaveData[i]);
+		}
+	}
+	Game.deleteModData = function (id) {
+		if (Game.modSaveData[id]) delete Game.modSaveData[id];
+	}
+	Game.deleteAllModData = function () {
+		Game.modSaveData = {};
+	}
+	Game.CheckModData = function () {
+		var modsN = 0;
+		var str = '';
+		for (var i in Game.modSaveData) {
+			str += '<div style="border-bottom:1px dashed rgba(255,255,255,0.2);clear:both;overflow:hidden;padding:4px 0px;">';
+			str += '<div style="float:left;width:49%;text-align:left;overflow:hidden;"><b>' + i + '</b>';
+			if (Game.mods[i]) str += ' ' + loc("(loaded)");
+			str += '</div>';
+			str += '<div style="float:right;width:49%;text-align:right;overflow:hidden;">' + loc("%1 char", Game.modSaveData[i].length) + ' <a class="option warning" style="padding:0px 2px;font-size:10px;margin:0px;vertical-align:top;" ' + Game.clickStr + '="Game.deleteModData(\'' + i + '\');PlaySound(\'snd/tick.mp3\');Game.ClosePrompt();Game.CheckModData();">X</a>';
+			str += '</div>';
+			str += '</div>';
+			modsN++;
+		}
+		if (modsN == 0) str += loc("No mod data present.");
+		else str += '<div><a class="option warning" style="font-size:11px;margin-top:4px;" ' + Game.clickStr + '="Game.deleteAllModData();PlaySound(\'snd/tick.mp3\');Game.ClosePrompt();Game.CheckModData();">' + loc("Delete all") + '</a></div>';
+		Game.Prompt('<id ModData><h3>' + loc("Mod data") + '</h3><div class="block">' + tinyIcon([16, 5]) + '<div></div>' + loc("These are the mods present in your save data. You may delete some of this data to make your save file smaller.") + '</div><div class="block" style="font-size:11px;">' + str + '</div>', [loc("Back")]);
+	}
+
+	Game.LoadMod = LoadScript;//loads the mod at the given URL
+
+	if (false) {
+		//EXAMPLE MOD
+		Game.registerMod('test mod', {
+			/*
+				what this example mod does:
+				-double your CpS
+				-display a little popup for half a second whenever you click the big cookie
+				-add a little intro text above your bakery name, and generate that intro text at random if you don't already have one
+				-save and load your intro text
+			*/
+			init: function () {
+				Game.registerHook('reincarnate', function () { Game.mods['test mod'].addIntro(); });
+				Game.registerHook('check', function () { if (!Game.playerIntro) { Game.mods['test mod'].addIntro(); } });
+				Game.registerHook('click', function () { Game.Notify(choose(['A good click.', 'A solid click.', 'A mediocre click.', 'An excellent click!']), '', 0, 0.5); });
+				Game.registerHook('cps', function (cps) { return cps * 2; });
+			},
+			save: function () {
+				//note: we use stringified JSON for ease and clarity but you could store any type of string
+				return JSON.stringify({ text: Game.playerIntro })
+			},
+			load: function (str) {
+				var data = JSON.parse(str);
+				if (data.text) Game.mods['test mod'].addIntro(data.text);
+			},
+			addIntro: function (text) {
+				//note: this is not a mod hook, just a function that's part of the mod
+				Game.playerIntro = text || choose(['oh snap, it\'s', 'watch out, it\'s', 'oh no! here comes', 'hide your cookies, for here comes', 'behold! it\'s']);
+				if (!l('bakerySubtitle')) l('bakeryName').insertAdjacentHTML('afterend', '<div id="bakerySubtitle" class="title" style="text-align:center;position:absolute;left:0px;right:0px;bottom:32px;font-size:12px;pointer-events:none;text-shadow:0px 1px 1px #000,0px 0px 4px #f00;opacity:0.8;"></div>');
+				l('bakerySubtitle').textContent = '~' + Game.playerIntro + '~';
+			},
+		});
+	}
+
+	//replacing an existing canvas picture with a new one at runtime : Game.Loader.Replace('perfectCookie.png','imperfectCookie.png');
+	//upgrades and achievements can use other pictures than icons.png; declare their icon with [posX,posY,'http://example.com/myIcons.png']
+	//check out the "UNLOCKING STUFF" section to see how unlocking achievs and upgrades is done
+})();
+
 Game.Launch = function () {
 	Game.version = VERSION;
 	Game.beta = BETA;
@@ -1573,6 +1780,18 @@ Game.Launch = function () {
 		return Game.Focus
 	}
 
+	Game.useLocalStorage = 1;
+	Game.localStorageGet = function (key) {
+		var local = 0;
+		try { local = window.localStorage.getItem(key); } catch (exception) { }
+		return local;
+	}
+	Game.localStorageSet = function (key, str) {
+		var local = 0;
+		try { local = window.localStorage.setItem(key, str); } catch (exception) { }
+		return local;
+	}
+		
 	Game.Init = function () {
 		Game.ready = 1;
 
@@ -1810,185 +2029,7 @@ Game.Launch = function () {
 		Game.showBackupWarning = function () {
 			Game.Notify('Back up your save!', 'Hello again! Just a reminder that you may want to back up your Cookie Clicker save every once in a while, just in case.<br>To do so, go to Options and hit "Export save" or "Save to file"!<div class="line"></div><a style="float:right;" onclick="Game.prefs.showBackupWarning=0;==CLOSETHIS()==">Don\'t show this again</a>', [25, 7]);
 		}
-
-		/*=====================================================================================
-		MODDING API
-		=======================================================================================*/
-		/*
-			to use:
-			-have your mod call Game.registerMod("unique id",mod object)
-			-the "unique id" value is a string the mod will use to index and retrieve its save data; special characters are ignored
-			-the "mod object" value is an object structured like so:
-				{
-					init:function(){
-						//this function is called as soon as the mod is registered
-						//declare hooks here
-					},
-					save:function(){
-						//use this to store persistent data associated with your mod
-						return 'a string to be saved';
-					},
-					load:function(str){
-						//do stuff with the string data you saved previously
-					},
-				}
-			-the mod object may also contain any other data or functions you want, for instance to make them accessible to other mods
-			-your mod and its data can be accessed with Game.mods['mod id']
-			-hooks are functions the game calls automatically in certain circumstances, like when calculating cookies per click or when redrawing the screen
-			-to add a hook: Game.registerHook('hook id',yourFunctionHere) - note: you can also declare whole arrays of hooks, ie. Game.registerHook('hook id',[function1,function2,...])
-			-to remove a hook: Game.removeHook('hook id',theSameFunctionHere)
-			-some hooks are fed a parameter you can use in the function
-			-list of valid hook ids:
-				'logic' - called every logic tick
-				'draw' - called every draw tick
-				'reset' - called whenever the player resets; parameter is true if this is a hard reset, false if it's an ascension
-				'reincarnate' - called when the player has reincarnated after an ascension
-				'ticker' - called when determining news ticker text; should return an array of possible choices to add
-				'cps' - called when determining the CpS; parameter is the current CpS; should return the modified CpS
-				'cookiesPerClick' - called when determining the cookies per click; parameter is the current value; should return the modified value
-				'click' - called when the big cookie is clicked
-				'create' - called after the game declares all buildings, upgrades and achievs; use this to declare your own - note that saving/loading functionality for custom content is not explicitly implemented and may be unpredictable and broken
-				'check' - called every few seconds when we check for upgrade/achiev unlock conditions; you can also use this for other checks that you don't need happening every logic frame
-			-function hooks are provided for convenience and more advanced mod functionality will probably involve manual code injection
-			-please be mindful of the length of the data you save, as it does inflate the export-save-to-string feature
-			
-			NOTE: modding API is susceptible to change and may not always function super-well
-		*/
-		Game.mods = {};
-		Game.sortedMods = [];
-		Game.modSaveData = {};
-		Game.modHooks = {};
-		Game.modHooksNames = ['logic', 'draw', 'reset', 'reincarnate', 'ticker', 'cps', 'cookiesPerClick', 'click', 'create', 'check'];
-		for (var i = 0; i < Game.modHooksNames.length; i++) { Game.modHooks[Game.modHooksNames[i]] = []; }
-		Game.registerMod = function (id, obj) {
-			id = id.replace(/\W+/g, ' ');
-			if (Game.mods[id]) { console.log('ERROR: mod already registered with the id "' + id + '".'); return false; }
-			Game.mods[id] = obj;
-			Game.sortedMods.push(obj);
-			obj.id = id;
-			console.log('Mod "' + id + '" added.');
-			if (Game.Win) Game.Win('Third-party');
-			if (obj.init) obj.init();
-			if (obj.load && Game.modSaveData[id]) obj.load(Game.modSaveData[id]);
-		}
-		Game.registerHook = function (hook, func) {
-			if (func.constructor === Array) {
-				for (var i = 0; i < func.length; i++) { Game.registerHook(hook, func[i]); }
-				return;
-			}
-			if (typeof func !== 'function') return;
-			if (typeof Game.modHooks[hook] !== 'undefined') Game.modHooks[hook].push(func);
-			else console.log('Error: a mod tried to register a non-existent hook named "' + hook + '".');
-		}
-		Game.removeHook = function (hook, func) {
-			if (func.constructor === Array) {
-				for (var i = 0; i < func.length; i++) { Game.removeHook(hook, func[i]); }
-				return;
-			}
-			if (typeof func !== 'function') return;
-			if (typeof Game.modHooks[hook] !== 'undefined' && Game.modHooks[hook].indexOf(func) != -1) Game.modHooks[hook].splice(Game.modHooks[hook].indexOf(func), 1);
-			else console.log('Error: a mod tried to remove a non-existent hook named "' + hook + '".');
-		}
-		Game.runModHook = function (hook, param) {
-			for (var i = 0; i < Game.modHooks[hook].length; i++) {
-				Game.modHooks[hook][i](param);
-			}
-		}
-		Game.runModHookOnValue = function (hook, val) {
-			for (var i = 0; i < Game.modHooks[hook].length; i++) {
-				val = Game.modHooks[hook][i](val);
-			}
-			return val;
-		}
-		Game.safeSaveString = function (str) {
-			//look as long as it works
-			str = replaceAll('|', '[P]', str);
-			str = replaceAll(';', '[S]', str);
-			return str;
-		}
-		Game.safeLoadString = function (str) {
-			str = replaceAll('[P]', '|', str);
-			str = replaceAll('[S]', ';', str);
-			return str;
-		}
-		Game.saveModData = function () {
-			var str = '';
-			for (var i = 0; i < Game.sortedMods.length; i++) {
-				if (Game.sortedMods[i]['save']) Game.modSaveData[Game.sortedMods[i].id] = Game.sortedMods[i]['save']();
-			}
-			for (var i in Game.modSaveData) {
-				str += i + ':' + Game.safeSaveString(Game.modSaveData[i]) + ';';
-			}
-			return str;
-		}
-		Game.loadModData = function () {
-			for (var i in Game.modSaveData) {
-				if (Game.mods[i] && Game.mods[i]['load']) Game.mods[i]['load'](Game.modSaveData[i]);
-			}
-		}
-		Game.deleteModData = function (id) {
-			if (Game.modSaveData[id]) delete Game.modSaveData[id];
-		}
-		Game.deleteAllModData = function () {
-			Game.modSaveData = {};
-		}
-		Game.CheckModData = function () {
-			var modsN = 0;
-			var str = '';
-			for (var i in Game.modSaveData) {
-				str += '<div style="border-bottom:1px dashed rgba(255,255,255,0.2);clear:both;overflow:hidden;padding:4px 0px;">';
-				str += '<div style="float:left;width:49%;text-align:left;overflow:hidden;"><b>' + i + '</b>';
-				if (Game.mods[i]) str += ' (loaded)';
-				str += '</div>';
-				str += '<div style="float:right;width:49%;text-align:right;overflow:hidden;">' + Game.modSaveData[i].length + ' chars <a class="option warning" style="padding:0px 2px;font-size:10px;margin:0px;vertical-align:top;" ' + Game.clickStr + '="Game.deleteModData(\'' + i + '\');PlaySound(\'snd/tick.mp3\');Game.ClosePrompt();Game.CheckModData();">X</a>';
-				str += '</div>';
-				str += '</div>';
-				modsN++;
-			}
-			if (modsN == 0) str += 'No mod data present.';
-			else str += '<div><a class="option warning" style="font-size:11px;margin-top:4px;" ' + Game.clickStr + '="Game.deleteAllModData();PlaySound(\'snd/tick.mp3\');Game.ClosePrompt();Game.CheckModData();">Delete all</a></div>';
-			Game.Prompt('<h3>Mod data</h3><div class="block">These are the mods present in your save data. You may delete some of this data to make your save file smaller.</div><div class="block" style="font-size:11px;">' + str + '</div>', ['Back']);
-		}
-
-		Game.LoadMod = LoadScript
-
-
-
-		if (false) {
-			//EXAMPLE MOD
-			Game.registerMod('test mod', {
-				/*
-					what this example mod does:
-					-double your CpS
-					-display a little popup for half a second whenever you click the big cookie
-					-add a little intro text above your bakery name, and generate that intro text at random if you don't already have one
-					-save and load your intro text
-				*/
-				init: function () {
-					Game.registerHook('reincarnate', function () { Game.mods['test mod'].addIntro(); });
-					Game.registerHook('check', function () { if (!Game.playerIntro) { Game.mods['test mod'].addIntro(); } });
-					Game.registerHook('click', function () { Game.Notify(choose(['A good click.', 'A solid click.', 'A mediocre click.', 'An excellent click!']), '', 0, 0.5); });
-					Game.registerHook('cps', function (cps) { return cps * 2; });
-				},
-				save: function () {
-					//note: we use stringified JSON for ease and clarity but you could store any type of string
-					return JSON.stringify({ text: Game.playerIntro })
-				},
-				load: function (str) {
-					var data = JSON.parse(str);
-					if (data.text) Game.mods['test mod'].addIntro(data.text);
-				},
-				addIntro: function (text) {
-					//note: this is not a mod hook, just a function that's part of the mod
-					Game.playerIntro = text || choose(['oh snap, it\'s', 'watch out, it\'s', 'oh no! here comes', 'hide your cookies, for here comes', 'behold! it\'s']);
-					if (!l('bakerySubtitle')) l('bakeryName').insertAdjacentHTML('afterend', '<div id="bakerySubtitle" class="title" style="text-align:center;position:absolute;left:0px;right:0px;bottom:32px;font-size:12px;pointer-events:none;text-shadow:0px 1px 1px #000,0px 0px 4px #f00;opacity:0.8;"></div>');
-					l('bakerySubtitle').textContent = '~' + Game.playerIntro + '~';
-				},
-			});
-		}
-
-
-
+		
 		//replacing an existing canvas picture with a new one at runtime : Game.Loader.Replace('perfectCookie.png','imperfectCookie.png');
 		//upgrades and achievements can use other pictures than icons.png; declare their icon with [posX,posY,'http://example.com/myIcons.png']
 		//check out the "UNLOCKING STUFF" section to see how unlocking achievs and upgrades is done
@@ -2092,16 +2133,16 @@ Game.Launch = function () {
 			if (this.origin == 'store') {
 				X = Game.windowW - 332 - width;
 				Y = Game.mouseY - 32;
-				if (Game.onCrate) Y = Game.onCrate.getBoundingClientRect().top - 42;
+				if (Game.onCrate) Y = Game.onCrate.getBounds().top - 42;
 				Y = Math.max(0, Math.min(Game.windowH - height - 44, Y));
 				/*this.tta.style.right='308px';//'468px';
 				this.tta.style.left='auto';
-				if (Game.onCrate) Y=Game.onCrate.getBoundingClientRect().top-2;
+				if (Game.onCrate) Y=Game.onCrate.getBounds().top-2;
 				this.tta.style.top=Math.max(0,Math.min(Game.windowH-this.tt.clientHeight-64,Y-48))+'px';*/
 			}
 			else {
 				if (Game.onCrate) {
-					var rect = Game.onCrate.getBoundingClientRect();
+					var rect = Game.onCrate.getBounds();
 					rect = { left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom };
 					if (rect.left == 0 && rect.top == 0)//if we get that bug where we get stuck in the top-left, move to the mouse (REVISION : just do nothing)
 					{ return false;/*rect.left=Game.mouseX-24;rect.right=Game.mouseX+24;rect.top=Game.mouseY-24;rect.bottom=Game.mouseY+24;*/ }
@@ -2137,7 +2178,7 @@ Game.Launch = function () {
 					Y = Math.max(0, Math.min(Game.windowH - height - 64, Y));
 				}
 				else if (this.origin == 'this' && this.from) {
-					var rect = this.from.getBoundingClientRect();
+					var rect = this.from.getBounds();
 					X = (rect.left + rect.right) / 2 - width / 2 - 8;
 					Y = (rect.top) - this.tt.clientHeight - 48;
 					X = Math.max(0, Math.min(Game.windowW - width - 16, X));
@@ -2307,17 +2348,6 @@ Game.Launch = function () {
 		Game.GrabData();
 
 
-		Game.useLocalStorage = 1;
-		Game.localStorageGet = function (key) {
-			var local = 0;
-			try { local = window.localStorage.getItem(key); } catch (exception) { }
-			return local;
-		}
-		Game.localStorageSet = function (key, str) {
-			var local = 0;
-			try { local = window.localStorage.setItem(key, str); } catch (exception) { }
-			return local;
-		}
 		//window.localStorage.clear();//won't switch back to cookie-based if there is localStorage info
 
 		/*=====================================================================================
@@ -2540,9 +2570,9 @@ Game.Launch = function () {
 					}
 					else {
 						str = escape(str);
-						localStorageSet(Game.SaveTo, str);//aaand save
+						Game.localStorageSet(Game.SaveTo, str);//aaand save
 						if (App) App.save(str);
-						if (!localStorageGet(Game.SaveTo)) {
+						if (!Game.localStorageGet(Game.SaveTo)) {
 							Game.Notify(loc("Error while saving"), loc("Export your save instead!"));
 						}
 						else if (document.hasFocus()) {
@@ -2579,7 +2609,7 @@ Game.Launch = function () {
 			//for when Cookie Clicker won't load and you need your save
 			console.log('===================================================');
 			console.log('This is your save data. Copypaste it (without quotation marks) into another version using the "Import save" feature.');
-			console.log(localStorageGet(Game.SaveTo));
+			console.log(Game.localStorageGet(Game.SaveTo));
 		}
 		Game.LoadSave = function (data, ignoreVersionIssues) {
 			var str = '';
@@ -2590,7 +2620,7 @@ Game.Launch = function () {
 					return false;
 				}
 				if (Game.useLocalStorage) {
-					var local = localStorageGet(Game.SaveTo);
+					var local = Game.localStorageGet(Game.SaveTo);
 					if (!local)//no localstorage save found? let's get the cookie one last time
 					{
 						if (document.cookie.indexOf(Game.SaveTo) >= 0) {
@@ -3858,7 +3888,7 @@ Game.Launch = function () {
 		Game.PurchaseHeavenlyUpgrade = function (what) {
 			//if (Game.Has('Neuromancy')) Game.UpgradesById[what].toggle(); else
 			if (Game.UpgradesById[what].buy()) {
-				if (l('heavenlyUpgrade' + what)) { var rect = l('heavenlyUpgrade' + what).getBoundingClientRect(); Game.SparkleAt((rect.left + rect.right) / 2, (rect.top + rect.bottom) / 2 - 24); }
+				if (l('heavenlyUpgrade' + what)) { var rect = l('heavenlyUpgrade' + what).getBounds(); Game.SparkleAt((rect.left + rect.right) / 2, (rect.top + rect.bottom) / 2 - 24); }
 				//Game.BuildAscendTree();
 			}
 		}
@@ -5596,7 +5626,7 @@ Game.Launch = function () {
 			}
 		}
 		Game.SparkleOn = function (el) {
-			var rect = el.getBoundingClientRect();
+			var rect = el.getBounds();
 			Game.SparkleAt((rect.left + rect.right) / 2, (rect.top + rect.bottom) / 2 - 24);
 		}
 
@@ -5927,7 +5957,7 @@ Game.Launch = function () {
 						if (true)//lang!=locId)
 						{
 							PlaySound('snd/tick.mp3');
-							localStorageSet('CookieClickerLang', lang);
+							Game.localStorageSet('CookieClickerLang', lang);
 							Game.toSave = true;
 							Game.toReload = true;
 						}
@@ -7329,7 +7359,7 @@ Game.Launch = function () {
 					PlaySound('snd/upgrade.mp3', 0.6);
 					Game.LoadMinigames();
 					me.refresh();
-					if (l('productLevel' + me.id)) { var rect = l('productLevel' + me.id).getBoundingClientRect(); Game.SparkleAt((rect.left + rect.right) / 2, (rect.top + rect.bottom) / 2 - 24); }
+					if (l('productLevel' + me.id)) { var rect = l('productLevel' + me.id).getBounds(); Game.SparkleAt((rect.left + rect.right) / 2, (rect.top + rect.bottom) / 2 - 24); }
 					if (me.minigame && me.minigame.onLevel) me.minigame.onLevel(me.level);
 				})();
 			};
@@ -12278,11 +12308,6 @@ Game.Launch = function () {
 		});
 
 		//end of buffs
-		BeautifyAll();
-		Game.vanilla = 0;//everything we create beyond this will not be saved in the default save
-
-		Game.runModHook('create');
-
 		/*=====================================================================================
 		GRANDMAPOCALYPSE
 		=======================================================================================*/
@@ -12733,7 +12758,7 @@ Game.Launch = function () {
 
 				Game.ToggleSpecialMenu(1);
 
-				if (l('specialPic')) { var rect = l('specialPic').getBoundingClientRect(); Game.SparkleAt((rect.left + rect.right) / 2, (rect.top + rect.bottom) / 2); }
+				if (l('specialPic')) { var rect = l('specialPic').getBounds(); Game.SparkleAt((rect.left + rect.right) / 2, (rect.top + rect.bottom) / 2); }
 
 				if (Game.santaLevel >= 6) Game.Win('Coming to town');
 				if (Game.santaLevel >= 14) Game.Win('All hail Santa');
@@ -13144,7 +13169,7 @@ Game.Launch = function () {
 				//starry background on ascend screen
 				var w = Game.Background.canvas.width;
 				var h = Game.Background.canvas.height;
-				var b = Game.ascendl.getBoundingClientRect();
+				var b = Game.ascendl.getBounds();
 				var x = (b.left + b.right) / 2;
 				var y = (b.top + b.bottom) / 2;
 				Game.Background.globalAlpha = 0.5;
@@ -13815,8 +13840,7 @@ Game.Launch = function () {
 				if (me.minigame && me.minigame.onRuinTheFun) me.minigame.onRuinTheFun();
 			}
 			if (!silent) {
-				if (Game.prefs.popups) Game.Popup('Thou doth ruineth the fun!');
-				else Game.Notify('Thou doth ruineth the fun!', 'You\'re free. Free at last.', [11, 5]);
+				Game.Notify('Thou doth ruineth the fun!', 'You\'re free. Free at last.', [11, 5]);
 			}
 			return 'You feel a bitter taste in your mouth...';
 		}
@@ -14000,13 +14024,23 @@ Game.Launch = function () {
 
 		//Game.runModHook('init');
 
+		BeautifyAll();
+		Game.vanilla = 0;//everything we create beyond this will not be saved in the default save
 
-		if (!Game.LoadSave()) {//try to load the save when we open the page. if this fails, try to brute-force it half a second later
-			setTimeout(function () {
-				var local = Game.localStorageGet(Game.SaveTo);
-				Game.LoadSave(local);
-			}, 500);
+		Game.launchMods();
+
+		Game.runModHook('create');
+
+		if (!App) {
+			if (!Game.LoadSave()) {//try to load the save when we open the page. if this fails, try to brute-force it half a second later
+				setTimeout(function () {
+					var local = Game.localStorageGet(Game.SaveTo);
+					Game.LoadSave(local);
+				}, 500);
+			}
 		}
+		else if (App.saveData) setTimeout(function () { Game.LoadSave(App.saveData); }, 100);
+		else setTimeout(function () { Game.LoadSave(); }, 100);
 
 		Game.ready = 1;
 		setTimeout(function () { if (typeof showAds === 'undefined' && (!l('detectAds') || l('detectAds').clientHeight < 1) || true) Game.addClass('noAds'); }, 500);
@@ -14014,12 +14048,40 @@ Game.Launch = function () {
 		l('javascriptError').style.display = 'none';
 		Game.Loop();
 		Game.Draw();
+
+		PlayCue('launch');
+
+		if (!EN) {
+			var adaptWidth = function (node) {
+				var el = node.firstChild;
+				var width = el.clientWidth;
+				if (el.classList.contains('subButton')) {
+					if (width / 95 > 1) el.style.padding = '6px 0px';
+				}
+				width = width / 95;
+				if (width > 1) {
+					el.style.fontSize = (parseInt(window.getComputedStyle(el).fontSize) * 1 / width) + 'px';
+					el.style.transform = 'scale(1,' + (width) + ')';
+				}
+			}
+			l('prefsButton').firstChild.innerHTML = loc("Options");
+			l('statsButton').firstChild.innerHTML = loc("Stats");
+			l('logButton').firstChild.innerHTML = loc("Info");
+			l('legacyButton').firstChild.innerHTML = loc("Legacy");
+			adaptWidth(l('prefsButton'));
+			adaptWidth(l('statsButton'));
+			adaptWidth(l('logButton'));
+			adaptWidth(l('legacyButton'));
+			l('checkForUpdate').childNodes[0].textContent = loc("New update!");
+			l('buildingsTitle').childNodes[0].textContent = loc("Buildings");
+			l('storeTitle').childNodes[0].textContent = loc("Store");
+		}
 	}
 	/*=====================================================================================
 	LOGIC
 	=======================================================================================*/
 	Game.Logic = function () {
-		Game.bounds = Game.l.getBoundingClientRect();
+		Game.bounds = Game.l.getBounds();
 
 		if (!Game.OnAscend && Game.AscendTimer == 0) {
 			for (var i in Game.Objects) {
@@ -14078,6 +14140,7 @@ Game.Launch = function () {
 			if (Game.milkProgress >= 10) Game.Unlock('Kitten marketeers');
 			if (Game.milkProgress >= 11) Game.Unlock('Kitten analysts');
 			if (Game.milkProgress >= 12) Game.Unlock('Kitten executives');
+			if (Game.milkProgress >= 13) Game.Unlock('Kitten admins');
 			Game.milkH = Math.min(1, Game.milkProgress) * 0.35;
 			Game.milkHd += (Game.milkH - Game.milkHd) * 0.02;
 
@@ -14092,9 +14155,8 @@ Game.Launch = function () {
 			if (Game.researchT == 0 && Game.nextResearch) {
 				if (!Game.Has(Game.UpgradesById[Game.nextResearch].name)) {
 					Game.Unlock(Game.UpgradesById[Game.nextResearch].name);
-					if (Game.prefs.popups) Game.Popup('Researched : ' + Game.UpgradesById[Game.nextResearch].name);
-					else Game.Notify('Research complete', 'You have discovered : <b>' + Game.UpgradesById[Game.nextResearch].name + '</b>.', Game.UpgradesById[Game.nextResearch].icon);
-				}
+					Game.Notify(loc("Research complete"), loc("You have discovered: <b>%1</b>.", Game.UpgradesById[Game.nextResearch].dname), Game.UpgradesById[Game.nextResearch].icon);
+                }
 				Game.nextResearch = 0;
 				Game.researchT = -1;
 				Game.recalculateGains = 1;
@@ -14105,9 +14167,8 @@ Game.Launch = function () {
 			}
 			if (Game.seasonT <= 0 && Game.season != '' && Game.season != Game.baseSeason && !Game.Has('Eternal seasons')) {
 				var str = Game.seasons[Game.season].over;
-				if (Game.prefs.popups) Game.Popup(str);
-				else Game.Notify(str, '', Game.seasons[Game.season].triggerUpgrade.icon);
-				if (Game.Has('Season switcher')) { Game.Unlock(Game.seasons[Game.season].trigger); Game.seasons[Game.season].triggerUpgrade.bought = 0; }
+				Game.Notify(Game.seasons[Game.season].over, '', Game.seasons[Game.season].triggerUpgrade.icon);
+                if (Game.Has('Season switcher')) { Game.Unlock(Game.seasons[Game.season].trigger); Game.seasons[Game.season].triggerUpgrade.bought = 0; }
 				Game.season = Game.baseSeason;
 				Game.seasonT = -1;
 			}
@@ -14204,6 +14265,7 @@ Game.Launch = function () {
 				if (Game.Has('Classic dairy selection')) Game.Unlock('Milk selector');
 				if (Game.Has('Basic wallpaper assortment')) Game.Unlock('Background selector');
 				if (Game.Has('Golden cookie alert sound')) Game.Unlock('Golden cookie sound selector');
+				if (Game.Has('Sound test')) Game.Unlock('Jukebox');
 
 				if (Game.Has('Prism heart biscuits')) Game.Win('Lovely cookies');
 				if (Game.season == 'easter') {
@@ -14264,6 +14326,7 @@ Game.Launch = function () {
 				if (minAmount >= 500) { Game.Win('Quincentennial'); Game.Unlock('Pure pitch-black chocolate butter biscuit'); }
 				if (minAmount >= 550) { Game.Win('Quincentennial and a half'); Game.Unlock('Cosmic chocolate butter biscuit'); }
 				if (minAmount >= 600) { Game.Win('Sexcentennial'); Game.Unlock('Butter biscuit (with butter)'); }
+				if (minAmount >= 650) { Game.Win('Sexcentennial and a half'); Game.Unlock('Everybutter biscuit'); }
 
 				if (Game.handmadeCookies >= 1000) { Game.Win('Clicktastic'); Game.Unlock('Plastic mouse'); }
 				if (Game.handmadeCookies >= 100000) { Game.Win('Clickathlon'); Game.Unlock('Iron mouse'); }
@@ -14278,6 +14341,7 @@ Game.Launch = function () {
 				if (Game.handmadeCookies >= 100000000000000000000000) { Game.Win('All the other kids with the pumped up clicks'); Game.Unlock('Technobsidian mouse'); }
 				if (Game.handmadeCookies >= 10000000000000000000000000) { Game.Win('One...more...click...'); Game.Unlock('Plasmarble mouse'); }
 				if (Game.handmadeCookies >= 1000000000000000000000000000) { Game.Win('Clickety split'); Game.Unlock('Miraculite mouse'); }
+				if (Game.handmadeCookies >= 100000000000000000000000000000) { Game.Win('Ain\'t that a click in the head'); Game.Unlock('Aetherice mouse'); }
 
 				if (Game.cookiesEarned < Game.cookies) Game.Win('Cheated cookies taste awful');
 
@@ -14298,15 +14362,18 @@ Game.Launch = function () {
 				if (buildingsOwned >= 100) Game.Win('Builder');
 				if (buildingsOwned >= 500) Game.Win('Architect');
 				if (buildingsOwned >= 1000) Game.Win('Engineer');
-				if (buildingsOwned >= 2000) Game.Win('Lord of Constructs');
-				if (buildingsOwned >= 4000) Game.Win('Grand design');
-				if (buildingsOwned >= 8000) Game.Win('Ecumenopolis');
+				if (buildingsOwned >= 2500) Game.Win('Lord of Constructs');
+				if (buildingsOwned >= 5000) Game.Win('Grand design');
+				if (buildingsOwned >= 7500) Game.Win('Ecumenopolis');
+				if (buildingsOwned >= 10000) Game.Win('Myriad');
 				if (Game.UpgradesOwned >= 20) Game.Win('Enhancer');
 				if (Game.UpgradesOwned >= 50) Game.Win('Augmenter');
 				if (Game.UpgradesOwned >= 100) Game.Win('Upgrader');
 				if (Game.UpgradesOwned >= 200) Game.Win('Lord of Progress');
 				if (Game.UpgradesOwned >= 300) Game.Win('The full picture');
 				if (Game.UpgradesOwned >= 400) Game.Win('When there\'s nothing left to add');
+				if (Game.UpgradesOwned >= 500) Game.Win('Kaizen');
+				if (Game.UpgradesOwned >= 600) Game.Win('Beyond quality');
 				if (buildingsOwned >= 4000 && Game.UpgradesOwned >= 300) Game.Win('Polymath');
 				if (buildingsOwned >= 8000 && Game.UpgradesOwned >= 400) Game.Win('Renaissance baker');
 
@@ -14318,7 +14385,7 @@ Game.Launch = function () {
 					if (kittens >= 10) Game.Win('Jellicles');
 				}
 
-				if (Game.cookiesEarned >= 10000000000000 && !Game.HasAchiev('You win a cookie')) { Game.Win('You win a cookie'); Game.Earn(1); }
+				if (Game.cookiesEarned >= 1e14 && !Game.HasAchiev('You win a cookie')) { Game.Win('You win a cookie'); Game.Earn(1); }
 
 				if (Game.shimmerTypes['golden'].n >= 4) Game.Win('Four-leaf cookie');
 
@@ -14342,7 +14409,7 @@ Game.Launch = function () {
 				}
 
 				if (!Game.HasAchiev('Cookie-dunker') && Game.LeftBackground && Game.milkProgress > 0.1 && (Game.LeftBackground.canvas.height * 0.4 + 256 / 2 - 16) > ((1 - Game.milkHd) * Game.LeftBackground.canvas.height)) Game.Win('Cookie-dunker');
-				//&& l('bigCookie').getBoundingClientRect().bottom>l('milk').getBoundingClientRect().top+16 && Game.milkProgress>0.1) Game.Win('Cookie-dunker');
+				//&& l('bigCookie').getBounds().bottom>l('milk').getBounds().top+16 && Game.milkProgress>0.1) Game.Win('Cookie-dunker');
 
 				Game.runModHook('check');
 			}
@@ -14361,9 +14428,9 @@ Game.Launch = function () {
 		if (Game.T % (Game.fps * 2) == 0) {
 			var title = 'Cookie Clicker';
 			if (Game.season == 'fools') title = 'Cookie Baker';
-			document.title = (Game.OnAscend ? 'Ascending! ' : '') + Beautify(Game.cookies) + ' ' + (Game.cookies == 1 ? 'cookie' : 'cookies') + ' - ' + title;
+			document.title = (Game.OnAscend ? (EN ? 'Ascending! ' : (loc("Ascending") + ' | ')) : '') + loc("%1 cookie", LBeautify(Game.cookies)) + ' - ' + title;
 		}
-		if (Game.T % 15 == 0) {
+        if (Game.T % 15 == 0) {
 			//written through the magic of "hope for the best" maths
 			var chipsOwned = Game.HowMuchPrestige(Game.cookiesReset);
 			var ascendNowToOwn = Math.floor(Game.HowMuchPrestige(Game.cookiesReset + Game.cookiesEarned));
@@ -14379,25 +14446,29 @@ Game.Launch = function () {
 			var startDate = Game.sayTime(timeInSeconds * Game.fps, -1);
 
 			var str = '';
-			str += 'You\'ve been on this run for <b>' + (startDate == '' ? 'not very long' : (startDate)) + '</b>.<br>';
+			if (EN) str += 'You\'ve been on this run for <b>' + (startDate == '' ? 'not very long' : (startDate)) + '</b>.<br>';
+			else str += loc("You've been on this run for <b>%1</b>.", startDate) + '<br>';
 			str += '<div class="line"></div>';
 			if (Game.prestige > 0) {
-				str += 'Your prestige level is currently <b>' + Beautify(Game.prestige) + '</b>.<br>(CpS +' + Beautify(Game.prestige) + '%)';
+				str += loc("Your prestige level is currently <b>%1</b>.<br>(CpS +%2%)", [Beautify(Game.prestige), Beautify(Game.prestige)]);
 				str += '<div class="line"></div>';
 			}
 			switch (ascendNowToGet) {
 				case 0:
-					str += 'Ascending now would grant you no prestige.';
+					str += loc("Ascending now would grant you no prestige.");;
 					break;
 				case 1:
-					str += 'Ascending now would grant you<br><b>1 prestige level</b> (+1% CpS)<br>and <b>1 heavenly chip</b> to spend.';
+					str += loc("Ascending now would grant you<br><b>1 prestige level</b> (+1% CpS)<br>and <b>1 heavenly chip</b> to spend.");
 					break;
 				default:
-					str += 'Ascending now would grant you<br><b>' + Beautify(ascendNowToGet) + ' prestige levels</b> (+' + Beautify(ascendNowToGet) + '% CpS)<br>and <b>' + Beautify(ascendNowToGet) + ' heavenly chips</b> to spend.';
+					str += loc("Ascending now would grant you<br><b>%1 prestige levels</b> (+%2% CpS)<br>and <b>%3 heavenly chips</b> to spend.", [Beautify(ascendNowToGet), Beautify(ascendNowToGet), Beautify(ascendNowToGet)]);
 					break;
 			}
-			str += '<div class="line"></div>';
-			str += 'You need <b>' + Beautify(cookiesToNext) + ' more cookies</b> for the next level.<br>';
+			if (cookiesToNext >= 0) {
+				//note: cookiesToNext can be negative at higher HC amounts due to precision loss. we simply hide it in such cases, as this usually only occurs when the gap is small and rapidly overcome anyway
+				str += '<div class="line"></div>';
+				str += loc("You need <b>%1 more cookies</b> for the next level.", Beautify(cookiesToNext)) + '<br>';
+			}
 			l('ascendTooltip').innerHTML = str;
 
 			if (ascendNowToGet > 0)//show number saying how many chips you'd get resetting now
@@ -14420,7 +14491,8 @@ Game.Launch = function () {
 			//if (percent>=1) {Game.ascendMeter.className='';} else Game.ascendMeter.className='filling';
 		}
 		//Game.ascendMeter.style.right=Math.floor(Math.max(0,1-Game.ascendMeterPercent)*100)+'px';
-		Game.ascendMeter.style.transform = 'translate(' + Math.floor(-Math.max(0, 1 - Game.ascendMeterPercent) * 100) + 'px,0px)';
+		Game.ascendMeter.style.backgroundPosition = (-Game.T * 0.5 - Game.ascendMeterPercent * 100) + 'px';
+    	Game.ascendMeter.style.transform = 'translate(' + Math.floor(-Math.max(0, 1 - Game.ascendMeterPercent) * 100) + 'px,0px)';
 		Game.ascendMeterPercent += (Game.ascendMeterPercentT - Game.ascendMeterPercent) * 0.1;
 
 		Game.NotesLogic();
@@ -14453,6 +14525,10 @@ Game.Launch = function () {
 				if (me.minigameLoading) { canSave = false; break; }
 			}
 			if (canSave) Game.WriteSave();
+		}
+		if (!Game.toSave && !Game.isSaving) {
+			if (Game.toReload) { Game.toReload = false; if (!App) { location.reload(); } else { App.reload(); } }
+			if (Game.toQuit) { Game.toQuit = false; if (!App) { window.close(); } else { App.quit(); } }
 		}
 
 		//every hour: get server data (ie. update notification, patreon data)
@@ -14487,11 +14563,12 @@ Game.Launch = function () {
 				}
 				str = [str.slice(0, spacePos), add, str.slice(spacePos)].join('');
 			}
-			if (str.length > 11 && !Game.mobile) unit = '<br>cookies';
-			str += unit;
+			str = loc("%1 cookie", { n: Math.round(Game.cookiesd), b: str });
+			if (str.length > 14) str = str.replace(' ', '<br>');
+
 			if (Game.prefs.monospace) str = '<span class="monospace">' + str + '</span>';
-			str = str + '<div style="font-size:50%;"' + (Game.cpsSucked > 0 ? ' class="warning"' : '') + '>per second : ' + Beautify(Game.cookiesPs * (1 - Game.cpsSucked), 1) + '</div>';//display cookie amount
-			l('cookies').innerHTML = str;
+			str = str + '<div id="cookiesPerSecond"' + (Game.cpsSucked > 0 ? ' class="wrinkled"' : '') + '>' + loc("per second:") + ' ' + Beautify(Game.cookiesPs * (1 - Game.cpsSucked), 1) + '</div>';
+           l('cookies').innerHTML = str;
 			l('compactCookies').innerHTML = str;
 			Timer.track('cookie amount');
 
@@ -14505,7 +14582,8 @@ Game.Launch = function () {
 				//if (Game.prefs.monospace) {l('cookies').className='title monospace';} else {l('cookies').className='title';}
 				var lastLocked = 0;
 				for (var i in Game.Objects) {
-					var me = Game.Objects[i]
+					var me = Game.Objects[i];
+
 					//make products full-opacity if we can buy them
 					var classes = 'product';
 					var price = me.bulkPrice;
@@ -14519,7 +14597,7 @@ Game.Launch = function () {
 				//make upgrades full-opacity if we can buy them
 				var lastPrice = 0;
 				for (var i in Game.UpgradesInStore) {
-					var me = Game.UpgradesInStore[i]
+					var me = Game.UpgradesInStore[i];
 					if (!me.bought) {
 						var price = me.getPrice();
 						var canBuy = me.canBuy();//(Game.cookies>=price);
@@ -14548,14 +14626,14 @@ Game.Launch = function () {
 				Game.l.style.filter = 'hue-rotate(' + ((Game.T * 5) % 360) + 'deg) brightness(' + (150 - 50 * pulse) + '%)';
 				Game.l.style.webkitFilter = 'hue-rotate(' + ((Game.T * 5) % 360) + 'deg) brightness(' + (150 - 50 * pulse) + '%)';
 				Game.l.style.transform = 'scale(' + (1.02 - 0.02 * pulse) + ',' + (1.02 - 0.02 * pulse) + ') rotate(' + (Math.sin(Game.T * 0.5) * 0.5) + 'deg)';
-				l('wrapper').style.overflowX = 'hidden';
-				l('wrapper').style.overflowY = 'hidden';
+				Game.wrapper.style.overflowX = 'hidden';
+				Game.wrapper.style.overflowY = 'hidden';
 			} else {
 				Game.l.style.filter = '';
 				Game.l.style.webkitFilter = '';
 				Game.l.style.transform = '';
-				l('wrapper').style.overflowX = '';
-				l('wrapper').style.overflowY = '';
+				Game.wrapper.style.overflowX = '';
+				Game.wrapper.style.overflowY = '';
 			}
 
 			Timer.clean();
@@ -14565,7 +14643,6 @@ Game.Launch = function () {
 		}
 
 		Game.NotesDraw(); Timer.track('notes');
-		//Game.tooltip.update();//changed to only update when the mouse is moved
 
 		Game.runModHook('draw');
 
@@ -14591,6 +14668,7 @@ Game.Launch = function () {
 
 		var time = Date.now();
 
+
 		//latency compensator
 		Game.accumulatedDelay += ((time - Game.time) - 1000 / Game.fps);
 		if (Game.prefs.timeout && time - Game.lastActivity >= 1000 * 60 * 5) {
@@ -14601,6 +14679,8 @@ Game.Launch = function () {
 
 		Game.accumulatedDelay = Math.min(Game.accumulatedDelay, 1000 * 5);//don't compensate over 5 seconds; if you do, something's probably very wrong
 		Game.time = time;
+		
+		
 		while (Game.accumulatedDelay > 0) {
 			Game.Logic();
 			Game.accumulatedDelay -= 1000 / Game.fps;//as long as we're detecting latency (slower than target fps), execute logic (this makes drawing slower but makes the logic behave closer to correct target fps)
@@ -14608,13 +14688,14 @@ Game.Launch = function () {
 		Game.catchupLogic = 0;
 		Timer.track('logic');
 		Timer.say('END LOGIC');
+		/*
 		if (!Game.prefs.altDraw) {
 			if (Game.prefs.focus || Game.CheckFocus() || Game.loopT % 10 == 0) requestAnimationFrame(Game.Draw);
 			//if (document.hasFocus() || Game.loopT%5==0) Game.Draw();
 		}
-		else requestAnimationFrame(Game.Draw);
+		else requestAnimationFrame(Game.Draw);*/
 
-		//if (!Game.CheckFocus()) Game.tooltip.hide();
+		if (Game.visible) requestAnimationFrame(Game.Draw);
 
 		Timer.say('END');
 		if (Game.sesame) {
@@ -14656,19 +14737,57 @@ Game.Launch();
 
 window.onload = function () {
 	if (!Game.ready) {
-		if (top != self) Game.ErrorFrame();
-		else {
-			console.log('[=== ' + choose([
-				'Oh, hello!',
-				'hey, how\'s it hangin',
-				'About to cheat in some cookies or just checking for bugs?',
-				'Remember : cheated cookies taste awful!',
-				'Hey, Orteil here. Cheated cookies taste awful... or do they?',
-				'Yahaha! you found me!',
-			]) + ' ===]');
-			Game.Load();
-			//try {Game.Load();}
-			//catch(err) {console.log('ERROR : '+err.message);}
+		var loadLangAndLaunch = function (lang, firstLaunch) {
+			if (!firstLaunch) Game.localStorageSet('CookieClickerLang', lang);
+
+			//LoadLang('../Cookie Clicker Localization/EN.js',function(lang){return function(){
+			LoadLang('loc/EN.js?v=' + Game.version, function (lang) {
+				return function () {
+					locStringsFallback = locStrings;
+					LoadLang('loc/' + lang + '.js?v=' + Game.version, function () {
+						var launch = function () {
+							Game.Launch();
+							if (top != self) Game.ErrorFrame();
+							else {
+								console.log('[=== ' + choose([
+									'Oh, hello!',
+									'hey, how\'s it hangin',
+									'About to cheat in some cookies or just checking for bugs?',
+									'Remember : cheated cookies taste awful!',
+									'Hey, Orteil here. Cheated cookies taste awful... or do they?',
+								]) + ' ===]');
+								Game.Load(function () { Game.Init(); if (firstLaunch) Game.showLangSelection(true); });
+								//try {Game.Load(Game.Init);}
+								//catch(err) {console.log('ERROR : '+err.message);}
+							}
+						}
+						if (App && App.loadMods) App.loadMods(launch);
+						else launch();
+					});
+				}
+			}(lang));
 		}
+
+		var showLangSelect = function (callback) {
+			var str = '';
+			for (var i in Langs) {
+				var lang = Langs[i];
+				str += '<div class="langSelectButton title" id="langSelect-' + i + '">' + lang.name + '</div>';
+			}
+			l('offGameMessage').innerHTML =
+				'<div class="title" id="languageSelectHeader">Language</div>' +
+				'<div class="line" style="max-width:300px;"></div>' +
+				str;
+			for (var i in Langs) {
+				var lang = Langs[i];
+				AddEvent(l('langSelect-' + i), 'click', function (lang) { return function () { callback(lang); }; }(i));
+				AddEvent(l('langSelect-' + i), 'mouseover', function (lang) { return function () { PlaySound('snd/smallTick.mp3', 0.75); l('languageSelectHeader').innerHTML = Langs[lang].changeLanguage; }; }(i));
+			}
+		}
+
+		var lang = Game.localStorageGet('CookieClickerLang');
+		if (App && !lang) showLangSelect(loadLangAndLaunch);
+		else if (!lang) { loadLangAndLaunch('EN', true); }
+		else loadLangAndLaunch(lang);
 	}
 };

@@ -12517,7 +12517,7 @@ Game.Launch = function () {
 							w *= -4;
 							if (fancy) w += Math.sin((n + Game.T * 0.01) * Math.PI / 2) * 4;
 							var x = 0;
-							var y = (140/* *Game.BigCookieSize*/ + n * 16 + w) - 16;
+							var y = (140*Game.BigCookieSize + n * 16 + w) - 16;
 							if (x > -0.5 * rect.w && x < 0.5 * rect.w && y > -0.5 * rect.h && y < 0.5 * rect.h) {
 								var rot = 7.2;//(1/50)*360
 								if (i == 0 && fancy) rot -= Game.T * 0.1;

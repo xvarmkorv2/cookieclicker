@@ -7149,10 +7149,10 @@ Game.Launch = function () {
 
 				//these are a bit messy but ah well
 				if (!Game.touchEvents) {
-					AddEvent(me.l, 'click', function (e) { me.buy(); e.preventDefault(); });
+					AddEvent(me.l, 'click', (e) =>  { me.buy(); e.preventDefault(); });
 				}
 				else {
-					AddEvent(me.l, 'touchend', function (e) { me.buy(); e.preventDefault(); });
+					AddEvent(me.l, 'touchend', (e) => { me.buy(); e.preventDefault(); });
 				}
 			}
 		}

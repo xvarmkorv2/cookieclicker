@@ -14208,7 +14208,7 @@ Game.Launch = function () {
 			else {
 				switch (Game.BigCookieState) {
 					case 1: {
-						Game.BigCookieSize += (0.98 - Game.BigCookieSize) * 0.5;=
+						Game.BigCookieSize += (0.98 - Game.BigCookieSize) * 0.5;
 					}
 					case 2: {
 						Game.BigCookieSize += (1.05 - Game.BigCookieSize) * 0.5;

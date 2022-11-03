@@ -1265,7 +1265,7 @@ Game.Launch = function () {
 			'<div class="listing">&bull; game has been renamed to "Cookie Clicker" to avoid confusion</div>' +
 			'<div class="listing">&bull; can now click the big cookie to generate cookies for free</div>' +
 			'<div class="listing">&bull; removed fall damage</div>' +
-			//'<div class="listing">&bull; fixed various typos : player\'s name is now correctly spelled as "[bakeryName]"</div>'+
+			'<div class="listing">&bull; fixed various typos : player\'s name is now correctly spelled as "[bakeryName]"</div>'+
 			'<div class="listing">&bull; removed all references to computer-animated movie <i style="font-style:italic;">Hoodwinked!</i> (2005)</div>' +
 			'<div class="listing">&bull; went back in time and invented cookies and computer mice, ensuring Cookie Clicker would one day come to exist</div>' +
 			'<div class="listing">&bull; game now fully compliant with Geneva Conventions</div>' +
@@ -6074,8 +6074,7 @@ Game.Launch = function () {
 						'<div class="listing"><a class="option big title" ' + Game.clickStr + '="Game.ShowMenu(Game.onMenu);">Resume</a></div>';
 					break;
 				case 'log':
-					//str+=replaceAll('[bakeryName]',Game.bakeryName,Game.updateLog);
-					str += Game.updateLog;
+					str+=replaceAll('[bakeryName]',Game.bakeryName,Game.updateLog);
 					if (!Game.HasAchiev('Olden days')) str += '<div id="oldenDays" style="text-align:right;width:100%;"><div ' + Game.clickStr + '="Game.SparkleAt(Game.mouseX,Game.mouseY);PlaySound(\'snd/tick.mp3\');PlaySound(\'snd/shimmerClick.mp3\');Game.Win(\'Olden days\');Game.UpdateMenu();" class="icon" style="display:inline-block;transform:scale(0.5);cursor:pointer;width:48px;height:48px;background-position:' + (-12 * 48) + 'px ' + (-3 * 48) + 'px;"></div></div>';
 				case 'stats':
 					var buildingsOwned = 0;

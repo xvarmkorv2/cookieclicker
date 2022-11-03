@@ -14426,6 +14426,7 @@ Game.Launch = function () {
 			}
 
 			Game.cookiesd += (Game.cookies - Game.cookiesd) * 0.3;
+			if (isNaN(Game.cookiesd)) Game.cookiesd = 0;
 
 			if (Game.storeToRefresh) Game.RefreshStore();
 			if (Game.upgradesToRebuild) Game.RebuildUpgrades();

@@ -9322,11 +9322,13 @@ Game.Launch = function () {
 
 		var slots = ['Permanent upgrade slot I', 'Permanent upgrade slot II', 'Permanent upgrade slot III', 'Permanent upgrade slot IV', 'Permanent upgrade slot V'];
 		for (var i = 0; i < slots.length; i++) {
-			Game.Upgrades[slots[i]].descFunc = function (context) {
-				if (Game.permanentUpgrades[i] == -1) return this.desc + (context == 'stats' ? '' : '<br><b>' + loc("Click to activate.") + '</b>');
-				var upgrade = Game.UpgradesById[Game.permanentUpgrades[i]];
-				return '<div style="text-align:center;">' + loc("Current:") + ' ' + tinyIcon(upgrade.icon) + ' <b>' + upgrade.dname + '</b><div class="line"></div></div>' + this.ddesc + (context == 'stats' ? '' : '<br><b>' + loc("Click to activate.") + '</b>');
-			};
+			Game.Upgrades[slots[i]].descFunc = function (i) {
+				return function (context) {
+					if (Game.permanentUpgrades[i] == -1) return this.desc + (context == 'stats' ? '' : '<br><b>' + loc("Click to activate.") + '</b>');
+					var upgrade = Game.UpgradesById[Game.permanentUpgrades[i]];
+					return '<div style="text-align:center;">' + loc("Current:") + ' ' + tinyIcon(upgrade.icon) + ' <b>' + upgrade.dname + '</b><div class="line"></div></div>' + this.ddesc + (context == 'stats' ? '' : '<br><b>' + loc("Click to activate.") + '</b>');
+				};
+			}(i);
 		}
 
 		Game.PermanentSlotIcon = function (slot) {

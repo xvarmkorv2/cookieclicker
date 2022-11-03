@@ -1934,7 +1934,7 @@ Game.Launch = function () {
 		Game.windowH = window.innerHeight;
 		Game.scale = 1;
 
-		window.addEventListener('resize', function (e) {
+		AddEvent(window, 'resize', function (e) {
 			Game.resize();
 			if (App && App.onResize) App.onResize();
 		});
@@ -10785,10 +10785,8 @@ Game.Launch = function () {
 						if (me.name != this.name) { Game.Lock(me.name); Game.Unlock(me.name); }
 					}
 					if (Game.season != '' && Game.season != this.season) {
-						var str = Game.seasons[Game.season].over + '<div class="line"></div>';
-						if (Game.prefs.popups) Game.Popup(str);
-						else Game.Notify(str, '', Game.seasons[Game.season].triggerUpgrade.icon, 4);
-					}
+						Game.Notify(Game.seasons[Game.season].over + '<div class="line"></div>', '', Game.seasons[Game.season].triggerUpgrade.icon, 4);
+                    }
 					Game.season = this.season;
 					Game.seasonT = Game.getSeasonDuration();
 					Game.storeToRefresh = 1;
@@ -10804,9 +10802,8 @@ Game.Launch = function () {
 					if (me.bought && Game.season && me == Game.seasons[Game.season].triggerUpgrade) {
 						me.lose();
 						var str = Game.seasons[Game.season].over;
-						if (Game.prefs.popups) Game.Popup(str);
-						else Game.Notify(str, '', Game.seasons[Game.season].triggerUpgrade.icon);
-						if (Game.Has('Season switcher')) { Game.Unlock(Game.seasons[Game.season].trigger); Game.seasons[Game.season].triggerUpgrade.bought = 0; }
+						Game.Notify(Game.seasons[Game.season].over, '', Game.seasons[Game.season].triggerUpgrade.icon);
+                    	if (Game.Has('Season switcher')) { Game.Unlock(Game.seasons[Game.season].trigger); Game.seasons[Game.season].triggerUpgrade.bought = 0; }
 
 						Game.upgradesToRebuild = 1;
 						Game.recalculateGains = 1;
@@ -10818,8 +10815,8 @@ Game.Launch = function () {
 					else return true;
 				};
 
-				me.displayFuncWhenOwned = function () { return '<div style="text-align:center;">Time remaining :<br><b>' + (Game.Has('Eternal seasons') ? 'forever' : Game.sayTime(Game.seasonT, -1)) + '</b><div style="font-size:80%;">(Click again to cancel season)</div></div>'; }
-				me.timerDisplay = function () { if (!Game.Upgrades[me.name].bought || Game.Has('Eternal seasons')) return -1; else return 1 - Game.seasonT / Game.getSeasonDuration(); };
+				me.displayFuncWhenOwned = function () { return '<div style="text-align:center;">' + loc("Time remaining:") + '<br><b>' + (Game.Has('Eternal seasons') ? loc("forever") : Game.sayTime(Game.seasonT, -1)) + '</b><div style="font-size:80%;">(' + loc("Click again to cancel season") + ')</div></div>'; }
+				me.timerDisplay = function (upgrade) { return function () { if (!Game.Upgrades[upgrade.name].bought || Game.Has('Eternal seasons')) return -1; else return 1 - Game.seasonT / Game.getSeasonDuration(); } }(me);
 			}
 		}
 		Game.getSeasonDuration = function () { return Game.fps * 60 * 60 * 24; }

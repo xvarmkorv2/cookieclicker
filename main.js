@@ -3329,7 +3329,7 @@ Game.Launch = function () {
 		Game.setOnCrate = function (what) {
 			Game.onCrate = what;
 		}
-		Game.crate = function (me, context, forceClickStr, id) {
+		Game.crate = function (me, context, forceClickStr, id, style) {
 			//produce a crate with associated tooltip for an upgrade or achievement
 			//me is an object representing the upgrade or achievement
 			//context can be "store", "ascend", "stats" or undefined

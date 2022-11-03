@@ -11,7 +11,7 @@ http://orteil.dashnet.org
 
 var VERSION = 2.048;
 var BETA = 0;
-
+var App = typeof App === 'undefined' ? 0 : App;
 
 /*=====================================================================================
 MISC HELPER FUNCTIONS

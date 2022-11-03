@@ -11925,6 +11925,20 @@ Game.Launch = function () {
 
 		//end of achievements
 
+
+
+
+		for (var i in Game.Objects) {
+			if (Game.Objects[i].levelAchiev10) { Game.Objects[i].levelAchiev10.baseDesc = loc("Reach level <b>%1</b> %2.", [10, Game.Objects[i].plural]); Game.Objects[i].levelAchiev10.desc = Game.Objects[i].levelAchiev10.baseDesc; }
+		}
+
+
+
+		LocalizeUpgradesAndAchievs();
+
+
+
+
 		/*=====================================================================================
 		BUFFS
 		=======================================================================================*/

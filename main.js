@@ -7365,7 +7365,7 @@ Game.Launch = function () {
 
 			this.levelUp = function () {
 				var me = this
-				Game.spendLump(me.level + 1, loc("level up your %1", me.plural), function () {
+				Game.spendLump(me.level + 1, loc("level up your %1", me.plural), () => {
 					me.level += 1;
 					if (me.level >= 10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);
 					PlaySound('snd/upgrade.mp3', 0.6);

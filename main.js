@@ -6096,6 +6096,7 @@ Game.Launch = function () {
 				case 'log':
 					str+=replaceAll('[bakeryName]',Game.bakeryName,Game.updateLog);
 					if (!Game.HasAchiev('Olden days')) str += '<div id="oldenDays" style="text-align:right;width:100%;"><div ' + Game.clickStr + '="Game.SparkleAt(Game.mouseX,Game.mouseY);PlaySound(\'snd/tick.mp3\');PlaySound(\'snd/shimmerClick.mp3\');Game.Win(\'Olden days\');Game.UpdateMenu();" class="icon" style="display:inline-block;transform:scale(0.5);cursor:pointer;width:48px;height:48px;background-position:' + (-12 * 48) + 'px ' + (-3 * 48) + 'px;"></div></div>';
+					break;
 				case 'stats':
 					var buildingsOwned = 0;
 					buildingsOwned = Game.BuildingsOwned;

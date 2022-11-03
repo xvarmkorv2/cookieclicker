@@ -5777,6 +5777,18 @@ Game.Launch = function () {
 		Game.ConfirmPrompt = function () {
 			if (Game.promptOn && l('promptOption0') && l('promptOption0').style.display != 'none') FireEvent(l('promptOption0'), 'click');
 		}
+		Game.FocusPromptOption = function (dir, tryN) {
+			var id = Game.promptOptionFocus + dir;
+			if (id < 0) id = Game.promptOptionsN - 1;
+			if (id >= Game.promptOptionsN) id = 0;
+			while (id >= 0 && id < Game.promptOptionsN && (!l('promptOption' + id) || l('promptOption' + id).style.display == 'none')) { id += (dir || 1); }
+			if (l('promptOption' + id) && l('promptOption' + id).style.display != 'none') {
+				if (l('promptOption' + Game.promptOptionFocus)) l('promptOption' + Game.promptOptionFocus).classList.remove('focused');
+				Game.promptOptionFocus = id;
+				if (l('promptOption' + Game.promptOptionFocus)) l('promptOption' + Game.promptOptionFocus).classList.add('focused');
+			}
+			else if (!tryN && dir != 0) { Game.promptOptionFocus = id; Game.FocusPromptOption(dir, 1); }
+		}
 
 		/*=====================================================================================
 		MENUS
@@ -7763,7 +7775,11 @@ Game.Launch = function () {
 			}
 		}
 
-		Game.RefreshStore = function ()//refresh the store's buildings
+		Game.ClickProduct = function (what) {
+			Game.ObjectsById[what].buy();
+		}
+
+       Game.RefreshStore = function ()//refresh the store's buildings
 		{
 			for (var i in Game.Objects) {
 				Game.Objects[i].refresh();

@@ -13418,7 +13418,6 @@ Game.Launch = function () {
 							if (Game.cookiesPs >= 1000) pic = 'cookieShower3.png';
 							else if (Game.cookiesPs >= 500) pic = 'cookieShower2.png';
 							else if (Game.cookiesPs >= 50) pic = 'cookieShower1.png';
-							else pic = '';
 						}
 						if (pic != '') {
 							if (Game.elderWrathD >= 1 && !Game.prefs.notScary) opacity = 1 - ((Math.min(Game.elderWrathD, 1.5) - 1) / 0.5);

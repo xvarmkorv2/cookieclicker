@@ -1129,6 +1129,9 @@ Game.Launch = function () {
 		if (day >= easterDay - 7 && day <= easterDay) Game.baseSeason = 'easter';
 	}
 
+	Game.visible = true;
+	AddEvent(document, 'visibilitychange', function (e) { if (document.visibilityState === 'hidden') Game.visible = false; else Game.visible = true; });
+
 	{
 		'<div class="selectable">' +
 			'<div class="section">' + loc("Info") + '</div>' +

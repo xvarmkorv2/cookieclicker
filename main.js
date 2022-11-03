@@ -12056,6 +12056,7 @@ Game.Launch = function () {
 		new Game.buffType('frenzy', function (time, pow) {
 			return {
 				name: 'Frenzy',
+				dname: loc('Frenzy'),
 				desc: loc("Cookie production x%1 for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
 				icon: [10, 14],
 				time: time * Game.fps,
@@ -12067,6 +12068,7 @@ Game.Launch = function () {
 		new Game.buffType('blood frenzy', function (time, pow) {
 			return {
 				name: 'Elder frenzy',
+				dname: loc('Elder frenzy'),
 				desc: loc("Cookie production x%1 for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
 				icon: [29, 6],
 				time: time * Game.fps,
@@ -12078,6 +12080,7 @@ Game.Launch = function () {
 		new Game.buffType('clot', function (time, pow) {
 			return {
 				name: 'Clot',
+				dname: loc('Clot'),
 				desc: loc("Cookie production halved for %1!", Game.sayTime(time * Game.fps, -1)),
 				icon: [15, 5],
 				time: time * Game.fps,
@@ -12090,6 +12093,7 @@ Game.Launch = function () {
 			if (Game.Has('Dragon fang')) pow = Math.ceil(pow * 1.1);
 			return {
 				name: 'Dragon Harvest',
+				dname: loc('Dragon Harvest'),
 				desc: loc("Cookie production x%1 for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
 				icon: [10, 25],
 				time: time * Game.fps,
@@ -12101,6 +12105,7 @@ Game.Launch = function () {
 		new Game.buffType('everything must go', function (time, pow) {
 			return {
 				name: 'Everything must go',
+				dname: loc('Everything must go'),
 				desc: loc("All buildings are %1% cheaper for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
 				icon: [17, 6],
 				time: time * Game.fps,
@@ -12112,6 +12117,7 @@ Game.Launch = function () {
 		new Game.buffType('cursed finger', function (time, pow) {
 			return {
 				name: 'Cursed finger',
+				dname: loc('Cursed finger'),
 				desc: loc("Cookie production halted for %1,<br>but each click is worth %2 of CpS.", [Game.sayTime(time * Game.fps, -1), Game.sayTime(time * Game.fps, -1)]),
 				icon: [12, 17],
 				time: time * Game.fps,
@@ -12124,6 +12130,7 @@ Game.Launch = function () {
 		new Game.buffType('click frenzy', function (time, pow) {
 			return {
 				name: 'Click frenzy',
+				dname: loc('Click frenzy'),
 				desc: loc("Clicking power x%1 for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
 				icon: [0, 14],
 				time: time * Game.fps,
@@ -12136,6 +12143,7 @@ Game.Launch = function () {
 			if (Game.Has('Dragon fang')) pow = Math.ceil(pow * 1.1);
 			return {
 				name: 'Dragonflight',
+				dname: loc('Dragonflight'),
 				desc: loc("Clicking power x%1 for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
 				icon: [0, 25],
 				time: time * Game.fps,
@@ -12147,6 +12155,7 @@ Game.Launch = function () {
 		new Game.buffType('cookie storm', function (time, pow) {
 			return {
 				name: 'Cookie storm',
+				dname: loc('Cookie storm'),
 				desc: loc("Cookies everywhere!"),
 				icon: [22, 6],
 				time: time * Game.fps,
@@ -12184,6 +12193,7 @@ Game.Launch = function () {
 		new Game.buffType('sugar blessing', function (time, pow) {
 			return {
 				name: 'Sugar blessing',
+				dname: loc('Sugar blessing'),
 				desc: loc("You find %1% more golden cookies for the next %2.", [10, Game.sayTime(time * Game.fps, -1)]),
 				icon: [29, 16],
 				time: time * Game.fps,
@@ -12193,6 +12203,7 @@ Game.Launch = function () {
 		new Game.buffType('haggler luck', function (time, pow) {
 			return {
 				name: 'Haggler\'s luck',
+				dname: loc('Haggler\'s luck'),
 				desc: loc("All upgrades are %1% cheaper for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
 				icon: [25, 11],
 				time: time * Game.fps,
@@ -12203,6 +12214,7 @@ Game.Launch = function () {
 		new Game.buffType('haggler misery', function (time, pow) {
 			return {
 				name: 'Haggler\'s misery',
+				dname: loc('Haggler\'s misery'),
 				desc: loc("All upgrades are %1% pricier for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
 				icon: [25, 11],
 				time: time * Game.fps,
@@ -12213,6 +12225,7 @@ Game.Launch = function () {
 		new Game.buffType('pixie luck', function (time, pow) {
 			return {
 				name: 'Crafty pixies',
+				dname: loc('Crafty pixies'),
 				desc: loc("All buildings are %1% cheaper for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
 				icon: [26, 11],
 				time: time * Game.fps,
@@ -12223,6 +12236,7 @@ Game.Launch = function () {
 		new Game.buffType('pixie misery', function (time, pow) {
 			return {
 				name: 'Nasty goblins',
+				dname: loc('Nasty goblinst'),
 				desc: loc("All buildings are %1% pricier for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
 				icon: [26, 11],
 				time: time * Game.fps,
@@ -12233,6 +12247,7 @@ Game.Launch = function () {
 		new Game.buffType('magic adept', function (time, pow) {
 			return {
 				name: 'Magic adept',
+				dname: loc('Magic adept'),
 				desc: loc("Spells backfire %1 times less for %2.", [pow, Game.sayTime(time * Game.fps, -1)]),
 				icon: [29, 11],
 				time: time * Game.fps,
@@ -12243,6 +12258,7 @@ Game.Launch = function () {
 		new Game.buffType('magic inept', function (time, pow) {
 			return {
 				name: 'Magic inept',
+				dname: loc('Magic inept'),
 				desc: loc("Spells backfire %1 times more for %2.", [pow, Game.sayTime(time * Game.fps, -1)]),
 				icon: [29, 11],
 				time: time * Game.fps,
@@ -12253,6 +12269,7 @@ Game.Launch = function () {
 		new Game.buffType('devastation', function (time, pow) {
 			return {
 				name: 'Devastation',
+				dname: loc('Devastation'),
 				desc: loc("Clicking power +%1% for %2!", [Math.floor(pow * 100 - 100), Game.sayTime(time * Game.fps, -1)]),
 				icon: [23, 18],
 				time: time * Game.fps,
@@ -12264,6 +12281,7 @@ Game.Launch = function () {
 		new Game.buffType('sugar frenzy', function (time, pow) {
 			return {
 				name: 'Sugar frenzy',
+				dname: loc('Sugar frenzy'),
 				desc: loc("Cookie production x%1 for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
 				icon: [29, 14],
 				time: time * Game.fps,

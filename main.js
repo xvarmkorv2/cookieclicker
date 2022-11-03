@@ -7811,18 +7811,29 @@ Game.Launch = function () {
 					//we're only loading the minigame scripts that aren't loaded yet and which have enough building level
 					//we call this function on building level up and on load
 					//console.log('Loading script '+me.minigameUrl+'...');
-					setTimeout(function () {
-						var script = document.createElement('script');
-						script.id = 'minigameScript-' + me.id;
-						Game.scriptBindings['minigameScript-' + me.id] = me;
-						script.setAttribute('src', me.minigameUrl + '?r=' + Game.version);
-						script.onload = function (me, script) {
-							return function () {
-								if (!me.minigameLoaded) Game.scriptLoaded(me, script);
-							}
-						}(me, 'minigameScript-' + me.id);
-						document.head.appendChild(script);
-					}, 10);
+					setTimeout(function (me) {
+						return function () {
+							var script = document.createElement('script');
+							script.id = 'minigameScript-' + me.id;
+							Game.scriptBindings['minigameScript-' + me.id] = me;
+							script.setAttribute('src', me.minigameUrl + '?r=' + Game.version);
+							script.onload = function (me, script) {
+								return function () {
+									if (!me.minigameLoaded) Game.scriptLoaded(me, script);
+								}
+							}(me, 'minigameScript-' + me.id);
+							script.onerror = function (me, script) {
+								return function () {
+									me.minigameLoading = false;
+									if (!me.minigameLoaded && !Game.showedScriptLoadError) {
+										Game.showedScriptLoadError = true;
+										Game.Notify(loc("Error!"), 'Couldn\'t load minigames. Try reloading.');
+									}
+								}
+							}(me, 'minigameScript-' + me.id);
+							document.head.appendChild(script);
+						}
+					}(me), 10);
 				}
 			}
 		}

@@ -13573,7 +13573,7 @@ Game.Launch = function () {
 							w *= -4;
 							if (fancy) w += Math.sin((n + Game.T * 0.01) * Math.PI / 2) * 4;
 							var x = 0;
-							var y = (140 * (Game.BigCookieSize - Game.BigCookieSizeD / 3) + n * 16 + w) - 16;
+							var y = (140 * (Game.BigCookieSize - Game.BigCookieSizeD / 2) + n * 16 + w) - 16;
 							if (x > -0.5 * rect.w && x < 0.5 * rect.w && y > -0.5 * rect.h && y < 0.5 * rect.h) {
 								var rot = 7.2;//(1/50)*360
 								if (i == 0 && fancy) rot -= Game.T * 0.1;
@@ -14157,9 +14157,29 @@ Game.Launch = function () {
 
 			//handle graphic stuff
 			if (Game.prefs.wobbly) {
-				if (Game.BigCookieState == 1) Game.BigCookieSizeT = 0.98;
-				else if (Game.BigCookieState == 2) Game.BigCookieSizeT = 1.05;
-				else Game.BigCookieSizeT = 1;
+				switch (Game.BigCookieState) {
+					case 1: {
+						Game.BigCookieSizeT = 0.98;
+						break;
+					}
+					case 2: {
+						Game.BigCookieSizeT = 1.05;
+						break;
+					}
+					case 3: {
+						Game.BigCookieSizeT = 1.10;
+						if (Game.BigCookieSize < 1.06) { Game.BigCookieState = 4 }
+						break;
+					}
+					case 4: {
+						Game.BigCookieSizeT = 0;
+						break;
+					}
+					default: {
+						Game.BigCookieSizeT = 1;
+						break
+					}
+				}
 				Game.BigCookieSizeD += (Game.BigCookieSizeT - Game.BigCookieSize) * 0.75;
 				Game.BigCookieSizeD *= 0.75;
 				Game.BigCookieSize += Game.BigCookieSizeD;

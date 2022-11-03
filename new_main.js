@@ -7491,9 +7491,9 @@ Game.Launch = function () {
 
                 //me.l.className=classes;
                 //l('productIcon'+me.id).style.backgroundImage='url(img/'+icon+')';
-                l('productIcon' + me.id).style.backgroundPosition = '-' + icon[0] + 'px -' + icon[1] + 'px';
+                l('productIcon' + me.id).style = writeIcon(icon)//.backgroundPosition = '-' + icon[0] + 'px -' + icon[1] + 'px';
                 //l('productIconOff'+me.id).style.backgroundImage='url(img/'+iconOff+')';
-                l('productIconOff' + me.id).style.backgroundPosition = '-' + iconOff[0] + 'px -' + iconOff[1] + 'px';
+                l('productIconOff' + me.id).style = writeIcon(icon)//.backgroundPosition = '-' + iconOff[0] + 'px -' + iconOff[1] + 'px';
                 l('productName' + me.id).innerHTML = displayName;
                 if (name.length > 12 / Langs[locId].w && (Game.season == 'fools' || !EN)) l('productName' + me.id).classList.add('longProductName'); else l('productName' + me.id).classList.remove('longProductName');
                 l('productOwned' + me.id).textContent = me.amount ? me.amount : '';

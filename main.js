@@ -720,6 +720,7 @@ var Loader = function ()//asset-loading system
 				img.src = this.domain + assets[i];
 				img.alt = assets[i];
 				img.onload = bind(this, this.onLoad);
+				img.onerror = () => { img.src = this.fallBackDomain + assets[i]; };
 				this.assets[assets[i]] = img;
 				this.assetsLoading.push(assets[i]);
 			}
@@ -729,7 +730,10 @@ var Loader = function ()//asset-loading system
 		if (this.assets[old]) {
 			var img = new Image();
 			if (newer.indexOf('http') != -1) img.src = newer;
-			else img.src = this.domain + newer;
+			else{
+				img.src = this.domain + newer;
+				img.onerror = () => { img.src = this.fallBackDomain + newer; };
+			}
 			img.alt = newer;
 			img.onload = bind(this, this.onLoad);
 			this.assets[old] = img;
@@ -1728,6 +1732,7 @@ Game.Launch = function () {
 		//l('offGameMessage').innerHTML='<div style="padding:64px 128px;"><div class="title">Loading...</div></div>';
 		Game.Loader = new Loader();
 		Game.Loader.domain = 'img/';
+		Game.Loader.fallBackDomain = 'https://orteil.dashnet.org/cookieclicker/img/';
 		Game.Loader.loaded = Game.Init;
 		Game.Loader.Load(
 			[

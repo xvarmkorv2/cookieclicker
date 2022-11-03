@@ -14202,7 +14202,6 @@ Game.Launch = function () {
 				Game.BigCookieSizeD += (Game.BigCookieSizeT - Game.BigCookieSize) * 0.75;
 				Game.BigCookieSizeD *= 0.75;
 				Game.BigCookieSize += Game.BigCookieSizeD;
-				Game.BigCookieCursorOffset += (Game.BigCookieSize - Game.BigCookieCursorOffset) * 0.55;
 				Game.BigCookieSize = Math.max(0.1, Game.BigCookieSize);
 			}
 			else {
@@ -14228,8 +14227,8 @@ Game.Launch = function () {
 						Game.BigCookieSize += (1 - Game.BigCookieSize) * 0.5;
 					}
 				}
-				Game.BigCookieCursorOffset += (Game.BigCookieSize - Game.BigCookieCursorOffset) * 0.55;
 			}
+			Game.BigCookieCursorOffset += (Game.BigCookieSize - Game.BigCookieCursorOffset) * 0.25;
 			Game.particlesUpdate();
 
 			if (Game.mousePointer) l('sectionLeft').style.cursor = 'pointer';

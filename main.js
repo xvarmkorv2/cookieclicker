@@ -686,16 +686,6 @@ function FireEvent(el, etype) {
 	}
 }
 
-function writeIcon(icon) {
-	//returns CSS for an icon's background image
-	//for use in CSS strings
-	return (icon[2] ? 'background-image:url(\'' + icon[2].replace(/'/g, "\\'") + '\');' : '') + 'background-position:' + (-icon[0] * 48) + 'px ' + (-icon[1] * 48) + 'px;';
-}
-function tinyIcon(icon, css) {
-	//returns HTML displaying an icon, with optional extra CSS
-	return '<div class="icon tinyIcon" style="vertical-align:middle;display:inline-block;' + writeIcon(icon) + 'transform:scale(0.5);margin:-16px;' + (css ? css : '') + '"></div>';
-}
-
 var Loader = function ()//asset-loading system
 {
 	this.loadingN = 0;
@@ -761,6 +751,16 @@ var Pic = function (what) {
 		case -1: Game.Loader.Load([what]); return Game.Loader.blank;
 		default: return Game.Loader.assets[what];
 	}
+}
+
+function writeIcon(icon) {
+	//returns CSS for an icon's background image
+	//for use in CSS strings
+	return (icon[2] ? 'background-image:url(\'' + icon[2].replace(/'/g, "\\'") + '\');' : '') + 'background-position:' + (-icon[0] * 48) + 'px ' + (-icon[1] * 48) + 'px;';
+}
+function tinyIcon(icon, css) {
+	//returns HTML displaying an icon, with optional extra CSS
+	return '<div class="icon tinyIcon" style="vertical-align:middle;display:inline-block;' + writeIcon(icon) + 'transform:scale(0.5);margin:-16px;' + (css ? css : '') + '"></div>';
 }
 
 var Sounds = [];

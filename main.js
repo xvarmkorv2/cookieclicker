@@ -1729,12 +1729,13 @@ Game.Launch = function () {
 
 	Game.ready = 0;
 
-	Game.Load = function () {
+	Game.Load = function (callback) {
 		//l('offGameMessage').innerHTML='<div style="padding:64px 128px;"><div class="title">Loading...</div></div>';
 		Game.Loader = new Loader();
 		Game.Loader.domain = 'img/';
 		Game.Loader.fallBackDomain = 'https://orteil.dashnet.org/cookieclicker/img/';
-		Game.Loader.loaded = Game.Init;
+		if (typeof PRELOAD !== 'undefined') Game.Loader.loaded = PRELOAD(Game.Init);
+		else Game.Loader.loaded = callback;
 		Game.Loader.Load(
 			[
 				'filler.png',
@@ -1755,7 +1756,15 @@ Game.Launch = function () {
 				'panelMenu.png',
 				'panelMenu2.png',
 				'panelMenu3.png',
-				'panelVertical.png'
+				'panelVertical.png',
+				'goldCookie.png', 
+				'wrathCookie.png', 
+				'spookyCookie.png', 
+				'hearts.png', 
+				'contract.png', 
+				'wrathContract.png', 
+				'bunnies.png', 
+				'frostedReindeer.png'
 			]
 		);
 	}

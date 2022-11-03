@@ -1778,7 +1778,7 @@ Game.Launch = function () {
 	Game.Resume = function () {
 		l('offGameMessage').innerHTML = '';
 		l('offGameMessageWrap').style.display = 'none';
-       Game.timedout = false;
+    	Game.timedout = false;
 		Game.time = Date.now();
 		Game.accumulatedDelay = 0;
 		Game.delayTimeouts = 0;
@@ -4376,6 +4376,7 @@ Game.Launch = function () {
 		Game.BigCookieState = 0;//0 = normal, 1 = clicked (small), 2 = released/hovered (big)
 		Game.BigCookieSize = 0;
 		Game.BigCookieSizeD = 0;
+		Game.BigCookieCursorOffset = 0;
 		Game.BigCookieSizeT = 1;
 		Game.cookieClickSound = Math.floor(Math.random() * 7) + 1;
 		Game.playCookieClickSound = function () {
@@ -14201,12 +14202,13 @@ Game.Launch = function () {
 				Game.BigCookieSizeD += (Game.BigCookieSizeT - Game.BigCookieSize) * 0.75;
 				Game.BigCookieSizeD *= 0.75;
 				Game.BigCookieSize += Game.BigCookieSizeD;
+				Game.BigCookieCursorOffset += (Game.BigCookieSizeT - Game.BigCookieSize) * 0.75;
 				Game.BigCookieSize = Math.max(0.1, Game.BigCookieSize);
 			}
 			else {
 				switch (Game.BigCookieState) {
 					case 1: {
-						Game.BigCookieSize += (0.98 - Game.BigCookieSize) * 0.5;
+						Game.BigCookieSize += (0.98 - Game.BigCookieSize) * 0.5;=
 					}
 					case 2: {
 						Game.BigCookieSize += (1.05 - Game.BigCookieSize) * 0.5;
@@ -14224,6 +14226,7 @@ Game.Launch = function () {
 						Game.BigCookieSize += (1 - Game.BigCookieSize) * 0.5;
 					}
 				}
+				Game.BigCookieCursorOffset += (Game.BigCookieSizeT - Game.BigCookieSize) * 0.75;
 			}
 			Game.particlesUpdate();
 

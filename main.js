@@ -4425,13 +4425,17 @@ Game.Launch = function () {
 			}*/
 			Game.mouseX2 = Game.mouseX;
 			Game.mouseY2 = Game.mouseY;
-			Game.mouseX = posx - x;
-			Game.mouseY = posy - y;
+			Game.mouseX = (posx - x) / Game.scale;
+			Game.mouseY = (posy - y) / Game.scale;
 			Game.mouseMoved = 1;
 			Game.lastActivity = Game.time;
 		}
 		var bigCookie = l('bigCookie');
-		bigCookie.setAttribute('alt', 'Big clickable cookie');
+		if (Game.prefs.screenreader) {
+			bigCookie.ariaLabelledby = 'bigCookieLabel';
+			bigCookie.insertAdjacentHTML('beforeend', '<label id="bigCookieLabel" style="font-size:100px !important;" class="srOnly">' + loc("Big clickable cookie") + '</label>');
+			bigCookie.tabIndex = 1;
+		}
 		Game.Click = 0;
 		Game.lastClickedEl = 0;
 		Game.clickFrom = 0;
@@ -14191,6 +14195,15 @@ Game.Launch = function () {
 					}
 					case 2: {
 						Game.BigCookieSize += (1.05 - Game.BigCookieSize) * 0.5;
+					}
+					case 3: {
+						Game.BigCookieSize = (1.10 - Game.BigCookieSize) * 0.5;
+						if (Game.BigCookieSize < 1.06) { Game.BigCookieState = 4 }
+						break;
+					}
+					case 4: {
+						Game.BigCookieSize = (0 - Game.BigCookieSize) * 0.5;
+						break;
 					}
 					default: {
 						Game.BigCookieSize += (1 - Game.BigCookieSize) * 0.5;

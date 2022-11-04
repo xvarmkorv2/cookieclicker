@@ -693,7 +693,9 @@ var Loader = function ()//asset-loading system
 	this.assets = [];
 	this.assetsLoading = [];
 	this.assetsLoaded = [];
-	this.domain = '';
+	this.mainDomain = '';
+	this.fallBackDomain = '';
+	this.subDomain = '';
 	this.loaded = 0;//callback
 	this.doneLoading = 0;
 
@@ -708,10 +710,10 @@ var Loader = function ()//asset-loading system
 			this.assetsN++;
 			if (!this.assetsLoading[assets[i]] && !this.assetsLoaded[assets[i]]) {
 				var img = new Image();
-				img.src = this.domain + assets[i];
+				img.src = this.mainDomain + this.subDomain + assets[i];
 				img.alt = assets[i];
 				img.onload = bind(this, this.onLoad);
-				img.onerror = () => { img.src = this.fallBackDomain + assets[i]; };
+				img.onerror = () => { img.src = this.fallBackDomain + this.subDomain + assets[i]; };
 				this.assets[assets[i]] = img;
 				this.assetsLoading.push(assets[i]);
 			}
@@ -721,9 +723,9 @@ var Loader = function ()//asset-loading system
 		if (this.assets[old]) {
 			var img = new Image();
 			if (newer.indexOf('http') != -1) img.src = newer;
-			else{
-				img.src = this.domain + newer;
-				img.onerror = () => { img.src = this.fallBackDomain + newer; };
+			else {
+				img.src = this.mainDomain + this.subDomain + newer;
+				img.onerror = () => { img.src = this.subDomain + newer; };
 			}
 			img.alt = newer;
 			img.onload = bind(this, this.onLoad);
@@ -1732,8 +1734,9 @@ Game.Launch = function () {
 	Game.Load = function (callback) {
 		//l('offGameMessage').innerHTML='<div style="padding:64px 128px;"><div class="title">Loading...</div></div>';
 		Game.Loader = new Loader();
-		Game.Loader.domain = 'img/';
-		Game.Loader.fallBackDomain = 'https://orteil.dashnet.org/cookieclicker/img/';
+		Game.Loader.mainDomain = 'https://xvarmkorv2.github.io/cookieclicker/';
+		Game.Loader.fallBackDomain = 'https://orteil.dashnet.org/cookieclicker/';
+		Game.Loader.subDomain = 'img/';
 		if (typeof PRELOAD !== 'undefined') Game.Loader.loaded = PRELOAD(Game.Init);
 		else Game.Loader.loaded = callback;
 		Game.Loader.Load(

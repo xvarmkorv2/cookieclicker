@@ -757,7 +757,7 @@ var Loader = function ()//asset-loading system
 		}
 	}
 	this.getProgress = function () {
-		return (1 - this.loadingN / this.assetsN);
+		return 1 - this.loadingN / this.assetsN;
 	}
 }
 

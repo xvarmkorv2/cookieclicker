@@ -1739,14 +1739,34 @@ Game.Launch = function () {
 		Game.Loader.Load(
 			[
 				'filler.png',
+
+				//Icon Images
+				'icons.png',
+				'buildings.png',
+
+				//Cookie Images
+				'perfectCookie.png',
 				'cookieShower1.png',
 				'cookieShower2.png',
 				'cookieShower3.png',
+				'milk.png',
+				'goldCookie.png',
+				'wrathCookie.png',
+				'spookyCookie.png',
+				'hearts.png',
+				'contract.png',
+				'wrathContract.png',
+				'bunnies.png',
+				'frostedReindeer.png',
 				'shine.png',
 				'shineGold.png',
 				'shineRed.png',
-				'perfectCookie.png',
-				'milk.png',
+				'shadedBorders.png',
+				'shadedBordersSoft.png',
+				'shadedBordersGold.png',
+				'shadedBordersRed.png',
+
+				//UI images
 				'panelBG.png',
 				'panelGradientBottom.png',
 				'panelGradientLeft.png',
@@ -1757,14 +1777,13 @@ Game.Launch = function () {
 				'panelMenu2.png',
 				'panelMenu3.png',
 				'panelVertical.png',
-				'goldCookie.png', 
-				'wrathCookie.png', 
-				'spookyCookie.png', 
-				'hearts.png', 
-				'contract.png', 
-				'wrathContract.png', 
-				'bunnies.png', 
-				'frostedReindeer.png'
+				'roundedPanelBG.png',
+				'roundedPanelBGS.png',
+				'roundedPanelLeft.png',
+				'roundedPanelLeftS.png',
+				'roundedPanelRight.png',
+				'roundedPanelRightS.png',
+				'roundedFrameBorderpng',
 			]
 		);
 	}
@@ -4944,7 +4963,7 @@ Game.Launch = function () {
 					me.l.style.top = me.y + 'px';
 					me.l.style.width = '96px';
 					me.l.style.height = '96px';
-					me.l.style.backgroundImage = 'url(' + bgPic + ')';
+					me.l.style.backgroundImage = 'url(' + Pic(bgPic).src + ')';
 					me.l.style.backgroundPosition = (-picX * 96) + 'px ' + (-picY * 96) + 'px';
 					me.l.style.opacity = '0';
 					me.l.style.display = 'block';
@@ -5311,7 +5330,7 @@ Game.Launch = function () {
 					//me.l.style.top=me.y+'px';
 					me.l.style.width = '167px';
 					me.l.style.height = '212px';
-					me.l.style.backgroundImage = 'url(img/frostedReindeer.png)';
+					me.l.style.backgroundImage = 'url(' + Pic('img/frostedReindeer.png').src + ')';
 					me.l.style.opacity = '0';
 					//me.l.style.transform='rotate('+(Math.random()*60-30)+'deg) scale('+(Math.random()*1+0.25)+')';
 					me.l.style.display = 'block';

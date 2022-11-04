@@ -704,61 +704,61 @@ var Loader = function ()//asset-loading system
 	this.blank.width = 8;
 	this.blank.height = 8;
 	this.blank.alt = 'blank';
+}
 
-	this.Load = function (assets) {
-		for (var i in assets) {
-			this.loadingN++;
-			this.assetsN++;
-			if (!this.assetsLoading[assets[i]] && !this.assetsLoaded[assets[i]]) {
-				let triedFallBackDomain = false
-				var img = new Image();
-				img.src = this.mainDomain + this.subDomain + assets[i] + '?v=' + this.version;
-				img.alt = assets[i];
-				img.onload = bind(this, this.onLoad);
-				img.onerror = () => { 
-					if (!triedFallBackDomain) {
-						triedFallBackDomain = true
-						img.src = this.fallBackDomain + this.subDomain + assets[i] + '?v=' + this.version;
-					}
-				 };
-				this.assets[assets[i]] = img;
-				this.assetsLoading.push(assets[i]);
-			}
-		}
-	}
-	this.Replace = function (old, newer) {
-		if (this.assets[old]) {
+Loader.prototype.Load = function (assets) {
+	for (var i in assets) {
+		this.loadingN++;
+		this.assetsN++;
+		if (!this.assetsLoading[assets[i]] && !this.assetsLoaded[assets[i]]) {
+			let triedFallBackDomain = false
 			var img = new Image();
-			if (newer.indexOf('http') != -1) img.src = newer;
-			else {
-				let triedFallBackDomain = false
-				img.src = this.mainDomain + this.subDomain + newer + '?v=' + this.version
-				img.onerror = () => {
-					if (!triedFallBackDomain) {
-						triedFallBackDomain = true
-						img.src = this.fallBackDomain + this.subDomain + assets[i] + '?v=' + this.version;
-					}
-				};
-				}
-			img.alt = newer;
+			img.src = this.mainDomain + this.subDomain + assets[i] + '?v=' + this.version;
+			img.alt = assets[i];
 			img.onload = bind(this, this.onLoad);
-			this.assets[old] = img;
+			img.onerror = () => {
+				if (!triedFallBackDomain) {
+					triedFallBackDomain = true
+					img.src = this.fallBackDomain + this.subDomain + assets[i] + '?v=' + this.version;
+				}
+			};
+			this.assets[assets[i]] = img;
+			this.assetsLoading.push(assets[i]);
 		}
 	}
-	this.onLoadReplace = function () {
-	}
-	this.onLoad = function (e) {
-		this.assetsLoaded.push(e.target.alt);
-		this.assetsLoading.splice(this.assetsLoading.indexOf(e.target.alt), 1);
-		this.loadingN--;
-		if (this.doneLoading == 0 && this.loadingN <= 0 && this.loaded != 0) {
-			this.doneLoading = 1;
-			this.loaded();
+}
+Loader.prototype.Replace = function (old, newer) {
+	if (this.assets[old]) {
+		var img = new Image();
+		if (newer.indexOf('http') != -1) img.src = newer;
+		else {
+			let triedFallBackDomain = false
+			img.src = this.mainDomain + this.subDomain + newer + '?v=' + this.version
+			img.onerror = () => {
+				if (!triedFallBackDomain) {
+					triedFallBackDomain = true
+					img.src = this.fallBackDomain + this.subDomain + assets[i] + '?v=' + this.version;
+				}
+			};
 		}
+		img.alt = newer;
+		img.onload = bind(this, this.onLoad);
+		this.assets[old] = img;
 	}
-	this.getProgress = function () {
-		return 1 - this.loadingN / this.assetsN;
+}
+Loader.prototype.onLoadReplace = function () {
+}
+Loader.prototype.onLoad = function (e) {
+	this.assetsLoaded.push(e.target.alt);
+	this.assetsLoading.splice(this.assetsLoading.indexOf(e.target.alt), 1);
+	this.loadingN--;
+	if (this.doneLoading == 0 && this.loadingN <= 0 && this.loaded != 0) {
+		this.doneLoading = 1;
+		this.loaded();
 	}
+}
+Loader.prototype.getProgress = function () {
+	return 1 - this.loadingN / this.assetsN;
 }
 
 var Pic = function (what) {

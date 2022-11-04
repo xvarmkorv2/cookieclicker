@@ -790,7 +790,8 @@ var Sounds = [];
 }*/
 var SoundInsts = [];
 var SoundI = 0;
-for (var i = 0; i < 12; i++) { SoundInsts[i] = new Audio(); }
+var SoundMaxI = 20;
+for (var i = 0; i < SoundMaxI; i++) { SoundInsts[i] = new Audio(); }
 var pitchSupport = false;
 //note : Chrome turns out to not support webkitPreservesPitch despite the specifications claiming otherwise, and Firefox clips some short sounds when changing playbackRate, so i'm turning the feature off completely until browsers get it together
 if (SoundInsts[0].preservesPitch || SoundInsts[0].mozPreservesPitch || SoundInsts[0].webkitPreservesPitch) pitchSupport = true;
@@ -810,7 +811,7 @@ var PlaySound = function (url, vol, pitchVar) {
 	else if (Sounds[url].readyState >= 2) {
 		var sound = SoundInsts[SoundI];
 		SoundI++;
-		if (SoundI >= 12) SoundI = 0;
+		if (SoundI >= SoundMaxI) SoundI = 0;
 		sound.src = Sounds[url].src;
 		//sound.currentTime=0;
 		sound.volume = Math.pow(volume * Game.volume / 100, 2);

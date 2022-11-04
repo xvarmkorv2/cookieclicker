@@ -10936,9 +10936,6 @@ Game.Launch = function () {
 			this.vanilla = Game.vanilla;
 			this.type = 'achievement';
 
-			this.click = function () {
-				if (this.clickFunction) this.clickFunction();
-			}
 			Game.last = this;
 			Game.Achievements[this.name] = this;
 			Game.AchievementsById[this.id] = this;
@@ -10947,6 +10944,9 @@ Game.Launch = function () {
 		}
 		Game.Achievement.prototype.getType = function () { return 'Achievement'; }
 
+		Game.Achievement.prototype.click = function () {
+			if (this.clickFunction) this.clickFunction();
+		}
 
 		Game.Win = function (what) {
 			if (typeof what === 'string') {

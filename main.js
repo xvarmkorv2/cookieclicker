@@ -4928,29 +4928,29 @@ Game.Launch = function () {
 					if (!this.spawned && Game.chimeType == 1 && Game.ascensionMode != 1) PlaySound('snd/chime.mp3');
 
 					//set image
-					var bgPic = 'img/goldCookie.png';
+					var bgPic = 'goldCookie.png';
 					var picX = 0; var picY = 0;
 
 
 					if ((!me.forceObj || !me.forceObj.noWrath) && ((me.forceObj && me.forceObj.wrath) || (Game.elderWrath == 1 && Math.random() < 1 / 3) || (Game.elderWrath == 2 && Math.random() < 2 / 3) || (Game.elderWrath == 3) || (Game.hasGod && Game.hasGod('scorn')))) {
 						me.wrath = 1;
-						if (Game.season == 'halloween') bgPic = 'img/spookyCookie.png';
-						else bgPic = 'img/wrathCookie.png';
+						if (Game.season == 'halloween') bgPic = 'spookyCookie.png';
+						else bgPic = 'wrathCookie.png';
 					}
 					else {
 						me.wrath = 0;
 					}
 					switch (Game.season) {
 						case 'valentines':
-							bgPic = 'img/hearts.png';
+							bgPic = 'hearts.png';
 							picX = Math.floor(Math.random() * 8);
 							break;
 						case 'fools':
-							bgPic = 'img/contract.png';
-							if (me.wrath) bgPic = 'img/wrathContract.png';
+							bgPic = 'contract.png';
+							if (me.wrath) bgPic = 'wrathContract.png';
 							break;
 						case 'easter':
-							bgPic = 'img/bunnies.png';
+							bgPic = 'bunnies.png';
 							picX = Math.floor(Math.random() * 4);
 							picY = 0;
 							if (me.wrath) picY = 1;
@@ -5330,7 +5330,7 @@ Game.Launch = function () {
 					//me.l.style.top=me.y+'px';
 					me.l.style.width = '167px';
 					me.l.style.height = '212px';
-					me.l.style.backgroundImage = 'url(' + Pic('img/frostedReindeer.png').src + ')';
+					me.l.style.backgroundImage = 'url(' + Pic('frostedReindeer.png').src + ')';
 					me.l.style.opacity = '0';
 					//me.l.style.transform='rotate('+(Math.random()*60-30)+'deg) scale('+(Math.random()*1+0.25)+')';
 					me.l.style.display = 'block';

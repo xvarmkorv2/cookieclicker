@@ -696,6 +696,7 @@ var Loader = function ()//asset-loading system
 	this.mainDomain = '';
 	this.fallBackDomain = '';
 	this.subDomain = '';
+	this.version = '';
 	this.loaded = 0;//callback
 	this.doneLoading = 0;
 
@@ -711,13 +712,13 @@ var Loader = function ()//asset-loading system
 			if (!this.assetsLoading[assets[i]] && !this.assetsLoaded[assets[i]]) {
 				let triedFallBackDomain = false
 				var img = new Image();
-				img.src = this.mainDomain + this.subDomain + assets[i];
+				img.src = this.mainDomain + this.subDomain + assets[i] + '?v=' + this.version;
 				img.alt = assets[i];
 				img.onload = bind(this, this.onLoad);
 				img.onerror = () => { 
 					if (!triedFallBackDomain) {
 						triedFallBackDomain = true
-						img.src = this.fallBackDomain + this.subDomain + assets[i];
+						img.src = this.fallBackDomain + this.subDomain + assets[i] + '?v=' + this.version;
 					}
 				 };
 				this.assets[assets[i]] = img;
@@ -731,11 +732,11 @@ var Loader = function ()//asset-loading system
 			if (newer.indexOf('http') != -1) img.src = newer;
 			else {
 				let triedFallBackDomain = false
-				img.src = this.mainDomain + this.subDomain + newer;
+				img.src = this.mainDomain + this.subDomain + newer + '?v=' + this.version
 				img.onerror = () => {
 					if (!triedFallBackDomain) {
 						triedFallBackDomain = true
-						img.src = this.fallBackDomain + this.subDomain + assets[i];
+						img.src = this.fallBackDomain + this.subDomain + assets[i] + '?v=' + this.version;
 					}
 				};
 				}
@@ -1749,6 +1750,7 @@ Game.Launch = function () {
 		Game.Loader.mainDomain = 'https://xvarmkorv2.github.io/cookieclicker/';
 		Game.Loader.fallBackDomain = 'https://orteil.dashnet.org/cookieclicker/';
 		Game.Loader.subDomain = 'img/';
+		Game.Loader.version = VERSION;
 		if (typeof PRELOAD !== 'undefined') Game.Loader.loaded = PRELOAD(Game.Init);
 		else Game.Loader.loaded = callback;
 		Game.Loader.Load(

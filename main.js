@@ -2343,13 +2343,6 @@ Game.Launch = function () {
 			} catch (e) { }
 		}
 
-		Game.attachTooltip(l('httpsSwitch'), '<div style="padding:8px;width:350px;text-align:center;font-size:11px;">You are currently playing Cookie Clicker on the <b>' + (Game.https ? 'HTTPS' : 'HTTP') + '</b> protocol.<br>The <b>' + (Game.https ? 'HTTP' : 'HTTPS') + '</b> version uses a different save slot than this one.<br>Click this lock to reload the page and switch to the <b>' + (Game.https ? 'HTTP' : 'HTTPS') + '</b> version!</div>', 'this');
-		AddEvent(l('httpsSwitch'), 'click', function () {
-			PlaySound('snd/pop' + Math.floor(Math.random() * 3 + 1) + '.mp3', 0.75);
-			if (location.protocol == 'https:') location.href = 'http:' + window.location.href.substring(window.location.protocol.length);
-			else if (location.protocol == 'http:') location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
-		});
-
 		if (!App) {
 			Game.attachTooltip(l('httpsSwitch'), '<div style="padding:8px;width:350px;text-align:center;font-size:11px;">' + loc("You are currently playing Cookie Clicker on the <b>%1</b> protocol.<br>The <b>%2</b> version uses a different save slot than this one.<br>Click this lock to reload the page and switch to the <b>%2</b> version!", [(Game.https ? 'HTTPS' : 'HTTP'), (Game.https ? 'HTTP' : 'HTTPS')]) + '</div>', 'this');
 			AddEvent(l('httpsSwitch'), 'click', function () {
@@ -4027,36 +4020,32 @@ Game.Launch = function () {
 			Game.ascendUpgradesl.innerHTML = str;
 
 			if (Game.DebuggingPrestige) {
-				for (var i in Game.PrestigeUpgrades) {
-					var me = Game.PrestigeUpgrades[i];
-					AddEvent(l('heavenlyUpgrade' + me.id), 'mousedown', function (me) {
-						return function () {
-							if (!Game.DebuggingPrestige) return;
-							if (Game.keys[16] && typeof LASTHEAVENLYSELECTED !== 'undefined' && me != LASTHEAVENLYSELECTED) {
-								//when clicking an upgrade with ctrl, set it as reference point; clicking any sibling upgrade with shift will align it in a nice arc around their shared parent
-								var parent = 0;
-								for (var i = 0; i < me.parents.length; i++) {
-									if (LASTHEAVENLYSELECTED.parents.indexOf(me.parents[i]) != -1) parent = me.parents[i];
-								}
-								if (parent) {
-									var origX = parent.posX; var origY = parent.posY;
-									var targX = LASTHEAVENLYSELECTED.posX; var targY = LASTHEAVENLYSELECTED.posY;
-									var rot = Math.atan2(targY - origY, origX - targX) - Math.PI / 2;
-									var dist = Math.floor(Math.sqrt((targX - origX) * (targX - origX) + (targY - origY) * (targY - origY)));
-									me.posX = parent.posX + Math.sin(rot - Math.PI * 2 / 8) * dist;
-									me.posY = parent.posY + Math.cos(rot - Math.PI * 2 / 8) * dist;
-								}
-								LASTHEAVENLYSELECTED = me; console.log('Set reference point to', me.name, '.');
+				for (let i in Game.PrestigeUpgrades) {
+					let me = Game.PrestigeUpgrades[i];
+					AddEvent(l('heavenlyUpgrade' + me.id), 'mousedown', function () {
+						if (!Game.DebuggingPrestige) return;
+						if (Game.keys[16] && typeof LASTHEAVENLYSELECTED !== 'undefined' && me != LASTHEAVENLYSELECTED) {
+							//when clicking an upgrade with ctrl, set it as reference point; clicking any sibling upgrade with shift will align it in a nice arc around their shared parent
+							let parent = 0;
+							for (let i = 0; i < me.parents.length; i++) {
+								if (LASTHEAVENLYSELECTED.parents.indexOf(me.parents[i]) != -1) parent = me.parents[i];
 							}
-							if (Game.keys[17]) { LASTHEAVENLYSELECTED = me; console.log('Set reference point to', me.name, '.'); }
-							Game.SelectedHeavenlyUpgrade = me;
+							if (parent) {
+								var origX = parent.posX; var origY = parent.posY;
+								var targX = LASTHEAVENLYSELECTED.posX; var targY = LASTHEAVENLYSELECTED.posY;
+								var rot = Math.atan2(targY - origY, origX - targX) - Math.PI / 2;
+								var dist = Math.floor(Math.sqrt((targX - origX) * (targX - origX) + (targY - origY) * (targY - origY)));
+								me.posX = parent.posX + Math.sin(rot - Math.PI * 2 / 8) * dist;
+								me.posY = parent.posY + Math.cos(rot - Math.PI * 2 / 8) * dist;
+							}
+							LASTHEAVENLYSELECTED = me; console.log('Set reference point to', me.name, '.');
 						}
-					}(me));
-					AddEvent(l('heavenlyUpgrade' + me.id), 'mouseup', function (me) {
-						return function () {
-							if (Game.SelectedHeavenlyUpgrade == me) { Game.SelectedHeavenlyUpgrade = 0; Game.BuildAscendTree(); }
-						}
-					}(me));
+						if (Game.keys[17]) { LASTHEAVENLYSELECTED = me; console.log('Set reference point to', me.name, '.'); }
+						Game.SelectedHeavenlyUpgrade = me;
+					});
+					AddEvent(l('heavenlyUpgrade' + me.id), 'mouseup', function () {
+						if (Game.SelectedHeavenlyUpgrade == me) { Game.SelectedHeavenlyUpgrade = 0; Game.BuildAscendTree(); }
+					});
 				}
 			}
 			setTimeout(function () { Game.tooltip.shouldHide = true; }, 100);
@@ -7794,7 +7783,7 @@ Game.Launch = function () {
 		{
 			//if (typeof showAds!=='undefined') l('store').scrollTop=100;
 
-			var str = '';
+			let str = '';
 			str += '<div id="storeBulk" class="storePre" ' + Game.getTooltip(
 				'<div style="padding:8px;min-width:200px;text-align:center;font-size:11px;" id="tooltipStoreBulk">' + loc("You can also press %1 to bulk-buy or sell %2 of a building at a time, or %3 for %4.", ['<b>' + loc("Ctrl") + '</b>', '<b>10</b>', '<b>' + loc("Shift") + '</b>', '<b>100</b>']) + '</div>'
 				, 'store') +
@@ -7806,8 +7795,8 @@ Game.Launch = function () {
 				'<div id="storeBulk100" class="storePreButton storeBulkAmount" ' + Game.clickStr + '="Game.storeBulkButton(4);">100</div>' +
 				'<div id="storeBulkMax" class="storePreButton storeBulkAmount" ' + Game.clickStr + '="Game.storeBulkButton(5);">' + loc("all") + '</div>' +
 				'</div>';
-			for (var i in Game.Objects) {
-				var me = Game.Objects[i];
+			for (let i in Game.Objects) {
+				let me = Game.Objects[i];
 				str += (Game.prefs.screenreader ? '<button aria-labelledby="ariaReader-product-' + (me.id) + '"' : '<div') + ' class="product toggledOff" ' + Game.getDynamicTooltip('Game.ObjectsById[' + me.id + '].tooltip', 'store') + ' id="product' + me.id + '"><div class="icon off" id="productIconOff' + me.id + '" style=""></div><div class="icon" id="productIcon' + me.id + '" style=""></div><div class="content"><div class="lockedTitle">???</div><div class="title productName" id="productName' + me.id + '"></div><span class="priceMult" id="productPriceMult' + me.id + '"></span><span class="price" id="productPrice' + me.id + '"></span><div class="title owned" id="productOwned' + me.id + '"></div>' + (Game.prefs.screenreader ? '<label class="srOnly" style="width:64px;left:-64px;" id="ariaReader-product-' + (me.id) + '"></label>' : '') + '</div>' +
 					/*'<div class="buySell"><div style="left:0px;" id="buttonBuy10-'+me.id+'">Buy 10</div><div style="left:100px;" id="buttonSell-'+me.id+'">Sell 1</div><div style="left:200px;" id="buttonSellAll-'+me.id+'">Sell all</div></div>'+*/
 					(Game.prefs.screenreader ? '</button>' : '</div>');
@@ -7821,8 +7810,8 @@ Game.Launch = function () {
 				return function(id){Game.Prompt('<div class="block">Do you really want to sell your '+loc("%1 "+Game.ObjectsById[id].bsingle,LBeautify(Game.ObjectsById[id].amount))+'?</div>',[['Yes','Game.ObjectsById['+id+'].sell(-1);Game.ClosePrompt();'],['No','Game.ClosePrompt();']]);}(id);
 			}*/
 
-			for (var i in Game.Objects) {
-				var me = Game.Objects[i];
+			for (let i in Game.Objects) {
+				let me = Game.Objects[i];
 				me.l = l('product' + me.id);
 
 				//these are a bit messy but ah well
@@ -7841,7 +7830,7 @@ Game.Launch = function () {
 
 		Game.RefreshStore = function ()//refresh the store's buildings
 		{
-			for (var i in Game.Objects) {
+			for (let i in Game.Objects) {
 				Game.Objects[i].refresh();
 			}
 			Game.storeToRefresh = 0;
@@ -7856,15 +7845,15 @@ Game.Launch = function () {
 		Game.scriptBindings = [];
 		Game.LoadMinigames = function ()//load scripts for each minigame
 		{
-			for (var i in Game.Objects) {
-				var me = Game.Objects[i];
+			for (let i in Game.Objects) {
+				let me = Game.Objects[i];
 				if (me.minigameUrl && me.level > 0 && !me.minigameLoaded && !me.minigameLoading && !l('minigameScript-' + me.id)) {
 					me.minigameLoading = true;
 					//we're only loading the minigame scripts that aren't loaded yet and which have enough building level
 					//we call this function on building level up and on load
 					//console.log('Loading script '+me.minigameUrl+'...');
 					setTimeout(() => {
-						var script = document.createElement('script');
+						let script = document.createElement('script');
 						script.id = 'minigameScript-' + me.id;
 						Game.scriptBindings['minigameScript-' + me.id] = me;
 						script.setAttribute('src', me.minigameUrl + '?r=' + Game.version);

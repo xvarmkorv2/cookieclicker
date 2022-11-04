@@ -1,7 +1,7 @@
 /*
 All this code is copyright Orteil, 2013-2020.
 	-with some help, advice and fixes by Nicholas Laux, Debugbro, Opti, the folks at Playsaurus, and lots of people on reddit, Discord, and the DashNet forums
-    -also includes a bunch of snippets found on stackoverflow.com and others
+	-also includes a bunch of snippets found on stackoverflow.com and others
 	-want to mod the game? scroll down to the "MODDING API" section
 Hello, and welcome to the joyous mess that is main.js. Code contained herein is not guaranteed to be good, consistent, or sane. Most of this is years old at this point and harkens back to simpler, cruder times. In particular I've tried to maintain compatibility with fairly old versions of javascript, which means luxuries such as 'let', arrow functions and string literals are unavailable. Have a nice trip.
 As Cookie Clicker is rife with puns and tricky wordplay, localization was never intended to be possible - but ended up happening anyway as part of the Steam port. As a result, usage of strings is somewhat unorthodox in some places.
@@ -1267,7 +1267,7 @@ Game.Launch = function () {
 			'<div class="listing">&bull; game has been renamed to "Cookie Clicker" to avoid confusion</div>' +
 			'<div class="listing">&bull; can now click the big cookie to generate cookies for free</div>' +
 			'<div class="listing">&bull; removed fall damage</div>' +
-			'<div class="listing">&bull; fixed various typos : player\'s name is now correctly spelled as "[bakeryName]"</div>'+
+			'<div class="listing">&bull; fixed various typos : player\'s name is now correctly spelled as "[bakeryName]"</div>' +
 			'<div class="listing">&bull; removed all references to computer-animated movie <i style="font-style:italic;">Hoodwinked!</i> (2005)</div>' +
 			'<div class="listing">&bull; went back in time and invented cookies and computer mice, ensuring Cookie Clicker would one day come to exist</div>' +
 			'<div class="listing">&bull; game now fully compliant with Geneva Conventions</div>' +
@@ -1803,13 +1803,13 @@ Game.Launch = function () {
 		Game.killShimmers();
 		l('offGameMessage').innerHTML = '<div class="title">' + (Game.Has('Twin Gates of Transcendence') ? loc("Cookie Clicker is in sleep mode and generating offline cookies.") : loc("Cookie Clicker is in sleep mode.")) + '</div>' + loc("%1 to resume from your save file.", '<a ' + Game.clickStr + '="Game.Resume();">' + loc("Click here") + '</a>') + '<br><div style="font-style:italic;font-size:65%;line-height:110%;opacity:0.75;">' + loc("(this happens when too many frames are skipped at once,<br>usually when the game has been running in the background for a while)<br>(you can turn this feature off in the settings menu)") + '</div>';
 		l('offGameMessageWrap').style.display = 'table';
-        Game.timedout = true;
+		Game.timedout = true;
 		console.log('[=== Game timed out and has been put in sleep mode. Data was saved. ===]');
 	}
 	Game.Resume = function () {
 		l('offGameMessage').innerHTML = '';
 		l('offGameMessageWrap').style.display = 'none';
-    	Game.timedout = false;
+		Game.timedout = false;
 		Game.time = Date.now();
 		Game.accumulatedDelay = 0;
 		Game.delayTimeouts = 0;
@@ -6125,7 +6125,7 @@ Game.Launch = function () {
 						'<div class="listing"><a class="option big title" ' + Game.clickStr + '="Game.ShowMenu(Game.onMenu);">Resume</a></div>';
 					break;
 				case 'log':
-					str+=replaceAll('[bakeryName]',Game.bakeryName,Game.updateLog);
+					str += replaceAll('[bakeryName]', Game.bakeryName, Game.updateLog);
 					if (!Game.HasAchiev('Olden days')) str += '<div id="oldenDays" style="text-align:right;width:100%;"><div ' + Game.clickStr + '="Game.SparkleAt(Game.mouseX,Game.mouseY);PlaySound(\'snd/tick.mp3\');PlaySound(\'snd/shimmerClick.mp3\');Game.Win(\'Olden days\');Game.UpdateMenu();" class="icon" style="display:inline-block;transform:scale(0.5);cursor:pointer;width:48px;height:48px;background-position:' + (-12 * 48) + 'px ' + (-3 * 48) + 'px;"></div></div>';
 					break;
 				case 'stats':
@@ -7839,7 +7839,7 @@ Game.Launch = function () {
 			Game.ObjectsById[what].buy();
 		}
 
-       Game.RefreshStore = function ()//refresh the store's buildings
+		Game.RefreshStore = function ()//refresh the store's buildings
 		{
 			for (var i in Game.Objects) {
 				Game.Objects[i].refresh();
@@ -7863,29 +7863,23 @@ Game.Launch = function () {
 					//we're only loading the minigame scripts that aren't loaded yet and which have enough building level
 					//we call this function on building level up and on load
 					//console.log('Loading script '+me.minigameUrl+'...');
-					setTimeout(function (me) {
-						return function () {
-							var script = document.createElement('script');
-							script.id = 'minigameScript-' + me.id;
-							Game.scriptBindings['minigameScript-' + me.id] = me;
-							script.setAttribute('src', me.minigameUrl + '?r=' + Game.version);
-							script.onload = function (me, script) {
-								return function () {
-									if (!me.minigameLoaded) Game.scriptLoaded(me, script);
-								}
-							}(me, 'minigameScript-' + me.id);
-							script.onerror = function (me, script) {
-								return function () {
-									me.minigameLoading = false;
-									if (!me.minigameLoaded && !Game.showedScriptLoadError) {
-										Game.showedScriptLoadError = true;
-										Game.Notify(loc("Error!"), 'Couldn\'t load minigames. Try reloading.');
-									}
-								}
-							}(me, 'minigameScript-' + me.id);
-							document.head.appendChild(script);
-						}
-					}(me), 10);
+					setTimeout(() => {
+						var script = document.createElement('script');
+						script.id = 'minigameScript-' + me.id;
+						Game.scriptBindings['minigameScript-' + me.id] = me;
+						script.setAttribute('src', me.minigameUrl + '?r=' + Game.version);
+						script.onload = () => {
+							if (!me.minigameLoaded) Game.scriptLoaded(me, 'minigameScript-' + me.id);
+						};
+						script.onerror = () => {
+							me.minigameLoading = false;
+							if (!me.minigameLoaded && !Game.showedScriptLoadError) {
+								Game.showedScriptLoadError = true;
+								Game.Notify(loc("Error!"), 'Couldn\'t load minigames. Try reloading.');
+							}
+						};
+						document.head.appendChild(script);
+					}, 10);
 				}
 			}
 		}
@@ -10838,7 +10832,7 @@ Game.Launch = function () {
 					}
 					if (Game.season != '' && Game.season != this.season) {
 						Game.Notify(Game.seasons[Game.season].over + '<div class="line"></div>', '', Game.seasons[Game.season].triggerUpgrade.icon, 4);
-                    }
+					}
 					Game.season = this.season;
 					Game.seasonT = Game.getSeasonDuration();
 					Game.storeToRefresh = 1;
@@ -10855,7 +10849,7 @@ Game.Launch = function () {
 						me.lose();
 						var str = Game.seasons[Game.season].over;
 						Game.Notify(Game.seasons[Game.season].over, '', Game.seasons[Game.season].triggerUpgrade.icon);
-                    	if (Game.Has('Season switcher')) { Game.Unlock(Game.seasons[Game.season].trigger); Game.seasons[Game.season].triggerUpgrade.bought = 0; }
+						if (Game.Has('Season switcher')) { Game.Unlock(Game.seasons[Game.season].trigger); Game.seasons[Game.season].triggerUpgrade.bought = 0; }
 
 						Game.upgradesToRebuild = 1;
 						Game.recalculateGains = 1;

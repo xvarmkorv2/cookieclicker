@@ -709,11 +709,17 @@ var Loader = function ()//asset-loading system
 			this.loadingN++;
 			this.assetsN++;
 			if (!this.assetsLoading[assets[i]] && !this.assetsLoaded[assets[i]]) {
+				let triedFallBackDomain = false
 				var img = new Image();
 				img.src = this.mainDomain + this.subDomain + assets[i];
 				img.alt = assets[i];
 				img.onload = bind(this, this.onLoad);
-				img.onerror = () => { img.src = this.fallBackDomain + this.subDomain + assets[i]; };
+				img.onerror = () => { 
+					if (!triedFallBackDomain) {
+						triedFallBackDomain = true
+						img.src = this.fallBackDomain + this.subDomain + assets[i];
+					}
+				 };
 				this.assets[assets[i]] = img;
 				this.assetsLoading.push(assets[i]);
 			}
@@ -724,9 +730,15 @@ var Loader = function ()//asset-loading system
 			var img = new Image();
 			if (newer.indexOf('http') != -1) img.src = newer;
 			else {
+				let triedFallBackDomain = false
 				img.src = this.mainDomain + this.subDomain + newer;
-				img.onerror = () => { img.src = this.subDomain + newer; };
-			}
+				img.onerror = () => {
+					if (!triedFallBackDomain) {
+						triedFallBackDomain = true
+						img.src = this.fallBackDomain + this.subDomain + assets[i];
+					}
+				};
+				}
 			img.alt = newer;
 			img.onload = bind(this, this.onLoad);
 			this.assets[old] = img;

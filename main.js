@@ -1783,7 +1783,7 @@ Game.Launch = function () {
 				'roundedPanelLeftS.png',
 				'roundedPanelRight.png',
 				'roundedPanelRightS.png',
-				'roundedFrameBorderpng',
+				'roundedFrameBorder.png',
 			]
 		);
 	}

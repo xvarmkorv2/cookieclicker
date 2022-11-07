@@ -867,7 +867,7 @@ Timer.track = function (label) {
 	if (!Timer.smoothed[label]) Timer.smoothed[label] = 0;
 	Timer.order.push(label)
 	Timer.smoothed[label] += ((now - Timer.t) - Timer.smoothed[label]) * 0.1;
-	Timer.labels[label] = '<div style="padding-left:8px;">' + label + ' : ' + Math.round(Timer.smoothed[label]*10)/10 + 'ms</div>';
+	Timer.labels[label] = `<div style="padding-left:8px;">' ${label} ' : ${Math.round(Timer.smoothed[label] * 10) / 10}ms</div>`;
 	Timer.t = now;
 }
 Timer.clean = function () {
@@ -878,7 +878,7 @@ Timer.clean = function () {
 Timer.say = function (label) {
 	if (!Game.sesame) return;
 	Timer.order.push(label)
-	Timer.labels[label] = '<div style="border-top:1px solid #ccc;">' + label + '</div>';
+	Timer.labels[label] = `<div style="border-top:1px solid #ccc;"> ${label} </div>`;
 }
 
 
@@ -942,13 +942,13 @@ var Game = {};
 	Game.registerMod = function (id, mod) {
 		id = id.replace(/\W+/g, ' ');
 		if (id == 'META') return false;
-		if (Game.mods[id]) { console.log('ERROR: mod already registered with the id "' + id + '".'); return false; }
+		if (Game.mods[id]) { console.log(`ERROR: mod already registered with the id "${id}".`); return false; }
 		Game.mods[id] = mod;
 		Game.sortedMods.push(mod);
 		mod.id = id;
 		mod.name = mod.name || id;
 		if (App) App.registerMod(mod);
-		console.log('Mod "' + id + '" added.');
+		console.log(`Mod "${id}" added.`);
 		if (Game.ready && mod.init) {
 			if (!App && Game.Win) Game.Win('Third-party');
 			mod.init();
@@ -958,7 +958,7 @@ var Game = {};
 	}
 	Game.launchMods = function () {
 		if (Game.brokenMods.length > 0) {
-			Game.Notify('<span class="warning">' + loc("Some mods couldn't be loaded:") + '</span>', '[' + Game.brokenMods.join(', ') + ']', [32, 17]);
+			Game.Notify(`<span class="warning">${loc("Some mods couldn't be loaded:")}</span>`, `[${Game.brokenMods.join(', ') }]`, [32, 17]);
 		}
 		for (var i = 0; i < Game.sortedMods.length; i++) {
 			var mod = Game.sortedMods[i];
@@ -1041,17 +1041,17 @@ var Game = {};
 		var str = '';
 		for (var i in Game.modSaveData) {
 			str += '<div style="border-bottom:1px dashed rgba(255,255,255,0.2);clear:both;overflow:hidden;padding:4px 0px;">';
-			str += '<div style="float:left;width:49%;text-align:left;overflow:hidden;"><b>' + i + '</b>';
+			str += `<div style="float:left;width:49%;text-align:left;overflow:hidden;"><b>${i}</b>`;
 			if (Game.mods[i]) str += ' ' + loc("(loaded)");
 			str += '</div>';
-			str += '<div style="float:right;width:49%;text-align:right;overflow:hidden;">' + loc("%1 char", Game.modSaveData[i].length) + ' <a class="option warning" style="padding:0px 2px;font-size:10px;margin:0px;vertical-align:top;" ' + Game.clickStr + '="Game.deleteModData(\'' + i + '\');PlaySound(\'snd/tick.mp3\');Game.ClosePrompt();Game.CheckModData();">X</a>';
+			str += `'<div style="float:right;width:49%;text-align:right;overflow:hidden;">${loc("%1 char", Game.modSaveData[i].length)} <a class="option warning" style="padding:0px 2px;font-size:10px;margin:0px;vertical-align:top;" ${Game.clickStr}="Game.deleteModData('${i}');PlaySound(\'snd/tick.mp3\');Game.ClosePrompt();Game.CheckModData();">X</a>'`;
 			str += '</div>';
 			str += '</div>';
 			modsN++;
 		}
 		if (modsN == 0) str += loc("No mod data present.");
-		else str += '<div><a class="option warning" style="font-size:11px;margin-top:4px;" ' + Game.clickStr + '="Game.deleteAllModData();PlaySound(\'snd/tick.mp3\');Game.ClosePrompt();Game.CheckModData();">' + loc("Delete all") + '</a></div>';
-		Game.Prompt('<id ModData><h3>' + loc("Mod data") + '</h3><div class="block">' + tinyIcon([16, 5]) + '<div></div>' + loc("These are the mods present in your save data. You may delete some of this data to make your save file smaller.") + '</div><div class="block" style="font-size:11px;">' + str + '</div>', [loc("Back")]);
+		else str += `<div><a class="option warning" style="font-size:11px;margin-top:4px;" ${Game.clickStr}="Game.deleteAllModData();PlaySound(\'snd/tick.mp3\');Game.ClosePrompt();Game.CheckModData();">${loc("Delete all") }</a></div>`;
+		Game.Prompt(`<id ModData><h3>${loc("Mod data")}</h3><div class="block">${tinyIcon([16, 5])}<div></div>${loc("These are the mods present in your save data. You may delete some of this data to make your save file smaller.")}</div><div class="block" style="font-size:11px;">${str}</div>`, [loc("Back")]);
 	}
 
 	Game.LoadMod = LoadScript;//loads the mod at the given URL

@@ -14231,7 +14231,7 @@ Game.Launch = function () {
 				Game.BigCookieSizeD += (Game.BigCookieSizeT - Game.BigCookieSize) * 0.75;
 				Game.BigCookieSizeD *= 0.75;
 				Game.BigCookieSize += Game.BigCookieSizeD;
-				Game.BigCookieSize = Math.max(0.1, Game.BigCookieSize);
+				Game.BigCookieSize = Math.max(0, Game.BigCookieSize);
 			}
 			else {
 				switch (Game.BigCookieState) {

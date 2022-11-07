@@ -14880,7 +14880,6 @@ window.onload = function () {
 		var loadLangAndLaunch = function (lang, firstLaunch) {
 			if (!firstLaunch) Game.localStorageSet('CookieClickerLang', lang);
 
-			//LoadLang('../Cookie Clicker Localization/EN.js',function(lang){return function(){
 			LoadLang('loc/EN.js?v=' + Game.version, function (lang) {
 				return function () {
 					locStringsFallback = locStrings;

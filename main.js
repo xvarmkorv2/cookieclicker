@@ -861,7 +861,7 @@ Timer.reset = function () {
 	Timer.order = [];
 	Timer.t = Date.now();
 }
-Timer.formatNumber = function(num){
+Timer.formatNumber = function(num, toPlace){
 	let formated = (Math.round(num * 10) / 10).toString()
 	if (!formated.includes('.')) {
 		formated += '.0'
@@ -14846,7 +14846,7 @@ Game.Launch = function () {
 		}
 		else requestAnimationFrame(Game.Draw);*/
 
-		if (Game.visible) requestAnimationFrame(Game.Draw);
+		if (Game.visible) Game.Draw()// requestAnimationFrame(Game.Draw);
 
 		Timer.say('END');
 		if (Game.sesame) {

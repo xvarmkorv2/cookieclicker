@@ -867,7 +867,7 @@ Timer.track = function (label) {
 	if (!Timer.smoothed[label]) Timer.smoothed[label] = 0;
 	Timer.order.push(label)
 	Timer.smoothed[label] += ((now - Timer.t) - Timer.smoothed[label]) * 0.1;
-	Timer.labels[label] = `<div style="padding-left:8px;">' ${label} ' : ${Math.round(Timer.smoothed[label] * 10) / 10}ms</div>`;
+	Timer.labels[label] = `<div style="padding-left:8px;"> ${label} : ${Math.round(Timer.smoothed[label] * 10) / 10}ms</div>`;
 	Timer.t = now;
 }
 Timer.clean = function () {

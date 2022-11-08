@@ -865,7 +865,11 @@ Timer.formatNumber = function(num, toPlace){
 	let place = Math.pow(10, toPlace)
 	let formated = (Math.round(num * place) / place).toString()
 	if (!formated.includes('.')) {
-		formated += '.0'
+		formated += '.'
+		for (var i = 0; i < toPlace; i++) {
+			formated += '0' 
+		}
+
 	}
 	return formated
 }
@@ -875,7 +879,7 @@ Timer.track = function (label) {
 	if (!Timer.smoothed[label]) Timer.smoothed[label] = 0;
 	Timer.order.push(label)
 	Timer.smoothed[label] += ((now - Timer.t) - Timer.smoothed[label]) * 0.1;
-	Timer.labels[label] = `<div style="padding-left:8px;"> ${label} : ${Timer.formatNumber(Timer.smoothed[label], 1)}ms</div>`;
+	Timer.labels[label] = `<div style="padding-left:8px;"> ${label} : ${Timer.formatNumber(Timer.smoothed[label], 2)}ms</div>`;
 	Timer.t = now;
 }
 Timer.clean = function () {

@@ -4416,6 +4416,7 @@ Game.Launch = function () {
 		Game.CanClick = 1;
 		Game.autoclickerDetected = 0;
 		Game.BigCookieState = 0;//0 = normal, 1 = clicked (small), 2 = released/hovered (big)
+		Game.BigCookieSpeed = 0.75;
 		Game.BigCookieSize = 0;
 		Game.BigCookieSizeD = 0;
 		Game.BigCookieCursorOffset = 0;
@@ -14212,6 +14213,9 @@ Game.Launch = function () {
 
 			//handle graphic stuff
 			if (Game.prefs.wobbly) {
+				if (Game.BigCookieState != 4) {
+					Game.BigCookieSpeed = 0.75
+				}
 				switch (Game.BigCookieState) {
 					case 1: {
 						Game.BigCookieSizeT = 0.98;
@@ -14222,8 +14226,9 @@ Game.Launch = function () {
 						break;
 					}
 					case 3: {
+						Game.BigCookieSpeed = 0.25
 						Game.BigCookieSizeT = 1.10;
-						if (Game.BigCookieSize < 1.06) { Game.BigCookieState = 4 }
+						if (Game.BigCookieSize < 1.08) { Game.BigCookieState = 4 }
 						break;
 					}
 					case 4: {
@@ -14235,7 +14240,7 @@ Game.Launch = function () {
 						break
 					}
 				}
-				Game.BigCookieSizeD += (Game.BigCookieSizeT - Game.BigCookieSize) * 0.75;
+				Game.BigCookieSizeD += (Game.BigCookieSizeT - Game.BigCookieSize) * Game.BigCookieSpeed;
 				Game.BigCookieSizeD *= 0.75;
 				Game.BigCookieSize += Game.BigCookieSizeD;
 				Game.BigCookieSize = Math.max(0, Game.BigCookieSize);

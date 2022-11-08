@@ -14257,7 +14257,7 @@ Game.Launch = function () {
 					}
 					case 3: {
 						Game.BigCookieSize = (1.10 - Game.BigCookieSize) * 0.5;
-						if (Game.BigCookieSize < 1.06) { Game.BigCookieState = 4 }
+						if (Game.BigCookieSize < 1.08) { Game.BigCookieState = 4 }
 						break;
 					}
 					case 4: {

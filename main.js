@@ -14880,31 +14880,29 @@ window.onload = () => {
 		var loadLangAndLaunch = (lang, firstLaunch) => {
 			if (!firstLaunch) Game.localStorageSet('CookieClickerLang', lang);
 
-			LoadLang('loc/EN.js?v=' + Game.version, function (lang) {
-				return () => {
-					locStringsFallback = locStrings;
-					LoadLang('loc/' + lang + '.js?v=' + Game.version, () => {
-						var launch = () => {
-							Game.Launch();
-							if (top != self) Game.ErrorFrame();
-							else {
-								console.log('[=== ' + choose([
-									'Oh, hello!',
-									'hey, how\'s it hangin',
-									'About to cheat in some cookies or just checking for bugs?',
-									'Remember : cheated cookies taste awful!',
-									'Hey, Orteil here. Cheated cookies taste awful... or do they?',
-								]) + ' ===]');
-								Game.Load(() => { Game.Init(); if (firstLaunch) Game.showLangSelection(true); });
-								//try {Game.Load(Game.Init);}
-								//catch(err) {console.log('ERROR : '+err.message);}
-							}
+			LoadLang('loc/EN.js?v=' + Game.version, () => {
+				locStringsFallback = locStrings;
+				LoadLang('loc/' + lang + '.js?v=' + Game.version, () => {
+					var launch = () => {
+						Game.Launch();
+						if (top != self) Game.ErrorFrame();
+						else {
+							console.log('[=== ' + choose([
+								'Oh, hello!',
+								'hey, how\'s it hangin',
+								'About to cheat in some cookies or just checking for bugs?',
+								'Remember : cheated cookies taste awful!',
+								'Hey, Orteil here. Cheated cookies taste awful... or do they?',
+							]) + ' ===]');
+							Game.Load(() => { Game.Init(); if (firstLaunch) Game.showLangSelection(true); });
+							//try {Game.Load(Game.Init);}
+							//catch(err) {console.log('ERROR : '+err.message);}
 						}
-						if (App && App.loadMods) App.loadMods(launch);
-						else launch();
-					});
-				}
-			}(lang));
+					}
+					if (App && App.loadMods) App.loadMods(launch);
+					else launch();
+				});
+			});
 		}
 
 		var showLangSelect = (callback) => {

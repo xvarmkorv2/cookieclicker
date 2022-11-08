@@ -861,13 +861,20 @@ Timer.reset = function () {
 	Timer.order = [];
 	Timer.t = Date.now();
 }
+Timer.formatNumber = function(num){
+	let formated = (Math.round(num * 10) / 10).toString()
+	if (!formated.includes('.')) {
+		formated += '.0'
+	}
+	return formated
+}
 Timer.track = function (label) {
 	if (!Game.sesame) return;
 	var now = Date.now();
 	if (!Timer.smoothed[label]) Timer.smoothed[label] = 0;
 	Timer.order.push(label)
 	Timer.smoothed[label] += ((now - Timer.t) - Timer.smoothed[label]) * 0.1;
-	Timer.labels[label] = `<div style="padding-left:8px;"> ${label} : ${Math.round(Timer.smoothed[label] * 10) / 10}ms</div>`;
+	Timer.labels[label] = `<div style="padding-left:8px;"> ${label} : ${Timer.formatNumber(Timer.smoothed[label])}ms</div>`;
 	Timer.t = now;
 }
 Timer.clean = function () {

@@ -14875,12 +14875,12 @@ LAUNCH THIS THING
 //try {Game.Launch();}
 //catch(err) {console.log('ERROR : '+err.message);}
 
-window.onload = function () {
+window.onload = () => {
 	if (!Game.ready) {
-		var loadLangAndLaunch = function (lang, firstLaunch) {
+		var loadLangAndLaunch = (lang, firstLaunch) => {
 			if (!firstLaunch) Game.localStorageSet('CookieClickerLang', lang);
 
-			LoadLang('loc/EN.js?v=' + Game.version, (lang) => {
+			LoadLang('loc/EN.js?v=' + Game.version, function (lang) {
 				return () => {
 					locStringsFallback = locStrings;
 					LoadLang('loc/' + lang + '.js?v=' + Game.version, () => {
@@ -14919,8 +14919,8 @@ window.onload = function () {
 				str;
 			for (var i in Langs) {
 				var lang = Langs[i];
-				AddEvent(l('langSelect-' + i), 'click', function (lang) { return function () { callback(lang); }; }(i));
-				AddEvent(l('langSelect-' + i), 'mouseover', function (lang) { return function () { PlaySound('snd/smallTick.mp3', 0.75); l('languageSelectHeader').innerHTML = Langs[lang].changeLanguage; }; }(i));
+				AddEvent(l('langSelect-' + i), 'click', function (lang) { return () => { callback(lang); }; }(i));
+				AddEvent(l('langSelect-' + i), 'mouseover', function (lang) { return () => { PlaySound('snd/smallTick.mp3', 0.75); l('languageSelectHeader').innerHTML = Langs[lang].changeLanguage; }; }(i));
 			}
 		}
 

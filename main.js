@@ -14880,11 +14880,11 @@ window.onload = function () {
 		var loadLangAndLaunch = function (lang, firstLaunch) {
 			if (!firstLaunch) Game.localStorageSet('CookieClickerLang', lang);
 
-			LoadLang('loc/EN.js?v=' + Game.version, function (lang) {
-				return function () {
+			LoadLang('loc/EN.js?v=' + Game.version, (lang) => {
+				return () => {
 					locStringsFallback = locStrings;
-					LoadLang('loc/' + lang + '.js?v=' + Game.version, function () {
-						var launch = function () {
+					LoadLang('loc/' + lang + '.js?v=' + Game.version, () => {
+						var launch = () => {
 							Game.Launch();
 							if (top != self) Game.ErrorFrame();
 							else {
@@ -14895,7 +14895,7 @@ window.onload = function () {
 									'Remember : cheated cookies taste awful!',
 									'Hey, Orteil here. Cheated cookies taste awful... or do they?',
 								]) + ' ===]');
-								Game.Load(function () { Game.Init(); if (firstLaunch) Game.showLangSelection(true); });
+								Game.Load(() => { Game.Init(); if (firstLaunch) Game.showLangSelection(true); });
 								//try {Game.Load(Game.Init);}
 								//catch(err) {console.log('ERROR : '+err.message);}
 							}
@@ -14907,7 +14907,7 @@ window.onload = function () {
 			}(lang));
 		}
 
-		var showLangSelect = function (callback) {
+		var showLangSelect = (callback) => {
 			var str = '';
 			for (var i in Langs) {
 				var lang = Langs[i];

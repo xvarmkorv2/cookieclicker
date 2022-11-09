@@ -879,7 +879,7 @@ Timer.track = function (label, border) {
 	if (!Timer.smoothed[label]) Timer.smoothed[label] = 0;
 	Timer.order.push(label)
 	Timer.smoothed[label] += ((now - Timer.t) - Timer.smoothed[label]) * 0.1;
-	Timer.labels[label] = `<div style="padding-left:8px;${border ? 'border-bottom:0.5px solid #cc;' : ''}'"> ${label} : ${Timer.formatNumber(Timer.smoothed[label], 2)}ms</div>`;
+	Timer.labels[label] = `<div style="padding-left:8px;${border ? 'border-bottom:0.5px solid #ccc;' : ''}'"> ${label} : ${Timer.formatNumber(Timer.smoothed[label], 2)}ms</div>`;
 	Timer.t = now;
 }
 Timer.clean = function () {

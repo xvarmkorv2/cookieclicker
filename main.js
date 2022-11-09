@@ -14834,8 +14834,8 @@ Game.Launch = function () {
 		Timer.say('LOGIC');
 		//update game logic !
 		Game.catchupLogic = 0;
-		Timer.track('end of logic');
 		Game.Logic();
+		Timer.track('end of main logic');
 		Game.catchupLogic = 1;
 
 		var time = Date.now();

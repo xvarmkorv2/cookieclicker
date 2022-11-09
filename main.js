@@ -14272,6 +14272,10 @@ Game.Launch = function () {
 				}
 			}
 			Game.BigCookieCursorOffset += (Game.BigCookieSize - Game.BigCookieCursorOffset) * 0.25;
+			if (Game.catchupLogic == 0){
+				Timer.track("big cookie size")
+			}
+			
 			Game.particlesUpdate();
 
 			if (Game.mousePointer) l('sectionLeft').style.cursor = 'pointer';
@@ -14298,6 +14302,10 @@ Game.Launch = function () {
 			Game.milkHd += (Game.milkH - Game.milkHd) * 0.02;
 
 			Game.Milk = Game.Milks[Math.min(Math.floor(Game.milkProgress), Game.Milks.length - 1)];
+			
+			if (Game.catchupLogic == 0) {
+				Timer.track("milk progress")
+			}
 
 			if (Game.autoclickerDetected > 0) Game.autoclickerDetected--;
 
@@ -14325,6 +14333,9 @@ Game.Launch = function () {
 				Game.season = Game.baseSeason;
 				Game.seasonT = -1;
 			}
+			if (Game.catchupLogic == 0) {
+				Timer.track("seasons")
+			}
 
 			//press ctrl to bulk-buy 10, shift to bulk-buy 100
 			if (!Game.promptOn) {
@@ -14342,10 +14353,17 @@ Game.Launch = function () {
 				Game.buyBulkShortcut = 0;
 				Game.storeBulkButton(-1);
 			}
+			if (Game.catchupLogic == 0) {
+				Timer.track("store bulk keys")
+			}
 
 			//handle cookies
 			if (Game.recalculateGains) Game.CalculateGains();
 			Game.Earn(Game.cookiesPs / Game.fps);//add cookies per second
+
+			if (Game.catchupLogic == 0) {
+				Timer.track("cookie gain")
+			}
 
 			//grow lumps
 			Game.doLumps();
@@ -14354,6 +14372,10 @@ Game.Launch = function () {
 			for (var i in Game.Objects) {
 				var me = Game.Objects[i];
 				if (Game.isMinigameReady(me) && me.minigame.logic && Game.ascensionMode != 1) me.minigame.logic();
+			}
+
+			if (Game.catchupLogic == 0) {
+				Timer.track("minigame logic")
 			}
 
 			if (Game.specialTab != '' && Game.T % (Game.fps * 3) == 0) Game.ToggleSpecialMenu(1);
@@ -14570,13 +14592,21 @@ Game.Launch = function () {
 			Game.cookiesd += (Game.cookies - Game.cookiesd) * 0.3;
 			if (isNaN(Game.cookiesd)) Game.cookiesd = 0;
 
+			if (Game.catchupLogic == 0) {
+				Timer.track("cookie display")
+			}
+
 			if (Game.storeToRefresh) Game.RefreshStore();
 			if (Game.upgradesToRebuild) Game.RebuildUpgrades();
 
 			Game.updateShimmers();
-			Game.updateBuffs();
+			if (Game.catchupLogic == 0) { Timer.track("shimmer logic") }
 
+			Game.updateBuffs();
+			if (Game.catchupLogic == 0) { Timer.track("buff logic") }
+			
 			Game.UpdateTicker();
+			if (Game.catchupLogic == 0) { Timer.track("ticker logic")}
 		}
 
 		if (Game.T % (Game.fps * 2) == 0) {
@@ -14816,13 +14846,12 @@ Game.Launch = function () {
 		Timer.say('LOGIC');
 		//update game logic !
 		Game.catchupLogic = 0;
+		Timer.track('end of logic');
 		Game.Logic();
-		Timer.track('logic');
 		Game.catchupLogic = 1;
 
 		var time = Date.now();
-
-
+		
 		//latency compensator
 		Game.accumulatedDelay += ((time - Game.time) - 1000 / Game.fps);
 		if (Game.prefs.timeout && time - Game.lastActivity >= 1000 * 60 * 5) {

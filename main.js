@@ -14141,9 +14141,6 @@ Game.Launch = function () {
 			Game.CalculateGains();
 		}
 
-
-		//Game.runModHook('init');
-
 		BeautifyAll();
 		Game.vanilla = 0;//everything we create beyond this will not be saved in the default save
 

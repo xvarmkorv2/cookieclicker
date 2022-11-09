@@ -14817,6 +14817,7 @@ Game.Launch = function () {
 		//update game logic !
 		Game.catchupLogic = 0;
 		Game.Logic();
+		Timer.track('logic');
 		Game.catchupLogic = 1;
 
 		var time = Date.now();
@@ -14838,8 +14839,8 @@ Game.Launch = function () {
 			Game.Logic();
 			Game.accumulatedDelay -= 1000 / Game.fps;//as long as we're detecting latency (slower than target fps), execute logic (this makes drawing slower but makes the logic behave closer to correct target fps)
 		}
+		Timer.track('catchup logic');
 		Game.catchupLogic = 0;
-		Timer.track('logic');
 		Timer.say('END LOGIC');
 		/*
 		if (!Game.prefs.altDraw) {

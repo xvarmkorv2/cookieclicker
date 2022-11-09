@@ -873,13 +873,13 @@ Timer.formatNumber = function(num, toPlace){
 	}
 	return formated
 }
-Timer.track = function (label) {
+Timer.track = function (label, border) {
 	if (!Game.sesame) return;
 	var now = Date.now();
 	if (!Timer.smoothed[label]) Timer.smoothed[label] = 0;
 	Timer.order.push(label)
 	Timer.smoothed[label] += ((now - Timer.t) - Timer.smoothed[label]) * 0.1;
-	Timer.labels[label] = `<div style="padding-left:8px;"> ${label} : ${Timer.formatNumber(Timer.smoothed[label], 2)}ms</div>`;
+	Timer.labels[label] = `<div style="padding-left:8px;${border ? 'border-bottom:0.5px solid #ccc;' : ''}'"> ${label} : ${Timer.formatNumber(Timer.smoothed[label], 2)}ms</div>`;
 	Timer.t = now;
 }
 Timer.clean = function () {
@@ -13296,7 +13296,7 @@ Game.Launch = function () {
 				Game.Background.globalAlpha = 0.5;
 				var s = 1 * Game.AscendZoom * (1 + Math.cos(Game.T * 0.0027) * 0.05);
 				Game.Background.fillPattern(Pic('starbg.jpg'), 0, 0, w, h, 1024 * s, 1024 * s, x + Game.AscendOffX * 0.25 * s, y + Game.AscendOffY * 0.25 * s);
-				Timer.track('star layer 1');
+				Timer.track('star layer 1', false);
 				if (Game.prefs.fancy) {
 					//additional star layer
 					Game.Background.globalAlpha = 0.5 * (0.5 + Math.sin(Game.T * 0.02) * 0.3);
@@ -13304,7 +13304,7 @@ Game.Launch = function () {
 					//Game.Background.globalCompositeOperation='lighter';
 					Game.Background.fillPattern(Pic('starbg.jpg'), 0, 0, w, h, 1024 * s, 1024 * s, x + Game.AscendOffX * 0.25 * s, y + Game.AscendOffY * 0.25 * s);
 					//Game.Background.globalCompositeOperation='source-over';
-					Timer.track('star layer 2');
+					Timer.track('star layer 2', false);
 
 					x += Game.AscendOffX * Game.AscendZoom;
 					y += Game.AscendOffY * Game.AscendZoom;
@@ -13320,7 +13320,7 @@ Game.Launch = function () {
 					s = (600 + 150 * Math.sin(Game.T * 0.0037)) * Game.AscendZoom;
 					Game.Background.drawImage(Pic('heavenRing2.jpg'), -s / 2, -s / 2, s, s);
 					Game.Background.restore();
-					Timer.track('nebula');
+					Timer.track('nebula', false);
 
 					/*
 					//links between upgrades
@@ -13364,11 +13364,11 @@ Game.Launch = function () {
 						}
 					}
 					Game.Background.restore();
-					Timer.track('links');
+					Timer.track('links', false);
 					*/
 
 					Game.Background.drawImage(Pic('shadedBorders.png'), 0, 0, w, h);
-					Timer.track('border');
+					Timer.track('border', false);
 				}
 			}
 			else {
@@ -13429,7 +13429,7 @@ Game.Launch = function () {
 					}
 
 				}
-				Timer.track('window background');
+				Timer.track('window background', false);
 
 				//clear
 				ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -13485,11 +13485,11 @@ Game.Launch = function () {
 								ctx.globalAlpha = 1;
 							}
 						}
-						Timer.track('left background');
+						Timer.track('left background', false);
 
 						Game.particlesDraw(0);
 						ctx.globalAlpha = 1;
-						Timer.track('particles');
+						Timer.track('particles', false);
 
 						//big cookie shine
 						var s = 512;
@@ -13513,7 +13513,7 @@ Game.Launch = function () {
 						ctx.globalAlpha = 0.25 * alphaMult;
 						ctx.drawImage(Pic(pic), -s / 2, -s / 2, s, s);
 						ctx.restore();
-						Timer.track('shine');
+						Timer.track('shine', false);
 
 						if (Game.ReincarnateTimer > 0) {
 							ctx.globalAlpha = 1 - Game.ReincarnateTimer / Game.ReincarnateDuration;
@@ -13582,7 +13582,7 @@ Game.Launch = function () {
 							}
 
 							ctx.restore();
-							Timer.track('big cookie');
+							Timer.track('big cookie', false);
 						}
 					}
 					else//no particles
@@ -13653,7 +13653,7 @@ Game.Launch = function () {
 							}
 						}
 						ctx.restore();
-						Timer.track('cursors');
+						Timer.track('cursors', false);
 					}
 				}
 				else {
@@ -13908,7 +13908,7 @@ Game.Launch = function () {
 					ctx.fillRect(0, height - y + 480, width, Math.max(0, (y - 480)));
 					ctx.globalAlpha = 1;
 
-					Timer.track('milk');
+					Timer.track('milk', false);
 				}
 
 				if (Game.AscendTimer > 0) {
@@ -13916,10 +13916,10 @@ Game.Launch = function () {
 				}
 
 				if (Game.AscendTimer == 0) {
-					Game.DrawWrinklers(); Timer.track('wrinklers');
-					Game.DrawSpecial(); Timer.track('evolvables');
+					Game.DrawWrinklers(); Timer.track('wrinklers', false);
+					Game.DrawSpecial(); Timer.track('evolvables', false);
 
-					Game.particlesDraw(2); Timer.track('text particles');
+					Game.particlesDraw(2); Timer.track('text particles', false);
 
 					//shiny border during frenzies etc
 					ctx.globalAlpha = 1;
@@ -14272,7 +14272,7 @@ Game.Launch = function () {
 				}
 			}
 			Game.BigCookieCursorOffset += (Game.BigCookieSize - Game.BigCookieCursorOffset) * 0.25;
-			if (Game.catchupLogic == 0){ Timer.track("big cookie size") }
+			if (Game.catchupLogic == 0) { Timer.track("big cookie size", false) }
 			
 			Game.particlesUpdate();
 
@@ -14301,7 +14301,7 @@ Game.Launch = function () {
 
 			Game.Milk = Game.Milks[Math.min(Math.floor(Game.milkProgress), Game.Milks.length - 1)];
 			
-			if (Game.catchupLogic == 0) { Timer.track("milk progress") }
+			if (Game.catchupLogic == 0) { Timer.track("milk progress", false) }
 
 			if (Game.autoclickerDetected > 0) Game.autoclickerDetected--;
 
@@ -14329,7 +14329,7 @@ Game.Launch = function () {
 				Game.season = Game.baseSeason;
 				Game.seasonT = -1;
 			}
-			if (Game.catchupLogic == 0) { Timer.track("seasons") }
+			if (Game.catchupLogic == 0) { Timer.track("seasons", false) }
 
 			//press ctrl to bulk-buy 10, shift to bulk-buy 100
 			if (!Game.promptOn) {
@@ -14347,13 +14347,13 @@ Game.Launch = function () {
 				Game.buyBulkShortcut = 0;
 				Game.storeBulkButton(-1);
 			}
-			if (Game.catchupLogic == 0) { Timer.track("store bulk keys") }
+			if (Game.catchupLogic == 0) { Timer.track("store bulk keys", false) }
 
 			//handle cookies
 			if (Game.recalculateGains) Game.CalculateGains();
 			Game.Earn(Game.cookiesPs / Game.fps);//add cookies per second
 
-			if (Game.catchupLogic == 0) { Timer.track("cookie gain") }
+			if (Game.catchupLogic == 0) { Timer.track("cookie gain", false) }
 
 			//grow lumps
 			Game.doLumps();
@@ -14364,7 +14364,7 @@ Game.Launch = function () {
 				if (Game.isMinigameReady(me) && me.minigame.logic && Game.ascensionMode != 1) me.minigame.logic();
 			}
 
-			if (Game.catchupLogic == 0) { Timer.track("minigame logic") }
+			if (Game.catchupLogic == 0) { Timer.track("minigame logic", false) }
 
 			if (Game.specialTab != '' && Game.T % (Game.fps * 3) == 0) Game.ToggleSpecialMenu(1);
 
@@ -14581,20 +14581,20 @@ Game.Launch = function () {
 			if (isNaN(Game.cookiesd)) Game.cookiesd = 0;
 
 			if (Game.catchupLogic == 0) {
-				Timer.track("cookie display")
+				Timer.track("cookie display", false)
 			}
 
 			if (Game.storeToRefresh) Game.RefreshStore();
 			if (Game.upgradesToRebuild) Game.RebuildUpgrades();
 
 			Game.updateShimmers();
-			if (Game.catchupLogic == 0) { Timer.track("shimmer logic") }
+			if (Game.catchupLogic == 0) { Timer.track("shimmer logic", false) }
 
 			Game.updateBuffs();
-			if (Game.catchupLogic == 0) { Timer.track("buff logic") }
+			if (Game.catchupLogic == 0) { Timer.track("buff logic", false) }
 			
 			Game.UpdateTicker();
-			if (Game.catchupLogic == 0) { Timer.track("ticker logic")}
+			if (Game.catchupLogic == 0) { Timer.track("ticker logic", false)}
 		}
 
 		if (Game.T % (Game.fps * 2) == 0) {
@@ -14715,7 +14715,7 @@ Game.Launch = function () {
 
 	Game.Draw = function () {
 		Timer.say('DRAW');
-		Game.DrawBackground(); Timer.track('end of background');
+		Game.DrawBackground(); Timer.track('end of background', true);
 
 		if (!Game.OnAscend) {
 
@@ -14741,13 +14741,13 @@ Game.Launch = function () {
 			if (Game.prefs.monospace) str = '<span class="monospace">' + str + '</span>';
 			str = str + '<div id="cookiesPerSecond"' + (Game.cpsSucked > 0 ? ' class="wrinkled"' : '') + '>' + loc("per second:") + ' ' + Beautify(Game.cookiesPs * (1 - Game.cpsSucked), 1) + '</div>';
 			l('cookies').innerHTML = str;
-			Timer.track('cookie amount');
+			Timer.track('cookie amount', false);
 
 			for (var i in Game.Objects) {
 				var me = Game.Objects[i]
 				if (me.onMinigame && me.minigame.draw && !me.muted && !Game.onMenu) me.minigame.draw();
 			}
-			Timer.track('draw minigames');
+			Timer.track('draw minigames', false);
 
 			if (Game.drawT % 5 == 0) {
 				//if (Game.prefs.monospace) {l('cookies').className='title monospace';} else {l('cookies').className='title';}
@@ -14789,7 +14789,7 @@ Game.Launch = function () {
 					//if (me.canBuy()) l('upgrade'+i).className='crate upgrade enabled'; else l('upgrade'+i).className='crate upgrade disabled';
 				}
 			}
-			Timer.track('store');
+			Timer.track('store', false);
 
 			if (Game.PARTY)//i was bored and felt like messing with CSS
 			{
@@ -14808,12 +14808,12 @@ Game.Launch = function () {
 			}
 
 			Timer.clean();
-			if (Game.prefs.animate && ((Game.prefs.fancy && Game.drawT % 1 == 0) || (!Game.prefs.fancy && Game.drawT % 10 == 0)) && Game.AscendTimer == 0 && Game.onMenu == '') Game.DrawBuildings(); Timer.track('buildings');
+			if (Game.prefs.animate && ((Game.prefs.fancy && Game.drawT % 1 == 0) || (!Game.prefs.fancy && Game.drawT % 10 == 0)) && Game.AscendTimer == 0 && Game.onMenu == '') Game.DrawBuildings(); Timer.track('buildings', false);
 
-			Game.textParticlesUpdate(); Timer.track('text particles');
+			Game.textParticlesUpdate(); Timer.track('text particles', false);
 		}
 
-		Game.NotesDraw(); Timer.track('notes');
+		Game.NotesDraw(); Timer.track('notes', false);
 
 		Game.runModHook('draw');
 
@@ -14830,12 +14830,12 @@ Game.Launch = function () {
 	Game.Loop = function () {
 		if (Game.timedout) return false;
 		Timer.say('START');
-		Timer.track('browser stuff');
+		Timer.track('browser stuff', false);
 		Timer.say('LOGIC');
 		//update game logic !
 		Game.catchupLogic = 0;
 		Game.Logic();
-		Timer.track('end of main logic');
+		Timer.track('end of main logic', true);
 		Game.catchupLogic = 1;
 
 		var time = Date.now();
@@ -14856,7 +14856,7 @@ Game.Launch = function () {
 			Game.Logic();
 			Game.accumulatedDelay -= 1000 / Game.fps;//as long as we're detecting latency (slower than target fps), execute logic (this makes drawing slower but makes the logic behave closer to correct target fps)
 		}
-		Timer.track('catchup logic');
+		Timer.track('catchup logic', false);
 		Game.catchupLogic = 0;
 		Timer.say('END LOGIC');
 		/*

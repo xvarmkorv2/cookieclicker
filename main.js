@@ -861,13 +861,13 @@ Timer.reset = function () {
 	Timer.order = [];
 	Timer.t = Date.now();
 }
-Timer.formatNumber = function(num, toPlace){
+Timer.formatNumber = function (num, toPlace) {
 	let place = Math.pow(10, toPlace)
 	let formated = (Math.round(num * place) / place).toString()
 	if (!formated.includes('.')) {
 		formated += '.'
 		for (var i = 0; i < toPlace; i++) {
-			formated += '0' 
+			formated += '0'
 		}
 
 	}
@@ -970,7 +970,7 @@ var Game = {};
 	}
 	Game.launchMods = function () {
 		if (Game.brokenMods.length > 0) {
-			Game.Notify(`<span class="warning">${loc("Some mods couldn't be loaded:")}</span>`, `[${Game.brokenMods.join(', ') }]`, [32, 17]);
+			Game.Notify(`<span class="warning">${loc("Some mods couldn't be loaded:")}</span>`, `[${Game.brokenMods.join(', ')}]`, [32, 17]);
 		}
 		for (var i = 0; i < Game.sortedMods.length; i++) {
 			var mod = Game.sortedMods[i];
@@ -990,7 +990,7 @@ var Game = {};
 		}
 		if (typeof func !== 'function') return;
 		if (typeof Game.modHooks[hook] !== 'undefined') Game.modHooks[hook].push(func);
-		else console.log('Error: a mod tried to register a non-existent hook named "' + hook + '".');
+		else console.log(`Error: a mod tried to register a non-existent hook named "${hook}".`);
 	}
 	Game.removeHook = function (hook, func) {
 		if (func.constructor === Array) {
@@ -999,7 +999,7 @@ var Game = {};
 		}
 		if (typeof func !== 'function') return;
 		if (typeof Game.modHooks[hook] !== 'undefined' && Game.modHooks[hook].indexOf(func) != -1) Game.modHooks[hook].splice(Game.modHooks[hook].indexOf(func), 1);
-		else console.log('Error: a mod tried to remove a non-existent hook named "' + hook + '".');
+		else console.log(`Error: a mod tried to remove a non-existent hook named "${hook}".`);
 	}
 	Game.runModHook = function (hook, param) {
 		for (var i = 0; i < Game.modHooks[hook].length; i++) {
@@ -1062,7 +1062,7 @@ var Game = {};
 			modsN++;
 		}
 		if (modsN == 0) str += loc("No mod data present.");
-		else str += `<div><a class="option warning" style="font-size:11px;margin-top:4px;" ${Game.clickStr}="Game.deleteAllModData();PlaySound(\'snd/tick.mp3\');Game.ClosePrompt();Game.CheckModData();">${loc("Delete all") }</a></div>`;
+		else str += `<div><a class="option warning" style="font-size:11px;margin-top:4px;" ${Game.clickStr}="Game.deleteAllModData();PlaySound(\'snd/tick.mp3\');Game.ClosePrompt();Game.CheckModData();">${loc("Delete all")}</a></div>`;
 		Game.Prompt(`<id ModData><h3>${loc("Mod data")}</h3><div class="block">${tinyIcon([16, 5])}<div></div>${loc("These are the mods present in your save data. You may delete some of this data to make your save file smaller.")}</div><div class="block" style="font-size:11px;">${str}</div>`, [loc("Back")]);
 	}
 
@@ -7134,394 +7134,7 @@ Game.Launch = function () {
 			this.onMinigame = false;
 			this.minigameLoaded = false;
 
-			this.switchMinigame = function (on)//change whether we're on the building's minigame
-			{
-				if (!Game.isMinigameReady(this)) on = false;
-				if (on == -1) on = !this.onMinigame;
-				this.onMinigame = on;
-				if (this.id != 0) {
-					if (this.onMinigame) {
-						l('row' + this.id).classList.add('onMinigame');
-						//l('rowSpecial'+this.id).style.display='block';
-						//l('rowCanvas'+this.id).style.display='none';
-						if (this.minigame.onResize) this.minigame.onResize();
-					}
-					else {
-						l('row' + this.id).classList.remove('onMinigame');
-						//l('rowSpecial'+this.id).style.display='none';
-						//l('rowCanvas'+this.id).style.display='block';
-					}
-				}
-				this.refresh();
-			}
-
-			this.getPrice = function (n) {
-				var price = this.basePrice * Math.pow(Game.priceIncrease, Math.max(0, this.amount - this.free));
-				price = Game.modifyBuildingPrice(this, price);
-				return Math.min(Math.ceil(price), 2e60);
-			}
-			this.getSumPrice = function (amount)//return how much it would cost to buy [amount] more of this building
-			{
-				var price = 0;
-				for (var i = Math.max(0, this.amount); i < Math.max(0, (this.amount) + amount); i++) {
-					price += this.basePrice * Math.pow(Game.priceIncrease, Math.max(0, i - this.free));
-				}
-				price = Game.modifyBuildingPrice(this, price);
-				return Math.min(Math.ceil(price), 2e60);
-			}
-			this.getReverseSumPrice = function (amount)//return how much you'd get from selling [amount] of this building
-			{
-				var price = 0;
-				for (var i = Math.max(0, (this.amount) - amount); i < Math.max(0, this.amount); i++) {
-					price += this.basePrice * Math.pow(Game.priceIncrease, Math.max(0, i - this.free));
-				}
-				price = Game.modifyBuildingPrice(this, price);
-				price *= this.getSellMultiplier();
-				return Math.min(Math.ceil(price), 2e60);
-			}
-			this.getSellMultiplier = function () {
-				var giveBack = 0.25;
-				//if (Game.hasAura('Earth Shatterer')) giveBack=0.5;
-				giveBack *= 1 + Game.auraMult('Earth Shatterer');
-				return giveBack;
-			}
-
-			this.buy = function (amount) {
-				if (Game.buyMode == -1) { this.sell(Game.buyBulk, 1); return 0; }
-				var success = 0;
-				var moni = 0;
-				var bought = 0;
-				if (!amount) amount = Game.buyBulk;
-				if (amount == -1) amount = 1000;
-				for (var i = 0; i < amount; i++) {
-					var price = this.getPrice();
-					if (Game.cookies < price) { break; }
-					bought++;
-					moni += price;
-					Game.Spend(price);
-					this.amount++;
-					this.bought++;
-					this.price = this.getPrice();
-					if (this.buyFunction) this.buyFunction();
-					Game.recalculateGains = 1;
-					if (this.amount == 1 && this.id != 0) l('row' + this.id).classList.add('enabled');
-					this.highest = Math.max(this.highest, this.amount);
-					Game.BuildingsOwned++;
-					success = 1;
-				}
-				if (success) { PlaySound('snd/buy' + choose([1, 2, 3, 4]) + '.mp3', 0.75); this.refresh(); }
-				//if (moni>0 && amount>1) Game.Notify(this.name,'Bought <b>'+bought+'</b> for '+Beautify(moni)+' cookies','',2);
-			}
-			this.sell = function (amount, bypass) {
-				var success = 0;
-				var moni = 0;
-				var sold = 0;
-				if (amount == -1) amount = this.amount;
-				if (!amount) amount = Game.buyBulk;
-				for (var i = 0; i < amount; i++) {
-					var price = this.getPrice();
-					var giveBack = this.getSellMultiplier();
-					price = Math.floor(price * giveBack);
-					if (this.amount < 0) { break; }
-					sold++;
-					moni += price;
-					Game.cookies += price;
-					Game.cookiesEarned = Math.max(Game.cookies, Game.cookiesEarned);//this is to avoid players getting the cheater achievement when selling buildings that have a higher price than they used to
-					this.amount--;
-					price = this.getPrice();
-					this.price = price;
-					if (this.sellFunction) this.sellFunction();
-					Game.recalculateGains = 1;
-					if (this.amount == 0 && this.id != 0) l('row' + this.id).classList.remove('enabled');
-					Game.BuildingsOwned--;
-					success = 1;
-				}
-				if (success && Game.hasGod) {
-					var godLvl = Game.hasGod('ruin');
-					var old = Game.hasBuff('Devastation');
-					if (old) {
-						switch (godLvl) {
-							case 1: old.multClick += sold * 0.01; break;
-							case 2: old.multClick += sold * 0.005; break;
-							case 3: old.multClick += sold * 0.0025; break;
-						}
-					}
-					else {
-						switch (godLvl) {
-							case 1: Game.gainBuff('devastation', 10, 1 + sold * 0.01); break;
-							case 2: Game.gainBuff('devastation', 10, 1 + sold * 0.005); break;
-							case 3: Game.gainBuff('devastation', 10, 1 + sold * 0.0025); break;
-						}
-					}
-				}
-				if (success && Game.shimmerTypes['golden'].n <= 0 && Game.auraMult('Dragon Orbs') > 0) {
-					var highestBuilding = 0;
-					for (var i in Game.Objects) { if (Game.Objects[i].amount > 0) highestBuilding = Game.Objects[i]; }
-					if (highestBuilding == this && Math.random() < Game.auraMult('Dragon Orbs') * 0.1) {
-						var buffsN = 0;
-						for (var ii in Game.buffs) { buffsN++; }
-						if (buffsN == 0) {
-							new Game.shimmer('golden');
-							Game.Notify('Dragon Orbs!', 'Wish granted. Golden cookie spawned.', [33, 25]);
-						}
-					}
-				}
-				if (success) { PlaySound('snd/sell' + choose([1, 2, 3, 4]) + '.mp3', 0.75); this.refresh(); }
-				//if (moni>0) Game.Notify(this.name,'Sold <b>'+sold+'</b> for '+Beautify(moni)+' cookies','',2);
-			}
-			this.sacrifice = function (amount)//sell without getting back any money
-			{
-				var success = 0;
-				//var moni=0;
-				var sold = 0;
-				if (amount == -1) amount = this.amount;
-				if (!amount) amount = 1;
-				for (var i = 0; i < amount; i++) {
-					var price = this.getPrice();
-					price = Math.floor(price * 0.5);
-					if (this.amount < 0) { break; }
-					sold++;
-					//moni+=price;
-					//Game.cookies+=price;
-					//Game.cookiesEarned=Math.max(Game.cookies,Game.cookiesEarned);
-					this.amount--;
-					price = this.getPrice();
-					this.price = price;
-					if (this.sellFunction) this.sellFunction();
-					Game.recalculateGains = 1;
-					if (this.amount == 0 && this.id != 0) l('row' + this.id).classList.remove('enabled');
-					Game.BuildingsOwned--;
-					success = 1;
-				}
-				if (success) { this.refresh(); }
-				//if (moni>0) Game.Notify(this.name,'Sold <b>'+sold+'</b> for '+Beautify(moni)+' cookies','',2);
-			}
-			this.buyFree = function (amount)//unlike getFree, this still increases the price
-			{
-				for (var i = 0; i < amount; i++) {
-					if (Game.cookies >= price) {
-						this.amount++;
-						this.bought++;
-						this.price = this.getPrice();
-						Game.recalculateGains = 1;
-						if (this.amount == 1 && this.id != 0) l('row' + this.id).classList.add('enabled');
-						this.highest = Math.max(this.highest, this.amount);
-						Game.BuildingsOwned++;
-					}
-				}
-				this.refresh();
-			}
-			this.getFree = function (amount)//get X of this building for free, with the price behaving as if you still didn't have them
-			{
-				this.amount += amount;
-				this.bought += amount;
-				this.free += amount;
-				this.highest = Math.max(this.highest, this.amount);
-				Game.BuildingsOwned += amount;
-				this.highest = Math.max(this.highest, this.amount);
-				this.refresh();
-			}
-			this.getFreeRanks = function (amount)//this building's price behaves as if you had X less of it
-			{
-				this.free += amount;
-				this.refresh();
-			}
-
-			this.tooltip = function () {
-				var me = this;
-				var desc = me.desc;
-				var name = me.name;
-				if (Game.season == 'fools') {
-					if (!Game.foolObjects[me.name]) {
-						name = Game.foolObjects['Unknown'].name;
-						desc = Game.foolObjects['Unknown'].desc;
-					}
-					else {
-						name = Game.foolObjects[me.name].name;
-						desc = Game.foolObjects[me.name].desc;
-					}
-				}
-				var icon = [me.iconColumn, 0];
-				if (me.locked) {
-					name = '???';
-					desc = '';
-					icon = [0, 7];
-				}
-				//if (l('rowInfo'+me.id) && Game.drawT%10==0) l('rowInfoContent'+me.id).innerHTML='&bull; '+me.amount+' '+(me.amount==1?me.single:me.plural)+'<br>&bull; producing '+Beautify(me.storedTotalCps,1)+' '+(me.storedTotalCps==1?'cookie':'cookies')+' per second<br>&bull; total : '+Beautify(me.totalCookies)+' '+(Math.floor(me.totalCookies)==1?'cookie':'cookies')+' '+me.actionName;
-
-				var canBuy = false;
-				var price = me.bulkPrice;
-				if ((Game.buyMode == 1 && Game.cookies >= price) || (Game.buyMode == -1 && me.amount > 0)) canBuy = true;
-
-				var synergiesStr = '';
-				//note : might not be entirely accurate, math may need checking
-				if (me.amount > 0) {
-					var synergiesWith = {};
-					var synergyBoost = 0;
-
-					if (me.name == 'Grandma') {
-						for (var i in Game.GrandmaSynergies) {
-							if (Game.Has(Game.GrandmaSynergies[i])) {
-								var other = Game.Upgrades[Game.GrandmaSynergies[i]].buildingTie;
-								var mult = me.amount * 0.01 * (1 / (other.id - 1));
-								var boost = (other.storedTotalCps * Game.globalCpsMult) - (other.storedTotalCps * Game.globalCpsMult) / (1 + mult);
-								synergyBoost += boost;
-								if (!synergiesWith[other.plural]) synergiesWith[other.plural] = 0;
-								synergiesWith[other.plural] += mult;
-							}
-						}
-					}
-					else if (me.name == 'Portal' && Game.Has('Elder Pact')) {
-						var other = Game.Objects['Grandma'];
-						var boost = (me.amount * 0.05 * other.amount) * Game.globalCpsMult;
-						synergyBoost += boost;
-						if (!synergiesWith[other.plural]) synergiesWith[other.plural] = 0;
-						synergiesWith[other.plural] += boost / (other.storedTotalCps * Game.globalCpsMult);
-					}
-
-					for (var i in me.synergies) {
-						var it = me.synergies[i];
-						if (Game.Has(it.name)) {
-							var weight = 0.05;
-							var other = it.buildingTie1;
-							if (me == it.buildingTie1) { weight = 0.001; other = it.buildingTie2; }
-							var boost = (other.storedTotalCps * Game.globalCpsMult) - (other.storedTotalCps * Game.globalCpsMult) / (1 + me.amount * weight);
-							synergyBoost += boost;
-							if (!synergiesWith[other.plural]) synergiesWith[other.plural] = 0;
-							synergiesWith[other.plural] += me.amount * weight;
-							//synergiesStr+='Synergy with '+other.name+'; we boost it by '+Beautify((me.amount*weight)*100,1)+'%, producing '+Beautify(boost)+' CpS. My synergy boost is now '+Beautify((synergyBoost/Game.cookiesPs)*100,1)+'%.<br>';
-						}
-					}
-					if (synergyBoost > 0) {
-						for (var i in synergiesWith) {
-							if (synergiesStr != '') synergiesStr += ', ';
-							synergiesStr += '<span style="color:#fff;font-weight:bold;font-size:80%;background:#000;box-shadow:0px 0px 0px 1px rgba(255,255,255,0.2);border-radius:3px;padding:0px 2px;display:inline-block;">' + i + ' +' + Beautify(synergiesWith[i] * 100, 1) + '%</span>';
-						}
-						synergiesStr = loc("...also boosting some other buildings:") + ' ' + synergiesStr + ' - ' + loc("all combined, these boosts account for <b>%1</b> per second (<b>%2%</b> of total CpS)", [loc("%1 cookie", LBeautify(synergyBoost, 1)), Beautify((synergyBoost / Game.cookiesPs) * 100, 1)]);
-					}
-				}
-
-				if (Game.prefs.screenreader) {
-					if (me.locked) ariaText = 'This building is not yet unlocked. ';
-					else ariaText = name + '. ';
-					if (!me.locked) ariaText += 'You own ' + me.amount + '. ';
-					ariaText += (canBuy ? 'Can buy 1 for' : 'Cannot afford the') + ' ' + Beautify(Math.round(price)) + ' cookies. ';
-					if (!me.locked && me.totalCookies > 0) {
-						ariaText += 'Each ' + me.single + ' produces ' + Beautify((me.storedTotalCps / me.amount) * Game.globalCpsMult, 1) + ' cookies per second. ';
-						ariaText += Beautify(me.totalCookies) + ' cookies ' + me.actionName + ' so far. ';
-					}
-					if (!me.locked) ariaText += desc;
-
-					var ariaLabel = l('ariaReader-product-' + (me.id));
-					if (ariaLabel) ariaLabel.innerHTML = ariaText.replace(/(<([^>]+)>)/gi, ' ');
-				}
-
-				return '<div style="position:absolute;left:1px;top:1px;right:1px;bottom:1px;background:linear-gradient(125deg,' + (false ? 'rgba(15,115,130,1) 0%,rgba(15,115,130,0)' : 'rgba(50,40,40,1) 0%,rgba(50,40,40,0)') + ' 20%);mix-blend-mode:screen;z-index:1;"></div><div style="z-index:10;min-width:350px;padding:8px;position:relative;" id="tooltipBuilding"><div class="icon" style="float:left;margin-left:-8px;margin-top:-8px;' + writeIcon(icon) + '"></div><div style="float:right;text-align:right;"><span class="price' + (canBuy ? '' : ' disabled') + '">' + Beautify(Math.round(price)) + '</span>' + Game.costDetails(price) + '</div><div class="name">' + name + '</div>' + '<small><div class="tag">' + loc("owned: %1", me.amount) + '</div>' + (me.free > 0 ? '<div class="tag">' + loc("free: %1!", me.free) + '</div>' : '') + '</small>' +
-					'<div class="line"></div><div class="description"><q>' + desc + '</q></div>' +
-					(me.totalCookies > 0 ? (
-						'<div class="line"></div>' +
-						(me.amount > 0 ? '<div class="descriptionBlock">' + loc("each %1 produces <b>%2</b> per second", [me.single, loc("%1 cookie", LBeautify((me.storedTotalCps / me.amount) * Game.globalCpsMult, 1))]) + '</div>' : '') +
-						'<div class="descriptionBlock">' + loc("%1 producing <b>%2</b> per second", [loc("%1 " + me.bsingle, LBeautify(me.amount)), loc("%1 cookie", LBeautify(me.storedTotalCps * Game.globalCpsMult, 1))]) + ' (' + loc("<b>%1%</b> of total CpS", Beautify(Game.cookiesPs > 0 ? ((me.amount > 0 ? ((me.storedTotalCps * Game.globalCpsMult) / Game.cookiesPs) : 0) * 100) : 0, 1)) + ')</div>' +
-						(synergiesStr ? ('<div class="descriptionBlock">' + synergiesStr + '</div>') : '') +
-						(EN ? '<div class="descriptionBlock"><b>' + Beautify(me.totalCookies) + '</b> ' + (Math.floor(me.totalCookies) == 1 ? 'cookie' : 'cookies') + ' ' + me.actionName + ' so far</div>' : '<div class="descriptionBlock">' + loc("<b>%1</b> produced so far", loc("%1 cookie", LBeautify(me.totalCookies))) + '</div>')
-					) : '') +
-					'</div>';
-			}
-			this.levelTooltip = function () {
-				var me = this;
-				return '<div style="width:280px;padding:8px;" id="tooltipLevel"><b>' + loc("Level %1 %2", [Beautify(me.level), me.plural]) + '</b><div class="line"></div>' + (EN ? ((me.level == 1 ? me.extraName : me.extraPlural).replace('[X]', Beautify(me.level)) + ' granting <b>+' + Beautify(me.level) + '% ' + me.dname + ' CpS</b>.') : loc("Granting <b>+%1% %2 CpS</b>.", [Beautify(me.level), me.single])) + '<div class="line"></div>' + loc("Click to level up for %1.", '<span class="price lump' + (Game.lumps >= me.level + 1 ? '' : ' disabled') + '">' + loc("%1 sugar lump", LBeautify(me.level + 1)) + '</span>') + ((me.level == 0 && me.minigameUrl) ? '<div class="line"></div><b>' + loc("Levelling up this building unlocks a minigame.") + '</b>' : '') + '</div>';
-			}
-
-			this.levelUp = function () {
-				var me = this
-				Game.spendLump(me.level + 1, loc("level up your %1", me.plural), () => {
-					me.level += 1;
-					if (me.level >= 10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);
-					PlaySound('snd/upgrade.mp3', 0.6);
-					Game.LoadMinigames();
-					me.refresh();
-					if (l('productLevel' + me.id)) { var rect = l('productLevel' + me.id).getBounds(); Game.SparkleAt((rect.left + rect.right) / 2, (rect.top + rect.bottom) / 2 - 24); }
-					if (me.minigame && me.minigame.onLevel) me.minigame.onLevel(me.level);
-				})();
-			};
-
-			this.refresh = function ()//show/hide the building display based on its amount, and redraw it
-			{
-				this.price = this.getPrice();
-				if (Game.buyMode == 1) this.bulkPrice = this.getSumPrice(Game.buyBulk);
-				else if (Game.buyMode == -1 && Game.buyBulk == -1) this.bulkPrice = this.getReverseSumPrice(1000);
-				else if (Game.buyMode == -1) this.bulkPrice = this.getReverseSumPrice(Game.buyBulk);
-				this.rebuild();
-				if (this.amount == 0 && this.id != 0) l('row' + this.id).classList.remove('enabled');
-				else if (this.amount > 0 && this.id != 0) l('row' + this.id).classList.add('enabled');
-				if (this.muted > 0 && this.id != 0) { l('row' + this.id).classList.add('muted'); l('mutedProduct' + this.id).style.display = 'inline-block'; }
-				else if (this.id != 0) { l('row' + this.id).classList.remove('muted'); l('mutedProduct' + this.id).style.display = 'none'; }
-				//if (!this.onMinigame && !this.muted) {}
-				//else this.pics=[];
-			}
-			this.rebuild = function () {
-				var me = this;
-				//var classes='product';
-				var price = me.bulkPrice;
-				/*if (Game.cookiesEarned>=me.basePrice || me.bought>0) {classes+=' unlocked';me.locked=0;} else {classes+=' locked';me.locked=1;}
-				if (Game.cookies>=price) classes+=' enabled'; else classes+=' disabled';
-				if (me.l.className.indexOf('toggledOff')!=-1) classes+=' toggledOff';
-				*/
-				var icon = [0, me.icon];
-				var iconOff = [1, me.icon];
-				if (me.iconFunc) icon = me.iconFunc();
-
-				var desc = me.desc;
-				var name = me.name;
-				var displayName = me.displayName;
-				if (Game.season == 'fools') {
-					if (!Game.foolObjects[me.name]) {
-						icon = [2, 0];
-						iconOff = [3, 0];
-						name = Game.foolObjects['Unknown'].name;
-						desc = Game.foolObjects['Unknown'].desc;
-					}
-					else {
-						icon = [2, me.icon];
-						iconOff = [3, me.icon];
-						name = Game.foolObjects[me.name].name;
-						desc = Game.foolObjects[me.name].desc;
-					}
-					displayName = name;
-					if (name.length > 16) displayName = '<span style="font-size:75%;">' + name + '</span>';
-				}
-				icon = [icon[0] * 64, icon[1] * 64];
-				iconOff = [iconOff[0] * 64, iconOff[1] * 64];
-
-				//me.l.className=classes;
-				//l('productIcon'+me.id).style.backgroundImage='url(img/'+icon+')';
-				l('productIcon' + me.id).style.backgroundPosition = '-' + icon[0] + 'px -' + icon[1] + 'px';
-				//l('productIconOff'+me.id).style.backgroundImage='url(img/'+iconOff+')';
-				l('productIconOff' + me.id).style.backgroundPosition = '-' + iconOff[0] + 'px -' + iconOff[1] + 'px';
-				l('productName' + me.id).innerHTML = displayName;
-				if (name.length > 12 / Langs[locId].w && (Game.season == 'fools' || !EN)) l('productName' + me.id).classList.add('longProductName'); else l('productName' + me.id).classList.remove('longProductName');
-				l('productOwned' + me.id).textContent = me.amount ? me.amount : '';
-				l('productPrice' + me.id).textContent = Beautify(Math.round(price));
-				l('productPriceMult' + me.id).textContent = (Game.buyBulk > 1) ? ('x' + Game.buyBulk + ' ') : '';
-				l('productLevel' + me.id).textContent = 'lvl ' + Beautify(me.level);
-				if (Game.isMinigameReady(me) && Game.ascensionMode != 1) {
-					l('productMinigameButton' + me.id).style.display = 'block';
-					if (!me.onMinigame) l('productMinigameButton' + me.id).textContent = loc("View %1", me.minigameName);
-					else l('productMinigameButton' + me.id).textContent = loc("Close %1", me.minigameName);
-				}
-				else l('productMinigameButton' + me.id).style.display = 'none';
-				if (Game.isMinigameReady(me) && Game.ascensionMode != 1 && me.minigame.dragonBoostTooltip && Game.hasAura('Supreme Intellect')) {
-					l('productDragonBoost' + me.id).style.display = 'block';
-				}
-				else l('productDragonBoost' + me.id).style.display = 'none';
-			}
 			this.muted = false;
-			this.mute = function (val) {
-				if (this.id == 0) return false;
-				this.muted = val;
-				if (val) { l('productMute' + this.id).classList.add('on'); l('row' + this.id).classList.add('muted'); l('mutedProduct' + this.id).style.display = 'inline-block'; }
-				else { l('productMute' + this.id).classList.remove('on'); l('row' + this.id).classList.remove('muted'); l('mutedProduct' + this.id).style.display = 'none'; }
-			};
 
 			this.draw = function () { };
 
@@ -7728,6 +7341,393 @@ Game.Launch = function () {
 			Game.ObjectsN++;
 			return this;
 		}
+		Game.Object.prototype.switchMinigame = function (on)//change whether we're on the building's minigame
+		{
+			if (!Game.isMinigameReady(this)) on = false;
+			if (on == -1) on = !this.onMinigame;
+			this.onMinigame = on;
+			if (this.id != 0) {
+				if (this.onMinigame) {
+					l('row' + this.id).classList.add('onMinigame');
+					//l('rowSpecial'+this.id).style.display='block';
+					//l('rowCanvas'+this.id).style.display='none';
+					if (this.minigame.onResize) this.minigame.onResize();
+				}
+				else {
+					l('row' + this.id).classList.remove('onMinigame');
+					//l('rowSpecial'+this.id).style.display='none';
+					//l('rowCanvas'+this.id).style.display='block';
+				}
+			}
+			this.refresh();
+		}
+
+		Game.Object.prototype.getPrice = function (n) {
+			var price = this.basePrice * Math.pow(Game.priceIncrease, Math.max(0, this.amount - this.free));
+			price = Game.modifyBuildingPrice(this, price);
+			return Math.min(Math.ceil(price), 2e60);
+		}
+		Game.Object.prototype.getSumPrice = function (amount)//return how much it would cost to buy [amount] more of this building
+		{
+			var price = 0;
+			for (var i = Math.max(0, this.amount); i < Math.max(0, (this.amount) + amount); i++) {
+				price += this.basePrice * Math.pow(Game.priceIncrease, Math.max(0, i - this.free));
+			}
+			price = Game.modifyBuildingPrice(this, price);
+			return Math.min(Math.ceil(price), 2e60);
+		}
+		Game.Object.prototype.getReverseSumPrice = function (amount)//return how much you'd get from selling [amount] of this building
+		{
+			var price = 0;
+			for (var i = Math.max(0, (this.amount) - amount); i < Math.max(0, this.amount); i++) {
+				price += this.basePrice * Math.pow(Game.priceIncrease, Math.max(0, i - this.free));
+			}
+			price = Game.modifyBuildingPrice(this, price);
+			price *= this.getSellMultiplier();
+			return Math.min(Math.ceil(price), 2e60);
+		}
+		Game.Object.prototype.getSellMultiplier = function () {
+			var giveBack = 0.25;
+			//if (Game.hasAura('Earth Shatterer')) giveBack=0.5;
+			giveBack *= 1 + Game.auraMult('Earth Shatterer');
+			return giveBack;
+		}
+
+		Game.Object.prototype.buy = function (amount) {
+			if (Game.buyMode == -1) { this.sell(Game.buyBulk, 1); return 0; }
+			var success = 0;
+			var moni = 0;
+			var bought = 0;
+			if (!amount) amount = Game.buyBulk;
+			if (amount == -1) amount = 1000;
+			for (var i = 0; i < amount; i++) {
+				var price = this.getPrice();
+				if (Game.cookies < price) { break; }
+				bought++;
+				moni += price;
+				Game.Spend(price);
+				this.amount++;
+				this.bought++;
+				this.price = this.getPrice();
+				if (this.buyFunction) this.buyFunction();
+				Game.recalculateGains = 1;
+				if (this.amount == 1 && this.id != 0) l('row' + this.id).classList.add('enabled');
+				this.highest = Math.max(this.highest, this.amount);
+				Game.BuildingsOwned++;
+				success = 1;
+			}
+			if (success) { PlaySound('snd/buy' + choose([1, 2, 3, 4]) + '.mp3', 0.75); this.refresh(); }
+			//if (moni>0 && amount>1) Game.Notify(this.name,'Bought <b>'+bought+'</b> for '+Beautify(moni)+' cookies','',2);
+		}
+		Game.Object.prototype.sell = function (amount, bypass) {
+			var success = 0;
+			var moni = 0;
+			var sold = 0;
+			if (amount == -1) amount = this.amount;
+			if (!amount) amount = Game.buyBulk;
+			for (var i = 0; i < amount; i++) {
+				var price = this.getPrice();
+				var giveBack = this.getSellMultiplier();
+				price = Math.floor(price * giveBack);
+				if (this.amount < 0) { break; }
+				sold++;
+				moni += price;
+				Game.cookies += price;
+				Game.cookiesEarned = Math.max(Game.cookies, Game.cookiesEarned);//this is to avoid players getting the cheater achievement when selling buildings that have a higher price than they used to
+				this.amount--;
+				price = this.getPrice();
+				this.price = price;
+				if (this.sellFunction) this.sellFunction();
+				Game.recalculateGains = 1;
+				if (this.amount == 0 && this.id != 0) l('row' + this.id).classList.remove('enabled');
+				Game.BuildingsOwned--;
+				success = 1;
+			}
+			if (success && Game.hasGod) {
+				var godLvl = Game.hasGod('ruin');
+				var old = Game.hasBuff('Devastation');
+				if (old) {
+					switch (godLvl) {
+						case 1: old.multClick += sold * 0.01; break;
+						case 2: old.multClick += sold * 0.005; break;
+						case 3: old.multClick += sold * 0.0025; break;
+					}
+				}
+				else {
+					switch (godLvl) {
+						case 1: Game.gainBuff('devastation', 10, 1 + sold * 0.01); break;
+						case 2: Game.gainBuff('devastation', 10, 1 + sold * 0.005); break;
+						case 3: Game.gainBuff('devastation', 10, 1 + sold * 0.0025); break;
+					}
+				}
+			}
+			if (success && Game.shimmerTypes['golden'].n <= 0 && Game.auraMult('Dragon Orbs') > 0) {
+				var highestBuilding = 0;
+				for (var i in Game.Objects) { if (Game.Objects[i].amount > 0) highestBuilding = Game.Objects[i]; }
+				if (highestBuilding == this && Math.random() < Game.auraMult('Dragon Orbs') * 0.1) {
+					var buffsN = 0;
+					for (var ii in Game.buffs) { buffsN++; }
+					if (buffsN == 0) {
+						new Game.shimmer('golden');
+						Game.Notify('Dragon Orbs!', 'Wish granted. Golden cookie spawned.', [33, 25]);
+					}
+				}
+			}
+			if (success) { PlaySound('snd/sell' + choose([1, 2, 3, 4]) + '.mp3', 0.75); this.refresh(); }
+			//if (moni>0) Game.Notify(this.name,'Sold <b>'+sold+'</b> for '+Beautify(moni)+' cookies','',2);
+		}
+		Game.Object.prototype.sacrifice = function (amount)//sell without getting back any money
+		{
+			var success = 0;
+			//var moni=0;
+			var sold = 0;
+			if (amount == -1) amount = this.amount;
+			if (!amount) amount = 1;
+			for (var i = 0; i < amount; i++) {
+				var price = this.getPrice();
+				price = Math.floor(price * 0.5);
+				if (this.amount < 0) { break; }
+				sold++;
+				//moni+=price;
+				//Game.cookies+=price;
+				//Game.cookiesEarned=Math.max(Game.cookies,Game.cookiesEarned);
+				this.amount--;
+				price = this.getPrice();
+				this.price = price;
+				if (this.sellFunction) this.sellFunction();
+				Game.recalculateGains = 1;
+				if (this.amount == 0 && this.id != 0) l('row' + this.id).classList.remove('enabled');
+				Game.BuildingsOwned--;
+				success = 1;
+			}
+			if (success) { this.refresh(); }
+			//if (moni>0) Game.Notify(this.name,'Sold <b>'+sold+'</b> for '+Beautify(moni)+' cookies','',2);
+		}
+		Game.Object.prototype.buyFree = function (amount)//unlike getFree, this still increases the price
+		{
+			for (var i = 0; i < amount; i++) {
+				if (Game.cookies >= price) {
+					this.amount++;
+					this.bought++;
+					this.price = this.getPrice();
+					Game.recalculateGains = 1;
+					if (this.amount == 1 && this.id != 0) l('row' + this.id).classList.add('enabled');
+					this.highest = Math.max(this.highest, this.amount);
+					Game.BuildingsOwned++;
+				}
+			}
+			this.refresh();
+		}
+		Game.Object.prototype.getFree = function (amount)//get X of this building for free, with the price behaving as if you still didn't have them
+		{
+			this.amount += amount;
+			this.bought += amount;
+			this.free += amount;
+			this.highest = Math.max(this.highest, this.amount);
+			Game.BuildingsOwned += amount;
+			this.highest = Math.max(this.highest, this.amount);
+			this.refresh();
+		}
+		Game.Object.prototype.getFreeRanks = function (amount)//this building's price behaves as if you had X less of it
+		{
+			this.free += amount;
+			this.refresh();
+		}
+
+		Game.Object.prototype.tooltip = function () {
+			var me = this;
+			var desc = me.desc;
+			var name = me.name;
+			if (Game.season == 'fools') {
+				if (!Game.foolObjects[me.name]) {
+					name = Game.foolObjects['Unknown'].name;
+					desc = Game.foolObjects['Unknown'].desc;
+				}
+				else {
+					name = Game.foolObjects[me.name].name;
+					desc = Game.foolObjects[me.name].desc;
+				}
+			}
+			var icon = [me.iconColumn, 0];
+			if (me.locked) {
+				name = '???';
+				desc = '';
+				icon = [0, 7];
+			}
+			//if (l('rowInfo'+me.id) && Game.drawT%10==0) l('rowInfoContent'+me.id).innerHTML='&bull; '+me.amount+' '+(me.amount==1?me.single:me.plural)+'<br>&bull; producing '+Beautify(me.storedTotalCps,1)+' '+(me.storedTotalCps==1?'cookie':'cookies')+' per second<br>&bull; total : '+Beautify(me.totalCookies)+' '+(Math.floor(me.totalCookies)==1?'cookie':'cookies')+' '+me.actionName;
+
+			var canBuy = false;
+			var price = me.bulkPrice;
+			if ((Game.buyMode == 1 && Game.cookies >= price) || (Game.buyMode == -1 && me.amount > 0)) canBuy = true;
+
+			var synergiesStr = '';
+			//note : might not be entirely accurate, math may need checking
+			if (me.amount > 0) {
+				var synergiesWith = {};
+				var synergyBoost = 0;
+
+				if (me.name == 'Grandma') {
+					for (var i in Game.GrandmaSynergies) {
+						if (Game.Has(Game.GrandmaSynergies[i])) {
+							var other = Game.Upgrades[Game.GrandmaSynergies[i]].buildingTie;
+							var mult = me.amount * 0.01 * (1 / (other.id - 1));
+							var boost = (other.storedTotalCps * Game.globalCpsMult) - (other.storedTotalCps * Game.globalCpsMult) / (1 + mult);
+							synergyBoost += boost;
+							if (!synergiesWith[other.plural]) synergiesWith[other.plural] = 0;
+							synergiesWith[other.plural] += mult;
+						}
+					}
+				}
+				else if (me.name == 'Portal' && Game.Has('Elder Pact')) {
+					var other = Game.Objects['Grandma'];
+					var boost = (me.amount * 0.05 * other.amount) * Game.globalCpsMult;
+					synergyBoost += boost;
+					if (!synergiesWith[other.plural]) synergiesWith[other.plural] = 0;
+					synergiesWith[other.plural] += boost / (other.storedTotalCps * Game.globalCpsMult);
+				}
+
+				for (var i in me.synergies) {
+					var it = me.synergies[i];
+					if (Game.Has(it.name)) {
+						var weight = 0.05;
+						var other = it.buildingTie1;
+						if (me == it.buildingTie1) { weight = 0.001; other = it.buildingTie2; }
+						var boost = (other.storedTotalCps * Game.globalCpsMult) - (other.storedTotalCps * Game.globalCpsMult) / (1 + me.amount * weight);
+						synergyBoost += boost;
+						if (!synergiesWith[other.plural]) synergiesWith[other.plural] = 0;
+						synergiesWith[other.plural] += me.amount * weight;
+						//synergiesStr+='Synergy with '+other.name+'; we boost it by '+Beautify((me.amount*weight)*100,1)+'%, producing '+Beautify(boost)+' CpS. My synergy boost is now '+Beautify((synergyBoost/Game.cookiesPs)*100,1)+'%.<br>';
+					}
+				}
+				if (synergyBoost > 0) {
+					for (var i in synergiesWith) {
+						if (synergiesStr != '') synergiesStr += ', ';
+						synergiesStr += '<span style="color:#fff;font-weight:bold;font-size:80%;background:#000;box-shadow:0px 0px 0px 1px rgba(255,255,255,0.2);border-radius:3px;padding:0px 2px;display:inline-block;">' + i + ' +' + Beautify(synergiesWith[i] * 100, 1) + '%</span>';
+					}
+					synergiesStr = loc("...also boosting some other buildings:") + ' ' + synergiesStr + ' - ' + loc("all combined, these boosts account for <b>%1</b> per second (<b>%2%</b> of total CpS)", [loc("%1 cookie", LBeautify(synergyBoost, 1)), Beautify((synergyBoost / Game.cookiesPs) * 100, 1)]);
+				}
+			}
+
+			if (Game.prefs.screenreader) {
+				if (me.locked) ariaText = 'This building is not yet unlocked. ';
+				else ariaText = name + '. ';
+				if (!me.locked) ariaText += 'You own ' + me.amount + '. ';
+				ariaText += (canBuy ? 'Can buy 1 for' : 'Cannot afford the') + ' ' + Beautify(Math.round(price)) + ' cookies. ';
+				if (!me.locked && me.totalCookies > 0) {
+					ariaText += 'Each ' + me.single + ' produces ' + Beautify((me.storedTotalCps / me.amount) * Game.globalCpsMult, 1) + ' cookies per second. ';
+					ariaText += Beautify(me.totalCookies) + ' cookies ' + me.actionName + ' so far. ';
+				}
+				if (!me.locked) ariaText += desc;
+
+				var ariaLabel = l('ariaReader-product-' + (me.id));
+				if (ariaLabel) ariaLabel.innerHTML = ariaText.replace(/(<([^>]+)>)/gi, ' ');
+			}
+
+			return '<div style="position:absolute;left:1px;top:1px;right:1px;bottom:1px;background:linear-gradient(125deg,' + (false ? 'rgba(15,115,130,1) 0%,rgba(15,115,130,0)' : 'rgba(50,40,40,1) 0%,rgba(50,40,40,0)') + ' 20%);mix-blend-mode:screen;z-index:1;"></div><div style="z-index:10;min-width:350px;padding:8px;position:relative;" id="tooltipBuilding"><div class="icon" style="float:left;margin-left:-8px;margin-top:-8px;' + writeIcon(icon) + '"></div><div style="float:right;text-align:right;"><span class="price' + (canBuy ? '' : ' disabled') + '">' + Beautify(Math.round(price)) + '</span>' + Game.costDetails(price) + '</div><div class="name">' + name + '</div>' + '<small><div class="tag">' + loc("owned: %1", me.amount) + '</div>' + (me.free > 0 ? '<div class="tag">' + loc("free: %1!", me.free) + '</div>' : '') + '</small>' +
+				'<div class="line"></div><div class="description"><q>' + desc + '</q></div>' +
+				(me.totalCookies > 0 ? (
+					'<div class="line"></div>' +
+					(me.amount > 0 ? '<div class="descriptionBlock">' + loc("each %1 produces <b>%2</b> per second", [me.single, loc("%1 cookie", LBeautify((me.storedTotalCps / me.amount) * Game.globalCpsMult, 1))]) + '</div>' : '') +
+					'<div class="descriptionBlock">' + loc("%1 producing <b>%2</b> per second", [loc("%1 " + me.bsingle, LBeautify(me.amount)), loc("%1 cookie", LBeautify(me.storedTotalCps * Game.globalCpsMult, 1))]) + ' (' + loc("<b>%1%</b> of total CpS", Beautify(Game.cookiesPs > 0 ? ((me.amount > 0 ? ((me.storedTotalCps * Game.globalCpsMult) / Game.cookiesPs) : 0) * 100) : 0, 1)) + ')</div>' +
+					(synergiesStr ? ('<div class="descriptionBlock">' + synergiesStr + '</div>') : '') +
+					(EN ? '<div class="descriptionBlock"><b>' + Beautify(me.totalCookies) + '</b> ' + (Math.floor(me.totalCookies) == 1 ? 'cookie' : 'cookies') + ' ' + me.actionName + ' so far</div>' : '<div class="descriptionBlock">' + loc("<b>%1</b> produced so far", loc("%1 cookie", LBeautify(me.totalCookies))) + '</div>')
+				) : '') +
+				'</div>';
+		}
+		Game.Object.prototype.levelTooltip = function () {
+			var me = this;
+			return '<div style="width:280px;padding:8px;" id="tooltipLevel"><b>' + loc("Level %1 %2", [Beautify(me.level), me.plural]) + '</b><div class="line"></div>' + (EN ? ((me.level == 1 ? me.extraName : me.extraPlural).replace('[X]', Beautify(me.level)) + ' granting <b>+' + Beautify(me.level) + '% ' + me.dname + ' CpS</b>.') : loc("Granting <b>+%1% %2 CpS</b>.", [Beautify(me.level), me.single])) + '<div class="line"></div>' + loc("Click to level up for %1.", '<span class="price lump' + (Game.lumps >= me.level + 1 ? '' : ' disabled') + '">' + loc("%1 sugar lump", LBeautify(me.level + 1)) + '</span>') + ((me.level == 0 && me.minigameUrl) ? '<div class="line"></div><b>' + loc("Levelling up this building unlocks a minigame.") + '</b>' : '') + '</div>';
+		}
+
+		Game.Object.prototype.levelUp = function () {
+			var me = this
+			Game.spendLump(me.level + 1, loc("level up your %1", me.plural), () => {
+				me.level += 1;
+				if (me.level >= 10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);
+				PlaySound('snd/upgrade.mp3', 0.6);
+				Game.LoadMinigames();
+				me.refresh();
+				if (l('productLevel' + me.id)) { var rect = l('productLevel' + me.id).getBounds(); Game.SparkleAt((rect.left + rect.right) / 2, (rect.top + rect.bottom) / 2 - 24); }
+				if (me.minigame && me.minigame.onLevel) me.minigame.onLevel(me.level);
+			})();
+		};
+
+		Game.Object.prototype.refresh = function ()//show/hide the building display based on its amount, and redraw it
+		{
+			this.price = this.getPrice();
+			if (Game.buyMode == 1) this.bulkPrice = this.getSumPrice(Game.buyBulk);
+			else if (Game.buyMode == -1 && Game.buyBulk == -1) this.bulkPrice = this.getReverseSumPrice(1000);
+			else if (Game.buyMode == -1) this.bulkPrice = this.getReverseSumPrice(Game.buyBulk);
+			this.rebuild();
+			if (this.amount == 0 && this.id != 0) l('row' + this.id).classList.remove('enabled');
+			else if (this.amount > 0 && this.id != 0) l('row' + this.id).classList.add('enabled');
+			if (this.muted > 0 && this.id != 0) { l('row' + this.id).classList.add('muted'); l('mutedProduct' + this.id).style.display = 'inline-block'; }
+			else if (this.id != 0) { l('row' + this.id).classList.remove('muted'); l('mutedProduct' + this.id).style.display = 'none'; }
+			//if (!this.onMinigame && !this.muted) {}
+			//else this.pics=[];
+		}
+		Game.Object.prototype.rebuild = function () {
+			var me = this;
+			//var classes='product';
+			var price = me.bulkPrice;
+			/*if (Game.cookiesEarned>=me.basePrice || me.bought>0) {classes+=' unlocked';me.locked=0;} else {classes+=' locked';me.locked=1;}
+			if (Game.cookies>=price) classes+=' enabled'; else classes+=' disabled';
+			if (me.l.className.indexOf('toggledOff')!=-1) classes+=' toggledOff';
+			*/
+			var icon = [0, me.icon];
+			var iconOff = [1, me.icon];
+			if (me.iconFunc) icon = me.iconFunc();
+
+			var desc = me.desc;
+			var name = me.name;
+			var displayName = me.displayName;
+			if (Game.season == 'fools') {
+				if (!Game.foolObjects[me.name]) {
+					icon = [2, 0];
+					iconOff = [3, 0];
+					name = Game.foolObjects['Unknown'].name;
+					desc = Game.foolObjects['Unknown'].desc;
+				}
+				else {
+					icon = [2, me.icon];
+					iconOff = [3, me.icon];
+					name = Game.foolObjects[me.name].name;
+					desc = Game.foolObjects[me.name].desc;
+				}
+				displayName = name;
+				if (name.length > 16) displayName = '<span style="font-size:75%;">' + name + '</span>';
+			}
+			icon = [icon[0] * 64, icon[1] * 64];
+			iconOff = [iconOff[0] * 64, iconOff[1] * 64];
+
+			//me.l.className=classes;
+			//l('productIcon'+me.id).style.backgroundImage='url(img/'+icon+')';
+			l('productIcon' + me.id).style.backgroundPosition = '-' + icon[0] + 'px -' + icon[1] + 'px';
+			//l('productIconOff'+me.id).style.backgroundImage='url(img/'+iconOff+')';
+			l('productIconOff' + me.id).style.backgroundPosition = '-' + iconOff[0] + 'px -' + iconOff[1] + 'px';
+			l('productName' + me.id).innerHTML = displayName;
+			if (name.length > 12 / Langs[locId].w && (Game.season == 'fools' || !EN)) l('productName' + me.id).classList.add('longProductName'); else l('productName' + me.id).classList.remove('longProductName');
+			l('productOwned' + me.id).textContent = me.amount ? me.amount : '';
+			l('productPrice' + me.id).textContent = Beautify(Math.round(price));
+			l('productPriceMult' + me.id).textContent = (Game.buyBulk > 1) ? ('x' + Game.buyBulk + ' ') : '';
+			l('productLevel' + me.id).textContent = 'lvl ' + Beautify(me.level);
+			if (Game.isMinigameReady(me) && Game.ascensionMode != 1) {
+				l('productMinigameButton' + me.id).style.display = 'block';
+				if (!me.onMinigame) l('productMinigameButton' + me.id).textContent = loc("View %1", me.minigameName);
+				else l('productMinigameButton' + me.id).textContent = loc("Close %1", me.minigameName);
+			}
+			else l('productMinigameButton' + me.id).style.display = 'none';
+			if (Game.isMinigameReady(me) && Game.ascensionMode != 1 && me.minigame.dragonBoostTooltip && Game.hasAura('Supreme Intellect')) {
+				l('productDragonBoost' + me.id).style.display = 'block';
+			}
+			else l('productDragonBoost' + me.id).style.display = 'none';
+		}
+		this.mute = function (val) {
+			if (this.id == 0) return false;
+			this.muted = val;
+			if (val) { l('productMute' + this.id).classList.add('on'); l('row' + this.id).classList.add('muted'); l('mutedProduct' + this.id).style.display = 'inline-block'; }
+			else { l('productMute' + this.id).classList.remove('on'); l('row' + this.id).classList.remove('muted'); l('mutedProduct' + this.id).style.display = 'none'; }
+		};
 
 		Game.DrawBuildings = function ()//draw building displays with canvas
 		{
@@ -14273,7 +14273,7 @@ Game.Launch = function () {
 			}
 			Game.BigCookieCursorOffset += (Game.BigCookieSize - Game.BigCookieCursorOffset) * 0.25;
 			if (Game.catchupLogic == 0) { Timer.track("big cookie size", false) }
-			
+
 			Game.particlesUpdate();
 
 			if (Game.mousePointer) l('sectionLeft').style.cursor = 'pointer';
@@ -14300,7 +14300,7 @@ Game.Launch = function () {
 			Game.milkHd += (Game.milkH - Game.milkHd) * 0.02;
 
 			Game.Milk = Game.Milks[Math.min(Math.floor(Game.milkProgress), Game.Milks.length - 1)];
-			
+
 			if (Game.catchupLogic == 0) { Timer.track("milk progress", false) }
 
 			if (Game.autoclickerDetected > 0) Game.autoclickerDetected--;
@@ -14592,9 +14592,9 @@ Game.Launch = function () {
 
 			Game.updateBuffs();
 			if (Game.catchupLogic == 0) { Timer.track("buff logic", false) }
-			
+
 			Game.UpdateTicker();
-			if (Game.catchupLogic == 0) { Timer.track("ticker logic", false)}
+			if (Game.catchupLogic == 0) { Timer.track("ticker logic", false) }
 		}
 
 		if (Game.T % (Game.fps * 2) == 0) {
@@ -14839,7 +14839,7 @@ Game.Launch = function () {
 		Game.catchupLogic = 1;
 
 		var time = Date.now();
-		
+
 		//latency compensator
 		Game.accumulatedDelay += ((time - Game.time) - 1000 / Game.fps);
 		if (Game.prefs.timeout && time - Game.lastActivity >= 1000 * 60 * 5) {

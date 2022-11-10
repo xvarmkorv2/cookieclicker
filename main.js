@@ -7722,7 +7722,7 @@ Game.Launch = function () {
 			}
 			else l('productDragonBoost' + me.id).style.display = 'none';
 		}
-		this.mute = function (val) {
+		Game.Object.prototype.mute = function (val) {
 			if (this.id == 0) return false;
 			this.muted = val;
 			if (val) { l('productMute' + this.id).classList.add('on'); l('row' + this.id).classList.add('muted'); l('mutedProduct' + this.id).style.display = 'inline-block'; }

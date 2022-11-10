@@ -7281,7 +7281,7 @@ Game.Launch = function () {
 						}
 					}
 
-					Math.seedrandom(Game.seed + ' ' + this.id);
+					Math.seedrandom();
 
 					for (var i = 0; i < len; i++) {
 						var pic = this.pics[i];

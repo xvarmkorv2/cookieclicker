@@ -13912,9 +13912,9 @@ Game.Launch = function () {
 						ctx.globalAlpha = 1;
 						for (var i in Game.toys) {
 							var me = Game.toys[i];
-							me.logic()
 							me.draw()
 						}
+						Timer.track("draw toys", false)
 					}
 
 					var pic = Game.Milk.pic;
@@ -14320,6 +14320,22 @@ Game.Launch = function () {
 			Game.Milk = Game.Milks[Math.min(Math.floor(Game.milkProgress), Game.Milks.length - 1)];
 
 			if (Game.catchupLogic == 0) { Timer.track("milk progress", false) }
+
+			if (Game.TOYS) {
+				//golly
+				if (!Game.toyinit) {
+					var width = Game.LeftBackground.canvas.width;
+					var height = Game.LeftBackground.canvas.height;
+					Game.toyinit = 1;
+					for (var i = 0; i < Math.floor(Math.random() * 15 + (Game.toysType == 1 ? 5 : 30)); i++) {
+						new Game.Toy(Math.random() * width, Math.random() * height * 0.3);
+					}
+				}
+				for (var i in Game.toys) {
+					Game.toys[i].logic()
+				}
+				if (Game.catchupLogic == 0) { Timer.track("toy logic", false) }
+			}
 
 			if (Game.autoclickerDetected > 0) Game.autoclickerDetected--;
 

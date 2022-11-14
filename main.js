@@ -13334,8 +13334,8 @@ Game.Launch = function () {
 						this.yd += Math.cos(-angle + Math.PI / 2) * v * (ratio);
 						it.xd += Math.sin(-angle - Math.PI / 2) * v * (1 / ratio);
 						it.yd += Math.cos(-angle - Math.PI / 2) * v * (1 / ratio);
-						this.rd += (Math.random() * 1 - 0.5) * 0.1 * (ratio);
-						it.rd += (Math.random() * 1 - 0.5) * 0.1 * (1 / ratio);
+						this.rd += (Math.random() - 0.5) * 0.1 * (ratio);
+						it.rd += (Math.random()- 0.5) * 0.1 * (1 / ratio);
 						this.rd *= Math.min(1, v);
 						it.rd *= Math.min(1, v);
 					}
@@ -13346,9 +13346,9 @@ Game.Launch = function () {
 				this.yd *= 0.85;
 				this.rd *= 0.85;
 				this.yd -= 1;
-				this.xd += (Math.random() * 1 - 0.5) * 0.3;
-				this.yd += (Math.random() * 1 - 0.5) * 0.05;
-				this.rd += (Math.random() * 1 - 0.5) * 0.02;
+				this.xd += (Math.random() - 0.5) * 0.3;
+				this.yd += (Math.random() - 0.5) * 0.05;
+				this.rd += (Math.random() - 0.5) * 0.02;
 			}
 			else {
 				this.xd *= 0.99;

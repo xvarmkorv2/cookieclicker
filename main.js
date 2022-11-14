@@ -13811,6 +13811,9 @@ Game.Launch = function () {
 								return this;
 							}
 							Game.Toy.prototype.logic = function () {
+								var ctx = Game.LeftBackground;
+								var width = ctx.canvas.width;
+								var height = ctx.canvas.height;
 								var me = this;
 								//psst... not real physics
 								for (var ii in Game.toys) {
@@ -13874,6 +13877,9 @@ Game.Launch = function () {
 							}
 
 							Game.Toy.prototype.draw = function () {
+								var ctx = Game.LeftBackground;
+								var width = ctx.canvas.width;
+								var height = ctx.canvas.height;
 								var me = this
 								if (me.dragged) {
 									me.l.style.transform = 'translate(' + (me.x - me.s / 2) + 'px,' + (me.y - me.s / 2) + 'px) scale(50)';

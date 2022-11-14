@@ -13342,13 +13342,13 @@ Game.Launch = function () {
 				}
 			}
 			if (this.y >= height - (Game.milkHd) * height + 8) {
+				this.xd += (Math.random() - 0.5) * 0.3;
+				this.yd += (Math.random() - 0.5) * 0.05;
+				this.rd += (Math.random() - 0.5) * 0.02;
 				this.xd *= 0.85;
 				this.yd *= 0.85;
 				this.rd *= 0.85;
 				this.yd -= 1;
-				this.xd += (Math.random() - 0.5) * 0.3;
-				this.yd += (Math.random() - 0.5) * 0.05;
-				this.rd += (Math.random() - 0.5) * 0.02;
 			}
 			else {
 				this.xd *= 0.99;

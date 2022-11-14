@@ -13793,7 +13793,7 @@ Game.Launch = function () {
 								if (v <= a) v = b - b * Math.pow(1 - v / a, 3); else v = b + (1 - b) * Math.pow((v - a) / (1 - a), 3);
 								this.s = (Game.toysType == 1 ? 64 : 48) * (0.1 + v * 1.9);
 								if (Game.toysType == 2) this.s = (this.id % 10 == 1) ? 96 : 48;
-								this.st = this.s;// this.s = 0;
+								this.st = this.s; this.s = 0;
 								var cookies = [[10, 0]];
 								for (var i in Game.Upgrades) {
 									var cookie = Game.Upgrades[i];

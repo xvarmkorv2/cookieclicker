@@ -13280,6 +13280,121 @@ Game.Launch = function () {
 			Game.LeftBackgroundObj.width = Game.LeftBackgroundObj.parentNode.offsetWidth;
 			Game.LeftBackgroundObj.height = Game.LeftBackgroundObj.parentNode.offsetHeight;
 		});
+		Game.toys = [];
+		Game.toysType = Math.floor(Math.random() * 2);
+		Game.toyinit = 0;
+		Game.Toy = function (x, y) {
+			this.id = Game.toys.length;
+			this.x = x;
+			this.y = y;
+			this.xd = Math.random() * 10 - 5;
+			this.yd = Math.random() * 10 - 5;
+			this.r = Math.random() * Math.PI * 2;
+			this.rd = Math.random() * 0.1 - 0.05;
+			var v = Math.random(); var a = 0.5; var b = 0.5;
+			if (v <= a) v = b - b * Math.pow(1 - v / a, 3); else v = b + (1 - b) * Math.pow((v - a) / (1 - a), 3);
+			this.s = (Game.toysType == 1 ? 64 : 48) * (0.1 + v * 1.9);
+			if (Game.toysType == 2) this.s = (this.id % 10 == 1) ? 96 : 48;
+			this.st = this.s; this.s = 0;
+			var cookies = [[10, 0]];
+			for (var i in Game.Upgrades) {
+				var cookie = Game.Upgrades[i];
+				if (cookie.bought > 0 && cookie.pool == 'cookie') cookies.push(cookie.icon);
+			}
+			this.icon = choose(cookies);
+			this.dragged = false;
+			this.l = document.createElement('div');
+			this.l.innerHTML = this.id;
+			this.l.style.cssText = 'cursor:pointer;border-radius:' + (this.s / 2) + 'px;opacity:0;width:' + this.s + 'px;height:' + this.s + 'px;background:#999;position:absolute;left:0px;top:0px;z-index:10000000;transform:translate(-1000px,-1000px);';
+			l('sectionLeft').appendChild(this.l);
+			AddEvent(this.l, 'mousedown', function (what) { return function () { what.dragged = true; }; }(this));
+			AddEvent(this.l, 'mouseup', function (what) { return function () { what.dragged = false; }; }(this));
+			Game.toys.push(this);
+			return this;
+		}
+		Game.Toy.prototype.logic = function () {
+			var width = Game.LeftBackground.canvas.width;
+			var height = Game.LeftBackground.canvas.height;
+			var me = this;
+			//psst... not real physics
+			for (var ii in Game.toys) {
+				var it = Game.toys[ii];
+				if (it.id != me.id) {
+					var x1 = me.x + me.xd;
+					var y1 = me.y + me.yd;
+					var x2 = it.x + it.xd;
+					var y2 = it.y + it.yd;
+					var dist = Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2)) / (me.s / 2 + it.s / 2);
+					if (dist < (Game.toysType == 1 ? 0.95 : 0.75)) {
+						var angle = Math.atan2(y1 - y2, x1 - x2);
+						var v1 = Math.sqrt(Math.pow((me.xd), 2) + Math.pow((me.yd), 2));
+						var v2 = Math.sqrt(Math.pow((it.xd), 2) + Math.pow((it.yd), 2));
+						var v = ((v1 + v2) / 2 + dist) * 0.75;
+						var ratio = it.s / me.s;
+						me.xd += Math.sin(-angle + Math.PI / 2) * v * (ratio);
+						me.yd += Math.cos(-angle + Math.PI / 2) * v * (ratio);
+						it.xd += Math.sin(-angle - Math.PI / 2) * v * (1 / ratio);
+						it.yd += Math.cos(-angle - Math.PI / 2) * v * (1 / ratio);
+						me.rd += (Math.random() * 1 - 0.5) * 0.1 * (ratio);
+						it.rd += (Math.random() * 1 - 0.5) * 0.1 * (1 / ratio);
+						me.rd *= Math.min(1, v);
+						it.rd *= Math.min(1, v);
+					}
+				}
+			}
+			if (me.y >= height - (Game.milkHd) * height + 8) {
+				me.xd *= 0.85;
+				me.yd *= 0.85;
+				me.rd *= 0.85;
+				me.yd -= 1;
+				me.xd += (Math.random() * 1 - 0.5) * 0.3;
+				me.yd += (Math.random() * 1 - 0.5) * 0.05;
+				me.rd += (Math.random() * 1 - 0.5) * 0.02;
+			}
+			else {
+				me.xd *= 0.99;
+				me.rd *= 0.99;
+				me.yd += 1;
+			}
+			me.yd *= (Math.min(1, Math.abs(me.y - (height - (Game.milkHd) * height) / 16)));
+			me.rd += me.xd * 0.01 / (me.s / (Game.toysType == 1 ? 64 : 48));
+			if (me.x < me.s / 2 && me.xd < 0) me.xd = Math.max(0.1, -me.xd * 0.6); else if (me.x < me.s / 2) { me.xd = 0; me.x = me.s / 2; }
+			if (me.x > width - me.s / 2 && me.xd > 0) me.xd = Math.min(-0.1, -me.xd * 0.6); else if (me.x > width - me.s / 2) { me.xd = 0; me.x = width - me.s / 2; }
+			me.xd = Math.min(Math.max(me.xd, -30), 30);
+			me.yd = Math.min(Math.max(me.yd, -30), 30);
+			me.rd = Math.min(Math.max(me.rd, -0.5), 0.5);
+			me.x += me.xd;
+			me.y += me.yd;
+			me.r += me.rd;
+			me.r = me.r % (Math.PI * 2);
+			me.s += (me.st - me.s) * 0.5;
+			if (Game.toysType == 2 && !me.dragged && Math.random() < 0.003) me.st = choose([48, 48, 48, 48, 96]);
+			if (me.dragged) {
+				me.x = Game.mouseX;
+				me.y = Game.mouseY;
+				me.xd += ((Game.mouseX - Game.mouseX2) * 3 - me.xd) * 0.5;
+				me.yd += ((Game.mouseY - Game.mouseY2) * 3 - me.yd) * 0.5
+			}
+		}
+
+		Game.Toy.prototype.draw = function () {
+			var ctx = Game.LeftBackground;
+			var me = this
+			if (me.dragged) {
+				me.l.style.transform = 'translate(' + (me.x - me.s / 2) + 'px,' + (me.y - me.s / 2) + 'px) scale(50)';
+			}
+			else me.l.style.transform = 'translate(' + (me.x - me.s / 2) + 'px,' + (me.y - me.s / 2) + 'px)';
+
+			me.l.style.width = me.s + 'px';
+			me.l.style.height = me.s + 'px';
+			ctx.save();
+			ctx.translate(me.x, me.y);
+			ctx.rotate(me.r);
+			if (Game.toysType == 1) ctx.drawImage(Pic('smallCookies.png'), (me.id % 8) * 64, 0, 64, 64, -me.s / 2, -me.s / 2, me.s, me.s);
+			else ctx.drawImage(Pic('icons.png'), me.icon[0] * 48, me.icon[1] * 48, 48, 48, -me.s / 2, -me.s / 2, me.s, me.s);
+			ctx.restore();
+		}
+
 		Game.DrawBackground = function () {
 
 			Timer.clean();
@@ -13778,124 +13893,8 @@ Game.Launch = function () {
 
 					if (Game.TOYS) {
 						//golly
-						if (!Game.Toy) {
-							Game.toys = [];
-							Game.toysType = Math.floor(Math.random() * 2);
-							Game.Toy = function (x, y) {
-								this.id = Game.toys.length;
-								this.x = x;
-								this.y = y;
-								this.xd = Math.random() * 10 - 5;
-								this.yd = Math.random() * 10 - 5;
-								this.r = Math.random() * Math.PI * 2;
-								this.rd = Math.random() * 0.1 - 0.05;
-								var v = Math.random(); var a = 0.5; var b = 0.5;
-								if (v <= a) v = b - b * Math.pow(1 - v / a, 3); else v = b + (1 - b) * Math.pow((v - a) / (1 - a), 3);
-								this.s = (Game.toysType == 1 ? 64 : 48) * (0.1 + v * 1.9);
-								if (Game.toysType == 2) this.s = (this.id % 10 == 1) ? 96 : 48;
-								this.st = this.s; this.s = 0;
-								var cookies = [[10, 0]];
-								for (var i in Game.Upgrades) {
-									var cookie = Game.Upgrades[i];
-									if (cookie.bought > 0 && cookie.pool == 'cookie') cookies.push(cookie.icon);
-								}
-								this.icon = choose(cookies);
-								this.dragged = false;
-								this.l = document.createElement('div');
-								this.l.innerHTML = this.id;
-								this.l.style.cssText = 'cursor:pointer;border-radius:' + (this.s / 2) + 'px;opacity:0;width:' + this.s + 'px;height:' + this.s + 'px;background:#999;position:absolute;left:0px;top:0px;z-index:10000000;transform:translate(-1000px,-1000px);';
-								l('sectionLeft').appendChild(this.l);
-								AddEvent(this.l, 'mousedown', function (what) { return function () { what.dragged = true; }; }(this));
-								AddEvent(this.l, 'mouseup', function (what) { return function () { what.dragged = false; }; }(this));
-								Game.toys.push(this);
-								return this;
-							}
-							Game.Toy.prototype.logic = function () {
-								var ctx = Game.LeftBackground;
-								var width = ctx.canvas.width;
-								var height = ctx.canvas.height;
-								var me = this;
-								//psst... not real physics
-								for (var ii in Game.toys) {
-									var it = Game.toys[ii];
-									if (it.id != me.id) {
-										var x1 = me.x + me.xd;
-										var y1 = me.y + me.yd;
-										var x2 = it.x + it.xd;
-										var y2 = it.y + it.yd;
-										var dist = Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2)) / (me.s / 2 + it.s / 2);
-										if (dist < (Game.toysType == 1 ? 0.95 : 0.75)) {
-											var angle = Math.atan2(y1 - y2, x1 - x2);
-											var v1 = Math.sqrt(Math.pow((me.xd), 2) + Math.pow((me.yd), 2));
-											var v2 = Math.sqrt(Math.pow((it.xd), 2) + Math.pow((it.yd), 2));
-											var v = ((v1 + v2) / 2 + dist) * 0.75;
-											var ratio = it.s / me.s;
-											me.xd += Math.sin(-angle + Math.PI / 2) * v * (ratio);
-											me.yd += Math.cos(-angle + Math.PI / 2) * v * (ratio);
-											it.xd += Math.sin(-angle - Math.PI / 2) * v * (1 / ratio);
-											it.yd += Math.cos(-angle - Math.PI / 2) * v * (1 / ratio);
-											me.rd += (Math.random() * 1 - 0.5) * 0.1 * (ratio);
-											it.rd += (Math.random() * 1 - 0.5) * 0.1 * (1 / ratio);
-											me.rd *= Math.min(1, v);
-											it.rd *= Math.min(1, v);
-										}
-									}
-								}
-								if (me.y >= height - (Game.milkHd) * height + 8) {
-									me.xd *= 0.85;
-									me.yd *= 0.85;
-									me.rd *= 0.85;
-									me.yd -= 1;
-									me.xd += (Math.random() * 1 - 0.5) * 0.3;
-									me.yd += (Math.random() * 1 - 0.5) * 0.05;
-									me.rd += (Math.random() * 1 - 0.5) * 0.02;
-								}
-								else {
-									me.xd *= 0.99;
-									me.rd *= 0.99;
-									me.yd += 1;
-								}
-								me.yd *= (Math.min(1, Math.abs(me.y - (height - (Game.milkHd) * height) / 16)));
-								me.rd += me.xd * 0.01 / (me.s / (Game.toysType == 1 ? 64 : 48));
-								if (me.x < me.s / 2 && me.xd < 0) me.xd = Math.max(0.1, -me.xd * 0.6); else if (me.x < me.s / 2) { me.xd = 0; me.x = me.s / 2; }
-								if (me.x > width - me.s / 2 && me.xd > 0) me.xd = Math.min(-0.1, -me.xd * 0.6); else if (me.x > width - me.s / 2) { me.xd = 0; me.x = width - me.s / 2; }
-								me.xd = Math.min(Math.max(me.xd, -30), 30);
-								me.yd = Math.min(Math.max(me.yd, -30), 30);
-								me.rd = Math.min(Math.max(me.rd, -0.5), 0.5);
-								me.x += me.xd;
-								me.y += me.yd;
-								me.r += me.rd;
-								me.r = me.r % (Math.PI * 2);
-								me.s += (me.st - me.s) * 0.5;
-								if (Game.toysType == 2 && !me.dragged && Math.random() < 0.003) me.st = choose([48, 48, 48, 48, 96]);
-								if (me.dragged) {
-									me.x = Game.mouseX;
-									me.y = Game.mouseY;
-									me.xd += ((Game.mouseX - Game.mouseX2) * 3 - me.xd) * 0.5;
-									me.yd += ((Game.mouseY - Game.mouseY2) * 3 - me.yd) * 0.5
-								}
-							}
-
-							Game.Toy.prototype.draw = function () {
-								var ctx = Game.LeftBackground;
-								var width = ctx.canvas.width;
-								var height = ctx.canvas.height;
-								var me = this
-								if (me.dragged) {
-									me.l.style.transform = 'translate(' + (me.x - me.s / 2) + 'px,' + (me.y - me.s / 2) + 'px) scale(50)';
-								}
-								else me.l.style.transform = 'translate(' + (me.x - me.s / 2) + 'px,' + (me.y - me.s / 2) + 'px)';
-
-								me.l.style.width = me.s + 'px';
-								me.l.style.height = me.s + 'px';
-								ctx.save();
-								ctx.translate(me.x, me.y);
-								ctx.rotate(me.r);
-								if (Game.toysType == 1) ctx.drawImage(Pic('smallCookies.png'), (me.id % 8) * 64, 0, 64, 64, -me.s / 2, -me.s / 2, me.s, me.s);
-								else ctx.drawImage(Pic('icons.png'), me.icon[0] * 48, me.icon[1] * 48, 48, 48, -me.s / 2, -me.s / 2, me.s, me.s);
-								ctx.restore();
-							}
-
+						if (!Game.toyinit) {
+							Game.toyinit = 1;
 							for (var i = 0; i < Math.floor(Math.random() * 15 + (Game.toysType == 1 ? 5 : 30)); i++) {
 								new Game.Toy(Math.random() * width, Math.random() * height * 0.3);
 							}

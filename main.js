@@ -13315,83 +13315,81 @@ Game.Launch = function () {
 		Game.Toy.prototype.logic = function () {
 			var width = Game.LeftBackground.canvas.width;
 			var height = Game.LeftBackground.canvas.height;
-			var me = this;
 			//psst... not real physics
 			for (var ii in Game.toys) {
 				var it = Game.toys[ii];
-				if (it.id != me.id) {
-					var x1 = me.x + me.xd;
-					var y1 = me.y + me.yd;
+				if (it.id != this.id) {
+					var x1 = this.x + this.xd;
+					var y1 = this.y + this.yd;
 					var x2 = it.x + it.xd;
 					var y2 = it.y + it.yd;
-					var dist = Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2)) / (me.s / 2 + it.s / 2);
+					var dist = Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2)) / (this.s / 2 + it.s / 2);
 					if (dist < (Game.toysType == 1 ? 0.95 : 0.75)) {
 						var angle = Math.atan2(y1 - y2, x1 - x2);
-						var v1 = Math.sqrt(Math.pow((me.xd), 2) + Math.pow((me.yd), 2));
+						var v1 = Math.sqrt(Math.pow((this.xd), 2) + Math.pow((this.yd), 2));
 						var v2 = Math.sqrt(Math.pow((it.xd), 2) + Math.pow((it.yd), 2));
 						var v = ((v1 + v2) / 2 + dist) * 0.75;
-						var ratio = it.s / me.s;
-						me.xd += Math.sin(-angle + Math.PI / 2) * v * (ratio);
-						me.yd += Math.cos(-angle + Math.PI / 2) * v * (ratio);
+						var ratio = it.s / this.s;
+						this.xd += Math.sin(-angle + Math.PI / 2) * v * (ratio);
+						this.yd += Math.cos(-angle + Math.PI / 2) * v * (ratio);
 						it.xd += Math.sin(-angle - Math.PI / 2) * v * (1 / ratio);
 						it.yd += Math.cos(-angle - Math.PI / 2) * v * (1 / ratio);
-						me.rd += (Math.random() * 1 - 0.5) * 0.1 * (ratio);
+						this.rd += (Math.random() * 1 - 0.5) * 0.1 * (ratio);
 						it.rd += (Math.random() * 1 - 0.5) * 0.1 * (1 / ratio);
-						me.rd *= Math.min(1, v);
+						this.rd *= Math.min(1, v);
 						it.rd *= Math.min(1, v);
 					}
 				}
 			}
-			if (me.y >= height - (Game.milkHd) * height + 8) {
-				me.xd *= 0.85;
-				me.yd *= 0.85;
-				me.rd *= 0.85;
-				me.yd -= 1;
-				me.xd += (Math.random() * 1 - 0.5) * 0.3;
-				me.yd += (Math.random() * 1 - 0.5) * 0.05;
-				me.rd += (Math.random() * 1 - 0.5) * 0.02;
+			if (this.y >= height - (Game.milkHd) * height + 8) {
+				this.xd *= 0.85;
+				this.yd *= 0.85;
+				this.rd *= 0.85;
+				this.yd -= 1;
+				this.xd += (Math.random() * 1 - 0.5) * 0.3;
+				this.yd += (Math.random() * 1 - 0.5) * 0.05;
+				this.rd += (Math.random() * 1 - 0.5) * 0.02;
 			}
 			else {
-				me.xd *= 0.99;
-				me.rd *= 0.99;
-				me.yd += 1;
+				this.xd *= 0.99;
+				this.rd *= 0.99;
+				this.yd += 1;
 			}
-			me.yd *= (Math.min(1, Math.abs(me.y - (height - (Game.milkHd) * height) / 16)));
-			me.rd += me.xd * 0.01 / (me.s / (Game.toysType == 1 ? 64 : 48));
-			if (me.x < me.s / 2 && me.xd < 0) me.xd = Math.max(0.1, -me.xd * 0.6); else if (me.x < me.s / 2) { me.xd = 0; me.x = me.s / 2; }
-			if (me.x > width - me.s / 2 && me.xd > 0) me.xd = Math.min(-0.1, -me.xd * 0.6); else if (me.x > width - me.s / 2) { me.xd = 0; me.x = width - me.s / 2; }
-			me.xd = Math.min(Math.max(me.xd, -30), 30);
-			me.yd = Math.min(Math.max(me.yd, -30), 30);
-			me.rd = Math.min(Math.max(me.rd, -0.5), 0.5);
-			me.x += me.xd;
-			me.y += me.yd;
-			me.r += me.rd;
-			me.r = me.r % (Math.PI * 2);
-			me.s += (me.st - me.s) * 0.5;
-			if (Game.toysType == 2 && !me.dragged && Math.random() < 0.003) me.st = choose([48, 48, 48, 48, 96]);
-			if (me.dragged) {
-				me.x = Game.mouseX;
-				me.y = Game.mouseY;
-				me.xd += ((Game.mouseX - Game.mouseX2) * 3 - me.xd) * 0.5;
-				me.yd += ((Game.mouseY - Game.mouseY2) * 3 - me.yd) * 0.5
+			this.yd *= (Math.min(1, Math.abs(this.y - (height - (Game.milkHd) * height) / 16)));
+			this.rd += this.xd * 0.01 / (this.s / (Game.toysType == 1 ? 64 : 48));
+			if (this.x < this.s / 2 && this.xd < 0) this.xd = Math.max(0.1, -this.xd * 0.6); else if (this.x < this.s / 2) { this.xd = 0; this.x = this.s / 2; }
+			if (this.x > width - this.s / 2 && this.xd > 0) this.xd = Math.min(-0.1, -this.xd * 0.6); else if (this.x > width - this.s / 2) { this.xd = 0; this.x = width - this.s / 2; }
+			this.xd = Math.min(Math.max(this.xd, -30), 30);
+			this.yd = Math.min(Math.max(this.yd, -30), 30);
+			this.rd = Math.min(Math.max(this.rd, -0.5), 0.5);
+			this.x += this.xd;
+			this.y += this.yd;
+			this.r += this.rd;
+			this.r = this.r % (Math.PI * 2);
+			this.s += (this.st - this.s) * 0.5;
+			if (Game.toysType == 2 && !this.dragged && Math.random() < 0.003) this.st = choose([48, 48, 48, 48, 96]);
+			if (this.dragged) {
+				this.x = Game.mouseX;
+				this.y = Game.mouseY;
+				this.xd += ((Game.mouseX - Game.mouseX2) * 3 - this.xd) * 0.5;
+				this.yd += ((Game.mouseY - Game.mouseY2) * 3 - this.yd) * 0.5
 			}
 		}
 
 		Game.Toy.prototype.draw = function () {
 			var ctx = Game.LeftBackground;
-			var me = this
-			if (me.dragged) {
-				me.l.style.transform = 'translate(' + (me.x - me.s / 2) + 'px,' + (me.y - me.s / 2) + 'px) scale(50)';
+			if (this.dragged) {
+				this.l.style.transform = 'translate(' + (this.x - this.s / 2) + 'px,' + (this.y - this.s / 2) + 'px) scale(50)';
 			}
-			else me.l.style.transform = 'translate(' + (me.x - me.s / 2) + 'px,' + (me.y - me.s / 2) + 'px)';
+			else this.l.style.transform = 'translate(' + (this.x - this.s / 2) + 'px,' + (this.y - this.s / 2) + 'px)';
 
-			me.l.style.width = me.s + 'px';
-			me.l.style.height = me.s + 'px';
+			this.l.style.width = this.s + 'px';
+			this.l.style.height = this.s + 'px';
 			ctx.save();
-			ctx.translate(me.x, me.y);
-			ctx.rotate(me.r);
-			if (Game.toysType == 1) ctx.drawImage(Pic('smallCookies.png'), (me.id % 8) * 64, 0, 64, 64, -me.s / 2, -me.s / 2, me.s, me.s);
-			else ctx.drawImage(Pic('icons.png'), me.icon[0] * 48, me.icon[1] * 48, 48, 48, -me.s / 2, -me.s / 2, me.s, me.s);
+			ctx.translate(this.x, this.y);
+			ctx.rotate(this.r);
+			if (Game.toysType == 1) ctx.drawImage(Pic('smallCookies.png'), (this.id % 8) * 64, 0, 64, 64, -this.s / 2, -this.s / 2, this.s, this.s);
+			else ctx.drawImage(Pic('icons.png'), this.icon[0] * 48, this.icon[1] * 48, 48, 48, -this.s / 2, -this.s / 2, this.s, this.s);
 			ctx.restore();
 		}
 

@@ -13893,12 +13893,6 @@ Game.Launch = function () {
 
 					if (Game.TOYS) {
 						//golly
-						if (!Game.toyinit) {
-							Game.toyinit = 1;
-							for (var i = 0; i < Math.floor(Math.random() * 15 + (Game.toysType == 1 ? 5 : 30)); i++) {
-								new Game.Toy(Math.random() * width, Math.random() * height * 0.3);
-							}
-						}
 						ctx.globalAlpha = 0.5;
 						for (var i in Game.toys) {
 							var me = Game.toys[i];

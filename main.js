@@ -13780,7 +13780,7 @@ Game.Launch = function () {
 						//golly
 						if (!Game.Toy) {
 							Game.toys = [];
-							Game.toysType = choose([1, 2]);
+							Game.toysType = Math.floor(Math.random() * 2);
 							Game.Toy = function (x, y) {
 								this.id = Game.toys.length;
 								this.x = x;

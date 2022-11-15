@@ -6974,8 +6974,8 @@ Game.Launch = function () {
 					else if (me == 'fortuneCPS') { Math.seedrandom(Game.seed + '-fortune'); me = loc("Your lucky numbers are:") + ' ' + Math.floor(Math.random() * 100) + ' ' + Math.floor(Math.random() * 100) + ' ' + Math.floor(Math.random() * 100) + ' ' + Math.floor(Math.random() * 100)/*+'<br>Click here to gain one hour of your CpS.'*/; Math.seedrandom(); }
 					else {
 						if (EN) {
-							//me = me.dname.substring(me.name.indexOf('#')) + ' : ' + me.baseDesc.substring(me.baseDesc.indexOf('<q>') + 3);
-							//me = me.substring(0, me.length - 4);
+							me = me.dname.substring(me.name.indexOf('#')) + ' : ' + me.baseDesc.substring(me.baseDesc.indexOf('<q>') + 3);
+							me = me.substring(0, me.length - 4);
 						}
 						else if (me.buildingTie) me = me.dname + ' : ' + loc(choose(["Never forget your %1.", "Pay close attention to the humble %1.", "You've been neglecting your %1.", "Remember to visit your %1 sometimes."]), me.buildingTie.single);
 						else me = me.dname + ' : ' + loc(choose(["You don't know what you have until you've lost it.", "Remember to take breaks.", "Hey, what's up. I'm a fortune cookie.", "You think you have it bad? Look at me."]));

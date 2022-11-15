@@ -14220,10 +14220,11 @@ Game.Launch = function () {
 			Game.UpdateGrandmapocalypse();
 
 			//these are kinda fun
-			if (Game.ascensionMode == 2 && Game.Scroll != 0 && !Game.promptOn) {
+			if (Game.ascensionMode == 2 && !Game.promptOn 
+				&& Game.Scroll != 0 && Game.ScrollFrames++ == 4) {
 				if (Game.BigCookieState == 1) { 
 					Game.BigCookieState = 2; 
-				} else if (Game.BigCookieState == 2 && Game.ScrollFrames++ == 4) { 
+				} else if (Game.BigCookieState == 2) { 
 					Game.ScrollFrames = 0;
 					Game.BigCookieState = 1; 
 					Game.ClickCookie(); 

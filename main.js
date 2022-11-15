@@ -14208,7 +14208,6 @@ Game.Launch = function () {
 	/*=====================================================================================
 	LOGIC
 	=======================================================================================*/
-	Game.ScrollFrames = 0;
 	Game.Logic = function () {
 		Game.bounds = Game.l.getBounds();
 
@@ -14720,6 +14719,7 @@ Game.Launch = function () {
 
 		Game.Click = 0;
 		Game.Scroll = 0;
+		Game.ScrollFrames = 0;
 		Game.mouseMoved = 0;
 		Game.CanClick = 1;
 

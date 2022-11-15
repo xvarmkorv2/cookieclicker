@@ -14221,7 +14221,7 @@ Game.Launch = function () {
 			//these are kinda fun
 			if (Game.ascensionMode == 2) {
 				if (Game.BigCookieState == 2 && !Game.promptOn && Game.Scroll != 0) Game.ClickCookie();
-				if (Game.BigCookieState == 1 && !Game.promptOn) Game.ClickCookie();
+				if (Game.BigCookieState == 1 && !Game.promptOn && Game.Scroll != 0) Game.ClickCookie();
 			}
 
 			//handle graphic stuff

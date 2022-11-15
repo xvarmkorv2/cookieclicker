@@ -13969,6 +13969,7 @@ Game.Launch = function () {
 				me.levelUp();
 				if (me.minigame && me.minigame.onRuinTheFun) me.minigame.onRuinTheFun();
 			}
+			
 			if (!silent) {
 				Game.Notify('Thou doth ruineth the fun!', 'You\'re free. Free at last.', [11, 5]);
 			}
@@ -14313,7 +14314,7 @@ Game.Launch = function () {
 
 			if (Game.catchupLogic == 0) { Timer.track("milk progress", false) }
 
-			if (Game.TOYS) {
+			if (Game.prefs.milk && Game.TOYS) {
 				//golly
 				if (!Game.toyinit) {
 					var width = Game.LeftBackground.canvas.width;

@@ -13875,20 +13875,6 @@ Game.Launch = function () {
 
 				//milk and milk accessories
 				if (Game.prefs.milk) {
-					var width = ctx.canvas.width;
-					var height = ctx.canvas.height;
-					var x = Math.floor((Game.T * 2 - (Game.milkH - Game.milkHd) * 2000 + 480 * 2) % 480);//Math.floor((Game.T*2+Math.sin(Game.T*0.1)*2+Math.sin(Game.T*0.03)*2-(Game.milkH-Game.milkHd)*2000+480*2)%480);
-					var y = (Game.milkHd) * height;//(((Game.milkHd)*ctx.canvas.height)*(1+0.05*(Math.sin(Game.T*0.017)/2+0.5)));
-					var a = 1;
-					if (Game.AscendTimer > 0) {
-						y *= 1 - Math.pow((Game.AscendTimer / Game.AscendBreakpoint), 2) * 2;
-						a *= 1 - Math.pow((Game.AscendTimer / Game.AscendBreakpoint), 2) * 2;
-					}
-					else if (Game.ReincarnateTimer > 0) {
-						y *= 1 - Math.pow(1 - (Game.ReincarnateTimer / Game.ReincarnateDuration), 2) * 2;
-						a *= 1 - Math.pow(1 - (Game.ReincarnateTimer / Game.ReincarnateDuration), 2) * 2;
-					}
-
 					if (Game.TOYS) {
 						//golly
 						ctx.globalAlpha = 0.5;
@@ -13907,6 +13893,20 @@ Game.Launch = function () {
 							me.draw()
 						}
 						Timer.track("draw toys", false)
+					}
+
+					var width = ctx.canvas.width;
+					var height = ctx.canvas.height;
+					var x = Math.floor((Game.T * 2 - (Game.milkH - Game.milkHd) * 2000 + 480 * 2) % 480);//Math.floor((Game.T*2+Math.sin(Game.T*0.1)*2+Math.sin(Game.T*0.03)*2-(Game.milkH-Game.milkHd)*2000+480*2)%480);
+					var y = (Game.milkHd) * height;//(((Game.milkHd)*ctx.canvas.height)*(1+0.05*(Math.sin(Game.T*0.017)/2+0.5)));
+					var a = 1;
+					if (Game.AscendTimer > 0) {
+						y *= 1 - Math.pow((Game.AscendTimer / Game.AscendBreakpoint), 2) * 2;
+						a *= 1 - Math.pow((Game.AscendTimer / Game.AscendBreakpoint), 2) * 2;
+					}
+					else if (Game.ReincarnateTimer > 0) {
+						y *= 1 - Math.pow(1 - (Game.ReincarnateTimer / Game.ReincarnateDuration), 2) * 2;
+						a *= 1 - Math.pow(1 - (Game.ReincarnateTimer / Game.ReincarnateDuration), 2) * 2;
 					}
 
 					var pic = Game.Milk.pic;

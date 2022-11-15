@@ -14208,6 +14208,7 @@ Game.Launch = function () {
 	/*=====================================================================================
 	LOGIC
 	=======================================================================================*/
+	Game.ScrollFrames = 0;
 	Game.Logic = function () {
 		Game.bounds = Game.l.getBounds();
 
@@ -14222,7 +14223,8 @@ Game.Launch = function () {
 			if (Game.ascensionMode == 2 && Game.Scroll != 0 && !Game.promptOn) {
 				if (Game.BigCookieState == 1) { 
 					Game.BigCookieState = 2; 
-				}else if (Game.BigCookieState == 2) { 
+				} else if (Game.BigCookieState == 2 && Game.ScrollFrames++ == 4) { 
+					Game.ScrollFrames = 0;
 					Game.BigCookieState = 1; 
 					Game.ClickCookie(); 
 				}

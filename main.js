@@ -7145,9 +7145,8 @@ Game.Launch = function () {
 			this.muted = false;
 
 			if (!this.vanilla){
-
 				for (var i in Game.Object.prototype) {
-					var v = Game.Object.prototype;
+					var v = Game.Object.prototype[i];
 					this[i] = eval(v.tostring())
 				}
 			}

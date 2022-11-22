@@ -713,16 +713,20 @@ Loader.prototype.Load = function (assets) {
 		if (!this.assetsLoading[assets[i]] && !this.assetsLoaded[assets[i]]) {
 			let triedFallBackDomain = false
 			var img = new Image();
-			img.src = this.mainDomain + this.subDomain + assets[i] + '?v=' + this.version;
+			if (assets[i].indexOf('http') != -1) {
+				img.src = assets[i]
+			} else {
+				img.src = this.mainDomain + this.subDomain + assets[i] + '?v=' + this.version;
+				img.onerror = () => {
+					if (!triedFallBackDomain) {
+						triedFallBackDomain = true
+						img.src = this.fallBackDomain + this.subDomain + assets[i] + '?v=' + this.version;
+					}
+				};
+			}
 			img.alt = assets[i];
 			img.onload = bind(this, this.onLoad);
-			img.onerror = () => {
-				if (!triedFallBackDomain) {
-					triedFallBackDomain = true
-					img.src = this.fallBackDomain + this.subDomain + assets[i] + '?v=' + this.version;
-				}
-			};
-			this.assets[assets[i]] = img;
+				this.assets[assets[i]] = img;
 			this.assetsLoading.push(assets[i]);
 		}
 	}

@@ -1,7 +1,11 @@
 const EnableCookiStocker = false
 var waitForGame = function waitForGame() {
     if (typeof Game === 'object' && Game.ready) {
-        Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
+        Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js', () => {
+            CCSE.ReplaceBuildingsStart = () => { }
+            CCSE.ReplaceBuildings = () => { requestAnimationFrame(CCSE.playlist[CCSE.track++]); }
+            CCSE.ReplaceBuildingsFinish = () => { }
+        });
         //Game.LoadMod('https://staticvariablejames.github.io/InsugarTrading/dist/main.js');
         Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE-POCs/BlackholeInverter.js?v=1.12')
         Game.LoadMod('https://klattmose.github.io/CookieClicker/minigameCasino.js?v=3.16')

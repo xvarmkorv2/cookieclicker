@@ -2443,7 +2443,10 @@ Game.Launch = function () {
 			l('textareaPrompt').focus();
 		}
 		Game.ImportSaveCode = function (save) {
-			if (save && save != '') Game.LoadSave(save);
+            var out = false;
+            if (save && save != '') out = Game.LoadSave(save);
+            if (out && App && App.onImportSave) App.onImportSave(out, save);
+            return out;
 		}
 
 		Game.FileSave = function () {

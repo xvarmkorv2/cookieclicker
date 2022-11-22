@@ -10142,7 +10142,7 @@ Game.Launch = function () {
 
         var getCookiePrice = function (level) { return 999999999999999999999999999999999999999 * Math.pow(10, (level - 1) / 2); };
 
-		order = 10020;
+        order = 10020;
         Game.NewUpgradeCookie({ name: 'Whoopie pies', desc: 'Two chocolate halves joined together by a cream filling. It\'s got no eyebrows, but you never noticed until now.', icon: [21, 31], power: 5, price: getCookiePrice(1) });
         Game.NewUpgradeCookie({ name: 'Caramel wafer biscuits', desc: 'Coated in delicious chocolate. As many layers as you\'ll get in a biscuit without involving onions.', icon: [22, 31], power: 5, price: getCookiePrice(2) });
         Game.NewUpgradeCookie({ name: 'Chocolate chip mocha cookies', desc: 'Mocha started out as an excuse to smuggle chocolate into coffee. And now, in a poignant display of diplomacy and cultural exchange, it\'s bringing coffee to chocolate cookies.', icon: [23, 31], power: 5, price: getCookiePrice(3) });

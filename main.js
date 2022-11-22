@@ -14878,7 +14878,8 @@ Game.Launch = function () {
 		Game.catchupLogic = 0;
 		try {
 			Game.Logic();
-		} catch {
+		} catch(error) {
+			Game.Notify(error, error, [11, 5]);
 			setTimeout(Game.Loop, 1000 / Game.fps);
 			return
 		}
@@ -14898,14 +14899,8 @@ Game.Launch = function () {
 		Game.accumulatedDelay = Math.min(Game.accumulatedDelay, 1000 * 5);//don't compensate over 5 seconds; if you do, something's probably very wrong
 		Game.time = time;
 
-
 		while (Game.accumulatedDelay > 0) {
-			try {
-				Game.Logic();
-			} catch {
-				setTimeout(Game.Loop, 1000 / Game.fps);
-				return
-			}
+			Game.Logic();
 			Game.accumulatedDelay -= 1000 / Game.fps;//as long as we're detecting latency (slower than target fps), execute logic (this makes drawing slower but makes the logic behave closer to correct target fps)
 		}
 		Timer.track('catchup logic', false);

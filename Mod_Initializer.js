@@ -3,6 +3,7 @@ var waitForGame = function waitForGame() {
     if (typeof Game === 'object' && Game.ready) {
         Game.LoadMod('https://xvarmkorv2.github.io/cookieclicker/CCSE.js', () => {
             CCSE.ReplaceBuildings = () => { requestAnimationFrame(CCSE.playlist[CCSE.track++]); }
+            CCSE.ReplaceBuildingsFinish = () => {}
         });
         //Game.LoadMod('https://staticvariablejames.github.io/InsugarTrading/dist/main.js');
         Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE-POCs/BlackholeInverter.js?v=1.12')

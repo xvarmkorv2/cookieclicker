@@ -14879,7 +14879,7 @@ Game.Launch = function () {
 		try {
 			Game.Logic();
 		} catch(error) {
-			Game.Notify(error, error, [11, 5]);
+			alert(error);
 			setTimeout(Game.Loop, 1000 / Game.fps);
 			return
 		}

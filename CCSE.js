@@ -441,7 +441,7 @@ CCSE.launch = function () {
 
         // Game.Loader.Load
         // To allow for images from outside the dashnet domain
-        CCSE.ReplaceCodeIntoFunction('Game.Loader.Load', 'img.src=this.domain', "img.src=(assets[i].indexOf('/')>=0?'':this.domain)", 0);
+       // CCSE.ReplaceCodeIntoFunction('Game.Loader.Load', 'img.src=this.domain', "img.src=(assets[i].indexOf('/')>=0?'':this.domain)", 0);
 
 
         // Game.resize

@@ -2316,7 +2316,7 @@ Game.Launch = function () {
 		UPDATE CHECKER
 		=======================================================================================*/
 		Game.CheckUpdates = function () {
-			ajax('https://cookie-clicker-thing.herokuapp.com/server.php?q=checkupdate', Game.CheckUpdatesResponse);
+			if (!App) ajax('https://cookie-clicker-thing.herokuapp.com/server.php?q=checkupdate', Game.CheckUpdatesResponse);
 		}
 		Game.CheckUpdatesResponse = function (response) {
 			var r = response.split('|');
@@ -2346,7 +2346,12 @@ Game.Launch = function () {
 		Game.heralds = 0;
 
 		Game.GrabData = function () {
-			ajax('https://cookie-clicker-thing.herokuapp.com/patreon/grab.php', Game.GrabDataResponse);
+			if (!App) ajax('https://cookie-clicker-thing.herokuapp.com/patreon/grab.php', Game.GrabDataResponse);
+			else App.grabData(function (res) {
+				Game.heralds = res ? (res.playersN || 1) : 1;
+				Game.heralds = Math.max(0, Math.min(100, Math.ceil(Game.heralds / 100 * 100) / 100));
+				l('heraldsAmount').textContent = Math.floor(Game.heralds);
+			});
 		}
 		Game.GrabDataResponse = function (response) {
 			/*
@@ -5801,7 +5806,7 @@ Game.Launch = function () {
 			if (!noLog) Game.AddToLog('<b>' + title + '</b> | ' + desc);
 		}
 
-			
+
 		/*=====================================================================================
 		PROMPT
 		=======================================================================================*/
@@ -13335,7 +13340,7 @@ Game.Launch = function () {
 						it.xd += Math.sin(-angle - Math.PI / 2) * v * (1 / ratio);
 						it.yd += Math.cos(-angle - Math.PI / 2) * v * (1 / ratio);
 						this.rd += (Math.random() - 0.5) * 0.1 * (ratio);
-						it.rd += (Math.random()- 0.5) * 0.1 * (1 / ratio);
+						it.rd += (Math.random() - 0.5) * 0.1 * (1 / ratio);
 						this.rd *= Math.min(1, v);
 						it.rd *= Math.min(1, v);
 					}
@@ -13969,7 +13974,7 @@ Game.Launch = function () {
 				me.levelUp();
 				if (me.minigame && me.minigame.onRuinTheFun) me.minigame.onRuinTheFun();
 			}
-			
+
 			if (!silent) {
 				Game.Notify('Thou doth ruineth the fun!', 'You\'re free. Free at last.', [11, 5]);
 			}
@@ -14219,14 +14224,14 @@ Game.Launch = function () {
 			Game.UpdateGrandmapocalypse();
 
 			//these are kinda fun
-			if (Game.ascensionMode == 2 && !Game.promptOn 
+			if (Game.ascensionMode == 2 && !Game.promptOn
 				&& Game.Scroll != 0 && Game.ScrollFrames++ == 4) {
-				if (Game.BigCookieState == 1) { 
-					Game.BigCookieState = 2; 
-				} else if (Game.BigCookieState == 2) { 
+				if (Game.BigCookieState == 1) {
+					Game.BigCookieState = 2;
+				} else if (Game.BigCookieState == 2) {
 					Game.ScrollFrames = 0;
-					Game.BigCookieState = 1; 
-					Game.ClickCookie(); 
+					Game.BigCookieState = 1;
+					Game.ClickCookie();
 				}
 			}
 

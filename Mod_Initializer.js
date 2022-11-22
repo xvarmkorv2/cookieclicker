@@ -1,7 +1,7 @@
 const EnableCookiStocker = false
 var waitForGame = function waitForGame() {
     if (typeof Game === 'object' && Game.ready) {
-        Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js', () => {
+        Game.LoadMod('https://xvarmkorv2.github.io/cookieclicker/CCSE.js', () => {
             CCSE.ReplaceBuildings = () => { requestAnimationFrame(CCSE.playlist[CCSE.track++]); }
         });
         //Game.LoadMod('https://staticvariablejames.github.io/InsugarTrading/dist/main.js');

@@ -7738,6 +7738,7 @@ Game.Launch = function () {
 			return this;
 		}
 		/*
+		This breaks CCSE
 		Game.Object.prototype.switchMinigame = function (on)//change whether we're on the building's minigame
 		{
 			if (!Game.isMinigameReady(this)) on = false;

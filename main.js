@@ -13730,11 +13730,11 @@ Game.Launch=function () {
 						var ratio=it.s / this.s;
 						this.xd+=Math.sin(-angle + Math.PI / 2) * v * (ratio);
 						this.yd+=Math.cos(-angle + Math.PI / 2) * v * (ratio);
+						this.rd+=(Math.random() - 0.5) * 0.1 * (ratio);
+						this.rd*=Math.min(1, v);
 						it.xd+=Math.sin(-angle - Math.PI / 2) * v * (1 / ratio);
 						it.yd+=Math.cos(-angle - Math.PI / 2) * v * (1 / ratio);
-						this.rd+=(Math.random() - 0.5) * 0.1 * (ratio);
 						it.rd+=(Math.random() - 0.5) * 0.1 * (1 / ratio);
-						this.rd*=Math.min(1, v);
 						it.rd*=Math.min(1, v);
 					}
 				}

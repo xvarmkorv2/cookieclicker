@@ -139,8 +139,8 @@ var ajax=function (url, callback) {
 		} catch (e) { }
 	}
 	//httpRequest.onerror=function(e){console.log('ERROR',e);}
-	if (url.indexOf('?')==-1) url += '?'; else url += '&';
-	url += 'nocache=' + Date.now();
+	if (url.indexOf('?')==-1) url+='?'; else url+='&';
+	url+='nocache=' + Date.now();
 	httpRequest.open('GET', url);
 	httpRequest.setRequestHeader('Content-Type', 'text/plain');
 	httpRequest.overrideMimeType('text/plain');
@@ -160,7 +160,7 @@ function toFixed(x) {
 		if (e>20) {
 			e -= 20;
 			x /= Math.pow(10, e);
-			x += (new Array(e + 1)).join('0');
+			x+=(new Array(e + 1)).join('0');
 		}
 	}
 	return x;
@@ -232,9 +232,9 @@ function shortenNumber(val) {
 		var ind=num.indexOf('e+');
 		if (ind==-1) return val;
 		var str='';
-		for (var i=0; i<ind; i++) { str += (i<6 ? num[i] : '0'); }
-		str += 'e+';
-		str += num.split('e+')[1];
+		for (var i=0; i<ind; i++) { str+=(i<6 ? num[i] : '0'); }
+		str+='e+';
+		str+=num.split('e+')[1];
 		return parseFloat(str);
 	}
 	return val;
@@ -245,8 +245,8 @@ function SimpleBeautify(val) {
 	var str2='';
 	for (var i in str)//add commas
 	{
-		if ((str.length - i) % 3==0 && i>0) str2 += ',';
-		str2 += str[i];
+		if ((str.length - i) % 3==0 && i>0) str2+=',';
+		str2+=str[i];
 	}
 	return str2;
 }
@@ -375,11 +375,11 @@ var parseLoc=function (str, params) {
 		var it=str[i];
 		if (inPercent) {
 			inPercent=false;
-			if (!isNaN(it) && params.length>=parseInt(it) - 1) out += params[parseInt(it) - 1];
-			else out += '%' + it;
+			if (!isNaN(it) && params.length>=parseInt(it) - 1) out+=params[parseInt(it) - 1];
+			else out+='%' + it;
 		}
 		else if (it=='%') inPercent=true;
-		else out += it;
+		else out+=it;
 	}
 	return out;
 }
@@ -495,7 +495,7 @@ var LocalizeUpgradesAndAchievs=function () {
 		found=FindLocStringByPart(type + ' desc ' + it.id);
 		if (found) it.ddesc=loc(found);
 		found=FindLocStringByPart(type + ' quote ' + it.id);
-		if (found) it.ddesc += '<q>' + loc(found) + '</q>';
+		if (found) it.ddesc+='<q>' + loc(found) + '</q>';
 	}
 	BeautifyAll();
 }
@@ -553,7 +553,7 @@ function CompressBin(arr)//compress a sequence like [0,1,1,0,1,0]... into a numb
 	arr2.push(1);
 	arr2.reverse();
 	for (var i in arr2) {
-		str += arr2[i];
+		str+=arr2[i];
 	}
 	str=parseInt(str, 2);
 	return str;
@@ -623,7 +623,7 @@ function unpack(str) {
 function pack2(/* string */ values) {
 	var chunks=values.match(/.{1,14}/g), packed='';
 	for (var i=0; i<chunks.length; i++) {
-		packed += String.fromCharCode(parseInt('1' + chunks[i], 2));
+		packed+=String.fromCharCode(parseInt('1' + chunks[i], 2));
 	}
 	return packed;
 }
@@ -631,7 +631,7 @@ function pack2(/* string */ values) {
 function unpack2(/* string */ packed) {
 	var values='';
 	for (var i=0; i<packed.length; i++) {
-		values += packed.charCodeAt(i).toString(2).substring(1);
+		values+=packed.charCodeAt(i).toString(2).substring(1);
 	}
 	return values;
 }
@@ -662,7 +662,7 @@ CanvasRenderingContext2D.prototype.fillPattern=function (img, X, Y, W, H, iW, iH
 		var offY=offY || 0;
 		if (offX<0) { offX=offX - Math.floor(offX / iW) * iW; } if (offX>0) { offX=(offX % iW) - iW; }
 		if (offY<0) { offY=offY - Math.floor(offY / iH) * iH; } if (offY>0) { offY=(offY % iH) - iH; }
-		for (var y=offY; y<H; y += iH) { for (var x=offX; x<W; x += iW) { this.drawImage(img, X + x, Y + y, iW, iH); } }
+		for (var y=offY; y<H; y+=iH) { for (var x=offX; x<W; x+=iW) { this.drawImage(img, X + x, Y + y, iW, iH); } }
 	}
 }
 
@@ -852,7 +852,7 @@ triggerAnim=function (element, anim) {
 var debugStr='';
 var Debug=function (what) {
 	if (!debugStr) debugStr=what;
-	else debugStr += '; ' + what;
+	else debugStr+='; ' + what;
 }
 
 var Timer={};
@@ -869,9 +869,9 @@ Timer.formatNumber=function (num, toPlace) {
 	let place=Math.pow(10, toPlace)
 	let formated=(Math.round(num * place) / place).toString()
 	if (!formated.includes('.')) {
-		formated += '.'
+		formated+='.'
 		for (var i=0; i<toPlace; i++) {
-			formated += '0'
+			formated+='0'
 		}
 
 	}
@@ -882,7 +882,7 @@ Timer.track=function (label, border) {
 	var now=Date.now();
 	if (!Timer.smoothed[label]) Timer.smoothed[label]=0;
 	Timer.order.push(label)
-	Timer.smoothed[label] += ((now - Timer.t) - Timer.smoothed[label]) * 0.1;
+	Timer.smoothed[label]+=((now - Timer.t) - Timer.smoothed[label]) * 0.1;
 	Timer.labels[label]=`<div style="padding-left:8px;"> ${label} : ${Timer.formatNumber(Timer.smoothed[label], 2)}ms</div>`;
 	Timer.t=now;
 }
@@ -1036,9 +1036,9 @@ var Game={};
 			}
 		}
 		for (var i in Game.modSaveData) {
-			str += i + ':' + Game.safeSaveString(Game.modSaveData[i]) + ';';
+			str+=i + ':' + Game.safeSaveString(Game.modSaveData[i]) + ';';
 		}
-		if (App && App.saveMods) str += App.saveMods();
+		if (App && App.saveMods) str+=App.saveMods();
 		return str;
 	}
 	Game.loadModData=function () {
@@ -1056,17 +1056,17 @@ var Game={};
 		var modsN=0;
 		var str='';
 		for (var i in Game.modSaveData) {
-			str += '<div style="border-bottom:1px dashed rgba(255,255,255,0.2);clear:both;overflow:hidden;padding:4px 0px;">';
-			str += `<div style="float:left;width:49%;text-align:left;overflow:hidden;"><b>${i}</b>`;
-			if (Game.mods[i]) str += ' ' + loc("(loaded)");
-			str += '</div>';
-			str += `'<div style="float:right;width:49%;text-align:right;overflow:hidden;">${loc("%1 char", Game.modSaveData[i].length)} <a class="option warning" style="padding:0px 2px;font-size:10px;margin:0px;vertical-align:top;" ${Game.clickStr}="Game.deleteModData('${i}');PlaySound(\'snd/tick.mp3\');Game.ClosePrompt();Game.CheckModData();">X</a>'`;
-			str += '</div>';
-			str += '</div>';
+			str+='<div style="border-bottom:1px dashed rgba(255,255,255,0.2);clear:both;overflow:hidden;padding:4px 0px;">';
+			str+=`<div style="float:left;width:49%;text-align:left;overflow:hidden;"><b>${i}</b>`;
+			if (Game.mods[i]) str+=' ' + loc("(loaded)");
+			str+='</div>';
+			str+=`'<div style="float:right;width:49%;text-align:right;overflow:hidden;">${loc("%1 char", Game.modSaveData[i].length)} <a class="option warning" style="padding:0px 2px;font-size:10px;margin:0px;vertical-align:top;" ${Game.clickStr}="Game.deleteModData('${i}');PlaySound(\'snd/tick.mp3\');Game.ClosePrompt();Game.CheckModData();">X</a>'`;
+			str+='</div>';
+			str+='</div>';
 			modsN++;
 		}
-		if (modsN==0) str += loc("No mod data present.");
-		else str += `<div><a class="option warning" style="font-size:11px;margin-top:4px;" ${Game.clickStr}="Game.deleteAllModData();PlaySound(\'snd/tick.mp3\');Game.ClosePrompt();Game.CheckModData();">${loc("Delete all")}</a></div>`;
+		if (modsN==0) str+=loc("No mod data present.");
+		else str+=`<div><a class="option warning" style="font-size:11px;margin-top:4px;" ${Game.clickStr}="Game.deleteAllModData();PlaySound(\'snd/tick.mp3\');Game.ClosePrompt();Game.CheckModData();">${loc("Delete all")}</a></div>`;
 		Game.Prompt(`<id ModData><h3>${loc("Mod data")}</h3><div class="block">${tinyIcon([16, 5])}<div></div>${loc("These are the mods present in your save data. You may delete some of this data to make your save file smaller.")}</div><div class="block" style="font-size:11px;">${str}</div>`, [loc("Back")]);
 	}
 
@@ -1205,12 +1205,12 @@ Game.Launch=function () {
 				'</div><div class="subsection update' + (patch.type==2 ? ' small' : '') + '">' +
 				'<div class="title">' + patch.title + '</div>';
 			for (var ii=0; ii<patch.points.length; ii++) {
-				patchText += '<div class="listing">&bull; ' + patch.points[ii] + '</div>';
+				patchText+='<div class="listing">&bull; ' + patch.points[ii] + '</div>';
 			}
-			Game.updateLog += patchText;
+			Game.updateLog+=patchText;
 		}
 
-		if (!EN) Game.updateLog += '<div class="listing" style="font-weight:bold;font-style:italic;opacity:0.5;">' + loc("Note: older update notes are in English.") + '</div>';
+		if (!EN) Game.updateLog+='<div class="listing" style="font-weight:bold;font-style:italic;opacity:0.5;">' + loc("Note: older update notes are in English.") + '</div>';
 		Game.updateLog +=
 			'</div><div class="subsection update">' +
 			'<div class="title">31/05/2022 - a mind of its own</div>' +
@@ -1957,7 +1957,7 @@ Game.Launch=function () {
 		Game.makeSeed=function () {
 			var chars='abcdefghijklmnopqrstuvwxyz'.split('');
 			var str='';
-			for (var i=0; i<5; i++) { str += choose(chars); }
+			for (var i=0; i<5; i++) { str+=choose(chars); }
 			return str;
 		}
 		Game.seed=Game.makeSeed();//each run has its own seed, used for deterministic random stuff
@@ -2116,8 +2116,8 @@ Game.Launch=function () {
 				return (Math.random()>0.05 ? (choose(['Magic', 'Fantastic', 'Fancy', 'Sassy', 'Snazzy', 'Pretty', 'Cute', 'Pirate', 'Ninja', 'Zombie', 'Robot', 'Radical', 'Urban', 'Cool', 'Hella', 'Sweet', 'Awful', 'Double', 'Triple', 'Turbo', 'Techno', 'Disco', 'Electro', 'Dancing', 'Wonder', 'Mutant', 'Space', 'Science', 'Medieval', 'Future', 'Captain', 'Bearded', 'Lovely', 'Tiny', 'Big', 'Fire', 'Water', 'Frozen', 'Metal', 'Plastic', 'Solid', 'Liquid', 'Moldy', 'Shiny', 'Happy', 'Happy Little', 'Slimy', 'Tasty', 'Delicious', 'Hungry', 'Greedy', 'Lethal', 'Professor', 'Doctor', 'Power', 'Chocolate', 'Crumbly', 'Choklit', 'Righteous', 'Glorious', 'Mnemonic', 'Psychic', 'Frenetic', 'Hectic', 'Crazy', 'Royal', 'El', 'Von']) + ' ') : 'Mc') + choose(['Cookie', 'Biscuit', 'Muffin', 'Scone', 'Cupcake', 'Pancake', 'Chip', 'Sprocket', 'Gizmo', 'Puppet', 'Mitten', 'Sock', 'Teapot', 'Mystery', 'Baker', 'Cook', 'Grandma', 'Click', 'Clicker', 'Spaceship', 'Factory', 'Portal', 'Machine', 'Experiment', 'Monster', 'Panic', 'Burglar', 'Bandit', 'Booty', 'Potato', 'Pizza', 'Burger', 'Sausage', 'Meatball', 'Spaghetti', 'Macaroni', 'Kitten', 'Puppy', 'Giraffe', 'Zebra', 'Parrot', 'Dolphin', 'Duckling', 'Sloth', 'Turtle', 'Goblin', 'Pixie', 'Gnome', 'Computer', 'Pirate', 'Ninja', 'Zombie', 'Robot']);
 			}
 			else {
-				if (locStrings["bakery random name, 1st half"] && locStrings["bakery random name, 2nd half"]) str += choose(loc("bakery random name, 1st half")) + ' ' + choose(loc("bakery random name, 2nd half"));
-				else str += choose(loc("bakery random name"));
+				if (locStrings["bakery random name, 1st half"] && locStrings["bakery random name, 2nd half"]) str+=choose(loc("bakery random name, 1st half")) + ' ' + choose(loc("bakery random name, 2nd half"));
+				else str+=choose(loc("bakery random name"));
 			}
 			return str;
 		}
@@ -2143,7 +2143,7 @@ Game.Launch=function () {
 		}
 		Game.bakeryNameRefresh=function () {
 			var name=Game.bakeryName;
-			if (EN) { if (name.slice(-1).toLowerCase()=='s') name += '\' bakery'; else name += '\'s bakery'; }
+			if (EN) { if (name.slice(-1).toLowerCase()=='s') name+='\' bakery'; else name+='\'s bakery'; }
 			else name=loc("%1's bakery", name);
 			Game.bakeryNameL.textContent=name;
 			name=Game.bakeryName.toLowerCase();
@@ -2330,8 +2330,8 @@ Game.Launch=function () {
 			}
 			else if (parseFloat(r[0])>Game.version) {
 				str='<b>New version available : v. ' + r[0] + '!</b>';
-				if (r[1]) str += '<br><small>Update note : "' + r[1] + '"</small>';
-				str += '<br><b>Refresh to get it!</b>';
+				if (r[1]) str+='<br><small>Update note : "' + r[1] + '"</small>';
+				str+='<br><b>Refresh to get it!</b>';
 			}
 			if (str!='') {
 				l('alert').innerHTML=str;
@@ -2409,20 +2409,20 @@ Game.Launch=function () {
 		Game.attachTooltip(l('heralds'), function () {
 			var str='';
 
-			if (!App && !Game.externalDataLoaded) str += loc("Heralds couldn't be loaded. There may be an issue with our servers, or you are playing the game locally.");
+			if (!App && !Game.externalDataLoaded) str+=loc("Heralds couldn't be loaded. There may be an issue with our servers, or you are playing the game locally.");
 			else {
-				if (!App && Game.heralds==0) str += loc("There are no heralds at the moment. Please consider <b style=\"color:#bc3aff;\">donating to our Patreon</b>!");
+				if (!App && Game.heralds==0) str+=loc("There are no heralds at the moment. Please consider <b style=\"color:#bc3aff;\">donating to our Patreon</b>!");
 				else {
-					str += '<b style="color:#bc3aff;text-shadow:0px 1px 0px #6d0096;">' + loc("%1 herald", Game.heralds) + '</b> ' + loc("selflessly inspiring a boost in production for everyone, resulting in %1.", '<br><b style="color:#cdaa89;text-shadow:0px 1px 0px #7c4532,0px 0px 6px #7c4532;"><div style="width:16px;height:16px;display:inline-block;vertical-align:middle;background:url(img/money.png);"></div>' + loc("+%1% cookies per second", Game.heralds) + '</b>');
-					str += '<div class="line"></div>';
-					if (Game.ascensionMode==1) str += loc("You are in a <b>Born again</b> run, and are not currently benefiting from heralds.");
-					else if (Game.Has('Heralds')) str += loc("You own the <b>Heralds</b> upgrade, and therefore benefit from the production boost.");
-					else str += loc("To benefit from the herald bonus, you need a special upgrade you do not yet own. You will permanently unlock it later in the game.");
+					str+='<b style="color:#bc3aff;text-shadow:0px 1px 0px #6d0096;">' + loc("%1 herald", Game.heralds) + '</b> ' + loc("selflessly inspiring a boost in production for everyone, resulting in %1.", '<br><b style="color:#cdaa89;text-shadow:0px 1px 0px #7c4532,0px 0px 6px #7c4532;"><div style="width:16px;height:16px;display:inline-block;vertical-align:middle;background:url(img/money.png);"></div>' + loc("+%1% cookies per second", Game.heralds) + '</b>');
+					str+='<div class="line"></div>';
+					if (Game.ascensionMode==1) str+=loc("You are in a <b>Born again</b> run, and are not currently benefiting from heralds.");
+					else if (Game.Has('Heralds')) str+=loc("You own the <b>Heralds</b> upgrade, and therefore benefit from the production boost.");
+					else str+=loc("To benefit from the herald bonus, you need a special upgrade you do not yet own. You will permanently unlock it later in the game.");
 				}
 			}
-			str += '<div class="line"></div><span style="font-size:90%;opacity:0.6;">' + (!App ? loc("<b>Heralds</b> are people who have donated to our highest Patreon tier, and are limited to 100.<br>Each herald gives everyone +1% CpS.<br>Heralds benefit everyone playing the game, regardless of whether you donated.") : loc("Every %1 current players on Steam generates <b>1 herald</b>, up to %2 heralds.<br>Each herald gives everyone +1% CpS.", [100, 100])) + '</span><div class="line"></div>' + tinyIcon([21, 29]);
+			str+='<div class="line"></div><span style="font-size:90%;opacity:0.6;">' + (!App ? loc("<b>Heralds</b> are people who have donated to our highest Patreon tier, and are limited to 100.<br>Each herald gives everyone +1% CpS.<br>Heralds benefit everyone playing the game, regardless of whether you donated.") : loc("Every %1 current players on Steam generates <b>1 herald</b>, up to %2 heralds.<br>Each herald gives everyone +1% CpS.", [100, 100])) + '</span><div class="line"></div>' + tinyIcon([21, 29]);
 
-			str += '<div style="width:31px;height:39px;background:url(img/heraldFlag.png);position:absolute;top:0px;left:8px;"></div><div style="width:31px;height:39px;background:url(img/heraldFlag.png);position:absolute;top:0px;right:8px;"></div>';
+			str+='<div style="width:31px;height:39px;background:url(img/heraldFlag.png);position:absolute;top:0px;left:8px;"></div><div style="width:31px;height:39px;background:url(img/heraldFlag.png);position:absolute;top:0px;right:8px;"></div>';
 
 			return '<div style="padding:8px;width:300px;text-align:center;" class="prompt" id="tooltipHeralds"><h3>' + loc("Heralds") + '</h3><div class="block">' + str + '</div></div>';
 		}, 'this');
@@ -2480,10 +2480,10 @@ Game.Launch=function () {
 			//type: none is default, 1=return string only, 2=return uncompressed string, 3=return uncompressed, commented string
 			Game.lastDate=parseInt(Game.time);
 			var str='';
-			if (type==3) str += '\nGame version\n';
-			str += Game.version + '|';
-			str += '|';//just in case we need some more stuff here
-			if (type==3) str += '\n\nRun details';
+			if (type==3) str+='\nGame version\n';
+			str+=Game.version + '|';
+			str+='|';//just in case we need some more stuff here
+			if (type==3) str+='\n\nRun details';
 			str +=//save stats
 				(type==3 ? '\n	run start date : ' : '') + parseInt(Game.startDate) + ';' +
 				(type==3 ? '\n	legacy start date : ' : '') + parseInt(Game.fullDate) + ';' +
@@ -2491,7 +2491,7 @@ Game.Launch=function () {
 				(type==3 ? '\n	bakery name : ' : '') + (Game.bakeryName) + ';' +
 				(type==3 ? '\n	seed : ' : '') + (Game.seed) +
 				'|';
-			if (type==3) str += '\n\nPacked preferences bitfield\n	';
+			if (type==3) str+='\n\nPacked preferences bitfield\n	';
 			var str2 =//prefs
 				(Game.prefs.particles ? '1' : '0') +
 				(Game.prefs.numbers ? '1' : '0') +
@@ -2522,8 +2522,8 @@ Game.Launch=function () {
 				(Game.prefs.discordPresence ? '1' : '0') +
 				'';
 			str2=pack3(str2);
-			str += str2 + '|';
-			if (type==3) str += '\n\nMisc game data';
+			str+=str2 + '|';
+			if (type==3) str+='\n\nMisc game data';
 			str +=
 				(type==3 ? '\n	cookies : ' : '') + parseFloat(Game.cookies).toString() + ';' +
 				(type==3 ? '\n	total cookies earned : ' : '') + parseFloat(Game.cookiesEarned).toString() + ';' +
@@ -2579,21 +2579,21 @@ Game.Launch=function () {
 
 				'|';//cookies and lots of other stuff
 
-			if (type==3) str += '\n\nBuildings : amount, bought, cookies produced, level, minigame data';
+			if (type==3) str+='\n\nBuildings : amount, bought, cookies produced, level, minigame data';
 			for (var i in Game.Objects)//buildings
 			{
 				var me=Game.Objects[i];
-				if (type==3) str += '\n	' + me.name + ' : ';
+				if (type==3) str+='\n	' + me.name + ' : ';
 				if (me.vanilla) {
-					str += me.amount + ',' + me.bought + ',' + parseFloat(Math.floor(me.totalCookies)) + ',' + parseInt(me.level);
-					if (Game.isMinigameReady(me)) str += ',' + me.minigame.save(); else str += ',' + (me.minigameSave || '');
-					str += ',' + (me.muted ? '1' : '0');
-					str += ',' + me.highest;
-					str += ';';
+					str+=me.amount + ',' + me.bought + ',' + parseFloat(Math.floor(me.totalCookies)) + ',' + parseInt(me.level);
+					if (Game.isMinigameReady(me)) str+=',' + me.minigame.save(); else str+=',' + (me.minigameSave || '');
+					str+=',' + (me.muted ? '1' : '0');
+					str+=',' + me.highest;
+					str+=';';
 				}
 			}
-			str += '|';
-			if (type==3) str += '\n\nPacked upgrades bitfield (unlocked and bought)\n	';
+			str+='|';
+			if (type==3) str+='\n\nPacked upgrades bitfield (unlocked and bought)\n	';
 			var toCompress=[];
 			for (var i in Game.UpgradesById)//upgrades
 			{
@@ -2603,9 +2603,9 @@ Game.Launch=function () {
 
 			toCompress=pack3(toCompress.join(''));//toCompress=pack(toCompress);//CompressLargeBin(toCompress);
 
-			str += toCompress;
-			str += '|';
-			if (type==3) str += '\n\nPacked achievements bitfield (won)\n	';
+			str+=toCompress;
+			str+='|';
+			if (type==3) str+='\n\nPacked achievements bitfield (won)\n	';
 			var toCompress=[];
 			for (var i in Game.AchievementsById)//achievements
 			{
@@ -2613,29 +2613,29 @@ Game.Launch=function () {
 				if (me.vanilla) toCompress.push(Math.min(me.won));
 			}
 			toCompress=pack3(toCompress.join(''));//toCompress=pack(toCompress);//CompressLargeBin(toCompress);
-			str += toCompress;
+			str+=toCompress;
 
-			str += '|';
-			if (type==3) str += '\n\nBuffs : type, maxTime, time, arg1, arg2, arg3';
+			str+='|';
+			if (type==3) str+='\n\nBuffs : type, maxTime, time, arg1, arg2, arg3';
 			for (var i in Game.buffs) {
 				var me=Game.buffs[i];
 				if (me.type) {
-					if (type==3) str += '\n	' + me.type.name + ' : ';
+					if (type==3) str+='\n	' + me.type.name + ' : ';
 					if (me.type.vanilla) {
-						str += me.type.id + ',' + me.maxTime + ',' + me.time;
-						if (typeof me.arg1 !== 'undefined') str += ',' + parseFloat(me.arg1);
-						if (typeof me.arg2 !== 'undefined') str += ',' + parseFloat(me.arg2);
-						if (typeof me.arg3 !== 'undefined') str += ',' + parseFloat(me.arg3);
-						str += ';';
+						str+=me.type.id + ',' + me.maxTime + ',' + me.time;
+						if (typeof me.arg1 !== 'undefined') str+=',' + parseFloat(me.arg1);
+						if (typeof me.arg2 !== 'undefined') str+=',' + parseFloat(me.arg2);
+						if (typeof me.arg3 !== 'undefined') str+=',' + parseFloat(me.arg3);
+						str+=';';
 					}
 				}
 			}
 
 
-			if (type==3) str += '\n\nCustom :\n';
+			if (type==3) str+='\n\nCustom :\n';
 
-			str += '|';
-			str += Game.saveModData();
+			str+='|';
+			str+=Game.saveModData();
 
 			Game.lastSaveData=str;
 
@@ -2859,7 +2859,7 @@ Game.Launch=function () {
 								me.amount=parseInt(mestr[0]); me.bought=parseInt(mestr[1]); me.totalCookies=parseFloat(mestr[2]); me.level=parseInt(mestr[3] || 0); me.highest=(version>=2.024 ? parseInt(mestr[6]) : me.amount);
 								if (me.minigame && me.minigameLoaded && me.minigame.reset) { me.minigame.reset(true); me.minigame.load(mestr[4] || ''); } else me.minigameSave=(mestr[4] || 0);
 								me.muted=parseInt(mestr[5]) || 0;
-								Game.BuildingsOwned += me.amount;
+								Game.BuildingsOwned+=me.amount;
 								if (version<2.003) me.level=0;
 							}
 							else {
@@ -3096,19 +3096,19 @@ Game.Launch=function () {
 								if (Game.Has('Lucifer')) maxTime *= 2;
 
 								var percent=5;
-								if (Game.Has('Angels')) percent += 10;
-								if (Game.Has('Archangels')) percent += 10;
-								if (Game.Has('Virtues')) percent += 10;
-								if (Game.Has('Dominions')) percent += 10;
-								if (Game.Has('Cherubim')) percent += 10;
-								if (Game.Has('Seraphim')) percent += 10;
-								if (Game.Has('God')) percent += 10;
+								if (Game.Has('Angels')) percent+=10;
+								if (Game.Has('Archangels')) percent+=10;
+								if (Game.Has('Virtues')) percent+=10;
+								if (Game.Has('Dominions')) percent+=10;
+								if (Game.Has('Cherubim')) percent+=10;
+								if (Game.Has('Seraphim')) percent+=10;
+								if (Game.Has('God')) percent+=10;
 
-								if (Game.Has('Chimera')) { maxTime += 60 * 60 * 24 * 2; percent += 5; }
+								if (Game.Has('Chimera')) { maxTime+=60 * 60 * 24 * 2; percent+=5; }
 
-								if (Game.Has('Fern tea')) percent += 3;
-								if (Game.Has('Ichor syrup')) percent += 7;
-								if (Game.Has('Fortune #102')) percent += 1;
+								if (Game.Has('Fern tea')) percent+=3;
+								if (Game.Has('Ichor syrup')) percent+=7;
+								if (Game.Has('Fortune #102')) percent+=1;
 							}
 
 							var timeOfflineOptimal=Math.min(timeOffline, maxTime);
@@ -3234,7 +3234,7 @@ Game.Launch=function () {
 
 			Game.seed=Game.makeSeed();
 
-			Game.cookiesReset += Game.cookiesEarned;
+			Game.cookiesReset+=Game.cookiesEarned;
 			Game.cookies=0;
 			Game.cookiesEarned=0;
 			Game.cookieClicks=0;
@@ -3439,8 +3439,8 @@ Game.Launch=function () {
 
 				if (context=='stats' && !Game.prefs.crates) noFrame=1;
 
-				classes += ' upgrade';
-				if (me.pool=='prestige') classes += ' heavenly';
+				classes+=' upgrade';
+				if (me.pool=='prestige') classes+=' heavenly';
 
 
 				if (neuromancy) clickStr='Game.UpgradesById[' + me.id + '].toggle();';
@@ -3451,8 +3451,8 @@ Game.Launch=function () {
 
 				if (context=='stats' && !Game.prefs.crates) noFrame=1;
 
-				classes += ' achievement';
-				if (me.pool=='shadow') classes += ' shadow';
+				classes+=' achievement';
+				if (me.pool=='shadow') classes+=' shadow';
 				if (me.won>0) enabled=1;
 				else mysterious=1;
 				if (!enabled) clickStr='Game.AchievementsById[' + me.id + '].click();';
@@ -3464,7 +3464,7 @@ Game.Launch=function () {
 
 			if (forceClickStr) clickStr=forceClickStr;
 
-			if (me.choicesFunction) classes += ' selector';
+			if (me.choicesFunction) classes+=' selector';
 
 
 			var icon=me.icon;
@@ -3474,8 +3474,8 @@ Game.Launch=function () {
 
 			if (me.bought && context=='store') enabled=0;
 
-			if (enabled) classes += ' enabled';// else classes+=' disabled';
-			if (noFrame) classes += ' noFrame';
+			if (enabled) classes+=' enabled';// else classes+=' disabled';
+			if (noFrame) classes+=' noFrame';
 
 			var text=[];
 			if (Game.sesame) {
@@ -3486,8 +3486,8 @@ Game.Launch=function () {
 				if (Game.extraInfo) { text.push(Math.floor(me.order) + (me.power ? '<br>P:' + me.power : '')); text.push('#fff'); }
 			}
 			var textStr='';
-			for (var i=0; i<text.length; i += 2) {
-				textStr += '<div style="opacity:0.9;z-index:1000;padding:0px 2px;background:' + text[i + 1] + ';color:#000;font-size:10px;position:absolute;top:' + (i / 2 * 10) + 'px;left:0px;">' + text[i] + '</div>';
+			for (var i=0; i<text.length; i+=2) {
+				textStr+='<div style="opacity:0.9;z-index:1000;padding:0px 2px;background:' + text[i + 1] + ';color:#000;font-size:10px;position:absolute;top:' + (i / 2 * 10) + 'px;left:0px;">' + text[i] + '</div>';
 			}
 
 			return (Game.prefs.screenreader ? '<button aria-labelledby="ariaReader-' + me.type + '-' + me.id + '"' : '<div') +
@@ -3519,7 +3519,7 @@ Game.Launch=function () {
 			var ariaText='';
 
 			if (me.type=='upgrade') {
-				ariaText += 'Upgrade. ';
+				ariaText+='Upgrade. ';
 
 				if (me.pool=='prestige') tags.push(loc("[Tag]Heavenly", 0, 'Heavenly'), '#efa438');
 				else if (me.pool=='tech') tags.push(loc("[Tag]Tech", 0, 'Tech'), '#36a4ff');
@@ -3536,7 +3536,7 @@ Game.Launch=function () {
 				if (me.isVaulted()) tags.push(loc("Vaulted"), '#4e7566');
 
 				if (me.bought>0) {
-					ariaText += 'Owned. ';
+					ariaText+='Owned. ';
 					if (me.pool=='tech') tags.push(loc("Researched"), 0);
 					else if (EN && me.kitten) tags.push('Purrchased', 0);
 					else tags.push(loc("Purchased"), 0);
@@ -3559,14 +3559,14 @@ Game.Launch=function () {
 						(context=='store' ? (canBuy ? '' : ' disabled') : '') +
 						'">' + Beautify(Math.round(cost)) + '</span>' + ((me.pool!='prestige' && me.priceLumps==0) ? Game.costDetails(cost) : '') + '</div>';
 
-					ariaText += (me.bought ? 'Bought for' : canBuy ? 'Can buy for' : 'Cannot afford the') + ' ' + Beautify(Math.round(cost)) + ' ' + ((me.priceLumps>0) ? 'sugar lumps' : (me.pool=='prestige') ? 'heavenly chips' : 'cookies') + '. ';
+					ariaText+=(me.bought ? 'Bought for' : canBuy ? 'Can buy for' : 'Cannot afford the') + ' ' + Beautify(Math.round(cost)) + ' ' + ((me.priceLumps>0) ? 'sugar lumps' : (me.pool=='prestige') ? 'heavenly chips' : 'cookies') + '. ';
 				}
 			}
 			else if (me.type=='achievement') {
-				ariaText += 'Achievement. ';
+				ariaText+='Achievement. ';
 				if (me.pool=='shadow') tags.push(loc("Shadow Achievement"), '#9700cf');
 				else tags.push(loc("Achievement"), 0);
-				if (me.won>0) { tags.push(loc("Unlocked"), 0); ariaText += 'Unlocked. '; }
+				if (me.won>0) { tags.push(loc("Unlocked"), 0); ariaText+='Unlocked. '; }
 				else { tags.push(loc("Locked"), 0); mysterious=1; }
 
 				if (neuromancy && me.won==0) tags.push(loc("Click to win!"), '#00c462');
@@ -3574,8 +3574,8 @@ Game.Launch=function () {
 			}
 
 			var tagsStr='';
-			for (var i=0; i<tags.length; i += 2) {
-				if (i % 2==0) tagsStr += '<div class="tag" style="background-color:' + (tags[i + 1]==0 ? '#fff' : tags[i + 1]) + ';">' + tags[i] + '</div>';
+			for (var i=0; i<tags.length; i+=2) {
+				if (i % 2==0) tagsStr+='<div class="tag" style="background-color:' + (tags[i + 1]==0 ? '#fff' : tags[i + 1]) + ';">' + tags[i] + '</div>';
 			}
 
 			var icon=me.icon;
@@ -3583,7 +3583,7 @@ Game.Launch=function () {
 
 			if (me.iconFunction) icon=me.iconFunction();
 
-			ariaText += (mysterious ? 'Hidden' : me.dname) + '. ';
+			ariaText+=(mysterious ? 'Hidden' : me.dname) + '. ';
 
 			var tip='';
 			if (context=='store') {
@@ -3593,8 +3593,8 @@ Game.Launch=function () {
 						if (me.isVaulted()) tip=EN ? ('Upgrade is vaulted and will not be auto-' + purchase + 'd.<br>Click to ' + purchase + '. Shift-click to unvault.') : (loc("Upgrade is vaulted and will not be auto-purchased.") + '<br>' + loc("Click to purchase.") + ' ' + loc("%1 to unvault.", loc("Shift-click")));
 						else tip=EN ? ('Click to ' + purchase + '. Shift-click to vault.') : (loc("Click to purchase.") + ' ' + loc("%1 to vault.", loc("Shift-click")));
 						if (EN) {
-							if (Game.keys[16]) tip += '<br>(You are holding Shift.)';
-							else tip += '<br>(You are not holding Shift.)';
+							if (Game.keys[16]) tip+='<br>(You are holding Shift.)';
+							else tip+='<br>(You are not holding Shift.)';
 						}
 					}
 					else tip=EN ? ('Click to ' + purchase + '.') : loc("Click to purchase.");
@@ -3604,7 +3604,7 @@ Game.Launch=function () {
 				else if (me.pool=='tech') tip=loc("Click to research.");
 			}
 
-			if (tip!='') ariaText += tip + ' ';
+			if (tip!='') ariaText+=tip + ' ';
 
 			var desc=me.ddesc;
 			if (me.descFunc) desc=me.descFunc(context);
@@ -3620,7 +3620,7 @@ Game.Launch=function () {
 				}
 			}
 
-			if (!mysterious) ariaText += 'Description: ' + desc + ' ';
+			if (!mysterious) ariaText+='Description: ' + desc + ' ';
 
 			if (Game.prefs.screenreader) {
 				var ariaLabel=l('ariaReader-' + me.type + '-' + me.id);
@@ -3642,9 +3642,9 @@ Game.Launch=function () {
 			if (!cost) return '';
 			var priceInfo='';
 			var cps=Game.cookiesPs * (1 - Game.cpsSucked);
-			if (cost>Game.cookies) priceInfo += loc("in %1", Game.sayTime(((cost - Game.cookies) / cps + 1) * Game.fps)) + '<br>';
-			priceInfo += loc("%1 worth", Game.sayTime((cost / cps + 1) * Game.fps)) + '<br>';
-			priceInfo += loc("%1% of bank", Beautify((cost / Game.cookies) * 100, 1)) + '<br>';
+			if (cost>Game.cookies) priceInfo+=loc("in %1", Game.sayTime(((cost - Game.cookies) / cps + 1) * Game.fps)) + '<br>';
+			priceInfo+=loc("%1 worth", Game.sayTime((cost / cps + 1) * Game.fps)) + '<br>';
+			priceInfo+=loc("%1% of bank", Beautify((cost / Game.cookies) * 100, 1)) + '<br>';
 			return '<div style="font-size:80%;opacity:0.7;line-height:90%;" class="costDetails">' + priceInfo + '</div>';
 		}
 
@@ -3672,18 +3672,18 @@ Game.Launch=function () {
 			{
 				var prestigeDifference=prestige - Game.prestige;
 				Game.gainedPrestige=prestigeDifference;
-				Game.heavenlyChips += prestigeDifference;
+				Game.heavenlyChips+=prestigeDifference;
 				Game.prestige=prestige;
 				if (!silent && prestigeDifference>0) Game.Notify(loc("You forfeit your %1.", loc("%1 cookie", LBeautify(cookiesForfeited))), loc("You gain <b>%1</b>!", loc("%1 prestige level", LBeautify(prestigeDifference))), [19, 7]);
 			}
 		}
 		Game.GetHeavenlyMultiplier=function () {
 			var heavenlyMult=0;
-			if (Game.Has('Heavenly chip secret')) heavenlyMult += 0.05;
-			if (Game.Has('Heavenly cookie stand')) heavenlyMult += 0.20;
-			if (Game.Has('Heavenly bakery')) heavenlyMult += 0.25;
-			if (Game.Has('Heavenly confectionery')) heavenlyMult += 0.25;
-			if (Game.Has('Heavenly key')) heavenlyMult += 0.25;
+			if (Game.Has('Heavenly chip secret')) heavenlyMult+=0.05;
+			if (Game.Has('Heavenly cookie stand')) heavenlyMult+=0.20;
+			if (Game.Has('Heavenly bakery')) heavenlyMult+=0.25;
+			if (Game.Has('Heavenly confectionery')) heavenlyMult+=0.25;
+			if (Game.Has('Heavenly key')) heavenlyMult+=0.25;
 			//if (Game.hasAura('Dragon God')) heavenlyMult*=1.05;
 			heavenlyMult *= 1 + Game.auraMult('Dragon God') * 0.05;
 			if (Game.Has('Lucky digit')) heavenlyMult *= 1.01;
@@ -3726,7 +3726,7 @@ Game.Launch=function () {
 			var str='';
 			for (var i in Game.ascensionModes) {
 				var icon=Game.ascensionModes[i].icon;
-				str += '<div class="crate enabled' + (i==Game.nextAscensionMode ? ' highlighted' : '') + '" id="challengeModeSelector' + i + '" style="opacity:1;float:none;display:inline-block;background-position:' + (-icon[0] * 48) + 'px ' + (-icon[1] * 48) + 'px;" ' + Game.clickStr + '="Game.nextAscensionMode=' + i + ';Game.PickAscensionMode();PlaySound(\'snd/tick.mp3\');Game.choiceSelectorOn=-1;" onMouseOut="l(\'challengeSelectedName\').innerHTML=Game.ascensionModes[Game.nextAscensionMode].dname;l(\'challengeSelectedDesc\').innerHTML=Game.ascensionModes[Game.nextAscensionMode].desc;" onMouseOver="l(\'challengeSelectedName\').innerHTML=Game.ascensionModes[' + i + '].dname;l(\'challengeSelectedDesc\').innerHTML=Game.ascensionModes[' + i + '].desc;"' +
+				str+='<div class="crate enabled' + (i==Game.nextAscensionMode ? ' highlighted' : '') + '" id="challengeModeSelector' + i + '" style="opacity:1;float:none;display:inline-block;background-position:' + (-icon[0] * 48) + 'px ' + (-icon[1] * 48) + 'px;" ' + Game.clickStr + '="Game.nextAscensionMode=' + i + ';Game.PickAscensionMode();PlaySound(\'snd/tick.mp3\');Game.choiceSelectorOn=-1;" onMouseOut="l(\'challengeSelectedName\').innerHTML=Game.ascensionModes[Game.nextAscensionMode].dname;l(\'challengeSelectedDesc\').innerHTML=Game.ascensionModes[Game.nextAscensionMode].desc;" onMouseOver="l(\'challengeSelectedName\').innerHTML=Game.ascensionModes[' + i + '].dname;l(\'challengeSelectedDesc\').innerHTML=Game.ascensionModes[' + i + '].desc;"' +
 					'></div>';
 			}
 			Game.Prompt('<id PickChallengeMode><h3>' + loc("Select a challenge mode") + '</h3>' +
@@ -3855,8 +3855,8 @@ Game.Launch=function () {
 		Game.AscendGridSnap=24;
 		Game.heavenlyBounds={ left: 0, right: 0, top: 0, bottom: 0 };
 		Game.UpdateAscend=function () {
-			if (Game.keys[37]) Game.AscendOffXT += 16 * (1 / Game.AscendZoomT);
-			if (Game.keys[38]) Game.AscendOffYT += 16 * (1 / Game.AscendZoomT);
+			if (Game.keys[37]) Game.AscendOffXT+=16 * (1 / Game.AscendZoomT);
+			if (Game.keys[38]) Game.AscendOffYT+=16 * (1 / Game.AscendZoomT);
 			if (Game.keys[39]) Game.AscendOffXT -= 16 * (1 / Game.AscendZoomT);
 			if (Game.keys[40]) Game.AscendOffYT -= 16 * (1 / Game.AscendZoomT);
 
@@ -3864,9 +3864,9 @@ Game.Launch=function () {
 			if (Game.AscendOffXT<-Game.heavenlyBounds.right) Game.AscendOffXT=-Game.heavenlyBounds.right;
 			if (Game.AscendOffYT>-Game.heavenlyBounds.top) Game.AscendOffYT=-Game.heavenlyBounds.top;
 			if (Game.AscendOffYT<-Game.heavenlyBounds.bottom) Game.AscendOffYT=-Game.heavenlyBounds.bottom;
-			Game.AscendOffX += (Game.AscendOffXT - Game.AscendOffX) * 0.5;
-			Game.AscendOffY += (Game.AscendOffYT - Game.AscendOffY) * 0.5;
-			Game.AscendZoom += (Game.AscendZoomT - Game.AscendZoom) * 0.25;
+			Game.AscendOffX+=(Game.AscendOffXT - Game.AscendOffX) * 0.5;
+			Game.AscendOffY+=(Game.AscendOffYT - Game.AscendOffY) * 0.5;
+			Game.AscendZoom+=(Game.AscendZoomT - Game.AscendZoom) * 0.25;
 			if (Math.abs(Game.AscendZoomT - Game.AscendZoom)<0.005) Game.AscendZoom=Game.AscendZoomT;
 
 
@@ -3882,8 +3882,8 @@ Game.Launch=function () {
 						Game.tooltip.hide();
 						//drag upgrades around
 						var me=Game.SelectedHeavenlyUpgrade;
-						me.posX += (Game.mouseX - Game.AscendDragX) * (1 / Game.AscendZoomT);
-						me.posY += (Game.mouseY - Game.AscendDragY) * (1 / Game.AscendZoomT);
+						me.posX+=(Game.mouseX - Game.AscendDragX) * (1 / Game.AscendZoomT);
+						me.posY+=(Game.mouseY - Game.AscendDragY) * (1 / Game.AscendZoomT);
 						var posX=me.posX;//Math.round(me.posX/Game.AscendGridSnap)*Game.AscendGridSnap;
 						var posY=me.posY;//Math.round(me.posY/Game.AscendGridSnap)*Game.AscendGridSnap;
 						l('heavenlyUpgrade' + me.id).style.left=Math.floor(posX) + 'px';
@@ -3895,7 +3895,7 @@ Game.Launch=function () {
 							var targY=me.posY + 28;
 							if (me.parents[ii]!=-1) { origX=me.parents[ii].posX + 28; origY=me.parents[ii].posY + 28; }
 							var rot=-(Math.atan((targY - origY) / (origX - targX)) / Math.PI) * 180;
-							if (targX<=origX) rot += 180;
+							if (targX<=origX) rot+=180;
 							var dist=Math.floor(Math.sqrt((targX - origX) * (targX - origX) + (targY - origY) * (targY - origY)));
 
 							l('heavenlyLink' + me.id + '-' + ii).style='width:' + dist + 'px;transform:rotate(' + rot + 'deg);left:' + (origX) + 'px;top:' + (origY) + 'px;';
@@ -3903,8 +3903,8 @@ Game.Launch=function () {
 					}
 				}
 				if (!Game.SelectedHeavenlyUpgrade) {
-					Game.AscendOffXT += (Game.mouseX - Game.AscendDragX) * (1 / Game.AscendZoomT);
-					Game.AscendOffYT += (Game.mouseY - Game.AscendDragY) * (1 / Game.AscendZoomT);
+					Game.AscendOffXT+=(Game.mouseX - Game.AscendDragX) * (1 / Game.AscendZoomT);
+					Game.AscendOffYT+=(Game.mouseY - Game.AscendDragY) * (1 / Game.AscendZoomT);
 				}
 				Game.AscendDragX=Game.mouseX;
 				Game.AscendDragY=Game.mouseY;
@@ -3952,14 +3952,14 @@ Game.Launch=function () {
 				if (Game.prestige>0) l('ascendModeButton').style.display='block';
 				else l('ascendModeButton').style.display='none';
 			}
-			Game.heavenlyChipsDisplayed += (Game.heavenlyChips - Game.heavenlyChipsDisplayed) * 0.4;
+			Game.heavenlyChipsDisplayed+=(Game.heavenlyChips - Game.heavenlyChipsDisplayed) * 0.4;
 
 			if (Game.DebuggingPrestige && Game.T % 10==0) {
 				var str='';
 				for (var i in Game.PrestigeUpgrades) {
 					var me=Game.PrestigeUpgrades[i];
 					if (me.placedByCode) continue;
-					str += me.id + ':[' + Math.floor(me.posX) + ',' + Math.floor(me.posY) + '],';
+					str+=me.id + ':[' + Math.floor(me.posX) + ',' + Math.floor(me.posY) + '],';
 				}
 				l('upgradePositions').value='Game.UpgradePositions={' + str + '};';
 			}
@@ -4010,14 +4010,14 @@ Game.Launch=function () {
 			for (var i=0; i<toPop.length; i++) {
 				setTimeout(function () { PlaySound('snd/pop' + Math.floor(Math.random() * 3 + 1) + '.mp3', 0.5); }, (0.2 + i * 0.1) * 1000);
 			}
-			str += '<div class="crate upgrade heavenly enabled" style="position:absolute;left:-30px;top:-30px;opacity:0.8;pointer-events:none;transform:scale(1.3);background:transparent;"></div>';
-			str += '<div class="crateBox" style="filter:none;-webkit-filter:none;">';//chrome is still bad at these
+			str+='<div class="crate upgrade heavenly enabled" style="position:absolute;left:-30px;top:-30px;opacity:0.8;pointer-events:none;transform:scale(1.3);background:transparent;"></div>';
+			str+='<div class="crateBox" style="filter:none;-webkit-filter:none;">';//chrome is still bad at these
 			for (var i in Game.PrestigeUpgrades) {
 				var me=Game.PrestigeUpgrades[i];
 
 				var ghosted=0;
 				if (me.canBePurchased || Game.Has('Neuromancy')) {
-					str += Game.crate(me, 'ascend', 'Game.PurchaseHeavenlyUpgrade(' + me.id + ');', 'heavenlyUpgrade' + me.id, toPop.indexOf(me)!=-1 ? ('animation:pucker 0.2s ease-out;animation-delay:' + (toPop.indexOf(me) * 0.1 + 0.2) + 's;') : '');
+					str+=Game.crate(me, 'ascend', 'Game.PurchaseHeavenlyUpgrade(' + me.id + ');', 'heavenlyUpgrade' + me.id, toPop.indexOf(me)!=-1 ? ('animation:pucker 0.2s ease-out;animation-delay:' + (toPop.indexOf(me) * 0.1 + 0.2) + 's;') : '');
 				}
 				else {
 					for (var ii in me.parents) {
@@ -4026,7 +4026,7 @@ Game.Launch=function () {
 					if (me.showIf && !me.showIf()) ghosted=0;
 					if (ghosted) {
 						//maybe replace this with Game.crate()
-						str += '<div class="crate upgrade heavenly ghosted" id="heavenlyUpgrade' + me.id + '" style="position:absolute;left:' + me.posX + 'px;top:' + me.posY + 'px;' + writeIcon(me.icon) + '"></div>';
+						str+='<div class="crate upgrade heavenly ghosted" id="heavenlyUpgrade' + me.id + '" style="position:absolute;left:' + me.posX + 'px;top:' + me.posY + 'px;' + writeIcon(me.icon) + '"></div>';
 					}
 				}
 				if (me.canBePurchased || Game.Has('Neuromancy') || ghosted) {
@@ -4044,18 +4044,18 @@ Game.Launch=function () {
 						var targY=me.posY + 28;
 						if (me.parents[ii]!=-1) { origX=me.parents[ii].posX + 28; origY=me.parents[ii].posY + 28; }
 						var rot=-(Math.atan((targY - origY) / (origX - targX)) / Math.PI) * 180;
-						if (targX<=origX) rot += 180;
+						if (targX<=origX) rot+=180;
 						var dist=Math.floor(Math.sqrt((targX - origX) * (targX - origX) + (targY - origY) * (targY - origY)));
-						str += '<div class="parentLink" id="heavenlyLink' + me.id + '-' + ii + '" style="' + (ghosted ? 'opacity:0.1;' : '') + 'width:' + dist + 'px;-webkit-transform:rotate(' + rot + 'deg);-moz-transform:rotate(' + rot + 'deg);-ms-transform:rotate(' + rot + 'deg);-o-transform:rotate(' + rot + 'deg);transform:rotate(' + rot + 'deg);left:' + (origX) + 'px;top:' + (origY) + 'px;"></div>';
+						str+='<div class="parentLink" id="heavenlyLink' + me.id + '-' + ii + '" style="' + (ghosted ? 'opacity:0.1;' : '') + 'width:' + dist + 'px;-webkit-transform:rotate(' + rot + 'deg);-moz-transform:rotate(' + rot + 'deg);-ms-transform:rotate(' + rot + 'deg);-o-transform:rotate(' + rot + 'deg);transform:rotate(' + rot + 'deg);left:' + (origX) + 'px;top:' + (origY) + 'px;"></div>';
 					}
 				}
 			}
 			Game.heavenlyBounds.left -= 128;
 			Game.heavenlyBounds.top -= 128;
-			Game.heavenlyBounds.right += 128 + 64;
-			Game.heavenlyBounds.bottom += 128 + 64;
+			Game.heavenlyBounds.right+=128 + 64;
+			Game.heavenlyBounds.bottom+=128 + 64;
 			//str+='<div style="border:1px solid red;position:absolute;left:'+Game.heavenlyBounds.left+'px;width:'+(Game.heavenlyBounds.right-Game.heavenlyBounds.left)+'px;top:'+Game.heavenlyBounds.top+'px;height:'+(Game.heavenlyBounds.bottom-Game.heavenlyBounds.top)+'px;"></div>';
-			str += '</div>';
+			str+='</div>';
 			Game.ascendUpgradesl.innerHTML=str;
 
 			if (Game.DebuggingPrestige) {
@@ -4107,25 +4107,25 @@ Game.Launch=function () {
 				loc("A <b>sugar lump</b> is coalescing here, attracted by your accomplishments.");
 
 			var age=Date.now() - Game.lumpT;
-			str += '<div class="line"></div>';
-			if (age<0) str += loc("This sugar lump has been exposed to time travel shenanigans and will take an excruciating <b>%1</b> to reach maturity.", Game.sayTime(((Game.lumpMatureAge - age) / 1000 + 1) * Game.fps, -1));
-			else if (age<Game.lumpMatureAge) str += loc("This sugar lump is still growing and will take <b>%1</b> to reach maturity.", Game.sayTime(((Game.lumpMatureAge - age) / 1000 + 1) * Game.fps, -1));
-			else if (age<Game.lumpRipeAge) str += loc("This sugar lump is mature and will be ripe in <b>%1</b>.<br>You may <b>click it to harvest it now</b>, but there is a <b>50% chance you won't get anything</b>.", Game.sayTime(((Game.lumpRipeAge - age) / 1000 + 1) * Game.fps, -1));
-			else if (age<Game.lumpOverripeAge) str += loc("<b>This sugar lump is ripe! Click it to harvest it.</b><br>If you do nothing, it will auto-harvest in <b>%1</b>.", Game.sayTime(((Game.lumpOverripeAge - age) / 1000 + 1) * Game.fps, -1));
+			str+='<div class="line"></div>';
+			if (age<0) str+=loc("This sugar lump has been exposed to time travel shenanigans and will take an excruciating <b>%1</b> to reach maturity.", Game.sayTime(((Game.lumpMatureAge - age) / 1000 + 1) * Game.fps, -1));
+			else if (age<Game.lumpMatureAge) str+=loc("This sugar lump is still growing and will take <b>%1</b> to reach maturity.", Game.sayTime(((Game.lumpMatureAge - age) / 1000 + 1) * Game.fps, -1));
+			else if (age<Game.lumpRipeAge) str+=loc("This sugar lump is mature and will be ripe in <b>%1</b>.<br>You may <b>click it to harvest it now</b>, but there is a <b>50% chance you won't get anything</b>.", Game.sayTime(((Game.lumpRipeAge - age) / 1000 + 1) * Game.fps, -1));
+			else if (age<Game.lumpOverripeAge) str+=loc("<b>This sugar lump is ripe! Click it to harvest it.</b><br>If you do nothing, it will auto-harvest in <b>%1</b>.", Game.sayTime(((Game.lumpOverripeAge - age) / 1000 + 1) * Game.fps, -1));
 
 			var phase=(age / Game.lumpOverripeAge) * 7;
 			if (phase>=3) {
-				if (Game.lumpCurrentType!=0) str += '<div class="line"></div>';
-				if (Game.lumpCurrentType==1) str += loc("This sugar lump grew to be <b>bifurcated</b>; harvesting it has a 50% chance of yielding two lumps.");
-				else if (Game.lumpCurrentType==2) str += loc("This sugar lump grew to be <b>golden</b>; harvesting it will yield 2 to 7 lumps, your current cookies will be doubled (capped to a gain of 24 hours of your CpS), and you will find 10% more golden cookies for the next 24 hours.");
-				else if (Game.lumpCurrentType==3) str += loc("This sugar lump was affected by the elders and grew to be <b>meaty</b>; harvesting it will yield between 0 and 2 lumps.");
-				else if (Game.lumpCurrentType==4) str += loc("This sugar lump is <b>caramelized</b>, its stickiness binding it to unexpected things; harvesting it will yield between 1 and 3 lumps and will refill your sugar lump cooldowns.");
+				if (Game.lumpCurrentType!=0) str+='<div class="line"></div>';
+				if (Game.lumpCurrentType==1) str+=loc("This sugar lump grew to be <b>bifurcated</b>; harvesting it has a 50% chance of yielding two lumps.");
+				else if (Game.lumpCurrentType==2) str+=loc("This sugar lump grew to be <b>golden</b>; harvesting it will yield 2 to 7 lumps, your current cookies will be doubled (capped to a gain of 24 hours of your CpS), and you will find 10% more golden cookies for the next 24 hours.");
+				else if (Game.lumpCurrentType==3) str+=loc("This sugar lump was affected by the elders and grew to be <b>meaty</b>; harvesting it will yield between 0 and 2 lumps.");
+				else if (Game.lumpCurrentType==4) str+=loc("This sugar lump is <b>caramelized</b>, its stickiness binding it to unexpected things; harvesting it will yield between 1 and 3 lumps and will refill your sugar lump cooldowns.");
 			}
 
-			str += '<div class="line"></div>';
-			str += loc("Your sugar lumps mature after <b>%1</b>,<br>ripen after <b>%2</b>,<br>and fall after <b>%3</b>.", [Game.sayTime((Game.lumpMatureAge / 1000) * Game.fps, -1), Game.sayTime((Game.lumpRipeAge / 1000) * Game.fps, -1), Game.sayTime((Game.lumpOverripeAge / 1000) * Game.fps, -1)]);
+			str+='<div class="line"></div>';
+			str+=loc("Your sugar lumps mature after <b>%1</b>,<br>ripen after <b>%2</b>,<br>and fall after <b>%3</b>.", [Game.sayTime((Game.lumpMatureAge / 1000) * Game.fps, -1), Game.sayTime((Game.lumpRipeAge / 1000) * Game.fps, -1), Game.sayTime((Game.lumpOverripeAge / 1000) * Game.fps, -1)]);
 
-			str += '<div class="line"></div>' + loc("&bull; Sugar lumps can be harvested when mature, though if left alone beyond that point they will start ripening (increasing the chance of harvesting them) and will eventually fall and be auto-harvested after some time.<br>&bull; Sugar lumps are delicious and may be used as currency for all sorts of things.<br>&bull; Once a sugar lump is harvested, another one will start growing in its place.<br>&bull; Note that sugar lumps keep growing when the game is closed.") + '</div>';
+			str+='<div class="line"></div>' + loc("&bull; Sugar lumps can be harvested when mature, though if left alone beyond that point they will start ripening (increasing the chance of harvesting them) and will eventually fall and be auto-harvested after some time.<br>&bull; Sugar lumps are delicious and may be used as currency for all sorts of things.<br>&bull; Once a sugar lump is harvested, another one will start growing in its place.<br>&bull; Note that sugar lumps keep growing when the game is closed.") + '</div>';
 			return str;
 		}
 		Game.computeLumpTimes=function () {
@@ -4170,8 +4170,8 @@ Game.Launch=function () {
 		}
 		Game.gainLumps=function (total) {
 			if (Game.lumpsTotal==-1) { Game.lumpsTotal=0; Game.lumps=0; }
-			Game.lumps += total;
-			Game.lumpsTotal += total;
+			Game.lumps+=total;
+			Game.lumpsTotal+=total;
 
 			if (Game.lumpsTotal>=7) Game.Win('Dude, sweet');
 			if (Game.lumpsTotal>=30) Game.Win('Sugar rush');
@@ -4232,7 +4232,7 @@ Game.Launch=function () {
 			var types=[0];
 			var loop=1;
 			//if (Game.hasAura('Dragon\'s Curve')) loop=2;
-			loop += Game.auraMult('Dragon\'s Curve');
+			loop+=Game.auraMult('Dragon\'s Curve');
 			loop=randomFloor(loop);
 			for (var i=0; i<loop; i++) {
 				if (Math.random()<(Game.Has('Sucralosia Inutilis') ? 0.15 : 0.1)) types.push(1);//bifurcated
@@ -4346,8 +4346,8 @@ Game.Launch=function () {
 		COOKIE ECONOMICS
 		=======================================================================================*/
 		Game.Earn=function (howmuch) {
-			Game.cookies += howmuch;
-			Game.cookiesEarned += howmuch;
+			Game.cookies+=howmuch;
+			Game.cookiesEarned+=howmuch;
 		}
 		Game.Spend=function (howmuch) {
 			Game.cookies -= howmuch;
@@ -4358,7 +4358,7 @@ Game.Launch=function () {
 		}
 		Game.mouseCps=function () {
 			var add=0;
-			if (Game.Has('Thousand fingers')) add += 0.1;
+			if (Game.Has('Thousand fingers')) add+=0.1;
 			if (Game.Has('Million fingers')) add *= 5;
 			if (Game.Has('Billion fingers')) add *= 10;
 			if (Game.Has('Trillion fingers')) add *= 20;
@@ -4370,24 +4370,24 @@ Game.Launch=function () {
 			if (Game.Has('Nonillion fingers')) add *= 20;
 
 			var num=0;
-			for (var i in Game.Objects) { num += Game.Objects[i].amount; }
+			for (var i in Game.Objects) { num+=Game.Objects[i].amount; }
 			num -= Game.Objects['Cursor'].amount;
 			add=add * num;
-			if (Game.Has('Plastic mouse')) add += Game.cookiesPs * 0.01;
-			if (Game.Has('Iron mouse')) add += Game.cookiesPs * 0.01;
-			if (Game.Has('Titanium mouse')) add += Game.cookiesPs * 0.01;
-			if (Game.Has('Adamantium mouse')) add += Game.cookiesPs * 0.01;
-			if (Game.Has('Unobtainium mouse')) add += Game.cookiesPs * 0.01;
-			if (Game.Has('Eludium mouse')) add += Game.cookiesPs * 0.01;
-			if (Game.Has('Wishalloy mouse')) add += Game.cookiesPs * 0.01;
-			if (Game.Has('Fantasteel mouse')) add += Game.cookiesPs * 0.01;
-			if (Game.Has('Nevercrack mouse')) add += Game.cookiesPs * 0.01;
-			if (Game.Has('Armythril mouse')) add += Game.cookiesPs * 0.01;
-			if (Game.Has('Technobsidian mouse')) add += Game.cookiesPs * 0.01;
-			if (Game.Has('Plasmarble mouse')) add += Game.cookiesPs * 0.01;
-			if (Game.Has('Miraculite mouse')) add += Game.cookiesPs * 0.01;
+			if (Game.Has('Plastic mouse')) add+=Game.cookiesPs * 0.01;
+			if (Game.Has('Iron mouse')) add+=Game.cookiesPs * 0.01;
+			if (Game.Has('Titanium mouse')) add+=Game.cookiesPs * 0.01;
+			if (Game.Has('Adamantium mouse')) add+=Game.cookiesPs * 0.01;
+			if (Game.Has('Unobtainium mouse')) add+=Game.cookiesPs * 0.01;
+			if (Game.Has('Eludium mouse')) add+=Game.cookiesPs * 0.01;
+			if (Game.Has('Wishalloy mouse')) add+=Game.cookiesPs * 0.01;
+			if (Game.Has('Fantasteel mouse')) add+=Game.cookiesPs * 0.01;
+			if (Game.Has('Nevercrack mouse')) add+=Game.cookiesPs * 0.01;
+			if (Game.Has('Armythril mouse')) add+=Game.cookiesPs * 0.01;
+			if (Game.Has('Technobsidian mouse')) add+=Game.cookiesPs * 0.01;
+			if (Game.Has('Plasmarble mouse')) add+=Game.cookiesPs * 0.01;
+			if (Game.Has('Miraculite mouse')) add+=Game.cookiesPs * 0.01;
 
-			if (Game.Has('Fortune #104')) add += Game.cookiesPs * 0.01;
+			if (Game.Has('Fortune #104')) add+=Game.cookiesPs * 0.01;
 			var mult=1;
 
 
@@ -4442,7 +4442,7 @@ Game.Launch=function () {
 		Game.playCookieClickSound=function () {
 			if (Game.prefs.cookiesound) PlaySound('snd/clickb' + (Game.cookieClickSound) + '.mp3', 0.5);
 			else PlaySound('snd/click' + (Game.cookieClickSound) + '.mp3', 0.5);
-			Game.cookieClickSound += Math.floor(Math.random() * 4) + 1;
+			Game.cookieClickSound+=Math.floor(Math.random() * 4) + 1;
 			if (Game.cookieClickSound>7) Game.cookieClickSound -= 7;
 		}
 		Game.ClickCookie=function (e, amount) {
@@ -4451,13 +4451,13 @@ Game.Launch=function () {
 			if (Game.OnAscend || Game.AscendTimer>0 || Game.T<3 || now - Game.lastClick<1000 / 250) { }
 			else {
 				if (now - Game.lastClick<1000 / 15) {
-					Game.autoclickerDetected += Game.fps;
+					Game.autoclickerDetected+=Game.fps;
 					if (Game.autoclickerDetected>=Game.fps * 5) Game.Win('Uncanny clicker');
 				}
 				Game.loseShimmeringVeil('click');
 				var amount=amount ? amount : Game.computedMouseCps;
 				Game.Earn(amount);
-				Game.handmadeCookies += amount;
+				Game.handmadeCookies+=amount;
 				if (Game.prefs.particles) {
 					Game.particleAdd();
 					Game.particleAdd(Game.mouseX, Game.mouseY, Math.random() * 4 - 2, Math.random() * -2 - 2, Math.random() * 0.5 + 0.75, 1, 2);
@@ -4610,7 +4610,7 @@ Game.Launch=function () {
 			}
 			Game.effs=effs;
 
-			if (Game.ascensionMode!=1) mult += parseFloat(Game.prestige) * 0.01 * Game.heavenlyPower * Game.GetHeavenlyMultiplier();
+			if (Game.ascensionMode!=1) mult+=parseFloat(Game.prestige) * 0.01 * Game.heavenlyPower * Game.GetHeavenlyMultiplier();
 
 			mult *= Game.eff('cps');
 
@@ -4721,13 +4721,13 @@ Game.Launch=function () {
 				if (Game.ascensionMode!=1) me.storedCps *= (1 + me.level * 0.01) * buildMult;
 				if (me.id==1 && Game.Has('Milkhelp&reg; lactose intolerance relief tablets')) me.storedCps *= 1 + 0.05 * Game.milkProgress * milkMult;//this used to be "me.storedCps*=1+0.1*Math.pow(catMult-1,0.5)" which was. hmm
 				me.storedTotalCps=me.amount * me.storedCps;
-				Game.cookiesPs += me.storedTotalCps;
+				Game.cookiesPs+=me.storedTotalCps;
 				Game.cookiesPsByType[me.name]=me.storedTotalCps;
 			}
 			//cps from buildings only
 			Game.buildingCps=Game.cookiesPs;
 
-			if (Game.Has('"egg"')) { Game.cookiesPs += 9; Game.cookiesPsByType['"egg"']=9; }//"egg"
+			if (Game.Has('"egg"')) { Game.cookiesPs+=9; Game.cookiesPsByType['"egg"']=9; }//"egg"
 
 			mult *= catMult;
 
@@ -4792,13 +4792,13 @@ Game.Launch=function () {
 				var goldenSwitchMult=1.5;
 				if (Game.Has('Residual luck')) {
 					var upgrades=Game.goldenCookieUpgrades;
-					for (var i in upgrades) { if (Game.Has(upgrades[i])) goldenSwitchMult += 0.1; }
+					for (var i in upgrades) { if (Game.Has(upgrades[i])) goldenSwitchMult+=0.1; }
 				}
 				mult *= goldenSwitchMult;
 			}
 			if (Game.Has('Shimmering veil [off]')) {
 				var veilMult=0.5;
-				if (Game.Has('Reinforced membrane')) veilMult += 0.1;
+				if (Game.Has('Reinforced membrane')) veilMult+=0.1;
 				mult *= 1 + veilMult;
 			}
 			if (Game.Has('Magic shenanigans')) mult *= 1000;
@@ -5188,12 +5188,12 @@ Game.Launch=function () {
 								if (this.chain==0) this.totalFromChain=0;
 								this.chain++;
 								var digit=me.wrath ? 6 : 7;
-								if (this.chain==1) this.chain += Math.max(0, Math.ceil(Math.log(Game.cookies) / Math.LN10) - 10);
+								if (this.chain==1) this.chain+=Math.max(0, Math.ceil(Math.log(Game.cookies) / Math.LN10) - 10);
 
 								var maxPayout=Math.min(Game.cookiesPs * 60 * 60 * 6, Game.cookies * 0.5) * mult;
 								var moni=Math.max(digit, Math.min(Math.floor(1 / 9 * Math.pow(10, this.chain) * digit * mult), maxPayout));
 								var nextMoni=Math.max(digit, Math.min(Math.floor(1 / 9 * Math.pow(10, this.chain + 1) * digit * mult), maxPayout));
-								this.totalFromChain += moni;
+								this.totalFromChain+=moni;
 								var moniStr=Beautify(moni);
 
 								//break the chain if we're above 5 digits AND it's more than 50% of our bank, it grants more than 6 hours of our CpS, or just a 1% chance each digit (update : removed digit limit)
@@ -5523,9 +5523,9 @@ Game.Launch=function () {
 			for (var i=0; i<Game.particlesN; i++) {
 				var me=Game.particles[i];
 				if (me.life!=-1) {
-					if (!me.text) me.yd += 0.2 + Math.random() * 0.1;
-					me.x += me.xd;
-					me.y += me.yd;
+					if (!me.text) me.yd+=0.2 + Math.random() * 0.1;
+					me.x+=me.xd;
+					me.y+=me.yd;
 					//me.y+=me.life*0.25+Math.random()*0.25;
 					me.life++;
 					if (me.life>=Game.fps * me.dur) {
@@ -5627,7 +5627,7 @@ Game.Launch=function () {
 		var str='';
 		for (var i=0; i<20; i++) {
 			Game.textParticles[i]={ x: 0, y: 0, life: -1, text: '' };
-			str += '<div id="particle' + i + '" class="particle title"></div>';
+			str+='<div id="particle' + i + '" class="particle title"></div>';
 		}
 		l('particles').innerHTML=str;
 		Game.textParticlesUpdate=function () {
@@ -5669,8 +5669,8 @@ Game.Launch=function () {
 					var rect=Game.bounds;
 					var x=Math.floor((rect.left + rect.right) / 2);
 					var y=Math.floor((rect.bottom)) - (Game.mobile * 64);
-					x += (Math.random() - 0.5) * 40;
-					y += 0;//(Math.random()-0.5)*40;
+					x+=(Math.random() - 0.5) * 40;
+					y+=0;//(Math.random()-0.5)*40;
 				}
 			}
 			if (!noStack) y -= Game.textParticlesY;
@@ -5694,7 +5694,7 @@ Game.Launch=function () {
 			me.l.className='particle title';
 			void me.l.offsetWidth;
 			me.l.className='particle title risingUpLinger';
-			if (!noStack) Game.textParticlesY += 60;
+			if (!noStack) Game.textParticlesY+=60;
 		}
 		Game.popups=1;
 		Game.Popup=function (text, x, y) {
@@ -5771,7 +5771,7 @@ Game.Launch=function () {
 			}
 			if (remaining>0) str='<div class="remaining">' + loc("+%1 more notification.", LBeautify(remaining)) + '</div>' + str;
 			if (Game.Notes.length>1) {
-				str += '<div class="framed close sidenote" onclick="PlaySound(\'snd/tick.mp3\');Game.CloseNotes();">x</div>';
+				str+='<div class="framed close sidenote" onclick="PlaySound(\'snd/tick.mp3\');Game.CloseNotes();">x</div>';
 			}
 			Game.noteL.innerHTML=str;
 			for (var i in Game.Notes) {
@@ -5833,17 +5833,17 @@ Game.Launch=function () {
 			if (updateFunc) Game.promptUpdateFunc=updateFunc;
 			if (style) Game.promptWrapL.className='framed ' + style; else Game.promptWrapL.className='framed';
 			var str='';
-			str += content;
+			str+=content;
 			var opts='';
 			for (var i=0; i<options.length; i++) {
 				if (options[i]=='br')//just a linebreak
-				{ opts += '<br>'; }
+				{ opts+='<br>'; }
 				else {
 					if (typeof options[i]=='string') options[i]=[options[i], 'PlaySound(\'snd/tickOff.mp3\');Game.ClosePrompt();'];
 					else if (!options[i][1]) options[i]=[options[i][0], 'PlaySound(\'snd/tickOff.mp3\');Game.ClosePrompt();', options[i][2]];
 					else options[i][1]='PlaySound(\'snd/tick.mp3\');' + options[i][1];
 					options[i][1]=options[i][1].replace(/'/g, '&#39;').replace(/"/g, '&#34;');
-					opts += '<a id="promptOption' + i + '" class="option" ' + (options[i][2] ? 'style="' + options[i][2] + '" ' : '') + '' + Game.clickStr + '="' + options[i][1] + '">' + options[i][0] + '</a>';
+					opts+='<a id="promptOption' + i + '" class="option" ' + (options[i][2] ? 'style="' + options[i][2] + '" ' : '') + '' + Game.clickStr + '="' + options[i][1] + '">' + options[i][0] + '</a>';
 					Game.promptOptionsN++;
 				}
 			}
@@ -5870,7 +5870,7 @@ Game.Launch=function () {
 			var id=Game.promptOptionFocus + dir;
 			if (id<0) id=Game.promptOptionsN - 1;
 			if (id>=Game.promptOptionsN) id=0;
-			while (id>=0 && id<Game.promptOptionsN && (!l('promptOption' + id) || l('promptOption' + id).style.display=='none')) { id += (dir || 1); }
+			while (id>=0 && id<Game.promptOptionsN && (!l('promptOption' + id) || l('promptOption' + id).style.display=='none')) { id+=(dir || 1); }
 			if (l('promptOption' + id) && l('promptOption' + id).style.display!='none') {
 				if (l('promptOption' + Game.promptOptionFocus)) l('promptOption' + Game.promptOptionFocus).classList.remove('focused');
 				Game.promptOptionFocus=id;
@@ -5890,7 +5890,7 @@ Game.Launch=function () {
 		Game.WritePrefButton=function (prefName, button, on, off, callback, invert) {
 			var invert=invert ? 1 : 0;
 			if (!callback) callback='';
-			callback += 'PlaySound(\'snd/tick.mp3\');';
+			callback+='PlaySound(\'snd/tick.mp3\');';
 			return '<a class="smallFancyButton prefButton option' + ((Game.prefs[prefName] ^ invert) ? '' : ' off') + '" id="' + button + '" ' + Game.clickStr + '="Game.Toggle(\'' + prefName + '\',\'' + button + '\',\'' + on + '\',\'' + off + '\',\'' + invert + '\');' + callback + '">' + (Game.prefs[prefName] ? on : off) + '</a>';
 		}
 		Game.Toggle=function (prefName, button, on, off, invert) {
@@ -6048,7 +6048,7 @@ Game.Launch=function () {
 			var str='';
 			for (var i in Langs) {
 				var lang=Langs[i];
-				str += '<div class="langSelectButton title' + ((!firstLaunch && locId==lang.file) ? ' selected' : '') + '" style="padding:4px;" id="langSelect-' + i + '">' + lang.name + '</div>';
+				str+='<div class="langSelectButton title' + ((!firstLaunch && locId==lang.file) ? ' selected' : '') + '" style="padding:4px;" id="langSelect-' + i + '">' + lang.name + '</div>';
 			}
 			Game.Prompt('<id ChangeLanguage>' + (firstLaunch ? '<noClose>' : '') + '<h3 id="languageSelectHeader">' + loc("Change language") + '</h3>' +
 				'<div class="line"></div>' +
@@ -6083,12 +6083,12 @@ Game.Launch=function () {
 		Game.UpdateMenu=function () {
 			var str='';
 			if (Game.onMenu!='') {
-				str += '<div class="close menuClose" ' + Game.clickStr + '="Game.ShowMenu();">x</div>';
+				str+='<div class="close menuClose" ' + Game.clickStr + '="Game.ShowMenu();">x</div>';
 				//str+='<div style="position:absolute;top:8px;right:8px;cursor:pointer;font-size:16px;" '+Game.clickStr+'="Game.ShowMenu();">X</div>';
 			}
 			switch (Game.onMenu) {
 				case 'prefs':
-					str += '<div class="section">' + loc("Options") + '</div>';
+					str+='<div class="section">' + loc("Options") + '</div>';
 
 					str +=
 						'<div class="block" style="padding:0px;margin:8px 4px;">' +
@@ -6154,8 +6154,8 @@ Game.Launch=function () {
 						'<div class="listing"><a class="option big title" ' + Game.clickStr + '="Game.ShowMenu(Game.onMenu);">Resume</a></div>';
 					break;
 				case 'log':
-					str += replaceAll('[bakeryName]', Game.bakeryName, Game.updateLog);
-					if (!Game.HasAchiev('Olden days')) str += '<div id="oldenDays" style="text-align:right;width:100%;"><div ' + Game.clickStr + '="Game.SparkleAt(Game.mouseX,Game.mouseY);PlaySound(\'snd/tick.mp3\');PlaySound(\'snd/shimmerClick.mp3\');Game.Win(\'Olden days\');Game.UpdateMenu();" class="icon" style="display:inline-block;transform:scale(0.5);cursor:pointer;width:48px;height:48px;background-position:' + (-12 * 48) + 'px ' + (-3 * 48) + 'px;"></div></div>';
+					str+=replaceAll('[bakeryName]', Game.bakeryName, Game.updateLog);
+					if (!Game.HasAchiev('Olden days')) str+='<div id="oldenDays" style="text-align:right;width:100%;"><div ' + Game.clickStr + '="Game.SparkleAt(Game.mouseX,Game.mouseY);PlaySound(\'snd/tick.mp3\');PlaySound(\'snd/shimmerClick.mp3\');Game.Win(\'Olden days\');Game.UpdateMenu();" class="icon" style="display:inline-block;transform:scale(0.5);cursor:pointer;width:48px;height:48px;background-position:' + (-12 * 48) + 'px ' + (-3 * 48) + 'px;"></div></div>';
 					break;
 				case 'stats':
 					var buildingsOwned=0;
@@ -6182,7 +6182,7 @@ Game.Launch=function () {
 						var str2='';
 						var me=list[i];
 
-						str2 += Game.crate(me, 'stats');
+						str2+=Game.crate(me, 'stats');
 
 						if (me.bought) {
 							if (Game.CountsAsUpgradeOwned(me.pool)) upgradesOwned++;
@@ -6190,10 +6190,10 @@ Game.Launch=function () {
 						}
 
 						if (me.pool=='' || me.pool=='cookie' || me.pool=='tech') upgradesTotal++;
-						if (me.pool=='debug') hiddenUpgrades += str2;
-						else if (me.pool=='prestige') { prestigeUpgrades += str2; prestigeUpgradesTotal++; }
-						else if (me.pool=='cookie') cookieUpgrades += str2;
-						else if (me.pool!='toggle' && me.pool!='unused') upgrades += str2;
+						if (me.pool=='debug') hiddenUpgrades+=str2;
+						else if (me.pool=='prestige') { prestigeUpgrades+=str2; prestigeUpgradesTotal++; }
+						else if (me.pool=='cookie') cookieUpgrades+=str2;
+						else if (me.pool!='toggle' && me.pool!='unused') upgrades+=str2;
 					}
 					var achievements=[];
 					var achievementsOwned=0;
@@ -6219,7 +6219,7 @@ Game.Launch=function () {
 						if (Game.CountsAsAchievementOwned(me.pool)) achievementsTotal++;
 						var pool=me.pool;
 						if (!achievements[pool]) achievements[pool]='';
-						achievements[pool] += Game.crate(me, 'stats');
+						achievements[pool]+=Game.crate(me, 'stats');
 
 						if (me.won) {
 							if (Game.CountsAsAchievementOwned(me.pool)) achievementsOwned++;
@@ -6234,8 +6234,8 @@ Game.Launch=function () {
 					};
 					for (var i in achievements) {
 						if (achievements[i]!='') {
-							if (pools[i]) achievementsStr += '<div class="listing">' + pools[i] + '</div>';
-							achievementsStr += '<div class="listing crateBox">' + achievements[i] + '</div>';
+							if (pools[i]) achievementsStr+='<div class="listing">' + pools[i] + '</div>';
+							achievementsStr+='<div class="listing crateBox">' + achievements[i] + '</div>';
 						}
 					}
 
@@ -6243,22 +6243,22 @@ Game.Launch=function () {
 					for (var i=0; i<Game.Milks.length; i++) {
 						if (Game.milkProgress>=i) {
 							var milk=Game.Milks[i];
-							milkStr += '<div ' + Game.getTooltip(
+							milkStr+='<div ' + Game.getTooltip(
 								'<div class="prompt" style="text-align:center;padding-bottom:6px;white-space:nowrap;margin:0px;padding-bottom:96px;" id="tooltipMilk"><h3 style="margin:6px 32px 0px 32px;">' + (loc("Rank %1", romanize(i + 1)) + ' - ' + milk.name) + '</h3><div style="opacity:0.75;font-size:9px;">(' + (i==0 ? loc("starter milk") : loc("for %1 achievements", Beautify(i * 25))) + ')</div><div class="line"></div><div style="width:100%;height:96px;position:absolute;left:0px;bottom:0px;background:url(img/' + milk.pic + ');"></div></div>'
 								, 'top') + ' style="background:url(img/icons.png?v=' + Game.version + ') ' + (-milk.icon[0] * 48) + 'px ' + (-milk.icon[1] * 48) + 'px;margin:2px 0px;" class="trophy"></div>';
 						}
 					}
-					milkStr += '<div style="clear:both;"></div>';
+					milkStr+='<div style="clear:both;"></div>';
 
 					var santaStr='';
 					var frames=15;
 					if (Game.Has('A festive hat')) {
 						for (var i=0; i<=Game.santaLevel; i++) {
-							santaStr += '<div ' + Game.getTooltip(
+							santaStr+='<div ' + Game.getTooltip(
 								'<div class="prompt" style="text-align:center;padding-bottom:6px;white-space:nowrap;margin:0px 32px;"><div style="width:96px;height:96px;margin:4px auto;background:url(img/santa.png) ' + (-i * 96) + 'px 0px;filter:drop-shadow(0px 3px 2px #000);-webkit-filter:drop-shadow(0px 3px 2px #000);" id="tooltipSanta"></div><div class="line"></div><h3>' + Game.santaLevels[i] + '</h3></div>'
 								, 'top') + ' style="background:url(img/santa.png) ' + (-i * 48) + 'px 0px;background-size:' + (frames * 48) + 'px 48px;" class="trophy"></div>';
 						}
-						santaStr += '<div style="clear:both;"></div>';
+						santaStr+='<div style="clear:both;"></div>';
 					}
 					var dragonStr='';
 					var frames=9;
@@ -6267,13 +6267,13 @@ Game.Launch=function () {
 						for (var i=0; i<=mainLevels.length; i++) {
 							if (Game.dragonLevel>=mainLevels[i]) {
 								var level=Game.dragonLevels[mainLevels[i]];
-								dragonStr += '<div ' + Game.getTooltip(
+								dragonStr+='<div ' + Game.getTooltip(
 									//'<div style="width:96px;height:96px;margin:4px auto;background:url(img/dragon.png?v='+Game.version+') '+(-level.pic*96)+'px 0px;"></div><div class="line"></div><div style="min-width:200px;text-align:center;margin-bottom:6px;">'+level.name+'</div>'
 									'<div class="prompt" style="text-align:center;padding-bottom:6px;white-space:nowrap;margin:0px 32px;" id="tooltipDragon"><div style="width:96px;height:96px;margin:4px auto;background:url(img/dragon.png?v=' + Game.version + ') ' + (-level.pic * 96) + 'px 0px;filter:drop-shadow(0px 3px 2px #000);-webkit-filter:drop-shadow(0px 3px 2px #000);"></div><div class="line"></div><h3>' + level.name + '</h3></div>'
 									, 'top') + ' style="background:url(img/dragon.png?v=' + Game.version + ') ' + (-level.pic * 48) + 'px 0px;background-size:' + (frames * 48) + 'px 48px;" class="trophy"></div>';
 							}
 						}
-						dragonStr += '<div style="clear:both;"></div>';
+						dragonStr+='<div style="clear:both;"></div>';
 					}
 					var ascensionModeStr='';
 					var icon=Game.ascensionModes[Game.ascensionMode].icon;
@@ -6307,7 +6307,7 @@ Game.Launch=function () {
 
 					var seasonStr=Game.sayTime(Game.seasonT, -1);
 
-					str += '<div class="section">' + (EN ? "Statistics" : loc("Stats")) + '</div>' +
+					str+='<div class="section">' + (EN ? "Statistics" : loc("Stats")) + '</div>' +
 						'<div class="subsection">' +
 						'<div class="title">' + loc("General") + '</div>' +
 						'<div id="statsGeneral">' +
@@ -7178,7 +7178,7 @@ Game.Launch=function () {
 			{
 				var price=0;
 				for (var i=Math.max(0, this.amount); i<Math.max(0, (this.amount) + amount); i++) {
-					price += this.basePrice * Math.pow(Game.priceIncrease, Math.max(0, i - this.free));
+					price+=this.basePrice * Math.pow(Game.priceIncrease, Math.max(0, i - this.free));
 				}
 				price=Game.modifyBuildingPrice(this, price);
 				return Math.min(Math.ceil(price), 2e60);
@@ -7187,7 +7187,7 @@ Game.Launch=function () {
 			{
 				var price=0;
 				for (var i=Math.max(0, (this.amount) - amount); i<Math.max(0, this.amount); i++) {
-					price += this.basePrice * Math.pow(Game.priceIncrease, Math.max(0, i - this.free));
+					price+=this.basePrice * Math.pow(Game.priceIncrease, Math.max(0, i - this.free));
 				}
 				price=Game.modifyBuildingPrice(this, price);
 				price *= this.getSellMultiplier();
@@ -7211,7 +7211,7 @@ Game.Launch=function () {
 					var price=this.getPrice();
 					if (Game.cookies<price) { break; }
 					bought++;
-					moni += price;
+					moni+=price;
 					Game.Spend(price);
 					this.amount++;
 					this.bought++;
@@ -7238,8 +7238,8 @@ Game.Launch=function () {
 					price=Math.floor(price * giveBack);
 					if (this.amount<0) { break; }
 					sold++;
-					moni += price;
-					Game.cookies += price;
+					moni+=price;
+					Game.cookies+=price;
 					Game.cookiesEarned=Math.max(Game.cookies, Game.cookiesEarned);//this is to avoid players getting the cheater achievement when selling buildings that have a higher price than they used to
 					this.amount--;
 					price=this.getPrice();
@@ -7255,9 +7255,9 @@ Game.Launch=function () {
 					var old=Game.hasBuff('Devastation');
 					if (old) {
 						switch (godLvl) {
-							case 1: old.multClick += sold * 0.01; break;
-							case 2: old.multClick += sold * 0.005; break;
-							case 3: old.multClick += sold * 0.0025; break;
+							case 1: old.multClick+=sold * 0.01; break;
+							case 2: old.multClick+=sold * 0.005; break;
+							case 3: old.multClick+=sold * 0.0025; break;
 						}
 					}
 					else {
@@ -7327,17 +7327,17 @@ Game.Launch=function () {
 			}
 			this.getFree=function (amount)//get X of this building for free, with the price behaving as if you still didn't have them
 			{
-				this.amount += amount;
-				this.bought += amount;
-				this.free += amount;
+				this.amount+=amount;
+				this.bought+=amount;
+				this.free+=amount;
 				this.highest=Math.max(this.highest, this.amount);
-				Game.BuildingsOwned += amount;
+				Game.BuildingsOwned+=amount;
 				this.highest=Math.max(this.highest, this.amount);
 				this.refresh();
 			}
 			this.getFreeRanks=function (amount)//this building's price behaves as if you had X less of it
 			{
-				this.free += amount;
+				this.free+=amount;
 				this.refresh();
 			}
 
@@ -7379,18 +7379,18 @@ Game.Launch=function () {
 								var other=Game.Upgrades[Game.GrandmaSynergies[i]].buildingTie;
 								var mult=me.amount * 0.01 * (1 / (other.id - 1));
 								var boost=(other.storedTotalCps * Game.globalCpsMult) - (other.storedTotalCps * Game.globalCpsMult) / (1 + mult);
-								synergyBoost += boost;
+								synergyBoost+=boost;
 								if (!synergiesWith[other.plural]) synergiesWith[other.plural]=0;
-								synergiesWith[other.plural] += mult;
+								synergiesWith[other.plural]+=mult;
 							}
 						}
 					}
 					else if (me.name=='Portal' && Game.Has('Elder Pact')) {
 						var other=Game.Objects['Grandma'];
 						var boost=(me.amount * 0.05 * other.amount) * Game.globalCpsMult;
-						synergyBoost += boost;
+						synergyBoost+=boost;
 						if (!synergiesWith[other.plural]) synergiesWith[other.plural]=0;
-						synergiesWith[other.plural] += boost / (other.storedTotalCps * Game.globalCpsMult);
+						synergiesWith[other.plural]+=boost / (other.storedTotalCps * Game.globalCpsMult);
 					}
 
 					for (var i in me.synergies) {
@@ -7400,16 +7400,16 @@ Game.Launch=function () {
 							var other=it.buildingTie1;
 							if (me==it.buildingTie1) { weight=0.001; other=it.buildingTie2; }
 							var boost=(other.storedTotalCps * Game.globalCpsMult) - (other.storedTotalCps * Game.globalCpsMult) / (1 + me.amount * weight);
-							synergyBoost += boost;
+							synergyBoost+=boost;
 							if (!synergiesWith[other.plural]) synergiesWith[other.plural]=0;
-							synergiesWith[other.plural] += me.amount * weight;
+							synergiesWith[other.plural]+=me.amount * weight;
 							//synergiesStr+='Synergy with '+other.name+'; we boost it by '+Beautify((me.amount*weight)*100,1)+'%, producing '+Beautify(boost)+' CpS. My synergy boost is now '+Beautify((synergyBoost/Game.cookiesPs)*100,1)+'%.<br>';
 						}
 					}
 					if (synergyBoost>0) {
 						for (var i in synergiesWith) {
-							if (synergiesStr!='') synergiesStr += ', ';
-							synergiesStr += '<span style="color:#fff;font-weight:bold;font-size:80%;background:#000;box-shadow:0px 0px 0px 1px rgba(255,255,255,0.2);border-radius:3px;padding:0px 2px;display:inline-block;">' + i + ' +' + Beautify(synergiesWith[i] * 100, 1) + '%</span>';
+							if (synergiesStr!='') synergiesStr+=', ';
+							synergiesStr+='<span style="color:#fff;font-weight:bold;font-size:80%;background:#000;box-shadow:0px 0px 0px 1px rgba(255,255,255,0.2);border-radius:3px;padding:0px 2px;display:inline-block;">' + i + ' +' + Beautify(synergiesWith[i] * 100, 1) + '%</span>';
 						}
 						synergiesStr=loc("...also boosting some other buildings:") + ' ' + synergiesStr + ' - ' + loc("all combined, these boosts account for <b>%1</b> per second (<b>%2%</b> of total CpS)", [loc("%1 cookie", LBeautify(synergyBoost, 1)), Beautify((synergyBoost / Game.cookiesPs) * 100, 1)]);
 					}
@@ -7418,13 +7418,13 @@ Game.Launch=function () {
 				if (Game.prefs.screenreader) {
 					if (me.locked) ariaText='This building is not yet unlocked. ';
 					else ariaText=name + '. ';
-					if (!me.locked) ariaText += 'You own ' + me.amount + '. ';
-					ariaText += (canBuy ? 'Can buy 1 for' : 'Cannot afford the') + ' ' + Beautify(Math.round(price)) + ' cookies. ';
+					if (!me.locked) ariaText+='You own ' + me.amount + '. ';
+					ariaText+=(canBuy ? 'Can buy 1 for' : 'Cannot afford the') + ' ' + Beautify(Math.round(price)) + ' cookies. ';
 					if (!me.locked && me.totalCookies>0) {
-						ariaText += 'Each ' + me.single + ' produces ' + Beautify((me.storedTotalCps / me.amount) * Game.globalCpsMult, 1) + ' cookies per second. ';
-						ariaText += Beautify(me.totalCookies) + ' cookies ' + me.actionName + ' so far. ';
+						ariaText+='Each ' + me.single + ' produces ' + Beautify((me.storedTotalCps / me.amount) * Game.globalCpsMult, 1) + ' cookies per second. ';
+						ariaText+=Beautify(me.totalCookies) + ' cookies ' + me.actionName + ' so far. ';
 					}
-					if (!me.locked) ariaText += desc;
+					if (!me.locked) ariaText+=desc;
 
 					var ariaLabel=l('ariaReader-product-' + (me.id));
 					if (ariaLabel) ariaLabel.innerHTML=ariaText.replace(/(<([^>]+)>)/gi, ' ');
@@ -7449,7 +7449,7 @@ Game.Launch=function () {
 			this.levelUp=function () {
 				var me=this
 				Game.spendLump(me.level + 1, loc("level up your %1", me.plural), () => {
-					me.level += 1;
+					me.level+=1;
 					if (me.level>=10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);
 					PlaySound('snd/upgrade.mp3', 0.6);
 					Game.LoadMinigames();
@@ -7539,18 +7539,18 @@ Game.Launch=function () {
 			this.draw=function () { };
 
 			var str='';
-			if (this.id!=0) str += '<div class="row" id="row' + this.id + '"><div class="separatorBottom"></div>';
-			str += '<div class="productButtons">';
-			str += '<div id="productLevel' + this.id + '" class="productButton productLevel lumpsOnly" onclick="Game.ObjectsById[' + this.id + '].levelUp()" ' + Game.getDynamicTooltip('Game.ObjectsById[' + this.id + '].levelTooltip', 'this') + '></div>';
-			str += '<div id="productMinigameButton' + this.id + '" class="productButton productMinigameButton lumpsOnly" onclick="Game.ObjectsById[' + this.id + '].switchMinigame(-1);PlaySound(Game.ObjectsById[' + this.id + '].onMinigame?\'snd/clickOn2.mp3\':\'snd/clickOff2.mp3\');"></div>';
-			if (this.id!=0) str += '<div class="productButton productMute" ' + Game.getTooltip('<div style="width:150px;text-align:center;font-size:11px;" id="tooltipMuteBuilding"><b>' + loc("Mute") + '</b><br>(' + loc("Minimize this building") + ')</div>', 'this') + ' onclick="Game.ObjectsById[' + this.id + '].mute(1);PlaySound(Game.ObjectsById[' + this.id + '].muted?\'snd/clickOff2.mp3\':\'snd/clickOn2.mp3\');" id="productMute' + this.id + '">' + loc("Mute") + '</div>';
-			str += '<div id="productDragonBoost' + this.id + '" style="display:none;" class="productButton productDragonBoost" ' + Game.getDynamicTooltip('function(){if (Game.ObjectsById[' + this.id + '].minigame && Game.ObjectsById[' + this.id + '].minigame.dragonBoostTooltip) return Game.ObjectsById[' + this.id + '].minigame.dragonBoostTooltip(); else return 0;}', 'this') + '><div class="icon" style="vertical-align:middle;display:inline-block;background-position:' + (-30 * 48) + 'px ' + (-12 * 48) + 'px;transform:scale(0.5);margin:-20px -16px;"></div></div>';
-			str += '</div>';
+			if (this.id!=0) str+='<div class="row" id="row' + this.id + '"><div class="separatorBottom"></div>';
+			str+='<div class="productButtons">';
+			str+='<div id="productLevel' + this.id + '" class="productButton productLevel lumpsOnly" onclick="Game.ObjectsById[' + this.id + '].levelUp()" ' + Game.getDynamicTooltip('Game.ObjectsById[' + this.id + '].levelTooltip', 'this') + '></div>';
+			str+='<div id="productMinigameButton' + this.id + '" class="productButton productMinigameButton lumpsOnly" onclick="Game.ObjectsById[' + this.id + '].switchMinigame(-1);PlaySound(Game.ObjectsById[' + this.id + '].onMinigame?\'snd/clickOn2.mp3\':\'snd/clickOff2.mp3\');"></div>';
+			if (this.id!=0) str+='<div class="productButton productMute" ' + Game.getTooltip('<div style="width:150px;text-align:center;font-size:11px;" id="tooltipMuteBuilding"><b>' + loc("Mute") + '</b><br>(' + loc("Minimize this building") + ')</div>', 'this') + ' onclick="Game.ObjectsById[' + this.id + '].mute(1);PlaySound(Game.ObjectsById[' + this.id + '].muted?\'snd/clickOff2.mp3\':\'snd/clickOn2.mp3\');" id="productMute' + this.id + '">' + loc("Mute") + '</div>';
+			str+='<div id="productDragonBoost' + this.id + '" style="display:none;" class="productButton productDragonBoost" ' + Game.getDynamicTooltip('function(){if (Game.ObjectsById[' + this.id + '].minigame && Game.ObjectsById[' + this.id + '].minigame.dragonBoostTooltip) return Game.ObjectsById[' + this.id + '].minigame.dragonBoostTooltip(); else return 0;}', 'this') + '><div class="icon" style="vertical-align:middle;display:inline-block;background-position:' + (-30 * 48) + 'px ' + (-12 * 48) + 'px;transform:scale(0.5);margin:-20px -16px;"></div></div>';
+			str+='</div>';
 			if (this.id==0) l('sectionLeftExtra').innerHTML=l('sectionLeftExtra').innerHTML + str;
 			else {
-				str += '<canvas class="rowCanvas" id="rowCanvas' + this.id + '"></canvas>';
-				str += '<div class="rowSpecial" id="rowSpecial' + this.id + '"></div>';
-				str += '</div>';
+				str+='<canvas class="rowCanvas" id="rowCanvas' + this.id + '"></canvas>';
+				str+='<div class="rowSpecial" id="rowSpecial' + this.id + '"></div>';
+				str+='</div>';
 				l('rows').innerHTML=l('rows').innerHTML + str;
 
 				//building canvas
@@ -7773,7 +7773,7 @@ Game.Launch=function () {
 		{
 			var price=0;
 			for (var i=Math.max(0, this.amount); i<Math.max(0, (this.amount) + amount); i++) {
-				price += this.basePrice * Math.pow(Game.priceIncrease, Math.max(0, i - this.free));
+				price+=this.basePrice * Math.pow(Game.priceIncrease, Math.max(0, i - this.free));
 			}
 			price=Game.modifyBuildingPrice(this, price);
 			return Math.min(Math.ceil(price), 2e60);
@@ -7782,7 +7782,7 @@ Game.Launch=function () {
 		{
 			var price=0;
 			for (var i=Math.max(0, (this.amount) - amount); i<Math.max(0, this.amount); i++) {
-				price += this.basePrice * Math.pow(Game.priceIncrease, Math.max(0, i - this.free));
+				price+=this.basePrice * Math.pow(Game.priceIncrease, Math.max(0, i - this.free));
 			}
 			price=Game.modifyBuildingPrice(this, price);
 			price *= this.getSellMultiplier();
@@ -7806,7 +7806,7 @@ Game.Launch=function () {
 				var price=this.getPrice();
 				if (Game.cookies<price) { break; }
 				bought++;
-				moni += price;
+				moni+=price;
 				Game.Spend(price);
 				this.amount++;
 				this.bought++;
@@ -7833,8 +7833,8 @@ Game.Launch=function () {
 				price=Math.floor(price * giveBack);
 				if (this.amount<0) { break; }
 				sold++;
-				moni += price;
-				Game.cookies += price;
+				moni+=price;
+				Game.cookies+=price;
 				Game.cookiesEarned=Math.max(Game.cookies, Game.cookiesEarned);//this is to avoid players getting the cheater achievement when selling buildings that have a higher price than they used to
 				this.amount--;
 				price=this.getPrice();
@@ -7850,9 +7850,9 @@ Game.Launch=function () {
 				var old=Game.hasBuff('Devastation');
 				if (old) {
 					switch (godLvl) {
-						case 1: old.multClick += sold * 0.01; break;
-						case 2: old.multClick += sold * 0.005; break;
-						case 3: old.multClick += sold * 0.0025; break;
+						case 1: old.multClick+=sold * 0.01; break;
+						case 2: old.multClick+=sold * 0.005; break;
+						case 3: old.multClick+=sold * 0.0025; break;
 					}
 				}
 				else {
@@ -7922,17 +7922,17 @@ Game.Launch=function () {
 		}
 		Game.Object.prototype.getFree=function (amount)//get X of this building for free, with the price behaving as if you still didn't have them
 		{
-			this.amount += amount;
-			this.bought += amount;
-			this.free += amount;
+			this.amount+=amount;
+			this.bought+=amount;
+			this.free+=amount;
 			this.highest=Math.max(this.highest, this.amount);
-			Game.BuildingsOwned += amount;
+			Game.BuildingsOwned+=amount;
 			this.highest=Math.max(this.highest, this.amount);
 			this.refresh();
 		}
 		Game.Object.prototype.getFreeRanks=function (amount)//this building's price behaves as if you had X less of it
 		{
-			this.free += amount;
+			this.free+=amount;
 			this.refresh();
 		}
 
@@ -7974,18 +7974,18 @@ Game.Launch=function () {
 							var other=Game.Upgrades[Game.GrandmaSynergies[i]].buildingTie;
 							var mult=me.amount * 0.01 * (1 / (other.id - 1));
 							var boost=(other.storedTotalCps * Game.globalCpsMult) - (other.storedTotalCps * Game.globalCpsMult) / (1 + mult);
-							synergyBoost += boost;
+							synergyBoost+=boost;
 							if (!synergiesWith[other.plural]) synergiesWith[other.plural]=0;
-							synergiesWith[other.plural] += mult;
+							synergiesWith[other.plural]+=mult;
 						}
 					}
 				}
 				else if (me.name=='Portal' && Game.Has('Elder Pact')) {
 					var other=Game.Objects['Grandma'];
 					var boost=(me.amount * 0.05 * other.amount) * Game.globalCpsMult;
-					synergyBoost += boost;
+					synergyBoost+=boost;
 					if (!synergiesWith[other.plural]) synergiesWith[other.plural]=0;
-					synergiesWith[other.plural] += boost / (other.storedTotalCps * Game.globalCpsMult);
+					synergiesWith[other.plural]+=boost / (other.storedTotalCps * Game.globalCpsMult);
 				}
 
 				for (var i in me.synergies) {
@@ -7995,16 +7995,16 @@ Game.Launch=function () {
 						var other=it.buildingTie1;
 						if (me==it.buildingTie1) { weight=0.001; other=it.buildingTie2; }
 						var boost=(other.storedTotalCps * Game.globalCpsMult) - (other.storedTotalCps * Game.globalCpsMult) / (1 + me.amount * weight);
-						synergyBoost += boost;
+						synergyBoost+=boost;
 						if (!synergiesWith[other.plural]) synergiesWith[other.plural]=0;
-						synergiesWith[other.plural] += me.amount * weight;
+						synergiesWith[other.plural]+=me.amount * weight;
 						//synergiesStr+='Synergy with '+other.name+'; we boost it by '+Beautify((me.amount*weight)*100,1)+'%, producing '+Beautify(boost)+' CpS. My synergy boost is now '+Beautify((synergyBoost/Game.cookiesPs)*100,1)+'%.<br>';
 					}
 				}
 				if (synergyBoost>0) {
 					for (var i in synergiesWith) {
-						if (synergiesStr!='') synergiesStr += ', ';
-						synergiesStr += '<span style="color:#fff;font-weight:bold;font-size:80%;background:#000;box-shadow:0px 0px 0px 1px rgba(255,255,255,0.2);border-radius:3px;padding:0px 2px;display:inline-block;">' + i + ' +' + Beautify(synergiesWith[i] * 100, 1) + '%</span>';
+						if (synergiesStr!='') synergiesStr+=', ';
+						synergiesStr+='<span style="color:#fff;font-weight:bold;font-size:80%;background:#000;box-shadow:0px 0px 0px 1px rgba(255,255,255,0.2);border-radius:3px;padding:0px 2px;display:inline-block;">' + i + ' +' + Beautify(synergiesWith[i] * 100, 1) + '%</span>';
 					}
 					synergiesStr=loc("...also boosting some other buildings:") + ' ' + synergiesStr + ' - ' + loc("all combined, these boosts account for <b>%1</b> per second (<b>%2%</b> of total CpS)", [loc("%1 cookie", LBeautify(synergyBoost, 1)), Beautify((synergyBoost / Game.cookiesPs) * 100, 1)]);
 				}
@@ -8013,13 +8013,13 @@ Game.Launch=function () {
 			if (Game.prefs.screenreader) {
 				if (me.locked) ariaText='This building is not yet unlocked. ';
 				else ariaText=name + '. ';
-				if (!me.locked) ariaText += 'You own ' + me.amount + '. ';
-				ariaText += (canBuy ? 'Can buy 1 for' : 'Cannot afford the') + ' ' + Beautify(Math.round(price)) + ' cookies. ';
+				if (!me.locked) ariaText+='You own ' + me.amount + '. ';
+				ariaText+=(canBuy ? 'Can buy 1 for' : 'Cannot afford the') + ' ' + Beautify(Math.round(price)) + ' cookies. ';
 				if (!me.locked && me.totalCookies>0) {
-					ariaText += 'Each ' + me.single + ' produces ' + Beautify((me.storedTotalCps / me.amount) * Game.globalCpsMult, 1) + ' cookies per second. ';
-					ariaText += Beautify(me.totalCookies) + ' cookies ' + me.actionName + ' so far. ';
+					ariaText+='Each ' + me.single + ' produces ' + Beautify((me.storedTotalCps / me.amount) * Game.globalCpsMult, 1) + ' cookies per second. ';
+					ariaText+=Beautify(me.totalCookies) + ' cookies ' + me.actionName + ' so far. ';
 				}
-				if (!me.locked) ariaText += desc;
+				if (!me.locked) ariaText+=desc;
 
 				var ariaLabel=l('ariaReader-product-' + (me.id));
 				if (ariaLabel) ariaLabel.innerHTML=ariaText.replace(/(<([^>]+)>)/gi, ' ');
@@ -8044,7 +8044,7 @@ Game.Launch=function () {
 		Game.Object.prototype.levelUp=function () {
 			var me=this
 			Game.spendLump(me.level + 1, loc("level up your %1", me.plural), () => {
-				me.level += 1;
+				me.level+=1;
 				if (me.level>=10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);
 				PlaySound('snd/upgrade.mp3', 0.6);
 				Game.LoadMinigames();
@@ -8210,7 +8210,7 @@ Game.Launch=function () {
 			//if (typeof showAds!=='undefined') l('store').scrollTop=100;
 
 			let str='';
-			str += '<div id="storeBulk" class="storePre" ' + Game.getTooltip(
+			str+='<div id="storeBulk" class="storePre" ' + Game.getTooltip(
 				'<div style="padding:8px;min-width:200px;text-align:center;font-size:11px;" id="tooltipStoreBulk">' + loc("You can also press %1 to bulk-buy or sell %2 of a building at a time, or %3 for %4.", ['<b>' + loc("Ctrl") + '</b>', '<b>10</b>', '<b>' + loc("Shift") + '</b>', '<b>100</b>']) + '</div>'
 				, 'store') +
 				'>' +
@@ -8223,7 +8223,7 @@ Game.Launch=function () {
 				'</div>';
 			for (let i in Game.Objects) {
 				let me=Game.Objects[i];
-				str += (Game.prefs.screenreader ? '<button aria-labelledby="ariaReader-product-' + (me.id) + '"' : '<div') + ' class="product toggledOff" ' + Game.getDynamicTooltip('Game.ObjectsById[' + me.id + '].tooltip', 'store') + ' id="product' + me.id + '"><div class="icon off" id="productIconOff' + me.id + '" style=""></div><div class="icon" id="productIcon' + me.id + '" style=""></div><div class="content"><div class="lockedTitle">???</div><div class="title productName" id="productName' + me.id + '"></div><span class="priceMult" id="productPriceMult' + me.id + '"></span><span class="price" id="productPrice' + me.id + '"></span><div class="title owned" id="productOwned' + me.id + '"></div>' + (Game.prefs.screenreader ? '<label class="srOnly" style="width:64px;left:-64px;" id="ariaReader-product-' + (me.id) + '"></label>' : '') + '</div>' +
+				str+=(Game.prefs.screenreader ? '<button aria-labelledby="ariaReader-product-' + (me.id) + '"' : '<div') + ' class="product toggledOff" ' + Game.getDynamicTooltip('Game.ObjectsById[' + me.id + '].tooltip', 'store') + ' id="product' + me.id + '"><div class="icon off" id="productIconOff' + me.id + '" style=""></div><div class="icon" id="productIcon' + me.id + '" style=""></div><div class="content"><div class="lockedTitle">???</div><div class="title productName" id="productName' + me.id + '"></div><span class="priceMult" id="productPriceMult' + me.id + '"></span><span class="price" id="productPrice' + me.id + '"></span><div class="title owned" id="productOwned' + me.id + '"></div>' + (Game.prefs.screenreader ? '<label class="srOnly" style="width:64px;left:-64px;" id="ariaReader-product-' + (me.id) + '"></label>' : '') + '</div>' +
 					/*'<div class="buySell"><div style="left:0px;" id="buttonBuy10-'+me.id+'">Buy 10</div><div style="left:100px;" id="buttonSell-'+me.id+'">Sell 1</div><div style="left:200px;" id="buttonSellAll-'+me.id+'">Sell all</div></div>'+*/
 					(Game.prefs.screenreader ? '</button>' : '</div>');
 			}
@@ -8321,7 +8321,7 @@ Game.Launch=function () {
 		//define objects
 		new Game.Object('Cursor', 'cursor|cursors|clicked|[X] extra finger|[X] extra fingers', 'Autoclicks once every 10 seconds.', 0, 0, {}, 15, function (me) {
 			var add=0;
-			if (Game.Has('Thousand fingers')) add += 0.1;
+			if (Game.Has('Thousand fingers')) add+=0.1;
 			if (Game.Has('Million fingers')) add *= 5;
 			if (Game.Has('Billion fingers')) add *= 10;
 			if (Game.Has('Trillion fingers')) add *= 20;
@@ -8333,7 +8333,7 @@ Game.Launch=function () {
 			if (Game.Has('Nonillion fingers')) add *= 20;
 			var mult=1;
 			var num=0;
-			for (var i in Game.Objects) { if (Game.Objects[i].name!='Cursor') num += Game.Objects[i].amount; }
+			for (var i in Game.Objects) { if (Game.Objects[i].name!='Cursor') num+=Game.Objects[i].amount; }
 			add *= num;
 			mult *= Game.GetTieredCpsMult(me);
 			mult *= Game.magicCpS('Cursor');
@@ -8412,12 +8412,12 @@ Game.Launch=function () {
 			mult *= Game.GetTieredCpsMult(me);
 
 			var add=0;
-			if (Game.Has('One mind')) add += Game.Objects['Grandma'].amount * 0.02;
-			if (Game.Has('Communal brainsweep')) add += Game.Objects['Grandma'].amount * 0.02;
-			if (Game.Has('Elder Pact')) add += Game.Objects['Portal'].amount * 0.05;
+			if (Game.Has('One mind')) add+=Game.Objects['Grandma'].amount * 0.02;
+			if (Game.Has('Communal brainsweep')) add+=Game.Objects['Grandma'].amount * 0.02;
+			if (Game.Has('Elder Pact')) add+=Game.Objects['Portal'].amount * 0.05;
 
 			var num=0;
-			for (var i in Game.Objects) { if (Game.Objects[i].name!='Grandma') num += Game.Objects[i].amount; }
+			for (var i in Game.Objects) { if (Game.Objects[i].name!='Grandma') num+=Game.Objects[i].amount; }
 			//if (Game.hasAura('Elder Battalion')) mult*=1+0.01*num;
 			mult *= 1 + Game.auraMult('Elder Battalion') * 0.01 * num;
 
@@ -8667,8 +8667,8 @@ Game.Launch=function () {
 
 		//build master bar
 		var str='';
-		str += '<div id="buildingsMute" class="shadowFilter" style="position:relative;z-index:100;padding:4px 16px 0px 64px;"></div>';
-		str += '<div class="separatorBottom" style="position:absolute;bottom:-8px;z-index:0;"></div>';
+		str+='<div id="buildingsMute" class="shadowFilter" style="position:relative;z-index:100;padding:4px 16px 0px 64px;"></div>';
+		str+='<div class="separatorBottom" style="position:absolute;bottom:-8px;z-index:0;"></div>';
 		l('buildingsMaster').innerHTML=str;
 
 		//build object displays
@@ -8683,7 +8683,7 @@ Game.Launch=function () {
 				me.ctx=me.canvas.getContext('2d', { alpha: false });
 				me.pics=[];
 				var icon=[0 * 64, me.icon * 64];
-				muteStr += '<div class="tinyProductIcon" id="mutedProduct' + me.id + '" style="display:none;background-position:-' + icon[0] + 'px -' + icon[1] + 'px;" ' + Game.clickStr + '="Game.ObjectsById[' + me.id + '].mute(0);PlaySound(Game.ObjectsById[' + me.id + '].muted?\'snd/clickOff2.mp3\':\'snd/clickOn2.mp3\');" ' + Game.getDynamicTooltip('Game.mutedBuildingTooltip(' + me.id + ')', 'this') + '></div>';
+				muteStr+='<div class="tinyProductIcon" id="mutedProduct' + me.id + '" style="display:none;background-position:-' + icon[0] + 'px -' + icon[1] + 'px;" ' + Game.clickStr + '="Game.ObjectsById[' + me.id + '].mute(0);PlaySound(Game.ObjectsById[' + me.id + '].muted?\'snd/clickOff2.mp3\':\'snd/clickOn2.mp3\');" ' + Game.getDynamicTooltip('Game.mutedBuildingTooltip(' + me.id + ')', 'this') + '></div>';
 				//muteStr+='<div class="tinyProductIcon" id="mutedProduct'+me.id+'" style="display:none;background-position:-'+icon[0]+'px -'+icon[1]+'px;" '+Game.clickStr+'="Game.ObjectsById['+me.id+'].mute(0);PlaySound(Game.ObjectsById['+me.id+'].muted?\'snd/clickOff2.mp3\':\'snd/clickOn2.mp3\');" '+Game.getTooltip('<div style="width:150px;text-align:center;font-size:11px;"><b>Unmute '+me.plural+'</b><br>(Display this building)</div>')+'></div>';
 
 				AddEvent(me.canvas, 'mouseover', function (me) { return function () { me.mouseOn=true; } }(me));
@@ -8821,18 +8821,18 @@ Game.Launch=function () {
 						Game.choiceSelectorOn=this.id;
 						var choices=this.choicesFunction();
 						var str='';
-						str += '<div class="close" onclick="Game.UpgradesById[' + this.id + '].buy();">x</div>';
-						str += '<h3>' + this.dname + '</h3>' +
+						str+='<div class="close" onclick="Game.UpgradesById[' + this.id + '].buy();">x</div>';
+						str+='<h3>' + this.dname + '</h3>' +
 							'<div class="line"></div>';
 						if (typeof choices === 'string') {
-							str += choices;
+							str+=choices;
 						}
 						else if (choices.length>0) {
 							var selected=0;
 							for (var i in choices) { if (choices[i].selected) selected=i; }
 							Game.choiceSelectorChoices=choices;//this is a really dumb way of doing this i am so sorry
 							Game.choiceSelectorSelected=selected;
-							str += '<h4 id="choiceSelectedName">' + choices[selected].name + '</h4>' +
+							str+='<h4 id="choiceSelectedName">' + choices[selected].name + '</h4>' +
 								'<div class="line"></div>';
 
 							for (var i in choices) {
@@ -8851,8 +8851,8 @@ Game.Launch=function () {
 								if (!choices[i]) continue;
 								var icon=choices[i].icon;
 								var id=choices[i].id;
-								if (choices[i].div) str += '<div class="line"></div>';
-								str += '<div class="crate noFrame enabled' + (id==selected ? ' highlighted' : '') + '" style="opacity:1;float:none;display:inline-block;' + writeIcon(icon) + '" ' + Game.clickStr + '="Game.UpgradesById[' + this.id + '].choicesPick(' + id + ');Game.choiceSelectorOn=-1;Game.UpgradesById[' + this.id + '].buy();" onMouseOut="l(\'choiceSelectedName\').innerHTML=Game.choiceSelectorChoices[Game.choiceSelectorSelected].name;" onMouseOver="l(\'choiceSelectedName\').innerHTML=Game.choiceSelectorChoices[' + i + '].name;"' +
+								if (choices[i].div) str+='<div class="line"></div>';
+								str+='<div class="crate noFrame enabled' + (id==selected ? ' highlighted' : '') + '" style="opacity:1;float:none;display:inline-block;' + writeIcon(icon) + '" ' + Game.clickStr + '="Game.UpgradesById[' + this.id + '].choicesPick(' + id + ');Game.choiceSelectorOn=-1;Game.UpgradesById[' + this.id + '].buy();" onMouseOut="l(\'choiceSelectedName\').innerHTML=Game.choiceSelectorChoices[Game.choiceSelectorSelected].name;" onMouseOver="l(\'choiceSelectedName\').innerHTML=Game.choiceSelectorChoices[' + i + '].name;"' +
 									'></div>';
 							}
 						}
@@ -8887,7 +8887,7 @@ Game.Launch=function () {
 					var price=this.getPrice();
 					if (Game.heavenlyChips>=price && !this.bought) {
 						Game.heavenlyChips -= price;
-						Game.heavenlyChipsSpent += price;
+						Game.heavenlyChipsSpent+=price;
 						this.unlocked=1;
 						this.bought=1;
 						if (this.buyFunction) this.buyFunction();
@@ -9035,7 +9035,7 @@ Game.Launch=function () {
 			var vaultStr='';
 
 			if (Game.Has('Inspired checklist')) {
-				storeStr += '<div id="storeBuyAll" class="storePre" ' + Game.getTooltip(
+				storeStr+='<div id="storeBuyAll" class="storePre" ' + Game.getTooltip(
 					'<div style="padding:8px;min-width:250px;text-align:center;font-size:11px;" id="tooltipStorePre">' + loc("Will <b>instantly purchase</b> every upgrade you can afford, starting from the cheapest one.<br>Upgrades in the <b>vault</b> will not be auto-purchased.<br>You may place an upgrade into the vault by <b>Shift-clicking</b> on it.") + '</div>'
 					, 'store') +
 					'>' +
@@ -9053,8 +9053,8 @@ Game.Launch=function () {
 				/*var str='<div class="crate upgrade" '+Game.getTooltip(
 				'<div style="min-width:200px;"><div style="float:right;"><span class="price">'+Beautify(Math.round(me.getPrice()))+'</span></div><small>'+(me.pool=='toggle'?'[Togglable]':'[Upgrade]')+'</small><div class="name">'+me.dname+'</div><div class="line"></div><div class="description">'+me.desc+'</div></div>'
 				,'store')+' '+Game.clickStr+'="Game.UpgradesById['+me.id+'].buy();" id="upgrade'+i+'" style="'+writeIcon(me.icon)+'"></div>';*/
-				if (me.pool=='toggle') toggleStr += str; else if (me.pool=='tech') techStr += str; else {
-					if (me.isVaulted() && Game.Has('Inspired checklist')) vaultStr += str; else storeStr += str;
+				if (me.pool=='toggle') toggleStr+=str; else if (me.pool=='tech') techStr+=str; else {
+					if (me.isVaulted() && Game.Has('Inspired checklist')) vaultStr+=str; else storeStr+=str;
 				}
 			}
 
@@ -9819,7 +9819,7 @@ Game.Launch=function () {
 			var upgrades='';
 			for (var i in list) {
 				var me=list[i];
-				upgrades += Game.crate(me, '', 'PlaySound(\'snd/tick.mp3\');Game.PutUpgradeInPermanentSlot(' + me.id + ',' + slot + ');', 'upgradeForPermanent' + me.id);
+				upgrades+=Game.crate(me, '', 'PlaySound(\'snd/tick.mp3\');Game.PutUpgradeInPermanentSlot(' + me.id + ',' + slot + ');', 'upgradeForPermanent' + me.id);
 			}
 			var upgrade=Game.permanentUpgrades[slot];
 			Game.SelectingPermanentUpgrade=upgrade;
@@ -10512,7 +10512,7 @@ Game.Launch=function () {
 		var func=function () {
 			var boost=50;
 			var resist=0;
-			if (Game.Has('Reinforced membrane')) { boost += 10; resist += 10; }
+			if (Game.Has('Reinforced membrane')) { boost+=10; resist+=10; }
 			return (this.name=='Shimmering veil [on]' ? '<div style="text-align:center;">Active.</div><div class="line"></div>' : '') + 'Boosts your cookie production by <b>' + Beautify(boost) + '%</b> when active.<br>The veil is very fragile and will break if you click the big cookie or any golden cookies or reindeer.<br><br>Once broken, turning the veil back on costs 24 hours of unbuffed CpS.' + (resist>0 ? ('<br><br>Has a <b>' + Beautify(resist) + '%</b> chance to not break.') : '');
 		};
 		new Game.Upgrade('Shimmering veil [off]', '', 1000000, [9, 10]);
@@ -10584,18 +10584,18 @@ Game.Launch=function () {
 		new Game.Upgrade('Cosmic beginner\'s luck', loc("Prior to purchasing the <b>%1</b> upgrade in a run, random drops are <b>%2 times more common</b>.", [getUpgradeName("Heavenly chip secret"), 5]) + '<q>Oh! A penny!<br>Oh! A priceless heirloom!<br>Oh! Another penny!</q>', 999999999 * 15, [8, 10]); Game.last.pool='prestige'; Game.last.parents=['Shimmering veil'];
 		Game.getVeilDefense=function () {
 			var n=0;
-			if (Game.Has('Reinforced membrane')) n += 0.1;
-			if (Game.Has('Delicate touch')) n += 0.1;
-			if (Game.Has('Steadfast murmur')) n += 0.1;
-			if (Game.Has('Glittering edge')) n += 0.1;
+			if (Game.Has('Reinforced membrane')) n+=0.1;
+			if (Game.Has('Delicate touch')) n+=0.1;
+			if (Game.Has('Steadfast murmur')) n+=0.1;
+			if (Game.Has('Glittering edge')) n+=0.1;
 			return n;
 		}
 		Game.getVeilBoost=function () {
 			var n=0.5;
-			if (Game.Has('Reinforced membrane')) n += 0.1;
-			if (Game.Has('Delicate touch')) n += 0.05;
-			if (Game.Has('Steadfast murmur')) n += 0.05;
-			if (Game.Has('Glittering edge')) n += 0.05;
+			if (Game.Has('Reinforced membrane')) n+=0.1;
+			if (Game.Has('Delicate touch')) n+=0.05;
+			if (Game.Has('Steadfast murmur')) n+=0.05;
+			if (Game.Has('Glittering edge')) n+=0.05;
 			return n;
 		}
 		new Game.Upgrade('Reinforced membrane', loc("The <b>shimmering veil</b> is more resistant, and has a <b>%1% chance</b> not to break. It also gives <b>+%2%</b> more CpS.", [10, 10]) + '<q>A consistency between jellyfish and cling wrap.</q>', 999999999 * 15, [7, 10]); Game.last.pool='prestige'; Game.last.parents=['Shimmering veil'];
@@ -11098,39 +11098,39 @@ Game.Launch=function () {
 
 		Game.last.choicesFunction=function () {
 			var str='';
-			str += '<div class="usesIcon" style="margin:auto;width:48px;height:48px;background-position:' + (-31 * 48) + 'px ' + (-12 * 48) + 'px;" id="jukeboxPlayer"></div>';
-			str += '<div style="font-size:11px;opacity:0.7;margin-bottom:-4px;" id="jukeboxOnSoundN">' + (Game.jukebox.onSound + 1) + '/' + (Game.jukebox.sounds.length) + '</div>';
-			str += '<div class="fancyText" style="font-variant:normal;letter-spacing:2px;padding:8px;font-size:18px;" id="jukeboxOnSound">&bull; ' + Game.jukebox.sounds[Game.jukebox.onSound] + ' &bull;</div>';
-			str += '<div style="position:relative;width:100%;text-align:center;">'
+			str+='<div class="usesIcon" style="margin:auto;width:48px;height:48px;background-position:' + (-31 * 48) + 'px ' + (-12 * 48) + 'px;" id="jukeboxPlayer"></div>';
+			str+='<div style="font-size:11px;opacity:0.7;margin-bottom:-4px;" id="jukeboxOnSoundN">' + (Game.jukebox.onSound + 1) + '/' + (Game.jukebox.sounds.length) + '</div>';
+			str+='<div class="fancyText" style="font-variant:normal;letter-spacing:2px;padding:8px;font-size:18px;" id="jukeboxOnSound">&bull; ' + Game.jukebox.sounds[Game.jukebox.onSound] + ' &bull;</div>';
+			str+='<div style="position:relative;width:100%;text-align:center;">'
 				+ '<a class="option fancyText" onclick="Game.jukebox.setSound(Game.jukebox.onSound-1);">&#xab;</a>'
 				+ '<a class="option fancyText" onclick="Game.jukebox.setSound(Game.jukebox.onSound);">' + loc("Play") + '</a>'
 				+ '<a class="option fancyText" onclick="Game.jukebox.setSound(Game.jukebox.onSound+1);">&#xbb;</a>'
 				+ '</div>';
-			str += '<select id="jukeboxSoundSelect" onchange="Game.jukebox.setSound(parseInt(this.value));">';
+			str+='<select id="jukeboxSoundSelect" onchange="Game.jukebox.setSound(parseInt(this.value));">';
 			for (var i=0; i<Game.jukebox.sounds.length; i++) {
-				str += '<option value="' + i + '"' + (i==Game.jukebox.onSound ? ' selected="true"' : '') + '>' + Game.jukebox.sounds[i] + '</option>';
+				str+='<option value="' + i + '"' + (i==Game.jukebox.onSound ? ' selected="true"' : '') + '>' + Game.jukebox.sounds[i] + '</option>';
 			}
-			str += '</select><a class="option" onclick="Game.jukebox.setSound(Math.floor(Math.random()*Game.jukebox.sounds.length));">' + loc("Random") + '</a>';
+			str+='</select><a class="option" onclick="Game.jukebox.setSound(Math.floor(Math.random()*Game.jukebox.sounds.length));">' + loc("Random") + '</a>';
 			if (App) {
 				var data=Music ? Music.tracks[Game.jukebox.tracks[Game.jukebox.onTrack]].audio : 0;
 				var dur=data ? data.duration + 1 : 0;
-				str += '<div class="line"></div>';
-				str += '<div class="fancyText" style="font-style:italic;letter-spacing:2px;padding:8px;font-size:18px;" id="jukeboxOnTrack">&bull; ' + cap(Game.jukebox.tracks[Game.jukebox.onTrack]) + ' &bull;</div>';
-				str += '<div id="jukeboxOnTrackAuthor" style="font-size:11px;opacity:0.7;margin-top:-4px;">' + Music.tracks[Game.jukebox.tracks[Game.jukebox.onTrack]].author + '</div>';
-				str += '<div style="margin:4px 0px;font-size:11px;">'
+				str+='<div class="line"></div>';
+				str+='<div class="fancyText" style="font-style:italic;letter-spacing:2px;padding:8px;font-size:18px;" id="jukeboxOnTrack">&bull; ' + cap(Game.jukebox.tracks[Game.jukebox.onTrack]) + ' &bull;</div>';
+				str+='<div id="jukeboxOnTrackAuthor" style="font-size:11px;opacity:0.7;margin-top:-4px;">' + Music.tracks[Game.jukebox.tracks[Game.jukebox.onTrack]].author + '</div>';
+				str+='<div style="margin:4px 0px;font-size:11px;">'
 					+ '<span id="jukeboxMusicTime">' + (data ? Math.floor(data.currentTime / 60) + ':' + (Math.floor(data.currentTime % 60)<10 ? '0' : '') + Math.floor(data.currentTime % 60) : '') + '</span> | '
 					+ '<a class="option fancyText" id="jukeboxMusicPlay" onclick="Game.jukebox.pressPlayMusic();">' + ((data && data.paused) ? loc("Play") : loc("Pause")) + '</a>'
 					+ '<a class="option fancyText prefButton' + (Game.jukebox.trackLooped ? '' : ' off') + '" id="jukeboxMusicLoop" onclick="Game.jukebox.pressLoopMusic();">' + loc("Loop") + '</a>'
 					+ '| <span id="jukeboxMusicTotalTime">' + (data ? Math.floor(dur / 60) + ':' + (Math.floor(dur % 60)<10 ? '0' : '') + Math.floor(dur % 60) : '') + '</span>'
 					+ '</div>'
 					;
-				str += '<div style="position:relative;"><input class="slider" style="clear:both;" type="range" min="0" max="1000" step="1" value="' + (data ? (data.currentTime / data.duration) * 1000 : 0) + '" onchange="Game.jukebox.musicScrub(this.value);" oninput="Game.jukebox.musicScrub(this.value);" id="jukeboxMusicScrub"/><div id="jukeboxMusicScrubElapsed" style="position:absolute;left:3px;top:3px;height:6px;width:0px;background:#ccc;box-shadow:1px 1px 1px #555 inset,0px -1px 0px #fff inset;border-radius:2px;z-index:10;pointer-events:none;"></div></div>';
+				str+='<div style="position:relative;"><input class="slider" style="clear:both;" type="range" min="0" max="1000" step="1" value="' + (data ? (data.currentTime / data.duration) * 1000 : 0) + '" onchange="Game.jukebox.musicScrub(this.value);" oninput="Game.jukebox.musicScrub(this.value);" id="jukeboxMusicScrub"/><div id="jukeboxMusicScrubElapsed" style="position:absolute;left:3px;top:3px;height:6px;width:0px;background:#ccc;box-shadow:1px 1px 1px #555 inset,0px -1px 0px #fff inset;border-radius:2px;z-index:10;pointer-events:none;"></div></div>';
 
-				str += '<a class="option fancyText prefButton' + (Game.jukebox.trackAuto ? '' : ' off') + '" onclick="Game.jukebox.pressMusicAuto();" id="jukeboxMusicAuto">' + loc("Auto") + '</a><select id="jukeboxTrackSelect" onchange="Game.jukebox.setTrack(parseInt(this.value));">';
+				str+='<a class="option fancyText prefButton' + (Game.jukebox.trackAuto ? '' : ' off') + '" onclick="Game.jukebox.pressMusicAuto();" id="jukeboxMusicAuto">' + loc("Auto") + '</a><select id="jukeboxTrackSelect" onchange="Game.jukebox.setTrack(parseInt(this.value));">';
 				for (var i=0; i<Game.jukebox.tracks.length; i++) {
-					str += '<option value="' + i + '"' + (i==Game.jukebox.onTrack ? ' selected="true"' : '') + '>' + Game.jukebox.tracks[i] + '</option>';
+					str+='<option value="' + i + '"' + (i==Game.jukebox.onTrack ? ' selected="true"' : '') + '>' + Game.jukebox.tracks[i] + '</option>';
 				}
-				str += '</select><!--<a class="option fancyText prefButton' + (Game.jukebox.trackAuto ? '' : ' off') + '" onclick="Game.jukebox.pressMusicShuffle();">' + loc("Shuffle") + '</a>-->';
+				str+='</select><!--<a class="option fancyText prefButton' + (Game.jukebox.trackAuto ? '' : ' off') + '" onclick="Game.jukebox.pressMusicShuffle();">' + loc("Shuffle") + '</a>-->';
 
 				setTimeout(Game.jukebox.updateMusicCurrentTime, 500);
 			}
@@ -11177,7 +11177,7 @@ Game.Launch=function () {
 			for (var i=0; i<arr.length; i++) {
 				if (Game.Has(arr[i])) {
 					var it=Game.Upgrades[arr[i]];
-					str += tinyIcon(it.icon);
+					str+=tinyIcon(it.icon);
 				}
 			}
 			return str;
@@ -11238,7 +11238,7 @@ Game.Launch=function () {
 				Game.seasons[i].triggerUpgrade=me;
 				me.pool='toggle';
 				me.buyFunction=function () {
-					Game.seasonUses += 1;
+					Game.seasonUses+=1;
 					Game.computeSeasonPrices();
 					//Game.Lock(this.name);
 					for (var i in Game.seasons) {
@@ -11413,8 +11413,8 @@ Game.Launch=function () {
 			var building=Game.Objects[building];
 			var icon=[building.iconColumn, 22];
 			var n=12 + building.n + (mult || 0);
-			if (tier==2) { icon[1]=23; n += 7; }
-			else if (tier==3) { icon[1]=24; n += 14; }
+			if (tier==2) { icon[1]=23; n+=7; }
+			else if (tier==3) { icon[1]=24; n+=14; }
 			var pow=Math.pow(10, n);
 			var achiev=new Game.Achievement(name, loc("Make <b>%1</b> just from %2.", [loc("%1 cookie", { n: pow, b: toFixed(pow) }), building.plural]) + (q ? '<q>' + q + '</q>' : ''), icon);
 			building.productionAchievs.push({ pow: pow, achiev: achiev });
@@ -12425,7 +12425,7 @@ Game.Launch=function () {
 			{
 				var buff=Game.buffs[obj.name];
 				if (obj.max) buff.time=Math.max(obj.time, buff.time);//new duration is max of old and new
-				if (obj.add) buff.time += obj.time;//new duration is old + new
+				if (obj.add) buff.time+=obj.time;//new duration is old + new
 				if (!obj.max && !obj.add) buff.time=obj.time;//new duration is set to new
 				buff.maxTime=buff.time;
 			}
@@ -12854,7 +12854,7 @@ Game.Launch=function () {
 					Game.Unlock('Elder Pledge');
 				}
 			}
-			Game.elderWrathD += ((Game.elderWrath + 1) - Game.elderWrathD) * 0.001;//slowly fade to the target wrath state
+			Game.elderWrathD+=((Game.elderWrath + 1) - Game.elderWrathD) * 0.001;//slowly fade to the target wrath state
 
 			if (Game.elderWrath!=Game.elderWrathOld) Game.storeToRefresh=1;
 
@@ -12885,7 +12885,7 @@ Game.Launch=function () {
 		}
 		Game.getWrinklersMax=function () {
 			var n=10;
-			if (Game.Has('Elder spice')) n += 2;
+			if (Game.Has('Elder spice')) n+=2;
 			return n;
 		}
 		Game.ResetWrinklers=function () {
@@ -12901,7 +12901,7 @@ Game.Launch=function () {
 		Game.wrinklerSquishSound=Math.floor(Math.random() * 4) + 1;
 		Game.playWrinklerSquishSound=function () {
 			PlaySound('snd/squish' + (Game.wrinklerSquishSound) + '.mp3', 0.5);
-			Game.wrinklerSquishSound += Math.floor(Math.random() * 1.5) + 1;
+			Game.wrinklerSquishSound+=Math.floor(Math.random() * 1.5) + 1;
 			if (Game.wrinklerSquishSound>4) Game.wrinklerSquishSound -= 4;
 		}
 		Game.SpawnWrinkler=function (me) {
@@ -12972,7 +12972,7 @@ Game.Launch=function () {
 					}
 				}
 				if (me.phase>0) {
-					if (me.close<1) me.close += (1 / Game.fps) / 10;
+					if (me.close<1) me.close+=(1 / Game.fps) / 10;
 					if (me.close>1) me.close=1;
 				}
 				else me.close=0;
@@ -12981,24 +12981,24 @@ Game.Launch=function () {
 					Game.recalculateGains=1;
 				}
 				if (me.phase==2) {
-					me.sucked += (((Game.cookiesPs / Game.fps) * Game.cpsSucked));//suck the cookies
+					me.sucked+=(((Game.cookiesPs / Game.fps) * Game.cpsSucked));//suck the cookies
 				}
 				if (me.phase>0) {
 					if (me.type==0) {
-						if (me.hp<Game.wrinklerHP) me.hp += 0.04;
+						if (me.hp<Game.wrinklerHP) me.hp+=0.04;
 						me.hp=Math.min(Game.wrinklerHP, me.hp);
 					}
 					else if (me.type==1) {
-						if (me.hp<Game.wrinklerHP * 3) me.hp += 0.04;
+						if (me.hp<Game.wrinklerHP * 3) me.hp+=0.04;
 						me.hp=Math.min(Game.wrinklerHP * 3, me.hp);
 					}
 					var d=128 * (2 - me.close);//*Game.BigCookieSize;
-					if (Game.prefs.fancy) d += Math.cos(Game.T * 0.05 + parseInt(me.id)) * 4;
+					if (Game.prefs.fancy) d+=Math.cos(Game.T * 0.05 + parseInt(me.id)) * 4;
 					me.r=(me.id / max) * 360;
-					if (Game.prefs.fancy) me.r += Math.sin(Game.T * 0.05 + parseInt(me.id)) * 4;
+					if (Game.prefs.fancy) me.r+=Math.sin(Game.T * 0.05 + parseInt(me.id)) * 4;
 					me.x=xBase + (Math.sin(me.r * Math.PI / 180) * d);
 					me.y=yBase + (Math.cos(me.r * Math.PI / 180) * d);
-					if (Game.prefs.fancy) me.r += Math.sin(Game.T * 0.09 + parseInt(me.id)) * 4;
+					if (Game.prefs.fancy) me.r+=Math.sin(Game.T * 0.09 + parseInt(me.id)) * 4;
 					var rect={ w: 100, h: 200, r: (-me.r) * Math.PI / 180, o: 10 };
 					if (Math.random()<0.01) me.hurt=Math.max(me.hurt, Math.random());
 					if (Game.T % 5==0 && Game.CanClick) { if (Game.LeftBackground && Game.mouseX<Game.LeftBackground.canvas.width && inRect(Game.mouseX - me.x, Game.mouseY - me.y, rect)) me.selected=1; else me.selected=0; }
@@ -13032,7 +13032,7 @@ Game.Launch=function () {
 					//me.close-=me.hurt*0.05;
 					//me.x+=Math.random()*2-1;
 					//me.y+=Math.random()*2-1;
-					me.r += (Math.sin(Game.T * 1) * me.hurt) * 18;//Math.random()*2-1;
+					me.r+=(Math.sin(Game.T * 1) * me.hurt) * 18;//Math.random()*2-1;
 				}
 				if (me.hp<=0.5 && me.phase>0) {
 					Game.playWrinklerSquishSound();
@@ -13183,9 +13183,9 @@ Game.Launch=function () {
 					number++;
 					if (Game.wrinklers[i].type==1) {
 						shinies++;
-						amountShinies += Game.wrinklers[i].sucked;
+						amountShinies+=Game.wrinklers[i].sucked;
 					}
-					else amount += Game.wrinklers[i].sucked;
+					else amount+=Game.wrinklers[i].sucked;
 				}
 			}
 			return { amount: amount, number: number, shinies: shinies, amountShinies: amountShinies };
@@ -13232,7 +13232,7 @@ Game.Launch=function () {
 					if (Game.specialTab==Game.specialTabs[i]) selected=1;
 					var x=24;
 					var s=1;
-					if (selected) { s=2; x += 24; }
+					if (selected) { s=2; x+=24; }
 
 					if (Math.abs(Game.mouseX - x)<=24 * s && Math.abs(Game.mouseY - y)<=24 * s) {
 						Game.specialTabHovered=Game.specialTabs[i];
@@ -13245,7 +13245,7 @@ Game.Launch=function () {
 						}
 					}
 
-					y += 48;
+					y+=48;
 				}
 			}
 		}
@@ -13396,7 +13396,7 @@ Game.Launch=function () {
 		Game.auraMult=function (what) {
 			var n=0;
 			if (Game.dragonAuras[Game.dragonAura].name==what || Game.dragonAuras[Game.dragonAura2].name==what) n=1;
-			if (Game.dragonAuras[Game.dragonAura].name=='Reality Bending' || Game.dragonAuras[Game.dragonAura2].name=='Reality Bending') n += 0.1;
+			if (Game.dragonAuras[Game.dragonAura].name=='Reality Bending' || Game.dragonAuras[Game.dragonAura2].name=='Reality Bending') n+=0.1;
 			return n;
 		}
 
@@ -13411,7 +13411,7 @@ Game.Launch=function () {
 			for (var i in Game.dragonAuras) {
 				if (Game.dragonLevel>=parseInt(i) + 4) {
 					var icon=Game.dragonAuras[i].pic;
-					if (i==0 || i!=otherAura) str += '<div class="crate enabled' + (i==Game.SelectingDragonAura ? ' highlighted' : '') + '" style="opacity:1;float:none;display:inline-block;' + writeIcon(icon) + '" ' + Game.clickStr + '="PlaySound(\'snd/tick.mp3\');Game.SetDragonAura(' + i + ',' + slot + ');" onMouseOut="Game.DescribeDragonAura(' + Game.SelectingDragonAura + ');" onMouseOver="Game.DescribeDragonAura(' + i + ');"' +
+					if (i==0 || i!=otherAura) str+='<div class="crate enabled' + (i==Game.SelectingDragonAura ? ' highlighted' : '') + '" style="opacity:1;float:none;display:inline-block;' + writeIcon(icon) + '" ' + Game.clickStr + '="PlaySound(\'snd/tick.mp3\');Game.SetDragonAura(' + i + ',' + slot + ');" onMouseOut="Game.DescribeDragonAura(' + Game.SelectingDragonAura + ');" onMouseOver="Game.DescribeDragonAura(' + i + ');"' +
 						'></div>';
 				}
 			}
@@ -13489,14 +13489,14 @@ Game.Launch=function () {
 				else { pic='dragon.png?v=' + Game.version; frame=4; }
 
 				var str='<div id="specialPic" ' + Game.clickStr + '="Game.ClickSpecialPic();" style="' + ((Game.specialTab=='dragon' && Game.dragonLevel>=4 && Game.Has('Pet the dragon')) ? 'cursor:pointer;' : '') + 'position:absolute;left:-16px;top:-64px;width:96px;height:96px;background:url(img/' + pic + ');background-position:' + (-frame * 96) + 'px 0px;filter:drop-shadow(0px 3px 2px #000);-webkit-filter:drop-shadow(0px 3px 2px #000);"></div>';
-				str += '<div class="close" onclick="PlaySound(\'snd/press.mp3\');Game.ToggleSpecialMenu(0);">x</div>';
+				str+='<div class="close" onclick="PlaySound(\'snd/press.mp3\');Game.ToggleSpecialMenu(0);">x</div>';
 
 				if (Game.specialTab=='santa') {
 					var moni=Math.pow(Game.santaLevel + 1, Game.santaLevel + 1);
 
-					str += '<h3 style="pointer-events:none;">' + Game.santaLevels[Game.santaLevel] + '</h3>';
+					str+='<h3 style="pointer-events:none;">' + Game.santaLevels[Game.santaLevel] + '</h3>';
 					if (Game.santaLevel<14) {
-						str += '<div class="line"></div>' +
+						str+='<div class="line"></div>' +
 							'<div class="optionBox" style="margin-bottom:0px;"><a class="option framed large title" ' + Game.clickStr + '="Game.UpgradeSanta();">' +
 							'<div style="display:table-cell;vertical-align:middle;">' + loc("Evolve") + '</div>' +
 							'<div style="display:table-cell;vertical-align:middle;padding:4px 12px;">|</div>' +
@@ -13507,11 +13507,11 @@ Game.Launch=function () {
 				else if (Game.specialTab=='dragon') {
 					var level=Game.dragonLevels[Game.dragonLevel];
 
-					str += '<h3 style="pointer-events:none;">' + level.name + '</h3>';
+					str+='<h3 style="pointer-events:none;">' + level.name + '</h3>';
 
 					if (Game.dragonLevel>=5) {
 						var icon=Game.dragonAuras[Game.dragonAura].pic;
-						str += '<div class="crate enabled" style="opacity:1;position:absolute;right:18px;top:-58px;' + writeIcon(icon) + '" ' + Game.clickStr + '="PlaySound(\'snd/tick.mp3\');Game.SelectDragonAura(0);" ' + Game.getTooltip(
+						str+='<div class="crate enabled" style="opacity:1;position:absolute;right:18px;top:-58px;' + writeIcon(icon) + '" ' + Game.clickStr + '="PlaySound(\'snd/tick.mp3\');Game.SelectDragonAura(0);" ' + Game.getTooltip(
 							'<div style="min-width:200px;text-align:center;" id="tooltipDragonAuraSelect"><h4>' + Game.dragonAuras[Game.dragonAura].dname + '</h4>' +
 							'<div class="line"></div>' +
 							Game.dragonAuras[Game.dragonAura].desc +
@@ -13522,7 +13522,7 @@ Game.Launch=function () {
 					if (Game.dragonLevel>=26)//2nd aura slot; increased with last building (cortex baker)
 					{
 						var icon=Game.dragonAuras[Game.dragonAura2].pic;
-						str += '<div class="crate enabled" style="opacity:1;position:absolute;right:80px;top:-58px;' + writeIcon(icon) + '" ' + Game.clickStr + '="PlaySound(\'snd/tick.mp3\');Game.SelectDragonAura(1);" ' + Game.getTooltip(
+						str+='<div class="crate enabled" style="opacity:1;position:absolute;right:80px;top:-58px;' + writeIcon(icon) + '" ' + Game.clickStr + '="PlaySound(\'snd/tick.mp3\');Game.SelectDragonAura(1);" ' + Game.getTooltip(
 							'<div style="min-width:200px;text-align:center;" id="tooltipDragonAuraSelect2"><h4>' + Game.dragonAuras[Game.dragonAura2].dname + '</h4>' +
 							'<div class="line"></div>' +
 							Game.dragonAuras[Game.dragonAura2].desc +
@@ -13532,7 +13532,7 @@ Game.Launch=function () {
 					}
 
 					if (Game.dragonLevel<Game.dragonLevels.length - 1) {
-						str += '<div class="line"></div>' +
+						str+='<div class="line"></div>' +
 							'<div class="optionBox" style="margin-bottom:0px;"><a class="option framed large title" ' + Game.clickStr + '="Game.UpgradeDragon();">' +
 							'<div style="display:table-cell;vertical-align:middle;">' + level.action + '</div>' +
 							'<div style="display:table-cell;vertical-align:middle;padding:4px 12px;">|</div>' +
@@ -13540,7 +13540,7 @@ Game.Launch=function () {
 							'</a></div>';
 					}
 					else {
-						str += '<div class="line"></div>' +
+						str+='<div class="line"></div>' +
 							'<div style="text-align:center;margin-bottom:4px;">' + level.action + '</div>';
 					}
 				}
@@ -13595,7 +13595,7 @@ Game.Launch=function () {
 				else Game.LeftBackground.drawImage(Pic(pic), 96 * frame, 0, 96, 96, (x - 24 * s), (y - 24 * s), 48 * s, 48 * s);
 
 				tabI++;
-				y += 48;
+				y+=48;
 			}
 
 		}
@@ -13644,7 +13644,7 @@ Game.Launch=function () {
 		for (var i=0; i<Game.AllMilks.length; i++) {
 			Game.AllMilks[i].bname=Game.AllMilks[i].name;
 			Game.AllMilks[i].name=loc(Game.AllMilks[i].name);
-			Game.AllMilks[i].pic += '.png';
+			Game.AllMilks[i].pic+='.png';
 			if (Game.AllMilks[i].type==0) {
 				Game.AllMilks[i].rank=Game.Milks.length;
 				Game.Milks.push(Game.AllMilks[i]);
@@ -13724,16 +13724,16 @@ Game.Launch=function () {
 					var dist=Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2)) / (this.s / 2 + it.s / 2);
 					if (dist<(Game.toysType==1 ? 0.95 : 0.75)) {
 						var angle=Math.atan2(y1 - y2, x1 - x2);
-						var v1=Math.sqrt(Math.pow((this.xd), 2) + Math.pow((this.yd), 2));
-						var v2=Math.sqrt(Math.pow((it.xd), 2) + Math.pow((it.yd), 2));
+						var v1=Math.sqrt(Math.pow(this.xd, 2) + Math.pow(this.yd, 2));
+						var v2=Math.sqrt(Math.pow(it.xd, 2) + Math.pow(it.yd, 2));
 						var v=((v1 + v2) / 2 + dist) * 0.75;
 						var ratio=it.s / this.s;
-						this.xd += Math.sin(-angle + Math.PI / 2) * v * (ratio);
-						this.yd += Math.cos(-angle + Math.PI / 2) * v * (ratio);
-						it.xd += Math.sin(-angle - Math.PI / 2) * v * (1 / ratio);
-						it.yd += Math.cos(-angle - Math.PI / 2) * v * (1 / ratio);
-						this.rd += (Math.random() - 0.5) * 0.1 * (ratio);
-						it.rd += (Math.random() - 0.5) * 0.1 * (1 / ratio);
+						this.xd+=Math.sin(-angle + Math.PI / 2) * v * (ratio);
+						this.yd+=Math.cos(-angle + Math.PI / 2) * v * (ratio);
+						it.xd+=Math.sin(-angle - Math.PI / 2) * v * (1 / ratio);
+						it.yd+=Math.cos(-angle - Math.PI / 2) * v * (1 / ratio);
+						this.rd+=(Math.random() - 0.5) * 0.1 * (ratio);
+						it.rd+=(Math.random() - 0.5) * 0.1 * (1 / ratio);
 						this.rd *= Math.min(1, v);
 						it.rd *= Math.min(1, v);
 					}
@@ -13741,9 +13741,9 @@ Game.Launch=function () {
 			}
 			if (this.y>=height - (Game.milkHd) * height + 8) {
 				let v = 1 - ((height - (Game.milkHd) * height + 8) / this.y)
-				this.xd += (Math.random() - 0.5) * v * 0.3;
-				this.yd += (Math.random() - 0.5) * v * 0.05;
-				this.rd += (Math.random() - 0.5) * v * 0.02;
+				this.xd+=(Math.random() - 0.5) * v * 0.3;
+				this.yd+=(Math.random() - 0.5) * v * 0.05;
+				this.rd+=(Math.random() - 0.5) * v * 0.02;
 				this.yd -= 1;
 				this.xd *= 0.85;
 				this.yd *= 0.85;
@@ -13752,26 +13752,26 @@ Game.Launch=function () {
 			else {
 				this.xd *= 0.99;
 				this.rd *= 0.99;
-				this.yd += 1;
+				this.yd+=1;
 			}
 			this.yd *= (Math.min(1, Math.abs(this.y - (height - (Game.milkHd) * height) / 16)));
-			this.rd += this.xd * 0.01 / (this.s / (Game.toysType==1 ? 64 : 48));
+			this.rd+=this.xd * 0.01 / (this.s / (Game.toysType==1 ? 64 : 48));
 			if (this.x<this.s / 2 && this.xd<0) this.xd=Math.max(0.1, -this.xd * 0.6); else if (this.x<this.s / 2) { this.xd=0; this.x=this.s / 2; }
 			if (this.x>width - this.s / 2 && this.xd>0) this.xd=Math.min(-0.1, -this.xd * 0.6); else if (this.x>width - this.s / 2) { this.xd=0; this.x=width - this.s / 2; }
 			this.xd=Math.min(Math.max(this.xd, -30), 30);
 			this.yd=Math.min(Math.max(this.yd, -30), 30);
 			this.rd=Math.min(Math.max(this.rd, -0.5), 0.5);
-			this.x += this.xd;
-			this.y += this.yd;
-			this.r += this.rd;
+			this.x+=this.xd;
+			this.y+=this.yd;
+			this.r+=this.rd;
 			this.r=this.r % (Math.PI * 2);
-			this.s += (this.st - this.s) * 0.5;
+			this.s+=(this.st - this.s) * 0.5;
 			if (Game.toysType==2 && !this.dragged && Math.random()<0.003) this.st=choose([48, 48, 48, 48, 96]);
 			if (this.dragged) {
 				this.x=Game.mouseX;
 				this.y=Game.mouseY;
-				this.xd += ((Game.mouseX - Game.mouseX2) * 3 - this.xd) * 0.5;
-				this.yd += ((Game.mouseY - Game.mouseY2) * 3 - this.yd) * 0.5
+				this.xd+=((Game.mouseX - Game.mouseX2) * 3 - this.xd) * 0.5;
+				this.yd+=((Game.mouseY - Game.mouseY2) * 3 - this.yd) * 0.5
 			}
 		}
 
@@ -13818,8 +13818,8 @@ Game.Launch=function () {
 					//Game.Background.globalCompositeOperation='source-over';
 					Timer.track('star layer 2');
 
-					x += Game.AscendOffX * Game.AscendZoom;
-					y += Game.AscendOffY * Game.AscendZoom;
+					x+=Game.AscendOffX * Game.AscendZoom;
+					y+=Game.AscendOffY * Game.AscendZoom;
 					//wispy nebula around the center
 					Game.Background.save();
 					Game.Background.globalAlpha=0.5;
@@ -14053,16 +14053,16 @@ Game.Launch=function () {
 								var s=16 * (digits - i);
 								var num=parseInt(amount[i]);
 								if (i>0) space -= s * (1 - num / 10) / 2;
-								if (i==0 && num>1) space += s * 0.1;
+								if (i==0 && num>1) space+=s * 0.1;
 								for (var ii=0; ii<num; ii++) {
 									var x=Game.cookieOriginX;
 									var y=Game.cookieOriginY;
 									var spin=Game.T * (0.005 + i * 0.001) + i + (ii / num) * Math.PI * 2;
-									x += Math.sin(spin) * space;
-									y += Math.cos(spin) * space;
+									x+=Math.sin(spin) * space;
+									y+=Math.cos(spin) * space;
 									ctx.drawImage(Pic('perfectCookie.png'), x - s / 2, y - s / 2, s, s);
 								}
-								space += s / 2;
+								space+=s / 2;
 							}
 						}
 						else {
@@ -14144,13 +14144,13 @@ Game.Launch=function () {
 							else if (w>0.994) w=0.5;
 							else w=0;
 							w *= -4;
-							if (fancy) w += Math.sin((n + Game.T * 0.01) * Math.PI / 2) * 4;
+							if (fancy) w+=Math.sin((n + Game.T * 0.01) * Math.PI / 2) * 4;
 							var x=0;
 							var y=(140 * Game.BigCookieCursorOffset + n * 16 + w) - 16;
 							if (y>-0.5 * rect.h && y<0.5 * rect.h) {
 								var rot=7.2;//(1/50)*360
 								if (i==0 && fancy) rot -= Game.T * 0.1;
-								if (i % 50==0) rot += 7.2 / 2;
+								if (i % 50==0) rot+=7.2 / 2;
 								ctx.rotate((rot / 360) * Math.PI * 2);
 								ctx.drawImage(pic, 0, 0, 32, 32, x, y, 32, 32);
 								//ctx.drawImage(pic,32*(i==spe),0,32,32,x,y,32,32);
@@ -14183,8 +14183,8 @@ Game.Launch=function () {
 					var x=Game.cookieOriginX;
 					var y=Game.cookieOriginY;
 
-					x += (Math.random() * 2 - 1) * 10 * shake;
-					y += (Math.random() * 2 - 1) * 10 * shake;
+					x+=(Math.random() * 2 - 1) * 10 * shake;
+					y+=(Math.random() * 2 - 1) * 10 * shake;
 
 					var s=1;
 					if (tBase>0) {
@@ -14422,53 +14422,53 @@ Game.Launch=function () {
 		Game.sesame=0;
 		Game.OpenSesame=function () {
 			var str='';
-			str += '<div class="icon" style="position:absolute;left:-9px;top:-6px;background-position:' + (-10 * 48) + 'px ' + (-6 * 48) + 'px;"></div>';
-			str += '<div style="position:absolute;left:0px;top:0px;z-index:10;font-size:10px;background:#000;padding:1px;" id="fpsCounter"></div>';
+			str+='<div class="icon" style="position:absolute;left:-9px;top:-6px;background-position:' + (-10 * 48) + 'px ' + (-6 * 48) + 'px;"></div>';
+			str+='<div style="position:absolute;left:0px;top:0px;z-index:10;font-size:10px;background:#000;padding:1px;" id="fpsCounter"></div>';
 
-			str += '<div id="devConsoleContent">';
-			str += '<div class="title" style="font-size:14px;margin:6px;">Dev tools</div>';
+			str+='<div id="devConsoleContent">';
+			str+='<div class="title" style="font-size:14px;margin:6px;">Dev tools</div>';
 
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.Ascend(1);">Ascend</a>';
-			str += '<div class="line"></div>';
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.cookies*=10;Game.cookiesEarned*=10;">x10</a>';
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.cookies/=10;Game.cookiesEarned/=10;">/10</a><br>';
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.cookies*=1000;Game.cookiesEarned*=1000;">x1k</a>';
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.cookies/=1000;Game.cookiesEarned/=1000;">/1k</a><br>';
-			str += '<a class="option neato" ' + Game.clickStr + '="for (var i in Game.Objects){Game.Objects[i].buy(100);}">Buy 100 of all</a>';//for (var n=0;n<100;n++){for (var i in Game.Objects){Game.Objects[i].buy(1);}}
-			str += '<a class="option neato" ' + Game.clickStr + '="for (var i in Game.Objects){Game.Objects[i].sell(100);}">Sell 100 of all</a><br>';
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.gainLumps(10);">+10 lumps</a>';
-			str += '<a class="option neato" ' + Game.clickStr + '="for (var i in Game.Objects){Game.Objects[i].level=0;Game.Objects[i].onMinigame=false;Game.Objects[i].refresh();}Game.recalculateGains=1;">Reset levels</a>';
-			str += '<div class="line"></div>';
-			str += '<a class="option warning" ' + Game.clickStr + '="Game.RuinTheFun(1);">Ruin The Fun</a>';
-			str += '<a class="option warning" ' + Game.clickStr + '="Game.SesameReset();">Wipe</a>';
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.GetAllDebugs();">All debugs</a>';
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.debugTimersOn=!Game.debugTimersOn;Game.OpenSesame();">Timers ' + (Game.debugTimersOn ? 'On' : 'Off') + '</a><br>';
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.SetAllUpgrades(0);">No upgrades</a>';
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.SetAllUpgrades(1);">All upgrades</a><br>';
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.SetAllAchievs(0);">No achievs</a>';
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.SetAllAchievs(1);">All achievs</a><br>';
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.santaLevel=0;Game.dragonLevel=0;">Reset specials</a>';
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.MaxSpecials();">Max specials</a><br>';
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.lumpRefill=0;/*Date.now()-Game.getLumpRefillMax();*/">Reset refills</a>';
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.EditAscend();">' + (Game.DebuggingPrestige ? 'Exit Ascend Edit' : 'Ascend Edit') + '</a>';
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.DebugUpgradeCpS();">Debug upgrades CpS</a>';
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.seed=Game.makeSeed();">Re-seed</a>';
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.heralds=100;l(\'heraldsAmount\').textContent=Game.heralds;Game.externalDataLoaded=true;Game.recalculateGains=1;">Max heralds</a>';
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.Ascend(1);">Ascend</a>';
+			str+='<div class="line"></div>';
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.cookies*=10;Game.cookiesEarned*=10;">x10</a>';
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.cookies/=10;Game.cookiesEarned/=10;">/10</a><br>';
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.cookies*=1000;Game.cookiesEarned*=1000;">x1k</a>';
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.cookies/=1000;Game.cookiesEarned/=1000;">/1k</a><br>';
+			str+='<a class="option neato" ' + Game.clickStr + '="for (var i in Game.Objects){Game.Objects[i].buy(100);}">Buy 100 of all</a>';//for (var n=0;n<100;n++){for (var i in Game.Objects){Game.Objects[i].buy(1);}}
+			str+='<a class="option neato" ' + Game.clickStr + '="for (var i in Game.Objects){Game.Objects[i].sell(100);}">Sell 100 of all</a><br>';
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.gainLumps(10);">+10 lumps</a>';
+			str+='<a class="option neato" ' + Game.clickStr + '="for (var i in Game.Objects){Game.Objects[i].level=0;Game.Objects[i].onMinigame=false;Game.Objects[i].refresh();}Game.recalculateGains=1;">Reset levels</a>';
+			str+='<div class="line"></div>';
+			str+='<a class="option warning" ' + Game.clickStr + '="Game.RuinTheFun(1);">Ruin The Fun</a>';
+			str+='<a class="option warning" ' + Game.clickStr + '="Game.SesameReset();">Wipe</a>';
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.GetAllDebugs();">All debugs</a>';
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.debugTimersOn=!Game.debugTimersOn;Game.OpenSesame();">Timers ' + (Game.debugTimersOn ? 'On' : 'Off') + '</a><br>';
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.SetAllUpgrades(0);">No upgrades</a>';
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.SetAllUpgrades(1);">All upgrades</a><br>';
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.SetAllAchievs(0);">No achievs</a>';
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.SetAllAchievs(1);">All achievs</a><br>';
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.santaLevel=0;Game.dragonLevel=0;">Reset specials</a>';
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.MaxSpecials();">Max specials</a><br>';
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.lumpRefill=0;/*Date.now()-Game.getLumpRefillMax();*/">Reset refills</a>';
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.EditAscend();">' + (Game.DebuggingPrestige ? 'Exit Ascend Edit' : 'Ascend Edit') + '</a>';
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.DebugUpgradeCpS();">Debug upgrades CpS</a>';
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.seed=Game.makeSeed();">Re-seed</a>';
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.heralds=100;l(\'heraldsAmount\').textContent=Game.heralds;Game.externalDataLoaded=true;Game.recalculateGains=1;">Max heralds</a>';
 
 			if (!Game.mods.gincookistocker) {
-				str += '<a class="option neato" ' + Game.clickStr + '="Game.LoadMod("https://xvarmkorv2.github.io/cookieclicker/CookiStocker.js")>Enable CookiStocker</a>';
+				str+='<a class="option neato" ' + Game.clickStr + '="Game.LoadMod("https://xvarmkorv2.github.io/cookieclicker/CookiStocker.js")>Enable CookiStocker</a>';
 			}
-			str += '<div class="line"></div>';
+			str+='<div class="line"></div>';
 			for (var i=0; i<Game.goldenCookieChoices.length / 2; i++) {
-				str += '<a class="option neato" ' + Game.clickStr + '="var newShimmer=new Game.shimmer(\'golden\');newShimmer.force=\'' + Game.goldenCookieChoices[i * 2 + 1] + '\';">' + Game.goldenCookieChoices[i * 2] + '</a>';
+				str+='<a class="option neato" ' + Game.clickStr + '="var newShimmer=new Game.shimmer(\'golden\');newShimmer.force=\'' + Game.goldenCookieChoices[i * 2 + 1] + '\';">' + Game.goldenCookieChoices[i * 2] + '</a>';
 				//str+='<a class="option neato" '+Game.clickStr+'="Game.goldenCookie.force=\''+Game.goldenCookie.choices[i*2+1]+'\';Game.goldenCookie.spawn();">'+Game.goldenCookie.choices[i*2]+'</a>';
 				//str+='<a class="option neato" '+Game.clickStr+'="Game.goldenCookie.click(0,\''+Game.goldenCookie.choices[i*2+1]+'\');">'+Game.goldenCookie.choices[i*2]+'</a>';
 			}
-			str += '<div class="line"></div>';
-			str += '<div class="title" style="font-size:13px;margin:6px;">Code Executor</div>';
-			str += '<textarea id="devConsoleExecutorInput" rows="2" cols="15"></textarea>'
-			str += '<a class="option neato" ' + Game.clickStr + '="Game.SesameCodeExecutorHandler()">Executor</a>';
-			str += '</div>';
+			str+='<div class="line"></div>';
+			str+='<div class="title" style="font-size:13px;margin:6px;">Code Executor</div>';
+			str+='<textarea id="devConsoleExecutorInput" rows="2" cols="15"></textarea>'
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.SesameCodeExecutorHandler()">Executor</a>';
+			str+='</div>';
 
 			l('devConsole').innerHTML=str;
 
@@ -14658,19 +14658,19 @@ Game.Launch=function () {
 						break
 					}
 				}
-				Game.BigCookieSizeD += (Game.BigCookieSizeT - Game.BigCookieSize) * Game.BigCookieSpeed;
+				Game.BigCookieSizeD+=(Game.BigCookieSizeT - Game.BigCookieSize) * Game.BigCookieSpeed;
 				Game.BigCookieSizeD *= 0.75;
-				Game.BigCookieSize += Game.BigCookieSizeD;
+				Game.BigCookieSize+=Game.BigCookieSizeD;
 				Game.BigCookieSize=Math.max(0, Game.BigCookieSize);
 			}
 			else {
 				switch (Game.BigCookieState) {
 					case 1: {
-						Game.BigCookieSize += (0.98 - Game.BigCookieSize) * 0.5;
+						Game.BigCookieSize+=(0.98 - Game.BigCookieSize) * 0.5;
 						break;
 					}
 					case 2: {
-						Game.BigCookieSize += (1.05 - Game.BigCookieSize) * 0.5;
+						Game.BigCookieSize+=(1.05 - Game.BigCookieSize) * 0.5;
 						break;
 					}
 					case 3: {
@@ -14683,11 +14683,11 @@ Game.Launch=function () {
 						break;
 					}
 					default: {
-						Game.BigCookieSize += (1 - Game.BigCookieSize) * 0.5;
+						Game.BigCookieSize+=(1 - Game.BigCookieSize) * 0.5;
 					}
 				}
 			}
-			Game.BigCookieCursorOffset += (Game.BigCookieSize - Game.BigCookieCursorOffset) * 0.25;
+			Game.BigCookieCursorOffset+=(Game.BigCookieSize - Game.BigCookieCursorOffset) * 0.25;
 			if (Game.catchupLogic==0) { Timer.track("big cookie size", false) }
 
 			Game.particlesUpdate();
@@ -14713,7 +14713,7 @@ Game.Launch=function () {
 			if (Game.milkProgress>=12) Game.Unlock('Kitten executives');
 			if (Game.milkProgress>=13) Game.Unlock('Kitten admins');
 			Game.milkH=Math.min(1, Game.milkProgress) * 0.35;
-			Game.milkHd += (Game.milkH - Game.milkHd) * 0.02;
+			Game.milkHd+=(Game.milkH - Game.milkHd) * 0.02;
 
 			Game.Milk=Game.Milks[Math.min(Math.floor(Game.milkProgress), Game.Milks.length - 1)];
 
@@ -14803,7 +14803,7 @@ Game.Launch=function () {
 			//wrinklers
 			if (Game.cpsSucked>0) {
 				Game.Dissolve((Game.cookiesPs / Game.fps) * Game.cpsSucked);
-				Game.cookiesSucked += ((Game.cookiesPs / Game.fps) * Game.cpsSucked);
+				Game.cookiesSucked+=((Game.cookiesPs / Game.fps) * Game.cpsSucked);
 				//should be using one of the following, but I'm not sure what I'm using this stat for anymore
 				//Game.cookiesSucked=Game.wrinklers.reduce(function(s,w){return s+w.sucked;},0);
 				//for (var i in Game.wrinklers) {Game.cookiesSucked+=Game.wrinklers[i].sucked;}
@@ -14814,7 +14814,7 @@ Game.Launch=function () {
 
 			for (var i in Game.Objects) {
 				var me=Game.Objects[i];
-				me.totalCookies += (me.storedTotalCps * Game.globalCpsMult) / Game.fps;
+				me.totalCookies+=(me.storedTotalCps * Game.globalCpsMult) / Game.fps;
 			}
 			if (Game.cookies && Game.T % Math.ceil(Game.fps / Math.min(10, Game.cookiesPs))==0 && Game.prefs.particles) Game.particleAdd();//cookie shower
 
@@ -14902,7 +14902,7 @@ Game.Launch=function () {
 				var base10=1;
 				var minAmount=100000;
 				for (var i in Game.Objects) {
-					buildingsOwned += Game.Objects[i].amount;
+					buildingsOwned+=Game.Objects[i].amount;
 					minAmount=Math.min(Game.Objects[i].amount, minAmount);
 					if (!Game.HasAchiev('Mathematician')) { if (Game.Objects[i].amount<Math.min(128, Math.pow(2, (Game.ObjectsById.length - Game.Objects[i].id) - 1))) mathematician=0; }
 					if (!Game.HasAchiev('Base 10')) { if (Game.Objects[i].amount<(Game.ObjectsById.length - Game.Objects[i].id) * 10) base10=0; }
@@ -15009,7 +15009,7 @@ Game.Launch=function () {
 				Game.runModHook('check');
 			}
 
-			Game.cookiesd += (Game.cookies - Game.cookiesd) * 0.3;
+			Game.cookiesd+=(Game.cookies - Game.cookiesd) * 0.3;
 			if (isNaN(Game.cookiesd)) Game.cookiesd=0;
 
 			if (Game.catchupLogic==0) {
@@ -15050,28 +15050,28 @@ Game.Launch=function () {
 			var startDate=Game.sayTime(timeInSeconds * Game.fps, -1);
 
 			var str='';
-			if (EN) str += 'You\'ve been on this run for <b>' + (startDate=='' ? 'not very long' : (startDate)) + '</b>.<br>';
-			else str += loc("You've been on this run for <b>%1</b>.", startDate) + '<br>';
-			str += '<div class="line"></div>';
+			if (EN) str+='You\'ve been on this run for <b>' + (startDate=='' ? 'not very long' : (startDate)) + '</b>.<br>';
+			else str+=loc("You've been on this run for <b>%1</b>.", startDate) + '<br>';
+			str+='<div class="line"></div>';
 			if (Game.prestige>0) {
-				str += loc("Your prestige level is currently <b>%1</b>.<br>(CpS +%2%)", [Beautify(Game.prestige), Beautify(Game.prestige)]);
-				str += '<div class="line"></div>';
+				str+=loc("Your prestige level is currently <b>%1</b>.<br>(CpS +%2%)", [Beautify(Game.prestige), Beautify(Game.prestige)]);
+				str+='<div class="line"></div>';
 			}
 			switch (ascendNowToGet) {
 				case 0:
-					str += loc("Ascending now would grant you no prestige.");;
+					str+=loc("Ascending now would grant you no prestige.");;
 					break;
 				case 1:
-					str += loc("Ascending now would grant you<br><b>1 prestige level</b> (+1% CpS)<br>and <b>1 heavenly chip</b> to spend.");
+					str+=loc("Ascending now would grant you<br><b>1 prestige level</b> (+1% CpS)<br>and <b>1 heavenly chip</b> to spend.");
 					break;
 				default:
-					str += loc("Ascending now would grant you<br><b>%1 prestige levels</b> (+%2% CpS)<br>and <b>%3 heavenly chips</b> to spend.", [Beautify(ascendNowToGet), Beautify(ascendNowToGet), Beautify(ascendNowToGet)]);
+					str+=loc("Ascending now would grant you<br><b>%1 prestige levels</b> (+%2% CpS)<br>and <b>%3 heavenly chips</b> to spend.", [Beautify(ascendNowToGet), Beautify(ascendNowToGet), Beautify(ascendNowToGet)]);
 					break;
 			}
 			if (cookiesToNext>=0) {
 				//note: cookiesToNext can be negative at higher HC amounts due to precision loss. we simply hide it in such cases, as this usually only occurs when the gap is small and rapidly overcome anyway
-				str += '<div class="line"></div>';
-				str += loc("You need <b>%1 more cookies</b> for the next level.", Beautify(cookiesToNext)) + '<br>';
+				str+='<div class="line"></div>';
+				str+=loc("You need <b>%1 more cookies</b> for the next level.", Beautify(cookiesToNext)) + '<br>';
 			}
 			l('ascendTooltip').innerHTML=str;
 
@@ -15097,7 +15097,7 @@ Game.Launch=function () {
 		//Game.ascendMeter.style.right=Math.floor(Math.max(0,1-Game.ascendMeterPercent)*100)+'px';
 		Game.ascendMeter.style.backgroundPosition=(-Game.T * 0.5 - Game.ascendMeterPercent * 100) + 'px';
 		Game.ascendMeter.style.transform='translate(' + Math.floor(-Math.max(0, 1 - Game.ascendMeterPercent) * 100) + 'px,0px)';
-		Game.ascendMeterPercent += (Game.ascendMeterPercentT - Game.ascendMeterPercent) * 0.1;
+		Game.ascendMeterPercent+=(Game.ascendMeterPercentT - Game.ascendMeterPercent) * 0.1;
 
 		Game.NotesLogic();
 		if (Game.mouseMoved || Game.Scroll || Game.tooltip.dynamic) Game.tooltip.update();
@@ -15139,7 +15139,7 @@ Game.Launch=function () {
 		//every hour: get server data (ie. update notification, patreon data)
 		if (Game.T % (Game.fps * 60 * 60)==0 && Game.T>Game.fps * 10/* && Game.prefs.autoupdate*/) { Game.CheckUpdates(); Game.GrabData(); }
 
-		Game.T += (30 / Game.fps);
+		Game.T+=(30 / Game.fps);
 	}
 
 	/*=====================================================================================
@@ -15160,10 +15160,10 @@ Game.Launch=function () {
 				var dotPos=str.indexOf('.');
 				var add='';
 				if (spacePos!=-1) {
-					if (dotPos==-1) add += '.000';
+					if (dotPos==-1) add+='.000';
 					else {
-						if (spacePos - dotPos==2) add += '00';
-						if (spacePos - dotPos==3) add += '0';
+						if (spacePos - dotPos==2) add+='00';
+						if (spacePos - dotPos==3) add+='0';
 					}
 				}
 				str=[str.slice(0, spacePos), add, str.slice(spacePos)].join('');
@@ -15191,9 +15191,9 @@ Game.Launch=function () {
 					//make products full-opacity if we can buy them
 					var classes='product';
 					var price=me.bulkPrice;
-					if (Game.cookiesEarned>=me.basePrice || me.bought>0) { classes += ' unlocked'; lastLocked=0; me.locked=0; } else { classes += ' locked'; lastLocked++; me.locked=1; }
-					if ((Game.buyMode==1 && Game.cookies>=price) || (Game.buyMode==-1 && me.amount>0)) classes += ' enabled'; else classes += ' disabled';
-					if (lastLocked>2) classes += ' toggledOff';
+					if (Game.cookiesEarned>=me.basePrice || me.bought>0) { classes+=' unlocked'; lastLocked=0; me.locked=0; } else { classes+=' locked'; lastLocked++; me.locked=1; }
+					if ((Game.buyMode==1 && Game.cookies>=price) || (Game.buyMode==-1 && me.amount>0)) classes+=' enabled'; else classes+=' disabled';
+					if (lastLocked>2) classes+=' toggledOff';
 					me.l.className=classes;
 					//if (me.id>0) {l('productName'+me.id).innerHTML=Beautify(me.storedTotalCps/Game.ObjectsById[me.id-1].storedTotalCps,2);}
 				}
@@ -15280,9 +15280,9 @@ Game.Launch=function () {
 		var time=Date.now();
 
 		//latency compensator
-		Game.accumulatedDelay += ((time - Game.time) - 1000 / Game.fps);
+		Game.accumulatedDelay+=((time - Game.time) - 1000 / Game.fps);
 		if (Game.prefs.timeout && time - Game.lastActivity>=1000 * 60 * 5) {
-			if (Game.accumulatedDelay>1000 * 60 * 30) Game.delayTimeouts += 3;//more than 30 minutes delay ? computer probably asleep and not making cookies anyway
+			if (Game.accumulatedDelay>1000 * 60 * 30) Game.delayTimeouts+=3;//more than 30 minutes delay ? computer probably asleep and not making cookies anyway
 			else if (Game.accumulatedDelay>1000 * 5) Game.delayTimeouts++;//add to timeout counter when we skip 10 seconds worth of frames (and the player has been inactive for at least 5 minutes)
 			if (Game.delayTimeouts>=3) Game.Timeout();//trigger timeout when the timeout counter is 3+
 		}
@@ -15323,7 +15323,7 @@ Game.Launch=function () {
 
 			l('fpsCounter').textContent=Game.currentFps + ' fps';
 			var str='';
-			for (var i of Timer.order) { str += Timer.labels[i]; }
+			for (var i of Timer.order) { str+=Timer.labels[i]; }
 			if (Game.debugTimersOn) l('debugLog').style.display='block';
 			else l('debugLog').style.display='none';
 			l('debugLog').innerHTML=str;
@@ -15379,7 +15379,7 @@ window.onload=() => {
 			var str='';
 			for (var i in Langs) {
 				var lang=Langs[i];
-				str += '<div class="langSelectButton title" id="langSelect-' + i + '">' + lang.name + '</div>';
+				str+='<div class="langSelectButton title" id="langSelect-' + i + '">' + lang.name + '</div>';
 			}
 			l('offGameMessage').innerHTML =
 				'<div class="title" id="languageSelectHeader">Language</div>' +

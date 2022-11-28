@@ -152,7 +152,7 @@ function toFixed(x) {
 	if (Math.abs(x)<1.0) {
 		var e=parseInt(x.toString().split('e-')[1]);
 		if (e) {
-			x *= Math.pow(10, e - 1);
+			x*=Math.pow(10, e - 1);
 			x='0.' + (new Array(e)).join('0') + x.toString().substring(2);
 		}
 	} else {
@@ -3087,13 +3087,13 @@ Game.Launch=function () {
 							}
 							else {
 								var maxTime=60 * 60;
-								if (Game.Has('Belphegor')) maxTime *= 2;
-								if (Game.Has('Mammon')) maxTime *= 2;
-								if (Game.Has('Abaddon')) maxTime *= 2;
-								if (Game.Has('Satan')) maxTime *= 2;
-								if (Game.Has('Asmodeus')) maxTime *= 2;
-								if (Game.Has('Beelzebub')) maxTime *= 2;
-								if (Game.Has('Lucifer')) maxTime *= 2;
+								if (Game.Has('Belphegor')) maxTime*=2;
+								if (Game.Has('Mammon')) maxTime*=2;
+								if (Game.Has('Abaddon')) maxTime*=2;
+								if (Game.Has('Satan')) maxTime*=2;
+								if (Game.Has('Asmodeus')) maxTime*=2;
+								if (Game.Has('Beelzebub')) maxTime*=2;
+								if (Game.Has('Lucifer')) maxTime*=2;
 
 								var percent=5;
 								if (Game.Has('Angels')) percent+=10;
@@ -3685,16 +3685,16 @@ Game.Launch=function () {
 			if (Game.Has('Heavenly confectionery')) heavenlyMult+=0.25;
 			if (Game.Has('Heavenly key')) heavenlyMult+=0.25;
 			//if (Game.hasAura('Dragon God')) heavenlyMult*=1.05;
-			heavenlyMult *= 1 + Game.auraMult('Dragon God') * 0.05;
-			if (Game.Has('Lucky digit')) heavenlyMult *= 1.01;
-			if (Game.Has('Lucky number')) heavenlyMult *= 1.01;
-			if (Game.Has('Lucky payout')) heavenlyMult *= 1.01;
+			heavenlyMult*=1 + Game.auraMult('Dragon God') * 0.05;
+			if (Game.Has('Lucky digit')) heavenlyMult*=1.01;
+			if (Game.Has('Lucky number')) heavenlyMult*=1.01;
+			if (Game.Has('Lucky payout')) heavenlyMult*=1.01;
 			if (Game.hasGod) {
 				var godLvl=Game.hasGod('creation');
 				switch (godLvl) {
-					case 1: heavenlyMult *= 0.7; break;
-					case 2: heavenlyMult *= 0.8; break;
-					case 3: heavenlyMult *= 0.9; break;
+					case 1: heavenlyMult*=0.7; break;
+					case 2: heavenlyMult*=0.8; break;
+					case 3: heavenlyMult*=0.9; break;
 				}
 			}
 			return heavenlyMult;
@@ -4198,17 +4198,17 @@ Game.Launch=function () {
 			if (!Game.canLumps()) return;
 			Game.lumpT=Date.now();
 			var total=amount;
-			if (Game.lumpCurrentType==1 && Game.Has('Sucralosia Inutilis') && Math.random()<0.05) total *= 2;
-			else if (Game.lumpCurrentType==1) total *= choose([1, 2]);
+			if (Game.lumpCurrentType==1 && Game.Has('Sucralosia Inutilis') && Math.random()<0.05) total*=2;
+			else if (Game.lumpCurrentType==1) total*=choose([1, 2]);
 			else if (Game.lumpCurrentType==2) {
-				total *= choose([2, 3, 4, 5, 6, 7]);
+				total*=choose([2, 3, 4, 5, 6, 7]);
 				Game.gainBuff('sugar blessing', 24 * 60 * 60, 1);
 				Game.Earn(Math.min(Game.cookiesPs * 60 * 60 * 24, Game.cookies));
 				Game.Notify(loc("Sugar blessing activated!"), loc("Your cookies have been doubled.<br>+10% golden cookies for the next 24 hours."), [29, 16]);
 			}
-			else if (Game.lumpCurrentType==3) total *= choose([0, 0, 1, 2, 2]);
+			else if (Game.lumpCurrentType==3) total*=choose([0, 0, 1, 2, 2]);
 			else if (Game.lumpCurrentType==4) {
-				total *= choose([1, 2, 3]);
+				total*=choose([1, 2, 3]);
 				Game.lumpRefill=0;//Date.now()-Game.getLumpRefillMax();
 				Game.Notify(loc("Sugar lump cooldowns cleared!"), '', [29, 27]);
 			}
@@ -4359,15 +4359,15 @@ Game.Launch=function () {
 		Game.mouseCps=function () {
 			var add=0;
 			if (Game.Has('Thousand fingers')) add+=0.1;
-			if (Game.Has('Million fingers')) add *= 5;
-			if (Game.Has('Billion fingers')) add *= 10;
-			if (Game.Has('Trillion fingers')) add *= 20;
-			if (Game.Has('Quadrillion fingers')) add *= 20;
-			if (Game.Has('Quintillion fingers')) add *= 20;
-			if (Game.Has('Sextillion fingers')) add *= 20;
-			if (Game.Has('Septillion fingers')) add *= 20;
-			if (Game.Has('Octillion fingers')) add *= 20;
-			if (Game.Has('Nonillion fingers')) add *= 20;
+			if (Game.Has('Million fingers')) add*=5;
+			if (Game.Has('Billion fingers')) add*=10;
+			if (Game.Has('Trillion fingers')) add*=20;
+			if (Game.Has('Quadrillion fingers')) add*=20;
+			if (Game.Has('Quintillion fingers')) add*=20;
+			if (Game.Has('Sextillion fingers')) add*=20;
+			if (Game.Has('Septillion fingers')) add*=20;
+			if (Game.Has('Octillion fingers')) add*=20;
+			if (Game.Has('Nonillion fingers')) add*=20;
 
 			var num=0;
 			for (var i in Game.Objects) { num+=Game.Objects[i].amount; }
@@ -4391,32 +4391,32 @@ Game.Launch=function () {
 			var mult=1;
 
 
-			if (Game.Has('Santa\'s helpers')) mult *= 1.1;
-			if (Game.Has('Cookie egg')) mult *= 1.1;
-			if (Game.Has('Halo gloves')) mult *= 1.1;
-			if (Game.Has('Dragon claw')) mult *= 1.03;
+			if (Game.Has('Santa\'s helpers')) mult*=1.1;
+			if (Game.Has('Cookie egg')) mult*=1.1;
+			if (Game.Has('Halo gloves')) mult*=1.1;
+			if (Game.Has('Dragon claw')) mult*=1.03;
 
 			if (Game.Has('Aura gloves')) {
-				mult *= 1 + 0.05 * Math.min(Game.Objects['Cursor'].level, Game.Has('Luminous gloves') ? 20 : 10);
+				mult*=1 + 0.05 * Math.min(Game.Objects['Cursor'].level, Game.Has('Luminous gloves') ? 20 : 10);
 			}
 
-			mult *= Game.eff('click');
+			mult*=Game.eff('click');
 
 			if (Game.hasGod) {
 				var godLvl=Game.hasGod('labor');
 				switch (godLvl) {
-					case 1: mult *= 1.15; break;
-					case 2: mult *= 1.1; break;
-					case 3: mult *= 1.05; break;
+					case 1: mult*=1.15; break;
+					case 2: mult*=1.1; break;
+					case 3: mult*=1.05; break;
 				}
 			}
 
 			for (var i in Game.buffs) {
-				if (typeof Game.buffs[i].multClick!='undefined') mult *= Game.buffs[i].multClick;
+				if (typeof Game.buffs[i].multClick!='undefined') mult*=Game.buffs[i].multClick;
 			}
 
 			//if (Game.hasAura('Dragon Cursor')) mult*=1.05;
-			mult *= 1 + Game.auraMult('Dragon Cursor') * 0.05;
+			mult*=1 + Game.auraMult('Dragon Cursor') * 0.05;
 
 			var out=mult * Game.ComputeCps(1, Game.Has('Reinforced index finger') + Game.Has('Carpal tunnel prevention cream') + Game.Has('Ambidextrous'), add);
 
@@ -4603,7 +4603,7 @@ Game.Launch=function () {
 				if (Game.Objects[i].minigameLoaded && Game.Objects[i].minigame.effs) {
 					var myEffs=Game.Objects[i].minigame.effs;
 					for (var ii in myEffs) {
-						if (effs[ii]) effs[ii] *= myEffs[ii];
+						if (effs[ii]) effs[ii]*=myEffs[ii];
 						else effs[ii]=myEffs[ii];
 					}
 				}
@@ -4612,114 +4612,114 @@ Game.Launch=function () {
 
 			if (Game.ascensionMode!=1) mult+=parseFloat(Game.prestige) * 0.01 * Game.heavenlyPower * Game.GetHeavenlyMultiplier();
 
-			mult *= Game.eff('cps');
+			mult*=Game.eff('cps');
 
-			if (Game.Has('Heralds') && Game.ascensionMode!=1) mult *= 1 + 0.01 * Game.heralds;
+			if (Game.Has('Heralds') && Game.ascensionMode!=1) mult*=1 + 0.01 * Game.heralds;
 
 			for (var i in Game.cookieUpgrades) {
 				var me=Game.cookieUpgrades[i];
 				if (Game.Has(me.name)) {
-					mult *= (1 + (typeof (me.power) === 'function' ? me.power(me) : me.power) * 0.01);
+					mult*=(1 + (typeof (me.power) === 'function' ? me.power(me) : me.power) * 0.01);
 				}
 			}
 
-			if (Game.Has('Specialized chocolate chips')) mult *= 1.01;
-			if (Game.Has('Designer cocoa beans')) mult *= 1.02;
-			if (Game.Has('Underworld ovens')) mult *= 1.03;
-			if (Game.Has('Exotic nuts')) mult *= 1.04;
-			if (Game.Has('Arcane sugar')) mult *= 1.05;
+			if (Game.Has('Specialized chocolate chips')) mult*=1.01;
+			if (Game.Has('Designer cocoa beans')) mult*=1.02;
+			if (Game.Has('Underworld ovens')) mult*=1.03;
+			if (Game.Has('Exotic nuts')) mult*=1.04;
+			if (Game.Has('Arcane sugar')) mult*=1.05;
 
-			if (Game.Has('Increased merriness')) mult *= 1.15;
-			if (Game.Has('Improved jolliness')) mult *= 1.15;
-			if (Game.Has('A lump of coal')) mult *= 1.01;
-			if (Game.Has('An itchy sweater')) mult *= 1.01;
-			if (Game.Has('Santa\'s dominion')) mult *= 1.2;
+			if (Game.Has('Increased merriness')) mult*=1.15;
+			if (Game.Has('Improved jolliness')) mult*=1.15;
+			if (Game.Has('A lump of coal')) mult*=1.01;
+			if (Game.Has('An itchy sweater')) mult*=1.01;
+			if (Game.Has('Santa\'s dominion')) mult*=1.2;
 
-			if (Game.Has('Fortune #100')) mult *= 1.01;
-			if (Game.Has('Fortune #101')) mult *= 1.07;
+			if (Game.Has('Fortune #100')) mult*=1.01;
+			if (Game.Has('Fortune #101')) mult*=1.07;
 
-			if (Game.Has('Dragon scale')) mult *= 1.03;
+			if (Game.Has('Dragon scale')) mult*=1.03;
 
 			var buildMult=1;
 			if (Game.hasGod) {
 				var godLvl=Game.hasGod('asceticism');
 				switch (godLvl) {
-					case 1: mult *= 1.15; break;
-					case 2: mult *= 1.1; break;
-					case 3: mult *= 1.05; break;
+					case 1: mult*=1.15; break;
+					case 2: mult*=1.1; break;
+					case 3: mult*=1.05; break;
 				}
 
 				var godLvl=Game.hasGod('ages');
 				switch (godLvl) {
-					case 1: mult *= 1 + 0.15 * Math.sin((Date.now() / 1000 / (60 * 60 * 3)) * Math.PI * 2); break;
-					case 2: mult *= 1 + 0.15 * Math.sin((Date.now() / 1000 / (60 * 60 * 12)) * Math.PI * 2); break;
-					case 3: mult *= 1 + 0.15 * Math.sin((Date.now() / 1000 / (60 * 60 * 24)) * Math.PI * 2); break;
+					case 1: mult*=1 + 0.15 * Math.sin((Date.now() / 1000 / (60 * 60 * 3)) * Math.PI * 2); break;
+					case 2: mult*=1 + 0.15 * Math.sin((Date.now() / 1000 / (60 * 60 * 12)) * Math.PI * 2); break;
+					case 3: mult*=1 + 0.15 * Math.sin((Date.now() / 1000 / (60 * 60 * 24)) * Math.PI * 2); break;
 				}
 				var godLvl=Game.hasGod('decadence');
 				switch (godLvl) {
-					case 1: buildMult *= 0.93; break;
-					case 2: buildMult *= 0.95; break;
-					case 3: buildMult *= 0.98; break;
+					case 1: buildMult*=0.93; break;
+					case 2: buildMult*=0.95; break;
+					case 3: buildMult*=0.98; break;
 				}
 
 				var godLvl=Game.hasGod('industry');
 				switch (godLvl) {
-					case 1: buildMult *= 1.1; break;
-					case 2: buildMult *= 1.06; break;
-					case 3: buildMult *= 1.03; break;
+					case 1: buildMult*=1.1; break;
+					case 2: buildMult*=1.06; break;
+					case 3: buildMult*=1.03; break;
 				}
 
 				var godLvl=Game.hasGod('labor');
 				switch (godLvl) {
-					case 1: buildMult *= 0.97; break;
-					case 2: buildMult *= 0.98; break;
-					case 3: buildMult *= 0.99; break;
+					case 1: buildMult*=0.97; break;
+					case 2: buildMult*=0.98; break;
+					case 3: buildMult*=0.99; break;
 				}
 			}
 
-			if (Game.Has('Santa\'s legacy')) mult *= 1 + (Game.santaLevel + 1) * 0.03;
+			if (Game.Has('Santa\'s legacy')) mult*=1 + (Game.santaLevel + 1) * 0.03;
 
 
 			Game.milkProgress=Game.AchievementsOwned / 25;
 			var milkMult=1;
-			if (Game.Has('Santa\'s milk and cookies')) milkMult *= 1.05;
+			if (Game.Has('Santa\'s milk and cookies')) milkMult*=1.05;
 			//if (Game.hasAura('Breath of Milk')) milkMult*=1.05;
-			milkMult *= 1 + Game.auraMult('Breath of Milk') * 0.05;
+			milkMult*=1 + Game.auraMult('Breath of Milk') * 0.05;
 			if (Game.hasGod) {
 				var godLvl=Game.hasGod('mother');
 				switch (godLvl) {
-					case 1: milkMult *= 1.1; break;
-					case 2: milkMult *= 1.05; break;
-					case 3: milkMult *= 1.03; break;
+					case 1: milkMult*=1.1; break;
+					case 2: milkMult*=1.05; break;
+					case 3: milkMult*=1.03; break;
 				}
 			}
-			milkMult *= Game.eff('milk');
+			milkMult*=Game.eff('milk');
 
 			var catMult=1;
 
-			if (Game.Has('Kitten helpers')) catMult *= (1 + Game.milkProgress * 0.1 * milkMult);
-			if (Game.Has('Kitten workers')) catMult *= (1 + Game.milkProgress * 0.125 * milkMult);
-			if (Game.Has('Kitten engineers')) catMult *= (1 + Game.milkProgress * 0.15 * milkMult);
-			if (Game.Has('Kitten overseers')) catMult *= (1 + Game.milkProgress * 0.175 * milkMult);
-			if (Game.Has('Kitten managers')) catMult *= (1 + Game.milkProgress * 0.2 * milkMult);
-			if (Game.Has('Kitten accountants')) catMult *= (1 + Game.milkProgress * 0.2 * milkMult);
-			if (Game.Has('Kitten specialists')) catMult *= (1 + Game.milkProgress * 0.2 * milkMult);
-			if (Game.Has('Kitten experts')) catMult *= (1 + Game.milkProgress * 0.2 * milkMult);
-			if (Game.Has('Kitten consultants')) catMult *= (1 + Game.milkProgress * 0.2 * milkMult);
-			if (Game.Has('Kitten assistants to the regional manager')) catMult *= (1 + Game.milkProgress * 0.175 * milkMult);
-			if (Game.Has('Kitten marketeers')) catMult *= (1 + Game.milkProgress * 0.15 * milkMult);
-			if (Game.Has('Kitten analysts')) catMult *= (1 + Game.milkProgress * 0.125 * milkMult);
-			if (Game.Has('Kitten executives')) catMult *= (1 + Game.milkProgress * 0.115 * milkMult);
-			if (Game.Has('Kitten angels')) catMult *= (1 + Game.milkProgress * 0.1 * milkMult);
-			if (Game.Has('Fortune #103')) catMult *= (1 + Game.milkProgress * 0.05 * milkMult);
+			if (Game.Has('Kitten helpers')) catMult*=(1 + Game.milkProgress * 0.1 * milkMult);
+			if (Game.Has('Kitten workers')) catMult*=(1 + Game.milkProgress * 0.125 * milkMult);
+			if (Game.Has('Kitten engineers')) catMult*=(1 + Game.milkProgress * 0.15 * milkMult);
+			if (Game.Has('Kitten overseers')) catMult*=(1 + Game.milkProgress * 0.175 * milkMult);
+			if (Game.Has('Kitten managers')) catMult*=(1 + Game.milkProgress * 0.2 * milkMult);
+			if (Game.Has('Kitten accountants')) catMult*=(1 + Game.milkProgress * 0.2 * milkMult);
+			if (Game.Has('Kitten specialists')) catMult*=(1 + Game.milkProgress * 0.2 * milkMult);
+			if (Game.Has('Kitten experts')) catMult*=(1 + Game.milkProgress * 0.2 * milkMult);
+			if (Game.Has('Kitten consultants')) catMult*=(1 + Game.milkProgress * 0.2 * milkMult);
+			if (Game.Has('Kitten assistants to the regional manager')) catMult*=(1 + Game.milkProgress * 0.175 * milkMult);
+			if (Game.Has('Kitten marketeers')) catMult*=(1 + Game.milkProgress * 0.15 * milkMult);
+			if (Game.Has('Kitten analysts')) catMult*=(1 + Game.milkProgress * 0.125 * milkMult);
+			if (Game.Has('Kitten executives')) catMult*=(1 + Game.milkProgress * 0.115 * milkMult);
+			if (Game.Has('Kitten angels')) catMult*=(1 + Game.milkProgress * 0.1 * milkMult);
+			if (Game.Has('Fortune #103')) catMult*=(1 + Game.milkProgress * 0.05 * milkMult);
 
 			Game.cookiesMultByType['kittens']=catMult;
 
 			for (var i in Game.Objects) {
 				var me=Game.Objects[i];
 				me.storedCps=me.cps(me);
-				if (Game.ascensionMode!=1) me.storedCps *= (1 + me.level * 0.01) * buildMult;
-				if (me.id==1 && Game.Has('Milkhelp&reg; lactose intolerance relief tablets')) me.storedCps *= 1 + 0.05 * Game.milkProgress * milkMult;//this used to be "me.storedCps*=1+0.1*Math.pow(catMult-1,0.5)" which was. hmm
+				if (Game.ascensionMode!=1) me.storedCps*=(1 + me.level * 0.01) * buildMult;
+				if (me.id==1 && Game.Has('Milkhelp&reg; lactose intolerance relief tablets')) me.storedCps*=1 + 0.05 * Game.milkProgress * milkMult;//this used to be "me.storedCps*=1+0.1*Math.pow(catMult-1,0.5)" which was. hmm
 				me.storedTotalCps=me.amount * me.storedCps;
 				Game.cookiesPs+=me.storedTotalCps;
 				Game.cookiesPsByType[me.name]=me.storedTotalCps;
@@ -4729,35 +4729,35 @@ Game.Launch=function () {
 
 			if (Game.Has('"egg"')) { Game.cookiesPs+=9; Game.cookiesPsByType['"egg"']=9; }//"egg"
 
-			mult *= catMult;
+			mult*=catMult;
 
 			var eggMult=1;
-			if (Game.Has('Chicken egg')) eggMult *= 1.01;
-			if (Game.Has('Duck egg')) eggMult *= 1.01;
-			if (Game.Has('Turkey egg')) eggMult *= 1.01;
-			if (Game.Has('Quail egg')) eggMult *= 1.01;
-			if (Game.Has('Robin egg')) eggMult *= 1.01;
-			if (Game.Has('Ostrich egg')) eggMult *= 1.01;
-			if (Game.Has('Cassowary egg')) eggMult *= 1.01;
-			if (Game.Has('Salmon roe')) eggMult *= 1.01;
-			if (Game.Has('Frogspawn')) eggMult *= 1.01;
-			if (Game.Has('Shark egg')) eggMult *= 1.01;
-			if (Game.Has('Turtle egg')) eggMult *= 1.01;
-			if (Game.Has('Ant larva')) eggMult *= 1.01;
+			if (Game.Has('Chicken egg')) eggMult*=1.01;
+			if (Game.Has('Duck egg')) eggMult*=1.01;
+			if (Game.Has('Turkey egg')) eggMult*=1.01;
+			if (Game.Has('Quail egg')) eggMult*=1.01;
+			if (Game.Has('Robin egg')) eggMult*=1.01;
+			if (Game.Has('Ostrich egg')) eggMult*=1.01;
+			if (Game.Has('Cassowary egg')) eggMult*=1.01;
+			if (Game.Has('Salmon roe')) eggMult*=1.01;
+			if (Game.Has('Frogspawn')) eggMult*=1.01;
+			if (Game.Has('Shark egg')) eggMult*=1.01;
+			if (Game.Has('Turtle egg')) eggMult*=1.01;
+			if (Game.Has('Ant larva')) eggMult*=1.01;
 			if (Game.Has('Century egg')) {
 				//the boost increases a little every day, with diminishing returns up to +10% on the 100th day
 				var day=Math.floor((Date.now() - Game.startDate) / 1000 / 10) * 10 / 60 / 60 / 24;
 				day=Math.min(day, 100);
-				eggMult *= 1 + (1 - Math.pow(1 - day / 100, 3)) * 0.1;
+				eggMult*=1 + (1 - Math.pow(1 - day / 100, 3)) * 0.1;
 			}
 
 			Game.cookiesMultByType['eggs']=eggMult;
-			mult *= eggMult;
+			mult*=eggMult;
 
-			if (Game.Has('Sugar baking')) mult *= (1 + Math.min(100, Game.lumps) * 0.01);
+			if (Game.Has('Sugar baking')) mult*=(1 + Math.min(100, Game.lumps) * 0.01);
 
 			//if (Game.hasAura('Radiant Appetite')) mult*=2;
-			mult *= 1 + Game.auraMult('Radiant Appetite');
+			mult*=1 + Game.auraMult('Radiant Appetite');
 
 			var rawCookiesPs=Game.cookiesPs * mult;
 			for (var i in Game.CpsAchievements) {
@@ -4768,11 +4768,11 @@ Game.Launch=function () {
 
 			var n=Game.shimmerTypes['golden'].n;
 			var auraMult=Game.auraMult('Dragon\'s Fortune');
-			for (var i=0; i<n; i++) { mult *= 1 + auraMult * 1.23; }
+			for (var i=0; i<n; i++) { mult*=1 + auraMult * 1.23; }
 
 			name=Game.bakeryName.toLowerCase();
-			if (name=='orteil') mult *= 0.99;
-			else if (name=='ortiel') mult *= 0.98;//or so help me
+			if (name=='orteil') mult*=0.99;
+			else if (name=='ortiel') mult*=0.98;//or so help me
 
 			var sucking=0;
 			for (var i in Game.wrinklers) {
@@ -4781,12 +4781,12 @@ Game.Launch=function () {
 				}
 			}
 			var suckRate=1 / 20;//each wrinkler eats a twentieth of your CpS
-			suckRate *= Game.eff('wrinklerEat');
+			suckRate*=Game.eff('wrinklerEat');
 
 			Game.cpsSucked=sucking * suckRate;
 
 
-			if (Game.Has('Elder Covenant')) mult *= 0.95;
+			if (Game.Has('Elder Covenant')) mult*=0.95;
 
 			if (Game.Has('Golden switch [off]')) {
 				var goldenSwitchMult=1.5;
@@ -4794,15 +4794,15 @@ Game.Launch=function () {
 					var upgrades=Game.goldenCookieUpgrades;
 					for (var i in upgrades) { if (Game.Has(upgrades[i])) goldenSwitchMult+=0.1; }
 				}
-				mult *= goldenSwitchMult;
+				mult*=goldenSwitchMult;
 			}
 			if (Game.Has('Shimmering veil [off]')) {
 				var veilMult=0.5;
 				if (Game.Has('Reinforced membrane')) veilMult+=0.1;
-				mult *= 1 + veilMult;
+				mult*=1 + veilMult;
 			}
-			if (Game.Has('Magic shenanigans')) mult *= 1000;
-			if (Game.Has('Occult obstruction')) mult *= 0;
+			if (Game.Has('Magic shenanigans')) mult*=1000;
+			if (Game.Has('Occult obstruction')) mult*=0;
 
 
 			Game.cookiesPs=Game.runModHookOnValue('cps', Game.cookiesPs);
@@ -4812,11 +4812,11 @@ Game.Launch=function () {
 			Game.unbuffedCps=Game.cookiesPs * mult;
 
 			for (var i in Game.buffs) {
-				if (typeof Game.buffs[i].multCpS !== 'undefined') mult *= Game.buffs[i].multCpS;
+				if (typeof Game.buffs[i].multCpS !== 'undefined') mult*=Game.buffs[i].multCpS;
 			}
 
 			Game.globalCpsMult=mult;
-			Game.cookiesPs *= Game.globalCpsMult;
+			Game.cookiesPs*=Game.globalCpsMult;
 
 			//if (Game.hasBuff('Cursed finger')) Game.cookiesPs=0;
 
@@ -4829,13 +4829,13 @@ Game.Launch=function () {
 
 		Game.dropRateMult=function () {
 			var rate=1;
-			if (Game.Has('Green yeast digestives')) rate *= 1.03;
-			if (Game.Has('Dragon teddy bear')) rate *= 1.03;
-			rate *= Game.eff('itemDrops');
+			if (Game.Has('Green yeast digestives')) rate*=1.03;
+			if (Game.Has('Dragon teddy bear')) rate*=1.03;
+			rate*=Game.eff('itemDrops');
 			//if (Game.hasAura('Mind Over Matter')) rate*=1.25;
-			rate *= 1 + Game.auraMult('Mind Over Matter') * 0.25;
-			if (Game.Has('Santa\'s bottomless bag')) rate *= 1.1;
-			if (Game.Has('Cosmic beginner\'s luck') && !Game.Has('Heavenly chip secret')) rate *= 5;
+			rate*=1 + Game.auraMult('Mind Over Matter') * 0.25;
+			if (Game.Has('Santa\'s bottomless bag')) rate*=1.1;
+			if (Game.Has('Cosmic beginner\'s luck') && !Game.Has('Heavenly chip secret')) rate*=5;
 			return rate;
 		}
 		/*=====================================================================================
@@ -5005,15 +5005,15 @@ Game.Launch=function () {
 					me.dur=13;//duration; the cookie's lifespan in seconds before it despawns
 
 					var dur=13;
-					if (Game.Has('Lucky day')) dur *= 2;
-					if (Game.Has('Serendipity')) dur *= 2;
-					if (Game.Has('Decisive fate')) dur *= 1.05;
-					if (Game.Has('Lucky digit')) dur *= 1.01;
-					if (Game.Has('Lucky number')) dur *= 1.01;
-					if (Game.Has('Lucky payout')) dur *= 1.01;
-					if (!me.wrath) dur *= Game.eff('goldenCookieDur');
-					else dur *= Game.eff('wrathCookieDur');
-					dur *= Math.pow(0.95, Game.shimmerTypes['golden'].n - 1);//5% shorter for every other golden cookie on the screen
+					if (Game.Has('Lucky day')) dur*=2;
+					if (Game.Has('Serendipity')) dur*=2;
+					if (Game.Has('Decisive fate')) dur*=1.05;
+					if (Game.Has('Lucky digit')) dur*=1.01;
+					if (Game.Has('Lucky number')) dur*=1.01;
+					if (Game.Has('Lucky payout')) dur*=1.01;
+					if (!me.wrath) dur*=Game.eff('goldenCookieDur');
+					else dur*=Game.eff('wrathCookieDur');
+					dur*=Math.pow(0.95, Game.shimmerTypes['golden'].n - 1);//5% shorter for every other golden cookie on the screen
 					if (this.chain>0) dur=Math.max(2, 10 / this.chain);//this is hilarious
 					me.dur=dur;
 					me.life=Math.ceil(Game.fps * me.dur);
@@ -5089,23 +5089,23 @@ Game.Launch=function () {
 					//create buff for effect
 					//buff duration multiplier
 					var effectDurMod=1;
-					if (Game.Has('Get lucky')) effectDurMod *= 2;
-					if (Game.Has('Lasting fortune')) effectDurMod *= 1.1;
-					if (Game.Has('Lucky digit')) effectDurMod *= 1.01;
-					if (Game.Has('Lucky number')) effectDurMod *= 1.01;
-					if (Game.Has('Green yeast digestives')) effectDurMod *= 1.01;
-					if (Game.Has('Lucky payout')) effectDurMod *= 1.01;
+					if (Game.Has('Get lucky')) effectDurMod*=2;
+					if (Game.Has('Lasting fortune')) effectDurMod*=1.1;
+					if (Game.Has('Lucky digit')) effectDurMod*=1.01;
+					if (Game.Has('Lucky number')) effectDurMod*=1.01;
+					if (Game.Has('Green yeast digestives')) effectDurMod*=1.01;
+					if (Game.Has('Lucky payout')) effectDurMod*=1.01;
 					//if (Game.hasAura('Epoch Manipulator')) effectDurMod*=1.05;
-					effectDurMod *= 1 + Game.auraMult('Epoch Manipulator') * 0.05;
-					if (!me.wrath) effectDurMod *= Game.eff('goldenCookieEffDur');
-					else effectDurMod *= Game.eff('wrathCookieEffDur');
+					effectDurMod*=1 + Game.auraMult('Epoch Manipulator') * 0.05;
+					if (!me.wrath) effectDurMod*=Game.eff('goldenCookieEffDur');
+					else effectDurMod*=Game.eff('wrathCookieEffDur');
 
 					if (Game.hasGod) {
 						var godLvl=Game.hasGod('decadence');
 						switch (godLvl) {
-							case 1: effectDurMod *= 1.07; break;
-							case 2: effectDurMod *= 1.05; break;
-							case 3: effectDurMod *= 1.02; break;
+							case 1: effectDurMod*=1.07; break;
+							case 2: effectDurMod*=1.05; break;
+							case 3: effectDurMod*=1.02; break;
 						}
 					}
 
@@ -5113,12 +5113,12 @@ Game.Launch=function () {
 					var mult=1;
 					//if (me.wrath>0 && Game.hasAura('Unholy Dominion')) mult*=1.1;
 					//else if (me.wrath==0 && Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
-					if (me.wrath>0) mult *= 1 + Game.auraMult('Unholy Dominion') * 0.1;
-					else if (me.wrath==0) mult *= 1 + Game.auraMult('Ancestral Metamorphosis') * 0.1;
-					if (Game.Has('Green yeast digestives')) mult *= 1.01;
-					if (Game.Has('Dragon fang')) mult *= 1.03;
-					if (!me.wrath) mult *= Game.eff('goldenCookieGain');
-					else mult *= Game.eff('wrathCookieGain');
+					if (me.wrath>0) mult*=1 + Game.auraMult('Unholy Dominion') * 0.1;
+					else if (me.wrath==0) mult*=1 + Game.auraMult('Ancestral Metamorphosis') * 0.1;
+					if (Game.Has('Green yeast digestives')) mult*=1.01;
+					if (Game.Has('Dragon fang')) mult*=1.03;
+					if (!me.wrath) mult*=Game.eff('goldenCookieGain');
+					else mult*=Game.eff('wrathCookieGain');
 
 					var popup='';
 					var buff=0;
@@ -5292,46 +5292,46 @@ Game.Launch=function () {
 				getTimeMod: function (me, m) {
 					if (Game.Has('Lucky day')) m /= 2;
 					if (Game.Has('Serendipity')) m /= 2;
-					if (Game.Has('Golden goose egg')) m *= 0.95;
-					if (Game.Has('Heavenly luck')) m *= 0.95;
-					if (Game.Has('Green yeast digestives')) m *= 0.99;
+					if (Game.Has('Golden goose egg')) m*=0.95;
+					if (Game.Has('Heavenly luck')) m*=0.95;
+					if (Game.Has('Green yeast digestives')) m*=0.99;
 					//if (Game.hasAura('Arcane Aura')) m*=0.95;
-					m *= 1 - Game.auraMult('Arcane Aura') * 0.05;
-					if (Game.hasBuff('Sugar blessing')) m *= 0.9;
-					if (Game.season=='easter' && Game.Has('Starspawn')) m *= 0.98;
-					else if (Game.season=='halloween' && Game.Has('Starterror')) m *= 0.98;
-					else if (Game.season=='valentines' && Game.Has('Starlove')) m *= 0.98;
-					else if (Game.season=='fools' && Game.Has('Startrade')) m *= 0.95;
-					if (!me.wrath) m *= 1 / Game.eff('goldenCookieFreq');
-					else m *= 1 / Game.eff('wrathCookieFreq');
+					m*=1 - Game.auraMult('Arcane Aura') * 0.05;
+					if (Game.hasBuff('Sugar blessing')) m*=0.9;
+					if (Game.season=='easter' && Game.Has('Starspawn')) m*=0.98;
+					else if (Game.season=='halloween' && Game.Has('Starterror')) m*=0.98;
+					else if (Game.season=='valentines' && Game.Has('Starlove')) m*=0.98;
+					else if (Game.season=='fools' && Game.Has('Startrade')) m*=0.95;
+					if (!me.wrath) m*=1 / Game.eff('goldenCookieFreq');
+					else m*=1 / Game.eff('wrathCookieFreq');
 					if (Game.hasGod) {
 						var godLvl=Game.hasGod('industry');
 						switch (godLvl) {
-							case 1: m *= 1.1; break;
-							case 2: m *= 1.06; break;
-							case 3: m *= 1.03; break;
+							case 1: m*=1.1; break;
+							case 2: m*=1.06; break;
+							case 3: m*=1.03; break;
 						}
 						var godLvl=Game.hasGod('mother');
 						switch (godLvl) {
-							case 1: m *= 1.16; break;
-							case 2: m *= 1.1; break;
-							case 3: m *= 1.05; break;
+							case 1: m*=1.16; break;
+							case 2: m*=1.1; break;
+							case 3: m*=1.05; break;
 						}
 
 						if (Game.season!='') {
 							var godLvl=Game.hasGod('seasons');
 							if (Game.season!='fools') {
 								switch (godLvl) {
-									case 1: m *= 0.97; break;
-									case 2: m *= 0.98; break;
-									case 3: m *= 0.99; break;
+									case 1: m*=0.97; break;
+									case 2: m*=0.98; break;
+									case 3: m*=0.99; break;
 								}
 							}
 							else {
 								switch (godLvl) {
-									case 1: m *= 0.955; break;
-									case 2: m *= 0.97; break;
-									case 3: m *= 0.985; break;
+									case 1: m*=0.955; break;
+									case 2: m*=0.97; break;
+									case 3: m*=0.985; break;
 								}
 							}
 						}
@@ -5372,8 +5372,8 @@ Game.Launch=function () {
 					me.dur=4;//duration; the cookie's lifespan in seconds before it despawns
 
 					var dur=4;
-					if (Game.Has('Weighted sleighs')) dur *= 2;
-					dur *= Game.eff('reindeerDur');
+					if (Game.Has('Weighted sleighs')) dur*=2;
+					dur*=Game.eff('reindeerDur');
 					me.dur=dur;
 					me.life=Math.ceil(Game.fps * me.dur);
 					me.sizeMult=1;
@@ -5392,25 +5392,25 @@ Game.Launch=function () {
 					}
 
 					var val=Game.cookiesPs * 60;
-					if (Game.hasBuff('Elder frenzy')) val *= 0.5;//very sorry
-					if (Game.hasBuff('Frenzy')) val *= 0.75;//I sincerely apologize
+					if (Game.hasBuff('Elder frenzy')) val*=0.5;//very sorry
+					if (Game.hasBuff('Frenzy')) val*=0.75;//I sincerely apologize
 					var moni=Math.max(25, val);//1 minute of cookie production, or 25 cookies - whichever is highest
-					if (Game.Has('Ho ho ho-flavored frosting')) moni *= 2;
-					moni *= Game.eff('reindeerGain');
+					if (Game.Has('Ho ho ho-flavored frosting')) moni*=2;
+					moni*=Game.eff('reindeerGain');
 					Game.Earn(moni);
 					if (Game.hasBuff('Elder frenzy')) Game.Win('Eldeer');
 
 					var cookie='';
 					var failRate=0.8;
 					if (Game.HasAchiev('Let it snow')) failRate=0.6;
-					failRate *= 1 / Game.dropRateMult();
-					if (Game.Has('Starsnow')) failRate *= 0.95;
+					failRate*=1 / Game.dropRateMult();
+					if (Game.Has('Starsnow')) failRate*=0.95;
 					if (Game.hasGod) {
 						var godLvl=Game.hasGod('seasons');
 						switch (godLvl) {
-							case 1: mult *= failRate *= 0.9; break;
-							case 2: mult *= failRate *= 0.95; break;
-							case 3: mult *= failRate *= 0.97; break;
+							case 1: mult*=failRate*=0.9; break;
+							case 2: mult*=failRate*=0.95; break;
+							case 3: mult*=failRate*=0.97; break;
 						}
 					}
 					if (Math.random()>failRate)//christmas cookie drops
@@ -5446,16 +5446,16 @@ Game.Launch=function () {
 				maxTime: 0,
 				getTimeMod: function (me, m) {
 					if (Game.Has('Reindeer baking grounds')) m /= 2;
-					if (Game.Has('Starsnow')) m *= 0.95;
+					if (Game.Has('Starsnow')) m*=0.95;
 					if (Game.hasGod) {
 						var godLvl=Game.hasGod('seasons');
 						switch (godLvl) {
-							case 1: m *= 0.9; break;
-							case 2: m *= 0.95; break;
-							case 3: m *= 0.97; break;
+							case 1: m*=0.9; break;
+							case 2: m*=0.95; break;
+							case 3: m*=0.97; break;
 						}
 					}
-					m *= 1 / Game.eff('reindeerFreq');
+					m*=1 / Game.eff('reindeerFreq');
 					if (Game.Has('Reindeer season')) m=0.01;
 					return Math.ceil(Game.fps * 60 * m);
 				},
@@ -7109,10 +7109,10 @@ Game.Launch=function () {
 				//this.basePrice=(this.n*2.5+7.5)*Math.pow(10,this.n);
 				var digits=Math.pow(10, (Math.ceil(Math.log(Math.ceil(this.basePrice)) / Math.LN10))) / 100;
 				this.basePrice=Math.round(this.basePrice / digits) * digits;
-				if (this.id>=16) this.basePrice *= 10;
-				if (this.id>=17) this.basePrice *= 10;
-				if (this.id>=18) this.basePrice *= 10;
-				if (this.id>=19) this.basePrice *= 10;
+				if (this.id>=16) this.basePrice*=10;
+				if (this.id>=17) this.basePrice*=10;
+				if (this.id>=18) this.basePrice*=10;
+				if (this.id>=19) this.basePrice*=10;
 				this.price=this.basePrice;
 				this.bulkPrice=this.price;
 			}
@@ -7190,13 +7190,13 @@ Game.Launch=function () {
 					price+=this.basePrice * Math.pow(Game.priceIncrease, Math.max(0, i - this.free));
 				}
 				price=Game.modifyBuildingPrice(this, price);
-				price *= this.getSellMultiplier();
+				price*=this.getSellMultiplier();
 				return Math.min(Math.ceil(price), 2e60);
 			}
 			this.getSellMultiplier=function () {
 				var giveBack=0.25;
 				//if (Game.hasAura('Earth Shatterer')) giveBack=0.5;
-				giveBack *= 1 + Game.auraMult('Earth Shatterer');
+				giveBack*=1 + Game.auraMult('Earth Shatterer');
 				return giveBack;
 			}
 
@@ -7785,13 +7785,13 @@ Game.Launch=function () {
 				price+=this.basePrice * Math.pow(Game.priceIncrease, Math.max(0, i - this.free));
 			}
 			price=Game.modifyBuildingPrice(this, price);
-			price *= this.getSellMultiplier();
+			price*=this.getSellMultiplier();
 			return Math.min(Math.ceil(price), 2e60);
 		}
 		Game.Object.prototype.getSellMultiplier=function () {
 			var giveBack=0.25;
 			//if (Game.hasAura('Earth Shatterer')) giveBack=0.5;
-			giveBack *= 1 + Game.auraMult('Earth Shatterer');
+			giveBack*=1 + Game.auraMult('Earth Shatterer');
 			return giveBack;
 		}
 
@@ -8150,24 +8150,24 @@ Game.Launch=function () {
 		}
 
 		Game.modifyBuildingPrice=function (building, price) {
-			if (Game.Has('Season savings')) price *= 0.99;
-			if (Game.Has('Santa\'s dominion')) price *= 0.99;
-			if (Game.Has('Faberge egg')) price *= 0.99;
-			if (Game.Has('Divine discount')) price *= 0.99;
-			if (Game.Has('Fortune #100')) price *= 0.99;
+			if (Game.Has('Season savings')) price*=0.99;
+			if (Game.Has('Santa\'s dominion')) price*=0.99;
+			if (Game.Has('Faberge egg')) price*=0.99;
+			if (Game.Has('Divine discount')) price*=0.99;
+			if (Game.Has('Fortune #100')) price*=0.99;
 			//if (Game.hasAura('Fierce Hoarder')) price*=0.98;
-			price *= 1 - Game.auraMult('Fierce Hoarder') * 0.02;
-			if (Game.hasBuff('Everything must go')) price *= 0.95;
-			if (Game.hasBuff('Crafty pixies')) price *= 0.98;
-			if (Game.hasBuff('Nasty goblins')) price *= 1.02;
-			if (building.fortune && Game.Has(building.fortune.name)) price *= 0.93;
-			price *= Game.eff('buildingCost');
+			price*=1 - Game.auraMult('Fierce Hoarder') * 0.02;
+			if (Game.hasBuff('Everything must go')) price*=0.95;
+			if (Game.hasBuff('Crafty pixies')) price*=0.98;
+			if (Game.hasBuff('Nasty goblins')) price*=1.02;
+			if (building.fortune && Game.Has(building.fortune.name)) price*=0.93;
+			price*=Game.eff('buildingCost');
 			if (Game.hasGod) {
 				var godLvl=Game.hasGod('creation');
 				switch (godLvl) {
-					case 1: price *= 0.93; break;
-					case 1: price *= 0.95; break;
-					case 1: price *= 0.98; break;
+					case 1: price*=0.93; break;
+					case 1: price*=0.95; break;
+					case 1: price*=0.98; break;
 				}
 			}
 			return price;
@@ -8322,22 +8322,22 @@ Game.Launch=function () {
 		new Game.Object('Cursor', 'cursor|cursors|clicked|[X] extra finger|[X] extra fingers', 'Autoclicks once every 10 seconds.', 0, 0, {}, 15, function (me) {
 			var add=0;
 			if (Game.Has('Thousand fingers')) add+=0.1;
-			if (Game.Has('Million fingers')) add *= 5;
-			if (Game.Has('Billion fingers')) add *= 10;
-			if (Game.Has('Trillion fingers')) add *= 20;
-			if (Game.Has('Quadrillion fingers')) add *= 20;
-			if (Game.Has('Quintillion fingers')) add *= 20;
-			if (Game.Has('Sextillion fingers')) add *= 20;
-			if (Game.Has('Septillion fingers')) add *= 20;
-			if (Game.Has('Octillion fingers')) add *= 20;
-			if (Game.Has('Nonillion fingers')) add *= 20;
+			if (Game.Has('Million fingers')) add*=5;
+			if (Game.Has('Billion fingers')) add*=10;
+			if (Game.Has('Trillion fingers')) add*=20;
+			if (Game.Has('Quadrillion fingers')) add*=20;
+			if (Game.Has('Quintillion fingers')) add*=20;
+			if (Game.Has('Sextillion fingers')) add*=20;
+			if (Game.Has('Septillion fingers')) add*=20;
+			if (Game.Has('Octillion fingers')) add*=20;
+			if (Game.Has('Nonillion fingers')) add*=20;
 			var mult=1;
 			var num=0;
 			for (var i in Game.Objects) { if (Game.Objects[i].name!='Cursor') num+=Game.Objects[i].amount; }
-			add *= num;
-			mult *= Game.GetTieredCpsMult(me);
-			mult *= Game.magicCpS('Cursor');
-			mult *= Game.eff('cursorCps');
+			add*=num;
+			mult*=Game.GetTieredCpsMult(me);
+			mult*=Game.magicCpS('Cursor');
+			mult*=Game.eff('cursorCps');
 			return Game.ComputeCps(0.1, Game.Has('Reinforced index finger') + Game.Has('Carpal tunnel prevention cream') + Game.Has('Ambidextrous'), add) * mult;
 		}, function () {
 			if (this.amount>=1) Game.Unlock(['Reinforced index finger', 'Carpal tunnel prevention cream']);
@@ -8393,23 +8393,23 @@ Game.Launch=function () {
 		}, 100, function (me) {
 			var mult=1;
 			for (var i in Game.GrandmaSynergies) {
-				if (Game.Has(Game.GrandmaSynergies[i])) mult *= 2;
+				if (Game.Has(Game.GrandmaSynergies[i])) mult*=2;
 			}
-			if (Game.Has('Bingo center/Research facility')) mult *= 4;
-			if (Game.Has('Ritual rolling pins')) mult *= 2;
-			if (Game.Has('Naughty list')) mult *= 2;
+			if (Game.Has('Bingo center/Research facility')) mult*=4;
+			if (Game.Has('Ritual rolling pins')) mult*=2;
+			if (Game.Has('Naughty list')) mult*=2;
 
-			if (Game.Has('Elderwort biscuits')) mult *= 1.02;
+			if (Game.Has('Elderwort biscuits')) mult*=1.02;
 
-			mult *= Game.eff('grandmaCps');
+			mult*=Game.eff('grandmaCps');
 
 			if (Game.Has('Cat ladies')) {
 				for (var i=0; i<Game.UpgradesByPool['kitten'].length; i++) {
-					if (Game.Has(Game.UpgradesByPool['kitten'][i].name)) mult *= 1.29;
+					if (Game.Has(Game.UpgradesByPool['kitten'][i].name)) mult*=1.29;
 				}
 			}
 
-			mult *= Game.GetTieredCpsMult(me);
+			mult*=Game.GetTieredCpsMult(me);
 
 			var add=0;
 			if (Game.Has('One mind')) add+=Game.Objects['Grandma'].amount * 0.02;
@@ -8419,9 +8419,9 @@ Game.Launch=function () {
 			var num=0;
 			for (var i in Game.Objects) { if (Game.Objects[i].name!='Grandma') num+=Game.Objects[i].amount; }
 			//if (Game.hasAura('Elder Battalion')) mult*=1+0.01*num;
-			mult *= 1 + Game.auraMult('Elder Battalion') * 0.01 * num;
+			mult*=1 + Game.auraMult('Elder Battalion') * 0.01 * num;
 
-			mult *= Game.magicCpS(me.name);
+			mult*=Game.magicCpS(me.name);
 
 			return (me.baseCps + add) * mult;
 		}, function () {
@@ -8444,8 +8444,8 @@ Game.Launch=function () {
 
 		new Game.Object('Farm', 'farm|farms|harvested|[X] more acre|[X] more acres', 'Grows cookie plants from cookie seeds.', 3, 2, { base: 'farm', xV: 8, yV: 8, w: 64, rows: 2, x: 0, y: 16 }, 500, function (me) {
 			var mult=1;
-			mult *= Game.GetTieredCpsMult(me);
-			mult *= Game.magicCpS(me.name);
+			mult*=Game.GetTieredCpsMult(me);
+			mult*=Game.magicCpS(me.name);
 			return me.baseCps * mult;
 		}, function () {
 			Game.UnlockTiered(this);
@@ -8456,8 +8456,8 @@ Game.Launch=function () {
 
 		new Game.Object('Mine', 'mine|mines|mined|[X] mile deeper|[X] miles deeper', 'Mines out cookie dough and chocolate chips.', 4, 3, { base: 'mine', xV: 16, yV: 16, w: 64, rows: 2, x: 0, y: 24 }, 10000, function (me) {
 			var mult=1;
-			mult *= Game.GetTieredCpsMult(me);
-			mult *= Game.magicCpS(me.name);
+			mult*=Game.GetTieredCpsMult(me);
+			mult*=Game.magicCpS(me.name);
 			return me.baseCps * mult;
 		}, function () {
 			Game.UnlockTiered(this);
@@ -8466,8 +8466,8 @@ Game.Launch=function () {
 
 		new Game.Object('Factory', 'factory|factories|mass-produced|[X] additional patent|[X] additional patents', 'Produces large quantities of cookies.', 5, 4, { base: 'factory', xV: 8, yV: 0, w: 64, rows: 1, x: 0, y: -22 }, 3000, function (me) {
 			var mult=1;
-			mult *= Game.GetTieredCpsMult(me);
-			mult *= Game.magicCpS(me.name);
+			mult*=Game.GetTieredCpsMult(me);
+			mult*=Game.magicCpS(me.name);
 			return me.baseCps * mult;
 		}, function () {
 			Game.UnlockTiered(this);
@@ -8478,8 +8478,8 @@ Game.Launch=function () {
 
 		new Game.Object('Bank', 'bank|banks|banked|Interest rates [X]% better|Interest rates [X]% better', 'Generates cookies from interest.', 6, 15, { base: 'bank', xV: 8, yV: 4, w: 56, rows: 1, x: 0, y: 13 }, 0, function (me) {
 			var mult=1;
-			mult *= Game.GetTieredCpsMult(me);
-			mult *= Game.magicCpS(me.name);
+			mult*=Game.GetTieredCpsMult(me);
+			mult*=Game.magicCpS(me.name);
 			return me.baseCps * mult;
 		}, function () {
 			Game.UnlockTiered(this);
@@ -8490,8 +8490,8 @@ Game.Launch=function () {
 
 		new Game.Object('Temple', 'temple|temples|discovered|[X] sacred artifact retrieved|[X] sacred artifacts retrieved', 'Full of precious, ancient chocolate.', 7, 16, { base: 'temple', xV: 8, yV: 4, w: 72, rows: 2, x: 0, y: -5 }, 0, function (me) {
 			var mult=1;
-			mult *= Game.GetTieredCpsMult(me);
-			mult *= Game.magicCpS(me.name);
+			mult*=Game.GetTieredCpsMult(me);
+			mult*=Game.magicCpS(me.name);
 			return me.baseCps * mult;
 		}, function () {
 			Game.UnlockTiered(this);
@@ -8502,8 +8502,8 @@ Game.Launch=function () {
 
 		new Game.Object('Wizard tower', 'wizard tower|wizard towers|summoned|Incantations have [X] more syllable|Incantations have [X] more syllables', 'Summons cookies with magic spells.', 8, 17, { base: 'wizardtower', xV: 16, yV: 16, w: 48, rows: 2, x: 0, y: 20 }, 0, function (me) {
 			var mult=1;
-			mult *= Game.GetTieredCpsMult(me);
-			mult *= Game.magicCpS(me.name);
+			mult*=Game.GetTieredCpsMult(me);
+			mult*=Game.magicCpS(me.name);
 			return me.baseCps * mult;
 		}, function () {
 			Game.UnlockTiered(this);
@@ -8515,8 +8515,8 @@ Game.Launch=function () {
 
 		new Game.Object('Shipment', 'shipment|shipments|shipped|[X] galaxy fully explored|[X] galaxies fully explored', 'Brings in fresh cookies from the cookie planet.', 9, 5, { base: 'shipment', xV: 16, yV: 16, w: 64, rows: 1, x: 0, y: 0 }, 40000, function (me) {
 			var mult=1;
-			mult *= Game.GetTieredCpsMult(me);
-			mult *= Game.magicCpS(me.name);
+			mult*=Game.GetTieredCpsMult(me);
+			mult*=Game.magicCpS(me.name);
 			return me.baseCps * mult;
 		}, function () {
 			Game.UnlockTiered(this);
@@ -8525,8 +8525,8 @@ Game.Launch=function () {
 
 		new Game.Object('Alchemy lab', 'alchemy lab|alchemy labs|transmuted|[X] primordial element mastered|[X] primordial elements mastered', 'Turns gold into cookies!', 10, 6, { base: 'alchemylab', xV: 16, yV: 16, w: 64, rows: 2, x: 0, y: 16 }, 200000, function (me) {
 			var mult=1;
-			mult *= Game.GetTieredCpsMult(me);
-			mult *= Game.magicCpS(me.name);
+			mult*=Game.GetTieredCpsMult(me);
+			mult*=Game.magicCpS(me.name);
 			return me.baseCps * mult;
 		}, function () {
 			Game.UnlockTiered(this);
@@ -8536,8 +8536,8 @@ Game.Launch=function () {
 
 		new Game.Object('Portal', 'portal|portals|retrieved|[X] dimension enslaved|[X] dimensions enslaved', 'Opens a door to the Cookieverse.', 11, 7, { base: 'portal', xV: 32, yV: 32, w: 64, rows: 2, x: 0, y: 0 }, 1666666, function (me) {
 			var mult=1;
-			mult *= Game.GetTieredCpsMult(me);
-			mult *= Game.magicCpS(me.name);
+			mult*=Game.GetTieredCpsMult(me);
+			mult*=Game.magicCpS(me.name);
 			return me.baseCps * mult;
 		}, function () {
 			Game.UnlockTiered(this);
@@ -8546,8 +8546,8 @@ Game.Launch=function () {
 
 		new Game.Object('Time machine', 'time machine|time machines|recovered|[X] century secured|[X] centuries secured', 'Brings cookies from the past, before they were even eaten.', 12, 8, { base: 'timemachine', xV: 32, yV: 32, w: 64, rows: 1, x: 0, y: 0 }, 123456789, function (me) {
 			var mult=1;
-			mult *= Game.GetTieredCpsMult(me);
-			mult *= Game.magicCpS(me.name);
+			mult*=Game.GetTieredCpsMult(me);
+			mult*=Game.magicCpS(me.name);
 			return me.baseCps * mult;
 		}, function () {
 			Game.UnlockTiered(this);
@@ -8557,8 +8557,8 @@ Game.Launch=function () {
 
 		new Game.Object('Antimatter condenser', 'antimatter condenser|antimatter condensers|condensed|[X] extra quark flavor|[X] extra quark flavors', 'Condenses the antimatter in the universe into cookies.', 13, 13, { base: 'antimattercondenser', xV: 0, yV: 64, w: 64, rows: 1, x: 0, y: 0 }, 3999999999, function (me) {
 			var mult=1;
-			mult *= Game.GetTieredCpsMult(me);
-			mult *= Game.magicCpS(me.name);
+			mult*=Game.GetTieredCpsMult(me);
+			mult*=Game.magicCpS(me.name);
 			return me.baseCps * mult;
 		}, function () {
 			Game.UnlockTiered(this);
@@ -8568,8 +8568,8 @@ Game.Launch=function () {
 
 		new Game.Object('Prism', 'prism|prisms|converted|[X] new color discovered|[X] new colors discovered', 'Converts light itself into cookies.', 14, 14, { base: 'prism', xV: 16, yV: 4, w: 64, rows: 1, x: 0, y: 20 }, 75000000000, function (me) {
 			var mult=1;
-			mult *= Game.GetTieredCpsMult(me);
-			mult *= Game.magicCpS(me.name);
+			mult*=Game.GetTieredCpsMult(me);
+			mult*=Game.magicCpS(me.name);
 			return me.baseCps * mult;
 		}, function () {
 			Game.UnlockTiered(this);
@@ -8578,8 +8578,8 @@ Game.Launch=function () {
 
 		new Game.Object('Chancemaker', 'chancemaker|chancemakers|spontaneously generated|Chancemakers are powered by [X]-leaf clovers|Chancemakers are powered by [X]-leaf clovers', 'Generates cookies out of thin air through sheer luck.', 15, 19, { base: 'chancemaker', xV: 8, yV: 64, w: 64, rows: 1, x: 0, y: 0, rows: 2 }, 77777777777, function (me) {
 			var mult=1;
-			mult *= Game.GetTieredCpsMult(me);
-			mult *= Game.magicCpS(me.name);
+			mult*=Game.GetTieredCpsMult(me);
+			mult*=Game.magicCpS(me.name);
 			return me.baseCps * mult;
 		}, function () {
 			Game.UnlockTiered(this);
@@ -8589,8 +8589,8 @@ Game.Launch=function () {
 
 		new Game.Object('Fractal engine', 'fractal engine|fractal engines|made from cookies|[X] iteration deep|[X] iterations deep', 'Turns cookies into even more cookies.', 16, 20, { base: 'fractalEngine', xV: 8, yV: 64, w: 64, rows: 1, x: 0, y: 0 }, 12345678987654321, function (me) {
 			var mult=1;
-			mult *= Game.GetTieredCpsMult(me);
-			mult *= Game.magicCpS(me.name);
+			mult*=Game.GetTieredCpsMult(me);
+			mult*=Game.magicCpS(me.name);
 			return me.baseCps * mult;
 		}, function () {
 			Game.UnlockTiered(this);
@@ -8600,8 +8600,8 @@ Game.Launch=function () {
 
 		new Game.Object('Javascript console', 'javascript console|javascript consoles|programmed|Equipped with [X] external library|Equipped with [X] external libraries', 'Creates cookies from the very code this game was written in.', 17, 32, { base: 'javascriptconsole', xV: 8, yV: 64, w: 14, rows: 1, x: 8, y: -32, frames: 2 }, 12345678987654321, function (me) {
 			var mult=1;
-			mult *= Game.GetTieredCpsMult(me);
-			mult *= Game.magicCpS(me.name);
+			mult*=Game.GetTieredCpsMult(me);
+			mult*=Game.magicCpS(me.name);
 			return me.baseCps * mult;
 		}, function () {
 			Game.UnlockTiered(this);
@@ -8611,8 +8611,8 @@ Game.Launch=function () {
 
 		new Game.Object('Idleverse', 'idleverse|idleverses|hijacked|[X] manifold|[X] manifolds', 'There\'s been countless other idle universes running alongside our own. You\'ve finally found a way to hijack their production and convert whatever they\'ve been making into cookies!', 18, 33, { base: 'idleverse', xV: 8, yV: 64, w: 48, rows: 2, x: 0, y: 0, frames: 4 }, 12345678987654321, function (me) {
 			var mult=1;
-			mult *= Game.GetTieredCpsMult(me);
-			mult *= Game.magicCpS(me.name);
+			mult*=Game.GetTieredCpsMult(me);
+			mult*=Game.magicCpS(me.name);
 			return me.baseCps * mult;
 		}, function () {
 			Game.UnlockTiered(this);
@@ -8621,8 +8621,8 @@ Game.Launch=function () {
 
 		new Game.Object('Cortex baker', 'cortex baker|cortex bakers|imagined|[X] extra IQ point|[X] extra IQ points', 'These artificial brains the size of planets are capable of simply dreaming up cookies into existence. Time and space are inconsequential. Reality is arbitrary.', 19, 34, { base: 'cortex', xV: 8, yV: 96, w: 48, rows: 1, x: 0, y: 0, frames: 4 }, 12345678987654321, function (me) {
 			var mult=1;
-			mult *= Game.GetTieredCpsMult(me);
-			mult *= Game.magicCpS(me.name);
+			mult*=Game.GetTieredCpsMult(me);
+			mult*=Game.magicCpS(me.name);
 			return me.baseCps * mult;
 		}, function () {
 			Game.UnlockTiered(this);
@@ -8750,18 +8750,18 @@ Game.Launch=function () {
 			if (this.priceFunc) price=this.priceFunc(this);
 			if (price==0) return 0;
 			if (this.pool!='prestige') {
-				if (Game.Has('Toy workshop')) price *= 0.95;
-				if (Game.Has('Five-finger discount')) price *= Math.pow(0.99, Game.Objects['Cursor'].amount / 100);
-				if (Game.Has('Santa\'s dominion')) price *= 0.98;
-				if (Game.Has('Faberge egg')) price *= 0.99;
-				if (Game.Has('Divine sales')) price *= 0.99;
-				if (Game.Has('Fortune #100')) price *= 0.99;
-				if (this.kitten && Game.Has('Kitten wages')) price *= 0.9;
-				if (Game.hasBuff('Haggler\'s luck')) price *= 0.98;
-				if (Game.hasBuff('Haggler\'s misery')) price *= 1.02;
+				if (Game.Has('Toy workshop')) price*=0.95;
+				if (Game.Has('Five-finger discount')) price*=Math.pow(0.99, Game.Objects['Cursor'].amount / 100);
+				if (Game.Has('Santa\'s dominion')) price*=0.98;
+				if (Game.Has('Faberge egg')) price*=0.99;
+				if (Game.Has('Divine sales')) price*=0.99;
+				if (Game.Has('Fortune #100')) price*=0.99;
+				if (this.kitten && Game.Has('Kitten wages')) price*=0.9;
+				if (Game.hasBuff('Haggler\'s luck')) price*=0.98;
+				if (Game.hasBuff('Haggler\'s misery')) price*=1.02;
 				//if (Game.hasAura('Master of the Armory')) price*=0.98;
-				price *= 1 - Game.auraMult('Master of the Armory') * 0.02;
-				price *= Game.eff('upgradeCost');
+				price*=1 - Game.auraMult('Master of the Armory') * 0.02;
+				price*=Game.eff('upgradeCost');
 				if (this.pool=='cookie' && Game.Has('Divine bakeries')) price /= 5;
 			}
 			return Math.ceil(price);
@@ -9170,16 +9170,16 @@ Game.Launch=function () {
 		}
 		Game.GetTieredCpsMult=function (me) {
 			var mult=1;
-			for (var i in me.tieredUpgrades) { if (!Game.Tiers[me.tieredUpgrades[i].tier].special && Game.Has(me.tieredUpgrades[i].name)) mult *= 2; }
+			for (var i in me.tieredUpgrades) { if (!Game.Tiers[me.tieredUpgrades[i].tier].special && Game.Has(me.tieredUpgrades[i].name)) mult*=2; }
 			for (var i in me.synergies) {
 				var syn=me.synergies[i];
 				if (Game.Has(syn.name)) {
-					if (syn.buildingTie1.name==me.name) mult *= (1 + 0.05 * syn.buildingTie2.amount);
-					else if (syn.buildingTie2.name==me.name) mult *= (1 + 0.001 * syn.buildingTie1.amount);
+					if (syn.buildingTie1.name==me.name) mult*=(1 + 0.05 * syn.buildingTie2.amount);
+					else if (syn.buildingTie2.name==me.name) mult*=(1 + 0.001 * syn.buildingTie1.amount);
 				}
 			}
-			if (me.fortune && Game.Has(me.fortune.name)) mult *= 1.07;
-			if (me.grandma && Game.Has(me.grandma.name)) mult *= (1 + Game.Objects['Grandma'].amount * 0.01 * (1 / (me.id - 1)));
+			if (me.fortune && Game.Has(me.fortune.name)) mult*=1.07;
+			if (me.grandma && Game.Has(me.grandma.name)) mult*=(1 + Game.Objects['Grandma'].amount * 0.01 * (1 / (me.id - 1)));
 			return mult;
 		}
 		Game.UnlockTiered=function (me) {
@@ -9552,9 +9552,9 @@ Game.Launch=function () {
 			if (Game.hasGod) {
 				var godLvl=Game.hasGod('seasons');
 				switch (godLvl) {
-					case 1: pow *= 1.3; break;
-					case 1: pow *= 1.2; break;
-					case 1: pow *= 1.1; break;
+					case 1: pow*=1.3; break;
+					case 1: pow*=1.2; break;
+					case 1: pow*=1.1; break;
 				}
 			}
 			return pow;
@@ -9693,17 +9693,17 @@ Game.Launch=function () {
 		}*/
 
 		Game.DropEgg=function (failRate) {
-			failRate *= 1 / Game.dropRateMult();
+			failRate*=1 / Game.dropRateMult();
 			if (Game.season!='easter') return;
-			if (Game.HasAchiev('Hide & seek champion')) failRate *= 0.7;
-			if (Game.Has('Omelette')) failRate *= 0.9;
-			if (Game.Has('Starspawn')) failRate *= 0.9;
+			if (Game.HasAchiev('Hide & seek champion')) failRate*=0.7;
+			if (Game.Has('Omelette')) failRate*=0.9;
+			if (Game.Has('Starspawn')) failRate*=0.9;
 			if (Game.hasGod) {
 				var godLvl=Game.hasGod('seasons');
 				switch (godLvl) {
-					case 1: failRate *= 0.9; break;
-					case 1: failRate *= 0.95; break;
-					case 1: failRate *= 0.97; break;
+					case 1: failRate*=0.9; break;
+					case 1: failRate*=0.95; break;
+					case 1: failRate*=0.97; break;
 				}
 			}
 			if (Math.random()>=failRate) {
@@ -11221,9 +11221,9 @@ Game.Launch=function () {
 					if (Game.hasGod) {
 						var godLvl=Game.hasGod('seasons');
 						switch (godLvl) {
-							case 1: m *= 2; break;
-							case 1: m *= 1.5; break;
-							case 1: m *= 1.25; break;
+							case 1: m*=2; break;
+							case 1: m*=1.5; break;
+							case 1: m*=1.25; break;
 						}
 					}
 					//return Game.seasonTriggerBasePrice*Math.pow(2,Game.seasonUses)*m;
@@ -12955,14 +12955,14 @@ Game.Launch=function () {
 				var me=Game.wrinklers[i];
 				if (me.phase==0 && Game.elderWrath>0 && n<max && me.id<max) {
 					var chance=0.00001 * Game.elderWrath;
-					chance *= Game.eff('wrinklerSpawn');
-					if (Game.Has('Unholy bait')) chance *= 5;
+					chance*=Game.eff('wrinklerSpawn');
+					if (Game.Has('Unholy bait')) chance*=5;
 					if (Game.hasGod) {
 						var godLvl=Game.hasGod('scorn');
 						switch (godLvl) {
-							case 1: chance *= 2.5; break;
-							case 2: chance *= 2; break;
-							case 3: chance *= 1.5; break;
+							case 1: chance*=2.5; break;
+							case 2: chance*=2; break;
+							case 3: chance*=1.5; break;
 						}
 					}
 					if (Game.Has('Wrinkler doormat')) chance=0.1;
@@ -13044,16 +13044,16 @@ Game.Launch=function () {
 					me.hurt=0;
 					me.hp=3;
 					var toSuck=1.1;
-					if (Game.Has('Sacrilegious corruption')) toSuck *= 1.05;
-					if (me.type==1) toSuck *= 3;//shiny wrinklers are an elusive, profitable breed
-					me.sucked *= toSuck;//cookie dough does weird things inside wrinkler digestive tracts
-					if (Game.Has('Wrinklerspawn')) me.sucked *= 1.05;
+					if (Game.Has('Sacrilegious corruption')) toSuck*=1.05;
+					if (me.type==1) toSuck*=3;//shiny wrinklers are an elusive, profitable breed
+					me.sucked*=toSuck;//cookie dough does weird things inside wrinkler digestive tracts
+					if (Game.Has('Wrinklerspawn')) me.sucked*=1.05;
 					if (Game.hasGod) {
 						var godLvl=Game.hasGod('scorn');
 						switch (godLvl) {
-							case 1: me.sucked *= 1.15; break;
-							case 2: me.sucked *= 1.1; break;
-							case 3: me.sucked *= 1.05; break;
+							case 1: me.sucked*=1.15; break;
+							case 2: me.sucked*=1.1; break;
+							case 3: me.sucked*=1.05; break;
 						}
 					}
 					if (me.sucked>0.5) {
@@ -13065,17 +13065,17 @@ Game.Launch=function () {
 							//if (Math.random()<(Game.HasAchiev('Spooky cookies')?0.2:0.05))//halloween cookie drops
 							var failRate=0.95;
 							if (Game.HasAchiev('Spooky cookies')) failRate=0.8;
-							if (Game.Has('Starterror')) failRate *= 0.9;
-							failRate *= 1 / Game.dropRateMult();
+							if (Game.Has('Starterror')) failRate*=0.9;
+							failRate*=1 / Game.dropRateMult();
 							if (Game.hasGod) {
 								var godLvl=Game.hasGod('seasons');
 								switch (godLvl) {
-									case 1: failRate *= 0.9; break;
-									case 2: failRate *= 0.95; break;
-									case 3: failRate *= 0.97; break;
+									case 1: failRate*=0.9; break;
+									case 2: failRate*=0.95; break;
+									case 3: failRate*=0.97; break;
 								}
 							}
-							if (me.type==1) failRate *= 0.9;
+							if (me.type==1) failRate*=0.9;
 							if (Math.random()>failRate)//halloween cookie drops
 							{
 								var cookie=choose(['Skull cookies', 'Ghost cookies', 'Bat cookies', 'Slime cookies', 'Pumpkin cookies', 'Eyeball cookies', 'Spider cookies']);
@@ -13734,8 +13734,8 @@ Game.Launch=function () {
 						it.yd+=Math.cos(-angle - Math.PI / 2) * v * (1 / ratio);
 						this.rd+=(Math.random() - 0.5) * 0.1 * (ratio);
 						it.rd+=(Math.random() - 0.5) * 0.1 * (1 / ratio);
-						this.rd *= Math.min(1, v);
-						it.rd *= Math.min(1, v);
+						this.rd*=Math.min(1, v);
+						it.rd*=Math.min(1, v);
 					}
 				}
 			}
@@ -13745,16 +13745,16 @@ Game.Launch=function () {
 				this.yd+=(Math.random() - 0.5) * v * 0.05;
 				this.rd+=(Math.random() - 0.5) * v * 0.02;
 				this.yd -= 1;
-				this.xd *= 0.85;
-				this.yd *= 0.85;
-				this.rd *= 0.85;
+				this.xd*=0.85;
+				this.yd*=0.85;
+				this.rd*=0.85;
 			}
 			else {
-				this.xd *= 0.99;
-				this.rd *= 0.99;
+				this.xd*=0.99;
+				this.rd*=0.99;
 				this.yd+=1;
 			}
-			this.yd *= (Math.min(1, Math.abs(this.y - (height - (Game.milkHd) * height) / 16)));
+			this.yd*=(Math.min(1, Math.abs(this.y - (height - (Game.milkHd) * height) / 16)));
 			this.rd+=this.xd * 0.01 / (this.s / (Game.toysType==1 ? 64 : 48));
 			if (this.x<this.s / 2 && this.xd<0) this.xd=Math.max(0.1, -this.xd * 0.6); else if (this.x<this.s / 2) { this.xd=0; this.x=this.s / 2; }
 			if (this.x>width - this.s / 2 && this.xd>0) this.xd=Math.min(-0.1, -this.xd * 0.6); else if (this.x>width - this.s / 2) { this.xd=0; this.x=width - this.s / 2; }
@@ -14143,7 +14143,7 @@ Game.Launch=function () {
 							if (w>0.997) w=1.5;
 							else if (w>0.994) w=0.5;
 							else w=0;
-							w *= -4;
+							w*=-4;
 							if (fancy) w+=Math.sin((n + Game.T * 0.01) * Math.PI / 2) * 4;
 							var x=0;
 							var y=(140 * Game.BigCookieCursorOffset + n * 16 + w) - 16;
@@ -14210,7 +14210,7 @@ Game.Launch=function () {
 					ctx.rotate((t * (-0.1)) * Math.PI * 2);
 
 					var chunks={ 0: 7, 1: 6, 2: 3, 3: 2, 4: 8, 5: 1, 6: 9, 7: 5, 8: 0, 9: 4 };
-					s *= t / 2 + 1;
+					s*=t / 2 + 1;
 					/*ctx.globalAlpha=(1-t)*0.33;
 					for (var i=0;i<10;i++)
 					{
@@ -14300,12 +14300,12 @@ Game.Launch=function () {
 					var y=(Game.milkHd) * height;//(((Game.milkHd)*ctx.canvas.height)*(1+0.05*(Math.sin(Game.T*0.017)/2+0.5)));
 					var a=1;
 					if (Game.AscendTimer>0) {
-						y *= 1 - Math.pow((Game.AscendTimer / Game.AscendBreakpoint), 2) * 2;
-						a *= 1 - Math.pow((Game.AscendTimer / Game.AscendBreakpoint), 2) * 2;
+						y*=1 - Math.pow((Game.AscendTimer / Game.AscendBreakpoint), 2) * 2;
+						a*=1 - Math.pow((Game.AscendTimer / Game.AscendBreakpoint), 2) * 2;
 					}
 					else if (Game.ReincarnateTimer>0) {
-						y *= 1 - Math.pow(1 - (Game.ReincarnateTimer / Game.ReincarnateDuration), 2) * 2;
-						a *= 1 - Math.pow(1 - (Game.ReincarnateTimer / Game.ReincarnateDuration), 2) * 2;
+						y*=1 - Math.pow(1 - (Game.ReincarnateTimer / Game.ReincarnateDuration), 2) * 2;
+						a*=1 - Math.pow(1 - (Game.ReincarnateTimer / Game.ReincarnateDuration), 2) * 2;
 					}
 
 					var pic=Game.Milk.pic;
@@ -14659,7 +14659,7 @@ Game.Launch=function () {
 					}
 				}
 				Game.BigCookieSizeD+=(Game.BigCookieSizeT - Game.BigCookieSize) * Game.BigCookieSpeed;
-				Game.BigCookieSizeD *= 0.75;
+				Game.BigCookieSizeD*=0.75;
 				Game.BigCookieSize+=Game.BigCookieSizeD;
 				Game.BigCookieSize=Math.max(0, Game.BigCookieSize);
 			}

@@ -158,7 +158,7 @@ function toFixed(x) {
 	} else {
 		var e=parseInt(x.toString().split('+')[1]);
 		if (e>20) {
-			e -= 20;
+			e-=20;
 			x /= Math.pow(10, e);
 			x+=(new Array(e + 1)).join('0');
 		}
@@ -3857,8 +3857,8 @@ Game.Launch=function () {
 		Game.UpdateAscend=function () {
 			if (Game.keys[37]) Game.AscendOffXT+=16 * (1 / Game.AscendZoomT);
 			if (Game.keys[38]) Game.AscendOffYT+=16 * (1 / Game.AscendZoomT);
-			if (Game.keys[39]) Game.AscendOffXT -= 16 * (1 / Game.AscendZoomT);
-			if (Game.keys[40]) Game.AscendOffYT -= 16 * (1 / Game.AscendZoomT);
+			if (Game.keys[39]) Game.AscendOffXT-=16 * (1 / Game.AscendZoomT);
+			if (Game.keys[40]) Game.AscendOffYT-=16 * (1 / Game.AscendZoomT);
 
 			if (Game.AscendOffXT>-Game.heavenlyBounds.left) Game.AscendOffXT=-Game.heavenlyBounds.left;
 			if (Game.AscendOffXT<-Game.heavenlyBounds.right) Game.AscendOffXT=-Game.heavenlyBounds.right;
@@ -4050,8 +4050,8 @@ Game.Launch=function () {
 					}
 				}
 			}
-			Game.heavenlyBounds.left -= 128;
-			Game.heavenlyBounds.top -= 128;
+			Game.heavenlyBounds.left-=128;
+			Game.heavenlyBounds.top-=128;
 			Game.heavenlyBounds.right+=128 + 64;
 			Game.heavenlyBounds.bottom+=128 + 64;
 			//str+='<div style="border:1px solid red;position:absolute;left:'+Game.heavenlyBounds.left+'px;width:'+(Game.heavenlyBounds.right-Game.heavenlyBounds.left)+'px;top:'+Game.heavenlyBounds.top+'px;height:'+(Game.heavenlyBounds.bottom-Game.heavenlyBounds.top)+'px;"></div>';
@@ -4132,16 +4132,16 @@ Game.Launch=function () {
 			var hour=1000 * 60 * 60;
 			Game.lumpMatureAge=hour * 20;
 			Game.lumpRipeAge=hour * 23;
-			if (Game.Has('Stevia Caelestis')) Game.lumpRipeAge -= hour;
-			if (Game.Has('Diabetica Daemonicus')) Game.lumpMatureAge -= hour;
-			if (Game.Has('Ichor syrup')) Game.lumpMatureAge -= 1000 * 60 * 7;
-			if (Game.Has('Sugar aging process')) Game.lumpRipeAge -= 6000 * Math.min(600, Game.Objects['Grandma'].amount);//capped at 600 grandmas
+			if (Game.Has('Stevia Caelestis')) Game.lumpRipeAge-=hour;
+			if (Game.Has('Diabetica Daemonicus')) Game.lumpMatureAge-=hour;
+			if (Game.Has('Ichor syrup')) Game.lumpMatureAge-=1000 * 60 * 7;
+			if (Game.Has('Sugar aging process')) Game.lumpRipeAge-=6000 * Math.min(600, Game.Objects['Grandma'].amount);//capped at 600 grandmas
 			if (Game.hasGod && Game.BuildingsOwned % 10==0) {
 				var godLvl=Game.hasGod('order');
 				switch (godLvl) {
-					case 1: Game.lumpRipeAge -= hour; break;
-					case 2: Game.lumpRipeAge -= (hour / 3) * 2; break;
-					case 3: Game.lumpRipeAge -= (hour / 3); break;
+					case 1: Game.lumpRipeAge-=hour; break;
+					case 2: Game.lumpRipeAge-=(hour / 3) * 2; break;
+					case 3: Game.lumpRipeAge-=(hour / 3); break;
 				}
 			}
 			//if (Game.hasAura('Dragon\'s Curve')) {Game.lumpMatureAge/=1.05;Game.lumpRipeAge/=1.05;}
@@ -4278,7 +4278,7 @@ Game.Launch=function () {
 					return false;
 				}
 				else {
-					if (!free) Game.lumps -= n;
+					if (!free) Game.lumps-=n;
 					func();
 					Game.recalculateGains=1;
 				}
@@ -4350,7 +4350,7 @@ Game.Launch=function () {
 			Game.cookiesEarned+=howmuch;
 		}
 		Game.Spend=function (howmuch) {
-			Game.cookies -= howmuch;
+			Game.cookies-=howmuch;
 		}
 		Game.Dissolve=function (howmuch) {
 			Game.cookies=Math.max(0, Game.cookies - howmuch);
@@ -4371,7 +4371,7 @@ Game.Launch=function () {
 
 			var num=0;
 			for (var i in Game.Objects) { num+=Game.Objects[i].amount; }
-			num -= Game.Objects['Cursor'].amount;
+			num-=Game.Objects['Cursor'].amount;
 			add=add * num;
 			if (Game.Has('Plastic mouse')) add+=Game.cookiesPs * 0.01;
 			if (Game.Has('Iron mouse')) add+=Game.cookiesPs * 0.01;
@@ -4443,7 +4443,7 @@ Game.Launch=function () {
 			if (Game.prefs.cookiesound) PlaySound('snd/clickb' + (Game.cookieClickSound) + '.mp3', 0.5);
 			else PlaySound('snd/click' + (Game.cookieClickSound) + '.mp3', 0.5);
 			Game.cookieClickSound+=Math.floor(Math.random() * 4) + 1;
-			if (Game.cookieClickSound>7) Game.cookieClickSound -= 7;
+			if (Game.cookieClickSound>7) Game.cookieClickSound-=7;
 		}
 		Game.ClickCookie=function (e, amount) {
 			var now=Date.now();
@@ -5673,7 +5673,7 @@ Game.Launch=function () {
 					y+=0;//(Math.random()-0.5)*40;
 				}
 			}
-			if (!noStack) y -= Game.textParticlesY;
+			if (!noStack) y-=Game.textParticlesY;
 
 			x=Math.max(Game.bounds.left + 200, x);
 			x=Math.min(Game.bounds.right - 200, x);
@@ -5985,9 +5985,9 @@ Game.Launch=function () {
 				if (time>=Game.fps * 60) minutes=(Math.floor(time / (Game.fps * 60)));
 				if (time>=Game.fps) seconds=(Math.floor(time / (Game.fps)));
 				//days-=months*30;
-				hours -= days * 24;
-				minutes -= hours * 60 + days * 24 * 60;
-				seconds -= minutes * 60 + hours * 60 * 60 + days * 24 * 60 * 60;
+				hours-=days * 24;
+				minutes-=hours * 60 + days * 24 * 60;
+				seconds-=minutes * 60 + hours * 60 * 60 + days * 24 * 60 * 60;
 				if (days>10) { hours=0; }
 				if (days) { minutes=0; seconds=0; }
 				if (hours) { seconds=0; }
@@ -8886,7 +8886,7 @@ Game.Launch=function () {
 				else {
 					var price=this.getPrice();
 					if (Game.heavenlyChips>=price && !this.bought) {
-						Game.heavenlyChips -= price;
+						Game.heavenlyChips-=price;
 						Game.heavenlyChipsSpent+=price;
 						this.unlocked=1;
 						this.bought=1;
@@ -10056,7 +10056,7 @@ Game.Launch=function () {
 			if (Game.chimeType==1) PlaySound('snd/chime.mp3');
 			else if (Game.chimeType==2) PlaySound('snd/fortune.mp3');
 			else if (Game.chimeType==3) PlaySound('snd/cymbalRev.mp3');
-			else if (Game.chimeType==4) { Game.wrinklerSquishSound++; if (Game.wrinklerSquishSound>4) { Game.wrinklerSquishSound -= 4; } PlaySound('snd/squeak' + (Game.wrinklerSquishSound) + '.mp3'); }
+			else if (Game.chimeType==4) { Game.wrinklerSquishSound++; if (Game.wrinklerSquishSound>4) { Game.wrinklerSquishSound-=4; } PlaySound('snd/squeak' + (Game.wrinklerSquishSound) + '.mp3'); }
 		}
 
 
@@ -12902,7 +12902,7 @@ Game.Launch=function () {
 		Game.playWrinklerSquishSound=function () {
 			PlaySound('snd/squish' + (Game.wrinklerSquishSound) + '.mp3', 0.5);
 			Game.wrinklerSquishSound+=Math.floor(Math.random() * 1.5) + 1;
-			if (Game.wrinklerSquishSound>4) Game.wrinklerSquishSound -= 4;
+			if (Game.wrinklerSquishSound>4) Game.wrinklerSquishSound-=4;
 		}
 		Game.SpawnWrinkler=function (me) {
 			if (!me) {
@@ -13010,7 +13010,7 @@ Game.Launch=function () {
 							else {
 								Game.playWrinklerSquishSound();
 								me.hurt=1;
-								me.hp -= 0.75;
+								me.hp-=0.75;
 								if (Game.prefs.particles && !(me.hp<=0.5 && me.phase>0)) {
 									var x=me.x + (Math.sin(me.r * Math.PI / 180) * 90);
 									var y=me.y + (Math.cos(me.r * Math.PI / 180) * 90);
@@ -13028,7 +13028,7 @@ Game.Launch=function () {
 				}
 
 				if (me.hurt>0) {
-					me.hurt -= 5 / Game.fps;
+					me.hurt-=5 / Game.fps;
 					//me.close-=me.hurt*0.05;
 					//me.x+=Math.random()*2-1;
 					//me.y+=Math.random()*2-1;
@@ -13744,7 +13744,7 @@ Game.Launch=function () {
 				this.xd+=(Math.random() - 0.5) * v * 0.3;
 				this.yd+=(Math.random() - 0.5) * v * 0.05;
 				this.rd+=(Math.random() - 0.5) * v * 0.02;
-				this.yd -= 1;
+				this.yd-=1;
 				this.xd*=0.85;
 				this.yd*=0.85;
 				this.rd*=0.85;
@@ -14052,7 +14052,7 @@ Game.Launch=function () {
 							for (var i=0; i<digits; i++) {
 								var s=16 * (digits - i);
 								var num=parseInt(amount[i]);
-								if (i>0) space -= s * (1 - num / 10) / 2;
+								if (i>0) space-=s * (1 - num / 10) / 2;
 								if (i==0 && num>1) space+=s * 0.1;
 								for (var ii=0; ii<num; ii++) {
 									var x=Game.cookieOriginX;
@@ -14149,7 +14149,7 @@ Game.Launch=function () {
 							var y=(140 * Game.BigCookieCursorOffset + n * 16 + w) - 16;
 							if (y>-0.5 * rect.h && y<0.5 * rect.h) {
 								var rot=7.2;//(1/50)*360
-								if (i==0 && fancy) rot -= Game.T * 0.1;
+								if (i==0 && fancy) rot-=Game.T * 0.1;
 								if (i % 50==0) rot+=7.2 / 2;
 								ctx.rotate((rot / 360) * Math.PI * 2);
 								ctx.drawImage(pic, 0, 0, 32, 32, x, y, 32, 32);
@@ -15292,7 +15292,7 @@ Game.Launch=function () {
 
 		while (Game.accumulatedDelay>0) {
 			Game.Logic();
-			Game.accumulatedDelay -= 1000 / Game.fps;//as long as we're detecting latency (slower than target fps), execute logic (this makes drawing slower but makes the logic behave closer to correct target fps)
+			Game.accumulatedDelay-=1000 / Game.fps;//as long as we're detecting latency (slower than target fps), execute logic (this makes drawing slower but makes the logic behave closer to correct target fps)
 		}
 		Timer.track('catchup logic');
 		Game.catchupLogic=0;

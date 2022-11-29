@@ -672,16 +672,30 @@ CanvasRenderingContext2D.prototype.drawImage=function () {
 	if (arguments[0].alt!='blank') OldCanvasDrawImage.apply(this, arguments);
 }
 
-function AddEvent(html_element, event_name, event_function) {
-	if (html_element.attachEvent) html_element.attachEvent("on" + event_name, function () { event_function.call(html_element); });
-	else if (html_element.addEventListener) html_element.addEventListener(event_name, event_function);
+function AddEvent(el,ev,func)
+{
+	//ie. myListener=AddEvent(l('element'),'click',function(){console.log('hi!');});
+	if (el.addEventListener) {el.addEventListener(ev,func,false);return [el,ev,func];}
+	else if (el.attachEvent) {var func2=function(){func.call(el);};el.attachEvent('on'+ev,func2);return [el,ev,func2];}
+	return false;
+}
+function RemoveEvent(evObj)
+{
+	//ie. RemoveEvent(myListener);
+	if (!evObj) return false;
+	if (evObj[0].removeEventListener) evObj[0].removeEventListener(evObj[1],evObj[2],false);
+	else if (evObj[0].detachEvent) evObj[0].detachEvent('on'+evObj[1],evObj[2]);
+	return true;
 }
 
-function FireEvent(el, etype) {
-	if (el.fireEvent) { el.fireEvent('on' + etype); }
-	else {
+function FireEvent(el,ev)
+{
+	if (el.fireEvent)
+	{el.fireEvent('on'+ev);}
+	else
+	{
 		var evObj=document.createEvent('Events');
-		evObj.initEvent(etype, true);
+		evObj.initEvent(ev,true,false);
 		el.dispatchEvent(evObj);
 	}
 }
@@ -713,7 +727,7 @@ Loader.prototype.Load=function (assets) {
 		if (!this.assetsLoading[assets[i]] && !this.assetsLoaded[assets[i]]) {
 			let triedFallBackDomain=false
 			var img=new Image();
-			if (assets[i].indexOf('http')!=-1) {
+			if (assets[i].indexOf('/')!=-1) {
 				img.src=assets[i]
 			} else {
 				img.src=this.mainDomain + this.subDomain + assets[i] + '?v=' + this.version;
@@ -734,7 +748,7 @@ Loader.prototype.Load=function (assets) {
 Loader.prototype.Replace=function (old, newer) {
 	if (this.assets[old]) {
 		var img=new Image();
-		if (newer.indexOf('http')!=-1) img.src=newer;
+		if (newer.indexOf('/')!=-1) img.src=newer;
 		else {
 			let triedFallBackDomain=false
 			img.src=this.mainDomain + this.subDomain + newer + '?v=' + this.version

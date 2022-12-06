@@ -14160,13 +14160,11 @@ Game.Launch=function () {
 							w*=-4;
 							if (fancy) w+=Math.sin((n + Game.T * 0.01) * Math.PI / 2) * 4;
 							var x=0;
-							var y = (140 * Game.BigCookieCursorOffset + n * 16 + w) - 16;
-							var rot = 7.2;//(1/50)*360
-							if (i == 0 && fancy) rot -= Game.T * 0.1;
-							if (i % 50 == 0) rot += 7.2 / 2;
-							let rotx = Game.cookieOriginX + Math.sin(-((r - 5) / 360) * Math.PI * 2) * y
-							let roty = Game.cookieOriginY + Math.cos(-((r - 5) / 360) * Math.PI * 2) * y
-							if (rotx > -0.5 * rect.w && rotx < 0.5 * rect.w && roty>-0.5 * rect.h && roty<0.5 * rect.h) {
+							var y=(140 * Game.BigCookieCursorOffset + n * 16 + w) - 16;
+							if (y>-0.5 * rect.h && y<0.5 * rect.h) {
+								var rot=7.2;//(1/50)*360
+								if (i==0 && fancy) rot-=Game.T * 0.1;
+								if (i % 50==0) rot+=7.2 / 2;
 								ctx.rotate((rot / 360) * Math.PI * 2);
 								ctx.drawImage(pic, 0, 0, 32, 32, x, y, 32, 32);
 								//ctx.drawImage(pic,32*(i==spe),0,32,32,x,y,32,32);

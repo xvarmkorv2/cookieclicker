@@ -7095,10 +7095,18 @@ Game.Launch=function () {
 			commonName=commonName.split('|');
 			this.single=commonName[0];
 			this.plural=commonName[1];
-			this.actionName=commonName[2];
+			this.bsingle = this.single; this.bplural = this.plural;//store untranslated as we use those too
+            this.actionName=commonName[2];
 			this.extraName=commonName[3];
 			this.extraPlural=commonName[4];
-			this.desc=desc;
+			this.desc = desc;
+			if (true)//if (EN)
+			{
+				this.dname = loc(this.name);
+				this.single = loc(this.single);
+				this.plural = loc(this.plural);
+				this.desc = loc(FindLocStringByPart(this.name + ' quote'));
+			}
 			this.basePrice=price;
 			this.price=this.basePrice;
 			this.bulkPrice=this.price;
@@ -14138,7 +14146,7 @@ Game.Launch=function () {
 					}
 
 					//cursors
-					if (Game.prefs.cursors) {
+					if (Game.prefs.cursors && Game.Objects['Cursor'].amount>0) {
 						ctx.save();
 						ctx.translate(Game.cookieOriginX, Game.cookieOriginY);
 						var pic=Pic('cursor.png');

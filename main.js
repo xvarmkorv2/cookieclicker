@@ -911,6 +911,13 @@ Timer.say=function (label) {
 	Timer.labels[label]=`<div style="border-top:1px solid #ccc;"> ${label} </div>`;
 }
 
+Timer.render=function () {
+	if (!Game.sesame) return;
+	var str = '';
+	for (var i of Timer.order) { str += Timer.labels[i]; }
+	return str
+}
+
 
 /*=====================================================================================
 GAME INITIALIZATION
@@ -15349,11 +15356,9 @@ Game.Launch=function () {
 			ctx.stroke();
 
 			l('fpsCounter').textContent=Game.currentFps + ' fps';
-			var str='';
-			for (var i of Timer.order) { str+=Timer.labels[i]; }
 			if (Game.debugTimersOn) l('debugLog').style.display='block';
 			else l('debugLog').style.display='none';
-			l('debugLog').innerHTML=str;
+			l('debugLog').innerHTML=Timer.render();
 
 		}
 		Timer.reset();

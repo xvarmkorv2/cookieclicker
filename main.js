@@ -15334,10 +15334,10 @@ Game.Launch=function () {
 		if (Game.visible) Game.Draw()// requestAnimationFrame(Game.Draw);
 
 		Timer.say('END');
+		Game.previousFps = Game.currentFps;
+		Game.currentFps = Game.getFps();
 		if (Game.sesame) {
 			//fps counter and graph
-			Game.previousFps=Game.currentFps;
-			Game.currentFps=Game.getFps();
 			var ctx=Game.fpsGraphCtx;
 			ctx.drawImage(Game.fpsGraph, -1, 0);
 			ctx.fillStyle='rgb(' + Math.round((1 - Game.currentFps / Game.fps) * 128) + ',0,0)';
@@ -15359,7 +15359,7 @@ Game.Launch=function () {
 		Timer.reset();
 
 		Game.loopT++;
-		setTimeout(Game.Loop, (1000 / Game.fps) - ((Game.lasttime-Game.time)/Game.fps));
+		setTimeout(Game.Loop, (1000 / Game.fps) - ((Game.lasttime-Game.time)/(Game.currentFps-Game.fps)));
 	}
 }
 

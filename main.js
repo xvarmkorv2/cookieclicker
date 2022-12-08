@@ -1018,13 +1018,13 @@ var initMusic = function () {
 			'fadeTo': (what) => {
 				if (Music.playing && Music.playing.name == what) return false;
 				Music.setFilter(0, 3);
-				if (WindowFocus || Game.prefs.bgMusic) { Music.setVolume(0, 3); }
+				if (Game.visible || Game.prefs.bgMusic) { Music.setVolume(0, 3); }
 				setTimeout(() => {
 					var prev = Music.playing ? Music.playing.audio.currentTime : 0;
 					Music.setFilter(0);
-					if (WindowFocus || Game.prefs.bgMusic) { Music.setVolume(0); }
+					if (Game.visible || Game.prefs.bgMusic) { Music.setVolume(0); }
 					Music.setFilter(1, 3);
-					if (WindowFocus || Game.prefs.bgMusic) { Music.setVolume(Game.volumeMusic / 100, 1.5); }
+					if (Game.visible || Game.prefs.bgMusic) { Music.setVolume(Game.volumeMusic / 100, 1.5); }
 					Music.loopTrack(what);
 					Music.playing.audio.currentTime = prev % (1 * 4);//preserve bpm and bar
 				}, 3000);
@@ -1355,7 +1355,19 @@ Game.Launch=function () {
 	}
 
 	Game.visible=true;
-	AddEvent(document, 'visibilitychange', function (e) { if (document.visibilityState === 'hidden') Game.visible=false; else Game.visible=true; });
+	AddEvent(document, 'visibilitychange', function (e) { 
+		if (document.visibilityState === 'hidden') {
+			Game.visible=false;
+			if (Music && !Game.prefs.bgMusic){
+				Music.setVolume(0, 1)
+			}
+		} else {
+			Game.visible = true;
+			if (Music && !Game.prefs.bgMusic) {
+				Music.setVolume(Game.volumeMusic / 100, 0.5)
+			}
+		} 
+	});
 
 	{
 		Game.updateLog='<div class="selectable">' +

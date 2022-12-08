@@ -1075,7 +1075,19 @@ var initMusic = function () {
 /*=====================================================================================
 GAME INITIALIZATION
 =======================================================================================*/
-var Game={};
+var Game = {};
+
+if (!App) {
+	Game.firstClick = false;
+	AddEvent(window, 'click', function (initMusic) {
+		return function () {
+			if (Game.firstClick) return;
+			Game.firstClick = true;
+			initMusic();
+		}
+	}(initMusic));
+}
+else initMusic();
 
 (function () {
 	/*=====================================================================================
@@ -2039,19 +2051,6 @@ Game.Launch=function () {
 
 	Game.Init=function () {
 		Game.ready=1;
-
-
-		if (!App) {
-			Game.firstClick = false;
-			AddEvent(window, 'click', function (initMusic) {
-				return function () {
-					if (Game.firstClick) return;
-					Game.firstClick = true;
-					initMusic();
-				}
-			}(initMusic));
-		}
-		else initMusic();
 
 		/*=====================================================================================
 		VARIABLES AND PRESETS
@@ -11308,7 +11307,7 @@ Game.Launch=function () {
 				str+='<option value="' + i + '"' + (i==Game.jukebox.onSound ? ' selected="true"' : '') + '>' + Game.jukebox.sounds[i] + '</option>';
 			}
 			str+='</select><a class="option" onclick="Game.jukebox.setSound(Math.floor(Math.random()*Game.jukebox.sounds.length));">' + loc("Random") + '</a>';
-			if (App) {
+			if (Music) {
 				var data=Music ? Music.tracks[Game.jukebox.tracks[Game.jukebox.onTrack]].audio : 0;
 				var dur=data ? data.duration + 1 : 0;
 				str+='<div class="line"></div>';

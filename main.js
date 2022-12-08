@@ -851,7 +851,7 @@ var PlayMusicSound=function (url, vol, pitchVar) {
 
 Music=false;
 PlayCue=function (cue, arg) {
-	if (Music && Game.jukebox.trackAuto) Music.cue(cue, arg);
+	if (Music && (Game.jukebox ? Game.jukebox.trackAuto : true)) Music.cue(cue, arg);
 }
 
 if (!Date.now) { Date.now=function now() { return new Date().getTime(); }; }
@@ -3547,14 +3547,20 @@ Game.Launch=function () {
 			Game.runModHook('reset', hard);
 
 			if (hard) {
-				if (Game.T>Game.fps * 5 && Game.ReincarnateTimer==0)//fade out of black and pop the cookie
+				Game.clicksThisSession = 0;
+				if (Game.T > Game.fps * 5 && Game.ReincarnateTimer == 0)//fade out of black and pop the cookie
 				{
-					Game.ReincarnateTimer=1;
+					Game.ReincarnateTimer = 1;
 					Game.addClass('reincarnating');
-					Game.BigCookieSize=0;
+					Game.BigCookieSize = 0;
 				}
 				Game.Notify(loc("Game reset"), EN ? "So long, cookies." : loc("Good bye, cookies."), [21, 6], 6);
 			}
+			else Game.clicksThisSession = Math.max(Game.clicksThisSession, 1);
+
+			if (Game.jukebox) { Game.jukebox.reset();}
+			if (hard) PlayCue('launch');
+			else PlayCue('play');
 		}
 		Game.HardReset=function (bypass) {
 			if (!bypass) {
@@ -4028,6 +4034,7 @@ Game.Launch=function () {
 				Game.AscendOffYT=0;
 				Game.AscendZoomT=1;
 				Game.AscendZoom=0.2;
+                PlayCue('preascend');
 			}
 		}
 
@@ -4657,6 +4664,10 @@ Game.Launch=function () {
 
 				Game.playCookieClickSound();
 				Game.cookieClicks++;
+
+				if (Game.clicksThisSession == 0) PlayCue('preplay');
+				Game.clicksThisSession++;
+				Game.lastClick = now;
 			}
 			Game.lastClick=now;
 			Game.Click=0;
@@ -4702,7 +4713,8 @@ Game.Launch=function () {
 			bigCookie.tabIndex=1;
 		}
 		Game.Click=0;
-		Game.lastClickedEl=0;
+		Game.lastClickedEl = 0;
+		Game.clicksThisSession = 0;
 		Game.clickFrom=0;
 		Game.Scroll=0;
 		Game.mouseDown=0;
@@ -13058,6 +13070,14 @@ Game.Launch=function () {
 			Game.elderWrathD+=((Game.elderWrath + 1) - Game.elderWrathD) * 0.001;//slowly fade to the target wrath state
 
 			if (Game.elderWrath!=Game.elderWrathOld) Game.storeToRefresh=1;
+
+            if (Game.elderWrath != Game.elderWrathOld) {
+                if (Game.clicksThisSession > 0) {
+                    if (Game.elderWrath >= 3) PlayCue('fadeTo', 'grandmapocalypse');
+                    else PlayCue('fadeTo', 'click');
+                }
+                Game.storeToRefresh = 1;
+            }
 
 			Game.elderWrathOld=Game.elderWrath;
 

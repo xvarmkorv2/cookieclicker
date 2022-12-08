@@ -2039,8 +2039,19 @@ Game.Launch=function () {
 
 	Game.Init=function () {
 		Game.ready=1;
-		
-		initMusic()
+
+
+		if (!App) {
+			Game.firstClick = false;
+			AddEvent(window, 'click', function (initMusic) {
+				return function () {
+					if (Game.firstClick) return;
+					Game.firstClick = true;
+					initMusic();
+				}
+			}(initMusic));
+		}
+		else initMusic();
 
 		/*=====================================================================================
 		VARIABLES AND PRESETS

@@ -1918,6 +1918,7 @@ Game.Launch=function () {
 
 		//latency compensator stuff
 		Game.time=Date.now();
+		Game.lasttime=Game.time
 		Game.accumulatedDelay=0;
 		Game.delayTimeouts=0;//how many times we've gone over the timeout delay
 		Game.catchupLogic=0;
@@ -15313,6 +15314,7 @@ Game.Launch=function () {
 		}
 
 		Game.accumulatedDelay=Math.min(Game.accumulatedDelay, 1000 * 5);//don't compensate over 5 seconds; if you do, something's probably very wrong
+		Game.lasttime=Game.time
 		Game.time=time;
 
 		while (Game.accumulatedDelay>0) {
@@ -15357,7 +15359,7 @@ Game.Launch=function () {
 		Timer.reset();
 
 		Game.loopT++;
-		setTimeout(Game.Loop, 1000 / Game.fps);
+		setTimeout(Game.Loop, (1000 / Game.fps) - (Game.time-Game.lasttime));
 	}
 }
 

@@ -919,7 +919,7 @@ Timer.render=function () {
 }
 
 var initMusic = function () {
-	AudioContext = new (window.AudioContext || window.webkitAudioContext)();
+	let AudioContext = new (window.AudioContext || window.webkitAudioContext)();
 	if (AudioContext) {
 		Music = {};
 		Music.context = AudioContext;
@@ -11160,139 +11160,143 @@ Game.Launch=function () {
 		order=49900;
 		new Game.Upgrade('Jukebox', loc("Play through the game's sound files!"), 0, [31, 12]);
 		Game.last.pool='toggle';
-		Game.jukebox={
-			sounds: [
-				'tick',
-				'tickOff',
-				'smallTick',
-				'toneTick',
-				'clickOn', 'clickOn2',
-				'clickOff', 'clickOff2',
-				'pop1', 'pop2', 'pop3',
-				'press',
-				//'switch',
-				'buy1', 'buy2', 'buy3', 'buy4',
-				'sell1', 'sell2', 'sell3', 'sell4',
-				'buyHeavenly',
-				'click1', 'click2', 'click3', 'click4', 'click5', 'click6', 'click7',
-				'clickb1', 'clickb2', 'clickb3', 'clickb4', 'clickb5', 'clickb6', 'clickb7',
-				'charging',
-				'thud',
-				//'cookieBreak',
-				'cymbalRev',
-				//'cymbalCrash',
-				'smallCymbalCrash',
-				'choir',
-				'chime',
-				'shimmerClick',
-				'jingle',
-				'jingleClick',
-				'fortune',
-				'till1', 'till2', 'till3', 'tillb1', 'tillb2', 'tillb3',
-				'harvest1', 'harvest2', 'harvest3',
-				'freezeGarden',
-				'growl',
-				'snarl',
-				'page',
-				'swooshIn',
-				'swooshOut',
-				'spell',
-				'spellFail',
-				'spirit',
-				'squish1', 'squish2', 'squish3', 'squish4',
-				'squeak1', 'squeak2', 'squeak3', 'squeak4',
-				'cashIn', 'cashIn2',
-				'cashOut',
-				'upgrade',
-				//'levelPrestige',
-			],
-			tracks: [],//populated externally
-			onSound: 0,
-			onTrack: 0,
-			trackLooped: true,
-			trackAuto: true,
-			trackShuffle: false,
-			reset: function () {
-				var me=Game.jukebox;
-				me.onSound=0;
-				me.onTrack=0;
-				me.trackLooped=true;
-				me.trackAuto=true;
-				me.trackShuffle=false;
-			},
-			setSound: function (id) {
-				if (id>=Game.jukebox.sounds.length) id=0;
-				else if (id<0) id=Game.jukebox.sounds.length - 1;
-				Game.jukebox.onSound=id;
-				if (l('jukeboxOnSound')) {
-					triggerAnim(l('jukeboxPlayer'), 'pucker');
-					l('jukeboxOnSound').innerHTML='&bull; ' + Game.jukebox.sounds[Game.jukebox.onSound] + ' &bull;';
-					l('jukeboxOnSoundN').innerHTML=(Game.jukebox.onSound + 1) + '/' + (Game.jukebox.sounds.length);
-					l('jukeboxSoundSelect').value=Game.jukebox.onSound;
-				}
-				PlaySound('snd/' + Game.jukebox.sounds[Game.jukebox.onSound] + '.mp3', 1);
-			},
-			setTrack: function (id, dontPlay) {
-				if (id>=Game.jukebox.tracks.length) id=0;
-				else if (id<0) id=Game.jukebox.tracks.length - 1;
-				Game.jukebox.onTrack=id;
-				var data=Music.tracks[Game.jukebox.tracks[Game.jukebox.onTrack]].audio;
-				if (l('jukeboxOnTrack')) {
-					triggerAnim(l('jukeboxPlayer'), 'pucker');
-					l('jukeboxOnTrack').innerHTML='&bull; ' + cap(Game.jukebox.tracks[Game.jukebox.onTrack]) + ' &bull;';
-					l('jukeboxOnTrackAuthor').innerHTML=Music.tracks[Game.jukebox.tracks[Game.jukebox.onTrack]].author;
-					l('jukeboxTrackSelect').value=Game.jukebox.onTrack;
-					if (data) {
-						var dur=data.duration + 1;
-						l('jukeboxMusicTotalTime').innerHTML=Math.floor(dur / 60) + ':' + (Math.floor(dur % 60)<10 ? '0' : '') + Math.floor(dur % 60);
+		let initJukebox = function(){
+			Game.jukebox = {
+				sounds: [
+					'tick',
+					'tickOff',
+					'smallTick',
+					'toneTick',
+					'clickOn', 'clickOn2',
+					'clickOff', 'clickOff2',
+					'pop1', 'pop2', 'pop3',
+					'press',
+					//'switch',
+					'buy1', 'buy2', 'buy3', 'buy4',
+					'sell1', 'sell2', 'sell3', 'sell4',
+					'buyHeavenly',
+					'click1', 'click2', 'click3', 'click4', 'click5', 'click6', 'click7',
+					'clickb1', 'clickb2', 'clickb3', 'clickb4', 'clickb5', 'clickb6', 'clickb7',
+					'charging',
+					'thud',
+					//'cookieBreak',
+					'cymbalRev',
+					//'cymbalCrash',
+					'smallCymbalCrash',
+					'choir',
+					'chime',
+					'shimmerClick',
+					'jingle',
+					'jingleClick',
+					'fortune',
+					'till1', 'till2', 'till3', 'tillb1', 'tillb2', 'tillb3',
+					'harvest1', 'harvest2', 'harvest3',
+					'freezeGarden',
+					'growl',
+					'snarl',
+					'page',
+					'swooshIn',
+					'swooshOut',
+					'spell',
+					'spellFail',
+					'spirit',
+					'squish1', 'squish2', 'squish3', 'squish4',
+					'squeak1', 'squeak2', 'squeak3', 'squeak4',
+					'cashIn', 'cashIn2',
+					'cashOut',
+					'upgrade',
+					//'levelPrestige',
+				],
+				tracks: [],//populated externally
+				onSound: 0,
+				onTrack: 0,
+				trackLooped: true,
+				trackAuto: true,
+				trackShuffle: false,
+				reset: function () {
+					var me = Game.jukebox;
+					me.onSound = 0;
+					me.onTrack = 0;
+					me.trackLooped = true;
+					me.trackAuto = true;
+					me.trackShuffle = false;
+				},
+				setSound: function (id) {
+					if (id >= Game.jukebox.sounds.length) id = 0;
+					else if (id < 0) id = Game.jukebox.sounds.length - 1;
+					Game.jukebox.onSound = id;
+					if (l('jukeboxOnSound')) {
+						triggerAnim(l('jukeboxPlayer'), 'pucker');
+						l('jukeboxOnSound').innerHTML = '&bull; ' + Game.jukebox.sounds[Game.jukebox.onSound] + ' &bull;';
+						l('jukeboxOnSoundN').innerHTML = (Game.jukebox.onSound + 1) + '/' + (Game.jukebox.sounds.length);
+						l('jukeboxSoundSelect').value = Game.jukebox.onSound;
 					}
+					PlaySound('snd/' + Game.jukebox.sounds[Game.jukebox.onSound] + '.mp3', 1);
+				},
+				setTrack: function (id, dontPlay) {
+					if (id >= Game.jukebox.tracks.length) id = 0;
+					else if (id < 0) id = Game.jukebox.tracks.length - 1;
+					Game.jukebox.onTrack = id;
+					var data = Music.tracks[Game.jukebox.tracks[Game.jukebox.onTrack]].audio;
+					if (l('jukeboxOnTrack')) {
+						triggerAnim(l('jukeboxPlayer'), 'pucker');
+						l('jukeboxOnTrack').innerHTML = '&bull; ' + cap(Game.jukebox.tracks[Game.jukebox.onTrack]) + ' &bull;';
+						l('jukeboxOnTrackAuthor').innerHTML = Music.tracks[Game.jukebox.tracks[Game.jukebox.onTrack]].author;
+						l('jukeboxTrackSelect').value = Game.jukebox.onTrack;
+						if (data) {
+							var dur = data.duration + 1;
+							l('jukeboxMusicTotalTime').innerHTML = Math.floor(dur / 60) + ':' + (Math.floor(dur % 60) < 10 ? '0' : '') + Math.floor(dur % 60);
+						}
 
-					if (!dontPlay && Music) { Game.jukebox.trackAuto=false; l('jukeboxMusicAuto').classList.add('off'); Music.playTrack(Game.jukebox.tracks[Game.jukebox.onTrack]); Music.setFilter(1); Music.loop(Game.jukebox.trackLooped); }
-					if (data.paused) l('jukeboxMusicPlay').innerHTML=loc("Play");
-					else l('jukeboxMusicPlay').innerHTML=loc("Stop");
+						if (!dontPlay && Music) { Game.jukebox.trackAuto = false; l('jukeboxMusicAuto').classList.add('off'); Music.playTrack(Game.jukebox.tracks[Game.jukebox.onTrack]); Music.setFilter(1); Music.loop(Game.jukebox.trackLooped); }
+						if (data.paused) l('jukeboxMusicPlay').innerHTML = loc("Play");
+						else l('jukeboxMusicPlay').innerHTML = loc("Stop");
+						Game.jukebox.updateMusicCurrentTime();
+					}
+				},
+				pressPlayMusic: function () {
+					if (!Music) return false;
+					var data = Music.tracks[Game.jukebox.tracks[Game.jukebox.onTrack]].audio;
+					if (!data.paused) { Music.pause(); l('jukeboxMusicPlay').innerHTML = loc("Play"); }
+					else { Music.unpause(); l('jukeboxMusicPlay').innerHTML = loc("Stop"); }
 					Game.jukebox.updateMusicCurrentTime();
-				}
-			},
-			pressPlayMusic: function () {
-				if (!Music) return false;
-				var data=Music.tracks[Game.jukebox.tracks[Game.jukebox.onTrack]].audio;
-				if (!data.paused) { Music.pause(); l('jukeboxMusicPlay').innerHTML=loc("Play"); }
-				else { Music.unpause(); l('jukeboxMusicPlay').innerHTML=loc("Stop"); }
-				Game.jukebox.updateMusicCurrentTime();
-			},
-			pressLoopMusic: function () {
-				Game.jukebox.trackLooped=!Game.jukebox.trackLooped;
-				if (!Music) return false;
-				if (Game.jukebox.trackLooped) { Music.loop(true); l('jukeboxMusicLoop').classList.remove('off'); }
-				else { Music.loop(false); l('jukeboxMusicLoop').classList.add('off'); }
-			},
-			pressMusicAuto: function () {
-				Game.jukebox.trackAuto=!Game.jukebox.trackAuto;
-				if (!Music) return false;
-				if (Game.jukebox.trackAuto) { Music.cue('play'); l('jukeboxMusicAuto').classList.remove('off'); }
-				else {/*Game.jukebox.setTrack(Game.jukebox.onTrack);*/l('jukeboxMusicAuto').classList.add('off'); }
-			},
-			pressMusicShuffle: function () {
-				Game.jukebox.trackShuffle=!Game.jukebox.trackShuffle;
-			},
-			updateMusicCurrentTime: function (noLoop) {
-				if (!l('jukeboxMusicTime')) return false;
-				var data=Music.tracks[Game.jukebox.tracks[Game.jukebox.onTrack]].audio;
-				l('jukeboxMusicPlay').innerHTML=data.paused ? loc("Play") : loc("Pause");
-				l('jukeboxMusicTime').innerHTML=Math.floor(data.currentTime / 60) + ':' + (Math.floor(data.currentTime % 60)<10 ? '0' : '') + Math.floor(data.currentTime % 60);
-				l('jukeboxMusicScrub').value=(data.currentTime / data.duration) * 1000;
-				l('jukeboxMusicScrubElapsed').style.width=Math.max(0, (data.currentTime / data.duration) * 288 - 4) + 'px';
-				if (!noLoop) setTimeout(Game.jukebox.updateMusicCurrentTime, 1000 / 2);
-			},
-			musicScrub: function (time) {
-				var data=Music.tracks[Game.jukebox.tracks[Game.jukebox.onTrack]].audio;
-				data.currentTime=(time / 1000) * (data.duration);
-				Game.jukebox.updateMusicCurrentTime();
-			},
+				},
+				pressLoopMusic: function () {
+					Game.jukebox.trackLooped = !Game.jukebox.trackLooped;
+					if (!Music) return false;
+					if (Game.jukebox.trackLooped) { Music.loop(true); l('jukeboxMusicLoop').classList.remove('off'); }
+					else { Music.loop(false); l('jukeboxMusicLoop').classList.add('off'); }
+				},
+				pressMusicAuto: function () {
+					Game.jukebox.trackAuto = !Game.jukebox.trackAuto;
+					if (!Music) return false;
+					if (Game.jukebox.trackAuto) { Music.cue('play'); l('jukeboxMusicAuto').classList.remove('off'); }
+					else {/*Game.jukebox.setTrack(Game.jukebox.onTrack);*/l('jukeboxMusicAuto').classList.add('off'); }
+				},
+				pressMusicShuffle: function () {
+					Game.jukebox.trackShuffle = !Game.jukebox.trackShuffle;
+				},
+				updateMusicCurrentTime: function (noLoop) {
+					if (!l('jukeboxMusicTime')) return false;
+					var data = Music.tracks[Game.jukebox.tracks[Game.jukebox.onTrack]].audio;
+					l('jukeboxMusicPlay').innerHTML = data.paused ? loc("Play") : loc("Pause");
+					l('jukeboxMusicTime').innerHTML = Math.floor(data.currentTime / 60) + ':' + (Math.floor(data.currentTime % 60) < 10 ? '0' : '') + Math.floor(data.currentTime % 60);
+					l('jukeboxMusicScrub').value = (data.currentTime / data.duration) * 1000;
+					l('jukeboxMusicScrubElapsed').style.width = Math.max(0, (data.currentTime / data.duration) * 288 - 4) + 'px';
+					if (!noLoop) setTimeout(Game.jukebox.updateMusicCurrentTime, 1000 / 2);
+				},
+				musicScrub: function (time) {
+					var data = Music.tracks[Game.jukebox.tracks[Game.jukebox.onTrack]].audio;
+					data.currentTime = (time / 1000) * (data.duration);
+					Game.jukebox.updateMusicCurrentTime();
+				},
+			};
+			if (Music) { for (var i in Music.tracks) { Game.jukebox.tracks.push(Music.tracks[i].name); } }
 		};
-		if (Music) { for (var i in Music.tracks) { Game.jukebox.tracks.push(Music.tracks[i].name); } }
 
-		Game.last.choicesFunction=function () {
+		if (Music) { initJukebox ()}
+		Game.last.choicesFunction = function () {
+			if (!Game.jukebox) { initJukebox() }
 			var str='';
 			str+='<div class="usesIcon" style="margin:auto;width:48px;height:48px;background-position:' + (-31 * 48) + 'px ' + (-12 * 48) + 'px;" id="jukeboxPlayer"></div>';
 			str+='<div style="font-size:11px;opacity:0.7;margin-bottom:-4px;" id="jukeboxOnSoundN">' + (Game.jukebox.onSound + 1) + '/' + (Game.jukebox.sounds.length) + '</div>';

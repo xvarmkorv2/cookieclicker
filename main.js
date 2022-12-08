@@ -15359,7 +15359,7 @@ Game.Launch=function () {
 		Timer.reset();
 
 		Game.loopT++;
-		setTimeout(Game.Loop, (1000 / Game.fps) - (Game.time-Game.lasttime));
+		setTimeout(Game.Loop, (1000 / Game.fps) - (Game.lasttime-Game.time));
 	}
 }
 

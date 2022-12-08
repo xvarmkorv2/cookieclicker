@@ -14532,6 +14532,7 @@ Game.Launch=function () {
 					func();
 				} catch (error) {
 					console.error(error);
+					Game.Notify('Error', error, [11, 5]);
 				}
 			}
 		}

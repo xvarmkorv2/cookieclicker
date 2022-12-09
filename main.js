@@ -11186,7 +11186,8 @@ Game.Launch=function () {
 		order=49900;
 		new Game.Upgrade('Jukebox', loc("Play through the game's sound files!"), 0, [31, 12]);
 		Game.last.pool='toggle';
-		Game.initJukebox = function(){
+		Game.initJukebox = function () {
+			if (Game.jukebox) { return }
 			Game.jukebox = {
 				sounds: [
 					'tick',
@@ -11322,6 +11323,7 @@ Game.Launch=function () {
 
 		if (Music) { Game.initJukebox()}
 		Game.last.choicesFunction = function () {
+			if (!Game.jukebox) { Game.initJukebox() }
 			var str='';
 			str+='<div class="usesIcon" style="margin:auto;width:48px;height:48px;background-position:' + (-31 * 48) + 'px ' + (-12 * 48) + 'px;" id="jukeboxPlayer"></div>';
 			str+='<div style="font-size:11px;opacity:0.7;margin-bottom:-4px;" id="jukeboxOnSoundN">' + (Game.jukebox.onSound + 1) + '/' + (Game.jukebox.sounds.length) + '</div>';

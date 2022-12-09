@@ -1072,6 +1072,7 @@ var initMusic = function () {
 		//Music.playTrack('click');
 
 		if (Game.initJukebox) { Game.initJukebox() }
+		if (Game.ready && !Music.playing) { Music.cue('launch') }
 	}
 }; 
 /*=====================================================================================

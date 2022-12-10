@@ -11518,38 +11518,33 @@ Game.Launch=function () {
 		Game.getSeasonDuration=function () { return Game.fps * 60 * 60 * 24; }
 		Game.computeSeasons();
 
-		//alert untiered building upgrades
-		for (var i in Game.Upgrades) {
-			var me=Game.Upgrades[i];
-			if (me.order>=200 && me.order<2000 && !me.tier && me.name.indexOf('grandma')==-1 && me.pool!='prestige') console.log(me.name + ' has no tier.');
-		}
-
-		Game.UpgradesByPool={ 'kitten': [] };
-		for (var i in Game.Upgrades) {
-			if (!Game.UpgradesByPool[Game.Upgrades[i].pool]) Game.UpgradesByPool[Game.Upgrades[i].pool]=[];
-			Game.UpgradesByPool[Game.Upgrades[i].pool].push(Game.Upgrades[i]);
-			if (Game.Upgrades[i].kitten) Game.UpgradesByPool['kitten'].push(Game.Upgrades[i]);
-		}
-
+		Game.UpgradesByPool = { 'kitten': [] };
 		Game.PrestigeUpgrades = [];
+		
+		Game.goldenCookieUpgrades = ['Get lucky', 'Lucky day', 'Serendipity', 'Heavenly luck', 'Lasting fortune', 'Decisive fate', 'Lucky digit', 'Lucky number', 'Lucky payout', 'Golden goose egg'];
+
+		Game.cookieUpgrades = [];
 		for (var i in Game.Upgrades) {
-			if (Game.Upgrades[i].pool == 'prestige' || Game.Upgrades[i].pool == 'prestigeDecor') {
-				Game.PrestigeUpgrades.push(Game.Upgrades[i]);
-				if (Game.Upgrades[i].posX || Game.Upgrades[i].posY) Game.Upgrades[i].placedByCode = true;
-				else { Game.Upgrades[i].posX = 0; Game.Upgrades[i].posY = 0; }
-				if (Game.Upgrades[i].parents.length == 0 && Game.Upgrades[i].name != 'Legacy') Game.Upgrades[i].parents = ['Legacy'];
-				for (var ii in Game.Upgrades[i].parents) { Game.Upgrades[i].parents[ii] = Game.Upgrades[Game.Upgrades[i].parents[ii]]; }
+			var me = Game.Upgrades[i];
+			//alert untiered building upgrades
+			if (me.order>=200 && me.order<2000 && !me.tier && me.name.indexOf('grandma')==-1 && me.pool!='prestige') console.log(me.name + ' has no tier.');
+		
+			if (!Game.UpgradesByPool[me.pool]) Game.UpgradesByPool[me.pool] = [];
+			Game.UpgradesByPool[me.pool].push(me);
+			if (me.kitten) Game.UpgradesByPool['kitten'].push(me);
+
+			if (me.pool == 'prestige' || me.pool == 'prestigeDecor') {
+				Game.PrestigeUpgrades.push(me);
+				if (me.posX || me.posY) me.placedByCode = true;
+				else { me.posX = 0; me.posY = 0; }
+				if (me.parents.length == 0 && me.name != 'Legacy') me.parents = ['Legacy'];
+				for (var ii in me.parents) { me.parents[ii] = Game.Upgrades[me.parents[ii]]; }
 			}
-		}
 
-		Game.goldenCookieUpgrades=['Get lucky', 'Lucky day', 'Serendipity', 'Heavenly luck', 'Lasting fortune', 'Decisive fate', 'Lucky digit', 'Lucky number', 'Lucky payout', 'Golden goose egg'];
-
-		Game.cookieUpgrades=[];
-		for (var i in Game.Upgrades) {
-			var me=Game.Upgrades[i];
-			if ((me.pool=='cookie' || me.pseudoCookie)) Game.cookieUpgrades.push(me);
+			if ((me.pool == 'cookie' || me.pseudoCookie)) Game.cookieUpgrades.push(me);
 			if (me.tier) Game.Tiers[me.tier].upgrades.push(me);
 		}
+		
 		for (var i in Game.UnlockAt) { Game.Upgrades[Game.UnlockAt[i].name].unlockAt=Game.UnlockAt[i]; }
 		for (var i in Game.Upgrades) { if (Game.Upgrades[i].pool=='prestige') Game.Upgrades[i].order=Game.Upgrades[i].id; }
 

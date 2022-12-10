@@ -1025,8 +1025,7 @@ var initMusic = function () {
 					if (Game.visible || Game.prefs.bgMusic) { Music.setVolume(0); }
 					Music.setFilter(1, 3);
 					if (Game.visible || Game.prefs.bgMusic) { Music.setVolume(Game.volumeMusic / 100, 1.5); }
-					Music.loopTrack(what);
-					Music.playing.audio.currentTime = prev % (1 * 4);//preserve bpm and bar
+					Music.loopTrack(what, (track) => { track.audio.currentTime = prev % (1 * 4); });
 				}, 3000);
 			},
 			'preascend': () => { Music.setFilter(0, 3); },
@@ -1052,8 +1051,8 @@ var initMusic = function () {
 			if (Game.jukebox) Game.jukebox.setTrack(Game.jukebox.tracks.indexOf(name), true);
 			return true;
 		}
-		Music.loopTrack = function (name) {
-			Music.playTrack(name, (track) => { track.audio.loop = true; });
+		Music.loopTrack = function (name, callback) {
+			Music.playTrack(name, (track) => { track.audio.loop = true; if (callback) { callback(track); } });
 		}
 
 		Music.pause = function () {
@@ -11544,7 +11543,7 @@ Game.Launch=function () {
 			if ((me.pool == 'cookie' || me.pseudoCookie)) Game.cookieUpgrades.push(me);
 			if (me.tier) Game.Tiers[me.tier].upgrades.push(me);
 		}
-		
+
 		for (var i in Game.UnlockAt) { Game.Upgrades[Game.UnlockAt[i].name].unlockAt=Game.UnlockAt[i]; }
 		for (var i in Game.Upgrades) { if (Game.Upgrades[i].pool=='prestige') Game.Upgrades[i].order=Game.Upgrades[i].id; }
 

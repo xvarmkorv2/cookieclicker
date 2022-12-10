@@ -9391,18 +9391,25 @@ Game.Launch=function () {
 			//Game.SetTier(building1,tier);
 			return upgrade;
 		}
-		Game.GetTieredCpsMult=function (me) {
-			var mult=1;
-			for (var i in me.tieredUpgrades) { if (!Game.Tiers[me.tieredUpgrades[i].tier].special && Game.Has(me.tieredUpgrades[i].name)) mult*=2; }
-			for (var i in me.synergies) {
-				var syn=me.synergies[i];
-				if (Game.Has(syn.name)) {
-					if (syn.buildingTie1.name==me.name) mult*=(1 + 0.05 * syn.buildingTie2.amount);
-					else if (syn.buildingTie2.name==me.name) mult*=(1 + 0.001 * syn.buildingTie1.amount);
+		Game.GetTieredCpsMult = function (me) {
+			var mult = 1;
+			for (var i in me.tieredUpgrades) {
+				if (!Game.Tiers[me.tieredUpgrades[i].tier].special && Game.Has(me.tieredUpgrades[i].name)) {
+					var tierMult = 2;
+					//unshackled
+					if (Game.ascensionMode != 1 && Game.Has(me.unshackleUpgrade) && Game.Has(Game.Tiers[me.tieredUpgrades[i].tier].unshackleUpgrade)) tierMult += me.id == 1 ? 0.5 : (20 - me.id) * 0.1;
+					mult *= tierMult;
 				}
 			}
-			if (me.fortune && Game.Has(me.fortune.name)) mult*=1.07;
-			if (me.grandma && Game.Has(me.grandma.name)) mult*=(1 + Game.Objects['Grandma'].amount * 0.01 * (1 / (me.id - 1)));
+			for (var i in me.synergies) {
+				var syn = me.synergies[i];
+				if (Game.Has(syn.name)) {
+					if (syn.buildingTie1.name == me.name) mult *= (1 + 0.05 * syn.buildingTie2.amount);
+					else if (syn.buildingTie2.name == me.name) mult *= (1 + 0.001 * syn.buildingTie1.amount);
+				}
+			}
+			if (me.fortune && Game.Has(me.fortune.name)) mult *= 1.07;
+			if (me.grandma && Game.Has(me.grandma.name)) mult *= (1 + Game.Objects['Grandma'].amount * 0.01 * (1 / (me.id - 1)));
 			return mult;
 		}
 		Game.UnlockTiered=function (me) {

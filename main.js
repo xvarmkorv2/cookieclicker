@@ -11524,14 +11524,14 @@ Game.Launch=function () {
 			if (Game.Upgrades[i].kitten) Game.UpgradesByPool['kitten'].push(Game.Upgrades[i]);
 		}
 
-		Game.PrestigeUpgrades=[];
+		Game.PrestigeUpgrades = [];
 		for (var i in Game.Upgrades) {
-			if (Game.Upgrades[i].pool=='prestige' || Game.Upgrades[i].pool=='prestigeDecor') {
+			if (Game.Upgrades[i].pool == 'prestige' || Game.Upgrades[i].pool == 'prestigeDecor') {
 				Game.PrestigeUpgrades.push(Game.Upgrades[i]);
-				Game.Upgrades[i].posX=0;
-				Game.Upgrades[i].posY=0;
-				if (Game.Upgrades[i].parents.length==0 && Game.Upgrades[i].name!='Legacy') Game.Upgrades[i].parents=['Legacy'];
-				for (var ii in Game.Upgrades[i].parents) { Game.Upgrades[i].parents[ii]=Game.Upgrades[Game.Upgrades[i].parents[ii]]; }
+				if (Game.Upgrades[i].posX || Game.Upgrades[i].posY) Game.Upgrades[i].placedByCode = true;
+				else { Game.Upgrades[i].posX = 0; Game.Upgrades[i].posY = 0; }
+				if (Game.Upgrades[i].parents.length == 0 && Game.Upgrades[i].name != 'Legacy') Game.Upgrades[i].parents = ['Legacy'];
+				for (var ii in Game.Upgrades[i].parents) { Game.Upgrades[i].parents[ii] = Game.Upgrades[Game.Upgrades[i].parents[ii]]; }
 			}
 		}
 

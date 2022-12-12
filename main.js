@@ -5012,9 +5012,7 @@ Game.Launch=function () {
 				mult*=goldenSwitchMult;
 			}
 			if (Game.Has('Shimmering veil [off]')) {
-				var veilMult=0.5;
-				if (Game.Has('Reinforced membrane')) veilMult+=0.1;
-				mult*=1 + veilMult;
+				mult *= 1 + Game.getVeilBoost();
 			}
 			if (Game.Has('Magic shenanigans')) mult*=1000;
 			if (Game.Has('Occult obstruction')) mult*=0;
@@ -10760,7 +10758,7 @@ Game.Launch=function () {
 			if (Game.Has('Reinforced membrane')) {
 				if (context=='shimmer') Math.seedrandom(Game.seed + '/' + (Game.goldenClicks + Game.reindeerClicked));
 				else if (context=='click') Math.seedrandom(Game.seed + '/' + Game.cookieClicks);
-				if (Math.random()<0.1) {
+				if (Math.random()<Game.getVeilDefense()){
 					Game.Notify('The reinforced membrane protects the shimmering veil.', '', [7, 10]);
 					Game.Win('Thick-skinned');
 					return false;

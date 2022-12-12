@@ -10739,10 +10739,9 @@ Game.Launch=function () {
 
 		order=40005;
 		var func=function () {
-			var boost=50;
-			var resist=0;
-			if (Game.Has('Reinforced membrane')) { boost+=10; resist+=10; }
-			return (this.name=='Shimmering veil [on]' ? '<div style="text-align:center;">Active.</div><div class="line"></div>' : '') + 'Boosts your cookie production by <b>' + Beautify(boost) + '%</b> when active.<br>The veil is very fragile and will break if you click the big cookie or any golden cookies or reindeer.<br><br>Once broken, turning the veil back on costs 24 hours of unbuffed CpS.' + (resist>0 ? ('<br><br>Has a <b>' + Beautify(resist) + '%</b> chance to not break.') : '');
+			var boost=Game.getVeilBoost();
+			var resist=Game.getVeilDefense();
+			return (this.name=='Shimmering veil [on]'?'<div style="text-align:center;">'+loc("Active.")+'</div><div class="line"></div>':'')+loc("Boosts your cookie production by <b>%1%</b> when active.<br>The veil is very fragile and will break if you click the big cookie or any golden cookies or reindeer.<br><br>Once broken, turning the veil back on costs %2 of unbuffed CpS.",[Beautify(boost*100),Game.sayTime(24*60*60*Game.fps,2)])+(resist>0?('<br><br>'+loc("Has a <b>%1%</b> chance to not break.",Beautify(resist*100))):'');
 		};
 		new Game.Upgrade('Shimmering veil [off]', '', 1000000, [9, 10]);
 		Game.last.pool='toggle'; Game.last.toggleInto='Shimmering veil [on]';

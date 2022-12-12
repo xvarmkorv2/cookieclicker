@@ -14384,11 +14384,11 @@ Game.Launch=function () {
 							if (fancy) w+=Math.sin((n + Game.T * 0.01) * Math.PI / 2) * 4;
 							var x=0;
 							var y=(140 * Game.BigCookieCursorOffset + n * 16 + w) - 16;
+							var rot = 7.2;//(1/50)*360
+							if (i == 0 && fancy) rot -= Game.T * 0.1;
+							if (i % 50 == 0) rot += 7.2 / 2;
+							ctx.rotate((rot / 360) * Math.PI * 2);
 							if (y>0 && y<rect.h) {
-								var rot=7.2;//(1/50)*360
-								if (i==0 && fancy) rot-=Game.T * 0.1;
-								if (i % 50==0) rot+=7.2 / 2;
-								ctx.rotate((rot / 360) * Math.PI * 2);
 								ctx.drawImage(pic, 0, 0, 32, 32, x, y, 32, 32);
 								//ctx.drawImage(pic,32*(i==spe),0,32,32,x,y,32,32);
 
@@ -14490,7 +14490,7 @@ Game.Launch=function () {
 							}
 							ctx.rotate(Math.PI * 2 / n);
 						}
-						ctx.restore();
+						ctx.restore();	
 					}
 
 

@@ -15375,7 +15375,7 @@ Game.Launch=function () {
 		//every hour: get server data (ie. update notification, patreon data)
 		if (Game.T % (Game.fps * 60 * 60)==0 && Game.T>Game.fps * 10/* && Game.prefs.autoupdate*/) { Game.CheckUpdates(); Game.GrabData(); }
 
-		Game.T+=(30 / Game.fps);
+		Game.T++;
 	}
 
 	/*=====================================================================================

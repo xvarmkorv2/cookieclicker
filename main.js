@@ -14738,10 +14738,8 @@ Game.Launch=function () {
 			}
 			else if (bypass==1) {
 				var Input=l('devConsoleExecutorInput').value;
-				console.log(Input);
 				try {
 					var func=Function(Input)
-					console.log(func)
 					func();
 				} catch (error) {
 					console.error(error);

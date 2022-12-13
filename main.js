@@ -14915,7 +14915,7 @@ Game.Launch=function () {
 						break;
 					}
 					case 4: {
-						Game.BigCookieSize=(0 - Game.BigCookieSize) * 0.5;
+						Game.BigCookieSize=+(0 - Game.BigCookieSize) * 0.5;
 						break;
 					}
 					default: {

@@ -1075,7 +1075,7 @@ var initMusic = function () {
 			if (Game.clicksThisSession == 0) {
 				Music.cue('launch') 
 			} else {
-				PlayCue('preplay');
+				Music.cue('preplay');
 			}
 		}
 	}

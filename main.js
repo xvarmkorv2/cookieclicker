@@ -4737,6 +4737,7 @@ Game.Launch=function () {
 		Game.clicksThisSession = 0;
 		Game.clickFrom=0;
 		Game.Scroll=0;
+		Game.ScrollFrames=0;
 		Game.mouseDown=0;
 		if (!Game.touchEvents) {
 			AddEvent(bigCookie, 'click', Game.ClickCookie);

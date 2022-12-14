@@ -14372,6 +14372,7 @@ Game.Launch=function () {
 						var amount=Game.Objects['Cursor'].amount;
 						var rect={ w: Game.BackgroundObj.width, h: Game.BackgroundObj.height };
 						//var spe=-1;
+						let unusedRot =0;
 						for (var i=0; i<amount; i++) {
 							var n=Math.floor(i / 50);
 							//var a=((i+0.5*n)%50)/50;
@@ -14387,9 +14388,10 @@ Game.Launch=function () {
 							var rot = 7.2;//(1/50)*360
 							if (i == 0 && fancy) rot -= Game.T * 0.1;
 							if (i % 50 == 0) rot += 7.2 / 2;
-							ctx.rotate((rot / 360) * Math.PI * 2);
 							if (y>0 && y<rect.h) {
+								ctx.rotate(((rot+unusedRot) / 360) * Math.PI * 2);
 								ctx.drawImage(pic, 0, 0, 32, 32, x, y, 32, 32);
+								unusedRot=0
 								//ctx.drawImage(pic,32*(i==spe),0,32,32,x,y,32,32);
 
 								/*if (i==spe)
@@ -14399,6 +14401,8 @@ Game.Launch=function () {
 									y=Game.cookieOriginY+Math.cos(-((r-5)/360)*Math.PI*2)*y;
 									if (Game.CanClick && ctx && Math.abs(Game.mouseX-x)<16 && Math.abs(Game.mouseY-y)<16) Game.mousePointer=1;
 								}*/
+							} else {
+								unusedRot+=rot
 							}
 						}
 						ctx.restore();

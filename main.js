@@ -1071,7 +1071,13 @@ var initMusic = function () {
 		//Music.playTrack('click');
 
 		if (Game.initJukebox) { Game.initJukebox() }
-		if (Game.ready && !Music.playing) { Music.cue('launch') }
+		if (Game.ready && !Music.playing) { 
+			if (Game.clicksThisSession == 0) {
+				Music.cue('launch') 
+			} else {
+				PlayCue('preplay');
+			}
+		}
 	}
 }; 
 /*=====================================================================================

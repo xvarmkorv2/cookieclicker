@@ -14865,7 +14865,7 @@ Game.Launch=function () {
 			Game.UpdateGrandmapocalypse();
 
 			//these are kinda fun
-			if (Game.ascensionMode==2 && !Game.promptOn && Game.Scroll!=0 && Game.ScrollFrames++==3) {
+			if (Game.ascensionMode==2 && !Game.promptOn && Game.Scroll!=0 && Game.ScrollFrames++==2) {
 				Game.ScrollFrames=0;
 				if (Game.BigCookieState==1) {
 					Game.BigCookieState=2;

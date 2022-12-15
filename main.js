@@ -14232,13 +14232,15 @@ Game.Launch=function () {
 								ctx.fillPattern(Pic('snow2.jpg'), 0, 0, ctx.canvas.width, ctx.canvas.height + 512, 512, 512, 0, y);
 								ctx.globalCompositeOperation='source-over';
 								ctx.globalAlpha=1;
+								break;
 							}
 
 							case 'valentines': {//hearts
 								var y=(Math.floor(Game.T * 2.5) % 512);
 								ctx.globalAlpha=1;
 								ctx.fillPattern(Pic('heartStorm.png'), 0, 0, ctx.canvas.width, ctx.canvas.height + 512, 512, 512, 0, y);
-								ctx.globalAlpha=1;
+								ctx.globalAlpha = 1;
+								break;
 							}
 						}
 						Timer.track('left background');

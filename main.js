@@ -15951,6 +15951,7 @@ Game.Launch=function()
 	
 	Game.Draw=function()
 	{
+		Timer.say('DRAW');
 		Game.DrawBackground();Timer.track('end of background');
 		
 		if (!Game.OnAscend)
@@ -16058,6 +16059,7 @@ Game.Launch=function()
 		Game.runModHook('draw');
 		
 		Game.drawT++;
+		Timer.say('END DRAW');
 		//if (Game.prefs.altDraw) requestAnimationFrame(Game.Draw);
 	}
 	
@@ -16129,6 +16131,7 @@ Game.Launch=function()
 		
 		//if (!hasFocus) Game.tooltip.hide();
 		
+		Timer.say('END');
 		Game.previousFps = Game.currentFps;
 		Game.currentFps = Game.getFps();
 		if (Game.sesame) {

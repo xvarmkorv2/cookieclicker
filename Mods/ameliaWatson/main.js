@@ -92,7 +92,7 @@ Game.registerMod("despacito AmeliaWatson", {
 		document.body.appendChild(watson);
 
 		setTimeout(() => {
-			Game.registerHook('check', () => this.check);
+			Game.registerHook('check', () => this.check());
 			this.check()
 			/* Edits to the function not written by me, t'was by AgentZero ;) [im stupid lol] */
 			Game.Objects['Time machine'].tooltip = function () {

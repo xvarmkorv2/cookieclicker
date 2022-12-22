@@ -14439,13 +14439,123 @@ Game.Launch=function()
 		Game.LeftBackground.drawImage(Pic('brokenCookieHalo.png'), 0, 0);
 		Game.LeftBackground.drawImage(Pic('starbg.jpg'), 0, 0);
 
-		window.addEventListener('resize', function (event) {
-			Game.Background.canvas.width = Game.Background.canvas.parentNode.offsetWidth;
-			Game.Background.canvas.height = Game.Background.canvas.parentNode.offsetHeight;
-			Game.LeftBackground.canvas.width = Game.LeftBackground.canvas.parentNode.offsetWidth;
-			Game.LeftBackground.canvas.height = Game.LeftBackground.canvas.parentNode.offsetHeight;
+		AddEvent(window, 'resize', function (event) {
+			Game.BackgroundObj.width=Game.BackgroundObj.parentNode.offsetWidth;
+			Game.BackgroundObj.height=Game.BackgroundObj.parentNode.offsetHeight;
+			Game.LeftBackgroundObj.width=Game.LeftBackgroundObj.parentNode.offsetWidth;
+			Game.LeftBackgroundObj.height=Game.LeftBackgroundObj.parentNode.offsetHeight;
 		});
-
+		Game.toys=[];
+		Game.toysType=Math.floor(Math.random() * 2);
+		Game.toyinit=0;
+		Game.Toy=function (x, y) {
+			this.id=Game.toys.length;
+			this.x=x;
+			this.y=y;
+			this.xd=Math.random() * 10 - 5;
+			this.yd=Math.random() * 10 - 5;
+			this.r=Math.random() * Math.PI * 2;
+			this.rd=Math.random() * 0.1 - 0.05;
+			var v=Math.random(); var a=0.5; var b=0.5;
+			if (v<=a) v=b - b * Math.pow(1 - v / a, 3); else v=b + (1 - b) * Math.pow((v - a) / (1 - a), 3);
+			this.s=(Game.toysType==1 ? 64 : 48) * (0.1 + v * 1.9);
+			if (Game.toysType==2) this.s=(this.id % 10==1) ? 96 : 48;
+			this.st=this.s; this.s=0;
+			var cookies=[[10, 0]];
+			for (var i in Game.Upgrades) {
+				var cookie=Game.Upgrades[i];
+				if (cookie.bought>0 && cookie.pool=='cookie') cookies.push(cookie.icon);
+			}
+			this.icon=choose(cookies);
+			this.dragged=false;
+			this.l=document.createElement('div');
+			this.l.innerHTML=this.id;
+			this.l.style.cssText='cursor:pointer;border-radius:' + (this.s / 2) + 'px;opacity:0;width:' + this.s + 'px;height:' + this.s + 'px;background:#999;position:absolute;left:0px;top:0px;z-index:10000000;transform:translate(-1000px,-1000px);';
+			l('sectionLeft').appendChild(this.l);
+			AddEvent(this.l, 'mousedown', function (what) { return function () { what.dragged=true; }; }(this));
+			AddEvent(this.l, 'mouseup', function (what) { return function () { what.dragged=false; }; }(this));
+			Game.toys.push(this);
+			return this;
+		}
+		Game.Toy.prototype.logic=function () {
+			var width=Game.LeftBackground.canvas.width;
+			var height=Game.LeftBackground.canvas.height;
+			//psst... not real physics
+			for (var ii in Game.toys) {
+				var it=Game.toys[ii];
+				if (it.id!=this.id) {
+					var x1=this.x + this.xd;
+					var y1=this.y + this.yd;
+					var x2=it.x + it.xd;
+					var y2=it.y + it.yd;
+					var dist=Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2)) / (this.s / 2 + it.s / 2);
+					if (dist<(Game.toysType==1 ? 0.95 : 0.75)) {
+						var angle=Math.atan2(y1 - y2, x1 - x2);
+						var v1=Math.sqrt(Math.pow(this.xd, 2) + Math.pow(this.yd, 2));
+						var v2=Math.sqrt(Math.pow(it.xd, 2) + Math.pow(it.yd, 2));
+						var v=((v1 + v2) / 2 + dist) * 0.75;
+						var ratio=it.s / this.s;
+						this.xd+=Math.sin(-angle + Math.PI / 2) * v * (ratio);
+						this.yd+=Math.cos(-angle + Math.PI / 2) * v * (ratio);
+						this.rd+=(Math.random() - 0.5) * 0.1 * (ratio);
+						this.rd*=Math.min(1, v);
+						it.xd+=Math.sin(-angle - Math.PI / 2) * v * (1 / ratio);
+						it.yd+=Math.cos(-angle - Math.PI / 2) * v * (1 / ratio);
+						it.rd+=(Math.random() - 0.5) * 0.1 * (1 / ratio);
+						it.rd*=Math.min(1, v);
+					}
+				}
+			}
+			if (this.y>=height - (Game.milkHd) * height + 8) {
+				let v = 1 - ((height - (Game.milkHd) * height + 8) / this.y)
+				this.xd+=(Math.random() - 0.5) * v * 0.3;
+				this.yd+=(Math.random() - 0.5) * v * 0.05;
+				this.rd+=(Math.random() - 0.5) * v * 0.02;
+				this.yd-=1;
+				this.xd*=0.85;
+				this.yd*=0.85;
+				this.rd*=0.85;
+			}
+			else {
+				this.xd*=0.99;
+				this.rd*=0.99;
+				this.yd+=1;
+			}
+			this.yd*=(Math.min(1, Math.abs(this.y - (height - (Game.milkHd) * height) / 16)));
+			this.rd+=this.xd * 0.01 / (this.s / (Game.toysType==1 ? 64 : 48));
+			if (this.x<this.s / 2 && this.xd<0) this.xd=Math.max(0.1, -this.xd * 0.6); else if (this.x<this.s / 2) { this.xd=0; this.x=this.s / 2; }
+			if (this.x>width - this.s / 2 && this.xd>0) this.xd=Math.min(-0.1, -this.xd * 0.6); else if (this.x>width - this.s / 2) { this.xd=0; this.x=width - this.s / 2; }
+			this.xd=Math.min(Math.max(this.xd, -30), 30);
+			this.yd=Math.min(Math.max(this.yd, -30), 30);
+			this.rd=Math.min(Math.max(this.rd, -0.5), 0.5);
+			this.x+=this.xd;
+			this.y+=this.yd;
+			this.r+=this.rd;
+			this.r=this.r % (Math.PI * 2);
+			this.s+=(this.st - this.s) * 0.5;
+			if (Game.toysType==2 && !this.dragged && Math.random()<0.003) this.st=choose([48, 48, 48, 48, 96]);
+			if (this.dragged) {
+				this.x=Game.mouseX;
+				this.y=Game.mouseY;
+				this.xd+=((Game.mouseX - Game.mouseX2) * 3 - this.xd) * 0.5;
+				this.yd+=((Game.mouseY - Game.mouseY2) * 3 - this.yd) * 0.5
+			}
+		}
+		Game.Toy.prototype.draw=function () {
+			var ctx=Game.LeftBackground;
+			if (this.dragged) {
+				this.l.style.transform='translate(' + (this.x - this.s / 2) + 'px,' + (this.y - this.s / 2) + 'px) scale(50)';
+			}
+			else this.l.style.transform='translate(' + (this.x - this.s / 2) + 'px,' + (this.y - this.s / 2) + 'px)';
+			this.l.style.width=this.s + 'px';
+			this.l.style.height=this.s + 'px';
+			ctx.save();
+			ctx.translate(this.x, this.y);
+			ctx.rotate(this.r);
+			if (Game.toysType==1) ctx.drawImage(Pic('smallCookies.png'), (this.id % 8) * 64, 0, 64, 64, -this.s / 2, -this.s / 2, this.s, this.s);
+			else ctx.drawImage(Pic('icons.png'), this.icon[0] * 48, this.icon[1] * 48, 48, 48, -this.s / 2, -this.s / 2, this.s, this.s);
+			ctx.restore();
+		}
 		Game.DrawBackground=function()
 		{
 			
@@ -14938,140 +15048,24 @@ Game.Launch=function()
 						a*=1-Math.pow(1-(Game.ReincarnateTimer/Game.ReincarnateDuration),2)*2;
 					}
 					
-					if (Game.TOYS)
-					{
+					if (Game.TOYS) {
 						//golly
-						if (!Game.Toy)
-						{
-							Game.toys=[];
-							Game.toysType=choose([1,2]);
-							Game.Toy=function(x,y)
-							{
-								this.id=Game.toys.length;
-								this.x=x;
-								this.y=y;
-								this.xd=Math.random()*10-5;
-								this.yd=Math.random()*10-5;
-								this.r=Math.random()*Math.PI*2;
-									this.rd=Math.random()*0.1-0.05;
-									var v=Math.random();var a=0.5;var b=0.5;
-									if (v<=a) v=b-b*Math.pow(1-v/a,3); else v=b+(1-b)*Math.pow((v-a)/(1-a),3);
-								this.s=(Game.toysType==1?64:48)*(0.1+v*1.9);
-								if (Game.toysType==2) this.s=(this.id%10==1)?96:48;
-								this.st=this.s;this.s=0;
-									var cookies=[[10,0]];
-									for (var i in Game.Upgrades)
-									{
-										var cookie=Game.Upgrades[i];
-										if (cookie.bought>0 && cookie.pool=='cookie') cookies.push(cookie.icon);
-									}
-								this.icon=choose(cookies);
-								this.dragged=false;
-								this.l=document.createElement('div');
-								this.l.innerHTML=this.id;
-								this.l.style.cssText='cursor:pointer;border-radius:'+(this.s/2)+'px;opacity:0;width:'+this.s+'px;height:'+this.s+'px;background:#999;position:absolute;left:0px;top:0px;z-index:10000000;transform:translate(-1000px,-1000px);';
-								l('sectionLeft').appendChild(this.l);
-								AddEvent(this.l,'mousedown',function(what){return function(){what.dragged=true;};}(this));
-								AddEvent(this.l,'mouseup',function(what){return function(){what.dragged=false;};}(this));
-								Game.toys.push(this);
-								return this;
-							}
-							for (var i=0;i<Math.floor(Math.random()*15+(Game.toysType==1?5:30));i++)
-							{
-								new Game.Toy(Math.random()*width,Math.random()*height*0.3);
-							}
-						}
-						ctx.globalAlpha=0.5;
-						for (var i in Game.toys)
-						{
-							var me=Game.toys[i];
+						ctx.globalAlpha = 0.5;
+						for (var i in Game.toys) {
+							var me = Game.toys[i];
 							ctx.save();
-							ctx.translate(me.x,me.y);
+							ctx.translate(me.x, me.y);
 							ctx.rotate(me.r);
-							if (Game.toysType==1) ctx.drawImage(Pic('smallCookies.png'),(me.id%8)*64,0,64,64,-me.s/2,-me.s/2,me.s,me.s);
-							else ctx.drawImage(Pic('icons.png'),me.icon[0]*48,me.icon[1]*48,48,48,-me.s/2,-me.s/2,me.s,me.s);
+							if (Game.toysType == 1) ctx.drawImage(Pic('smallCookies.png'), (me.id % 8) * 64, 0, 64, 64, -me.s / 2, -me.s / 2, me.s, me.s);
+							else ctx.drawImage(Pic('icons.png'), me.icon[0] * 48, me.icon[1] * 48, 48, 48, -me.s / 2, -me.s / 2, me.s, me.s);
 							ctx.restore();
 						}
-						ctx.globalAlpha=1;
-						for (var i in Game.toys)
-						{
-							var me=Game.toys[i];
-							//psst... not real physics
-							for (var ii in Game.toys)
-							{
-								var it=Game.toys[ii];
-								if (it.id!=me.id)
-								{
-									var x1=me.x+me.xd;
-									var y1=me.y+me.yd;
-									var x2=it.x+it.xd;
-									var y2=it.y+it.yd;
-									var dist=Math.sqrt(Math.pow((x1-x2),2)+Math.pow((y1-y2),2))/(me.s/2+it.s/2);
-									if (dist<(Game.toysType==1?0.95:0.75))
-									{
-										var angle=Math.atan2(y1-y2,x1-x2);
-										var v1=Math.sqrt(Math.pow((me.xd),2)+Math.pow((me.yd),2));
-										var v2=Math.sqrt(Math.pow((it.xd),2)+Math.pow((it.yd),2));
-										var v=((v1+v2)/2+dist)*0.75;
-										var ratio=it.s/me.s;
-										me.xd+=Math.sin(-angle+Math.PI/2)*v*(ratio);
-										me.yd+=Math.cos(-angle+Math.PI/2)*v*(ratio);
-										it.xd+=Math.sin(-angle-Math.PI/2)*v*(1/ratio);
-										it.yd+=Math.cos(-angle-Math.PI/2)*v*(1/ratio);
-										me.rd+=(Math.random()*1-0.5)*0.1*(ratio);
-										it.rd+=(Math.random()*1-0.5)*0.1*(1/ratio);
-										me.rd*=Math.min(1,v);
-										it.rd*=Math.min(1,v);
-									}
-								}
-							}
-							if (me.y>=height-(Game.milkHd)*height+8)
-							{
-								me.xd*=0.85;
-								me.yd*=0.85;
-								me.rd*=0.85;
-								me.yd-=1;
-								me.xd+=(Math.random()*1-0.5)*0.3;
-								me.yd+=(Math.random()*1-0.5)*0.05;
-								me.rd+=(Math.random()*1-0.5)*0.02;
-							}
-							else
-							{
-								me.xd*=0.99;
-								me.rd*=0.99;
-								me.yd+=1;
-							}
-							me.yd*=(Math.min(1,Math.abs(me.y-(height-(Game.milkHd)*height)/16)));
-							me.rd+=me.xd*0.01/(me.s/(Game.toysType==1?64:48));
-							if (me.x<me.s/2 && me.xd<0) me.xd=Math.max(0.1,-me.xd*0.6); else if (me.x<me.s/2) {me.xd=0;me.x=me.s/2;}
-							if (me.x>width-me.s/2 && me.xd>0) me.xd=Math.min(-0.1,-me.xd*0.6); else if (me.x>width-me.s/2) {me.xd=0;me.x=width-me.s/2;}
-							me.xd=Math.min(Math.max(me.xd,-30),30);
-							me.yd=Math.min(Math.max(me.yd,-30),30);
-							me.rd=Math.min(Math.max(me.rd,-0.5),0.5);
-							me.x+=me.xd;
-							me.y+=me.yd;
-							me.r+=me.rd;
-							me.r=me.r%(Math.PI*2);
-							me.s+=(me.st-me.s)*0.5;
-							if (Game.toysType==2 && !me.dragged && Math.random()<0.003) me.st=choose([48,48,48,48,96]);
-							if (me.dragged)
-							{
-								me.x=Game.mouseX;
-								me.y=Game.mouseY;
-								me.xd+=((Game.mouseX-Game.mouseX2)*3-me.xd)*0.5;
-								me.yd+=((Game.mouseY-Game.mouseY2)*3-me.yd)*0.5
-								me.l.style.transform='translate('+(me.x-me.s/2)+'px,'+(me.y-me.s/2)+'px) scale(50)';
-							}
-							else me.l.style.transform='translate('+(me.x-me.s/2)+'px,'+(me.y-me.s/2)+'px)';
-							me.l.style.width=me.s+'px';
-							me.l.style.height=me.s+'px';
-							ctx.save();
-							ctx.translate(me.x,me.y);
-							ctx.rotate(me.r);
-							if (Game.toysType==1) ctx.drawImage(Pic('smallCookies.png'),(me.id%8)*64,0,64,64,-me.s/2,-me.s/2,me.s,me.s);
-							else ctx.drawImage(Pic('icons.png'),me.icon[0]*48,me.icon[1]*48,48,48,-me.s/2,-me.s/2,me.s,me.s);
-							ctx.restore();
+						ctx.globalAlpha = 1;
+						for (var i in Game.toys) {
+							var me = Game.toys[i];
+							me.draw()
 						}
+						Timer.track("draw toys", false)
 					}
 					
 					var pic=Game.Milk.pic;
@@ -15420,22 +15414,65 @@ Game.Launch=function()
 			//if (Game.BigCookieState==1 && !Game.promptOn) Game.ClickCookie();
 			
 			//handle graphic stuff
-			if (Game.prefs.wobbly)
-			{
-				if (Game.BigCookieState==1) Game.BigCookieSizeT=0.98;
-				else if (Game.BigCookieState==2) Game.BigCookieSizeT=1.05;
-				else Game.BigCookieSizeT=1;
-				Game.BigCookieSizeD+=(Game.BigCookieSizeT-Game.BigCookieSize)*0.75;
+			if (Game.prefs.wobbly) {
+				if (Game.BigCookieState!=4) {
+					Game.BigCookieSpeed=0.75
+				}
+				switch (Game.BigCookieState) {
+					case 1: {
+						Game.BigCookieSizeT=0.98;
+						break;
+					}
+					case 2: {
+						Game.BigCookieSizeT=1.05;
+						break;
+					}
+					case 3: {
+						Game.BigCookieSpeed=0.25
+						Game.BigCookieSizeT=1.40;
+						if (Game.BigCookieSize>=1.37) { Game.BigCookieState=4 }
+						break;
+					}
+					case 4: {
+						Game.BigCookieSizeT=0;
+						break;
+					}
+					default: {
+						Game.BigCookieSizeT=1;
+						break
+					}
+				}
+				Game.BigCookieSizeD+=(Game.BigCookieSizeT - Game.BigCookieSize) * Game.BigCookieSpeed;
 				Game.BigCookieSizeD*=0.75;
 				Game.BigCookieSize+=Game.BigCookieSizeD;
-				Game.BigCookieSize=Math.max(0.1,Game.BigCookieSize);
+				Game.BigCookieSize=Math.max(0, Game.BigCookieSize);
 			}
-			else
-			{
-				if (Game.BigCookieState==1) Game.BigCookieSize+=(0.98-Game.BigCookieSize)*0.5;
-				else if (Game.BigCookieState==2) Game.BigCookieSize+=(1.05-Game.BigCookieSize)*0.5;
-				else Game.BigCookieSize+=(1-Game.BigCookieSize)*0.5;
+			else {
+				switch (Game.BigCookieState) {
+					case 1: {
+						Game.BigCookieSize+=(0.98 - Game.BigCookieSize) * 0.5;
+						break;
+					}
+					case 2: {
+						Game.BigCookieSize+=(1.05 - Game.BigCookieSize) * 0.5;
+						break;
+					}
+					case 3: {
+						Game.BigCookieSize=(1.40 - Game.BigCookieSize) * 0.5;
+						if (Game.BigCookieSize<1.33) { Game.BigCookieState=4 }
+						break;
+					}
+					case 4: {
+						Game.BigCookieSize=+(0 - Game.BigCookieSize) * 0.5;
+						break;
+					}
+					default: {
+						Game.BigCookieSize+=(1 - Game.BigCookieSize) * 0.5;
+					}
+				}
 			}
+			Game.BigCookieCursorOffset+=(Game.BigCookieSize - Game.BigCookieCursorOffset) * 0.25;
+			if (Game.catchupLogic==0) { Timer.track("big cookie size", false) }
 			Game.particlesUpdate();
 			
 			if (Game.mousePointer) l('sectionLeft').style.cursor='pointer';
@@ -15462,6 +15499,23 @@ Game.Launch=function()
 			Game.milkHd+=(Game.milkH-Game.milkHd)*0.02;
 			
 			Game.Milk=Game.Milks[Math.min(Math.floor(Game.milkProgress),Game.Milks.length-1)];
+
+			if (Game.catchupLogic == 0) { Timer.track("milk progress", false) }
+			if (Game.prefs.milk && Game.TOYS) {
+				//golly
+				if (!Game.toyinit) {
+					var width = Game.LeftBackground.canvas.width;
+					var height = Game.LeftBackground.canvas.height;
+					Game.toyinit = 1;
+					for (var i = 0; i < Math.floor(Math.random() * 15 + (Game.toysType == 1 ? 5 : 30)); i++) {
+						new Game.Toy(Math.random() * width, Math.random() * height * 0.3);
+					}
+				}
+				for (var i in Game.toys) {
+					Game.toys[i].logic()
+				}
+				if (Game.catchupLogic == 0) { Timer.track("toy logic", false) }
+			}
 			
 			if (Game.autoclickerDetected>0) Game.autoclickerDetected--;
 			
@@ -15493,7 +15547,7 @@ Game.Launch=function()
 				Game.season=Game.baseSeason;
 				Game.seasonT=-1;
 			}
-			
+			if (Game.catchupLogic == 0) { Timer.track("seasons", false) }
 			//press ctrl to bulk-buy 10, shift to bulk-buy 100
 			if (!Game.promptOn)
 			{
@@ -15512,11 +15566,14 @@ Game.Launch=function()
 				Game.buyBulkShortcut=0;
 				Game.storeBulkButton(-1);
 			}
-			
+			if (Game.catchupLogic==0) { Timer.track("store bulk keys", false) }
+
 			//handle cookies
 			if (Game.recalculateGains) Game.CalculateGains();
 			Game.Earn(Game.cookiesPs/Game.fps);//add cookies per second
 			
+			if (Game.catchupLogic == 0) { Timer.track("cookie gain", false) }
+
 			//grow lumps
 			Game.doLumps();
 			
@@ -15526,6 +15583,8 @@ Game.Launch=function()
 				var me=Game.Objects[i];
 				if (Game.isMinigameReady(me) && me.minigame.logic && Game.ascensionMode!=1) me.minigame.logic();
 			}
+
+			if (Game.catchupLogic==0) { Timer.track("cookie gain", false) }
 			
 			if (Game.specialTab!='' && Game.T%(Game.fps*3)==0) Game.ToggleSpecialMenu(1);
 			

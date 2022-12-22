@@ -7,7 +7,6 @@ Mods.LoadFolder = function (folder, callback) {
 	ajax(folder + '/info.txt',(info)=>{
 		info = JSON.parse(info)
 		let promises=[];
-		let lang=1;
 		promises.push(new Promise((resolve,reject)=>{
 			Game.LoadMod(folder + '/main.js',resolve,()=>{console.log(`Failed to load mod file:`,folder + '/main.js');resolve();});
 		}));

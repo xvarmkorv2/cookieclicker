@@ -1,7 +1,7 @@
 Game.registerMod("evenMoreBackgrounds", {
     bgType: 0,
 	
-	dir: 'Mods\evenMoreBackgrounds',
+	dir: 'Mods/evenMoreBackgrounds',
 	
 	init: function() {
         if (typeof(CCSE) !== 'undefined') {

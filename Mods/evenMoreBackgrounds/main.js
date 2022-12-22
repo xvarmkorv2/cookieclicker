@@ -8,6 +8,7 @@ Game.registerMod("evenMoreBackgrounds", {
             if (CCSE && CCSE.isLoaded) {
                 this.launch();
             } else {
+                if (!CCSE.postLoadHooks) CCSE.postLoadHooks = [];
                 CCSE.postLoadHooks.push(this.launch);
             }
         } else {

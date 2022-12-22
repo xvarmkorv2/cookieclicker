@@ -16117,7 +16117,15 @@ Game.Launch=function()
 			Timer.say('END DRAW');
 		}
 		else requestAnimationFrame(Game.Draw);*/
-		if (Game.visible) Game.Draw();
+		if (Game.visible) {
+			try {
+				Game.Draw();
+			} catch (error) {
+				alert(error);
+				setTimeout(Game.Loop, 2000 / Game.fps);
+				return
+			} 
+		}
 		
 		//if (!hasFocus) Game.tooltip.hide();
 		

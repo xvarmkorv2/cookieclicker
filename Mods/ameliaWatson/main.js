@@ -88,7 +88,7 @@ Game.registerMod("despacito AmeliaWatson", {
 		document.body.appendChild(watson);
 
 		{
-			const BuildStore = Game.BuildStore
+			let BuildStore = Game.BuildStore
 			Game.BuildStore = function(){
 				BuildStore()
 				/* haha i only know rudimentary html and css so thank you obama prism */

@@ -14882,7 +14882,6 @@ Game.Launch=function()
 						if (showDragon) ctx.globalAlpha=0.25;
 						//
 						var amount=Game.Objects['Cursor'].amount;
-						var rect={ w: Game.BackgroundObj.width, h: Game.BackgroundObj.height };
 						//var spe=-1;
 						for (var i=0; i<amount; i++) {
 							var n=Math.floor(i / 50);
@@ -16147,11 +16146,9 @@ Game.Launch=function()
 				ctx.stroke();
 			
 			l('fpsCounter').textContent=Game.currentFps+' fps';
-			var str='';
-			for (var i in Timer.labels) {str+=Timer.labels[i];}
 			if (Game.debugTimersOn) l('debugLog').style.display='block';
 			else l('debugLog').style.display='none';
-			l('debugLog').innerHTML=str;
+			l('debugLog').innerHTML=Timer.render();
 			
 		}
 		Timer.reset();

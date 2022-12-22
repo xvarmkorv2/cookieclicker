@@ -14884,7 +14884,6 @@ Game.Launch=function()
 						var amount=Game.Objects['Cursor'].amount;
 						var rect={ w: Game.BackgroundObj.width, h: Game.BackgroundObj.height };
 						//var spe=-1;
-						let unusedRot =0;
 						for (var i=0; i<amount; i++) {
 							var n=Math.floor(i / 50);
 							//var a=((i+0.5*n)%50)/50;
@@ -14900,21 +14899,17 @@ Game.Launch=function()
 							var rot = 7.2;//(1/50)*360
 							if (i == 0 && fancy) rot -= Game.T * 0.1;
 							if (i % 50 == 0) rot += 7.2 / 2;
-							if (y>0 && y<rect.h || true) {
-								ctx.rotate(((rot+unusedRot) / 360) * Math.PI * 2);
-								ctx.drawImage(pic, 0, 0, 32, 32, x, y, 32, 32);
-								unusedRot=0
-								//ctx.drawImage(pic,32*(i==spe),0,32,32,x,y,32,32);
-								/*if (i==spe)
-								{
-									y+=16;
-									x=Game.cookieOriginX+Math.sin(-((r-5)/360)*Math.PI*2)*y;
-									y=Game.cookieOriginY+Math.cos(-((r-5)/360)*Math.PI*2)*y;
-									if (Game.CanClick && ctx && Math.abs(Game.mouseX-x)<16 && Math.abs(Game.mouseY-y)<16) Game.mousePointer=1;
-								}*/
-							} else {
-								unusedRot+=rot
-							}
+							ctx.rotate((rot/360)*Math.PI*2);
+							ctx.drawImage(pic,0,0,32,32,x,y,32,32);
+							//ctx.drawImage(pic,32*(i==spe),0,32,32,x,y,32,32);
+							
+							/*if (i==spe)
+							{
+								y+=16;
+								x=Game.cookieOriginX+Math.sin(-((r-5)/360)*Math.PI*2)*y;
+								y=Game.cookieOriginY+Math.cos(-((r-5)/360)*Math.PI*2)*y;
+								if (Game.CanClick && ctx && Math.abs(Game.mouseX-x)<16 && Math.abs(Game.mouseY-y)<16) Game.mousePointer=1;
+							}*/
 						}
 						ctx.restore();
 						Timer.track('cursors');
@@ -16040,12 +16035,18 @@ Game.Launch=function()
 			
 			if (Game.PARTY)//i was bored and felt like messing with CSS
 			{
-				var pulse=Math.pow((Game.T%10)/10,0.5);
-				Game.l.style.filter='hue-rotate('+((Game.T*5)%360)+'deg) brightness('+(150-50*pulse)+'%)';
-				Game.l.style.webkitFilter='hue-rotate('+((Game.T*5)%360)+'deg) brightness('+(150-50*pulse)+'%)';
-				Game.l.style.transform='scale('+(1.02-0.02*pulse)+','+(1.02-0.02*pulse)+') rotate('+(Math.sin(Game.T*0.5)*0.5)+'deg)';
+				var pulse=Math.pow((Game.T % 10) / 10, 0.5);
+				Game.l.style.filter='hue-rotate(' + ((Game.T * 5) % 360) + 'deg) brightness(' + (150 - 50 * pulse) + '%)';
+				Game.l.style.webkitFilter='hue-rotate(' + ((Game.T * 5) % 360) + 'deg) brightness(' + (150 - 50 * pulse) + '%)';
+				Game.l.style.transform='scale(' + (1.02 - 0.02 * pulse) + ',' + (1.02 - 0.02 * pulse) + ') rotate(' + (Math.sin(Game.T * 0.5) * 0.5) + 'deg)';
 				Game.wrapper.style.overflowX='hidden';
 				Game.wrapper.style.overflowY='hidden';
+			} else {
+				Game.l.style.filter='';
+				Game.l.style.webkitFilter='';
+				Game.l.style.transform='';
+				Game.wrapper.style.overflowX='';
+				Game.wrapper.style.overflowY='';
 			}
 			
 			Timer.clean();

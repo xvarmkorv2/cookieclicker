@@ -4961,6 +4961,7 @@ Game.Launch=function()
 		Game.autoclickerDetected=0;
 		Game.BigCookieState=0;//0 = normal, 1 = clicked (small), 2 = released/hovered (big)
 		Game.BigCookieSize=0;
+		Game.BigCookieCursorOffset=0;
 		Game.BigCookieSizeD=0;
 		Game.BigCookieSizeT=1;
 		Game.cookieClickSound=Math.floor(Math.random()*7)+1;

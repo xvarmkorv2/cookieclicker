@@ -3,33 +3,37 @@ const EnableCookiStocker = false
 
 Mods = {}
 
-Mods.LoadFolder = function (folder, callback, error) {
-    let callbackN=0
-    let lang = 1
-    let callbackCheck = ()=>{
-        callbackN++
-        if (callbackN == lang ? 1 : 2){
-            callback()
-        }
-    }
-    if (lang) {
-        Game.LoadMod(folder + '/lang.js', callbackCheck)
-    }
-    Game.LoadMod(folder + '/main.js', callbackCheck)
+Mods.LoadFolder = function (folder, callback) {
+	ajax(folder + '/info.txt',(info)=>{
+		info = JSON.parse(info)
+		let promises=[];
+		let lang=1;
+		promises.push(new Promise((resolve,reject)=>{
+			Game.LoadMod(folder + '/main.js',resolve,()=>{console.log(`Failed to load mod file:`,folder + '/main.js');resolve();});
+		}));
+		if (info.LanguagePacks)
+		{
+			for (let ii in info.LanguagePacks)
+			{
+				let file=folder+'/'+info.LanguagePacks[ii];
+				promises.push(new Promise((resolve,reject)=>{
+					LoadLang(file,resolve,()=>{console.log(`Failed to load mod language file:`,file);resolve();});
+				}));
+			}
+		}
+		Promise.all(promises)
+		.then(()=>{
+			callback();
+		});
+	})
 }
 
-Mods.LoadMods = function (launch) {
-    let callbackN = 0
-    let callbackN2 = 0
-    let callbackCheck = () => {
-        callbackN++
-        if (callbackN == callbackN2) {
-            launch()
-        }
-    }
-    let modLoadCheck = (func, path) => {
-        callbackN2++
-        func(path, callbackCheck)
+Mods.LoadMods = function (callback) {
+    let promises=[];
+	let modLoadCheck = (func, path) => {
+        promises.push(new Promise((resolve,reject)=>{
+			func(path,resolve,()=>{console.log(`Failed to load mod language file:`,file);resolve();});
+		}));
     }
     modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE.js')
     //modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/InsugarTrading/dist/main.js')
@@ -42,4 +46,8 @@ Mods.LoadMods = function (launch) {
     if (EnableCookiStocker) {
         modLoadCheck(Game.LoadMod, '/CookiStocker.js')
     }
+	Promise.all(promises)
+	.then(()=>{
+		callback();
+	});
 }

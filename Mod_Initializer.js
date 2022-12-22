@@ -3,8 +3,9 @@ const EnableCookiStocker = false
 
 Mods = {}
 
-Mods.LoadFolder = function (folder, lang, callback) {
+Mods.LoadFolder = function (folder, callback, error) {
     let callbackN=0
+    let lang = 1
     let callbackCheck = ()=>{
         callbackN++
         if (callbackN == lang ? 1 : 2){

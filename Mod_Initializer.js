@@ -20,6 +20,6 @@ var waitForGame = function waitForGame() {
         if (EnableCookiStocker) {
             Game.LoadMod('https://xvarmkorv2.github.io/cookieclicker/CookiStocker.js')
         }
-    } else setTimeout(waitForGame, 100)
+    } else setTimeout(waitForGame, 25)
 }
 setTimeout(waitForGame)

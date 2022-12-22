@@ -2,7 +2,7 @@ const EnableCookiStocker = false
 
 
 Mods = {}
-Game.Win=()=>{}
+
 Mods.LoadFolder = function (folder, callback) {
 	ajax(folder + '/info.txt',(info)=>{
 		info = JSON.parse(info)
@@ -28,6 +28,7 @@ Mods.LoadFolder = function (folder, callback) {
 }
 
 Mods.LoadMods = function (callback) {
+	Game.Win=()=>{}
     let promises=[];
 	let modLoadCheck = (func, path) => {
         promises.push(new Promise((resolve,reject)=>{

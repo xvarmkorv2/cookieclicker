@@ -5,11 +5,6 @@ Game.registerMod("despacito AmeliaWatson", {
 		Game.Objects['Time machine'].displayName = "Amelia Watson";
 		Game.Objects['Time machine'].pic = [0, 0, watsonicons];
 
-		/* haha i only know rudimentary html and css so thank you obama prism */
-		document.getElementById("productIcon11").classList.add("ameliaWatson");
-		document.getElementById("productIconOff11").classList.add("ameliaWatsonOff");
-		document.getElementById("mutedProduct11").classList.add("ameliaWatson");
-
 		// check out the wiki for upgrade lists or the game's main.js file! thanks orteil! i love ctrl-f !!
 
 		/* UPGRADES */
@@ -91,6 +86,18 @@ Game.registerMod("despacito AmeliaWatson", {
 		`;
 
 		document.body.appendChild(watson);
+
+		{
+			let BuildStore = Game.BuildStore
+			Game.BuildStore = function(){
+				BuildStore()
+				/* haha i only know rudimentary html and css so thank you obama prism */
+				document.getElementById("productIcon11").classList.add("ameliaWatson");
+				document.getElementById("productIconOff11").classList.add("ameliaWatsonOff");
+				document.getElementById("mutedProduct11").classList.add("ameliaWatson");
+			}
+
+		}
 
 		setTimeout(() => {
 			Game.registerHook('check', () => this.check());

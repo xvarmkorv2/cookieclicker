@@ -4139,9 +4139,9 @@ Game.Launch=function()
 		}
 		
 		Game.ascensionModes={
-		0:{name:'None',dname:loc("None [ascension type]"),desc:loc("No special modifiers."),icon:[10,0]},
-		1:{name:'Born again',dname:loc("Born again [ascension type]"),desc:loc("This run will behave as if you'd just started the game from scratch. Prestige levels and heavenly upgrades will have no effect, as will sugar lumps and building levels. Perma-upgrades and minigames will be unavailable.<div class=\"line\"></div>Some achievements are only available in this mode."),icon:[2,7]}/*,
-		2:{name:'Trigger finger',dname:loc("Trigger finger [ascension type]"),desc:loc("In this run, scrolling your mouse wheel on the cookie counts as clicking it. Some upgrades introduce new clicking behaviors.<br>No clicking achievements may be obtained in this mode.<div class=\"line\"></div>Reaching 1 quadrillion cookies in this mode unlocks a special heavenly upgrade."),icon:[12,0]}*/
+			0:{name:'None',dname:loc("None [ascension type]"),desc:loc("No special modifiers."),icon:[10,0]},
+			1:{name:'Born again',dname:loc("Born again [ascension type]"),desc:loc("This run will behave as if you'd just started the game from scratch. Prestige levels and heavenly upgrades will have no effect, as will sugar lumps and building levels. Perma-upgrades and minigames will be unavailable.<div class=\"line\"></div>Some achievements are only available in this mode."),icon:[2,7]},
+			2:{name:'Trigger finger',dname:loc("Trigger finger [ascension type]"),desc:loc("In this run, scrolling your mouse wheel on the cookie counts as clicking it. Some upgrades introduce new clicking behaviors.<br>No clicking achievements may be obtained in this mode.<div class=\"line\"></div>Reaching 1 quadrillion cookies in this mode unlocks a special heavenly upgrade."),icon:[12,0]}
 		};
 		
 		Game.ascendMeterPercent=0;
@@ -5052,8 +5052,9 @@ Game.Launch=function()
 		Game.Click=0;
 		Game.lastClickedEl=0;
 		Game.clicksThisSession=0;
-		Game.clickFrom=0;
-		Game.Scroll=0;
+		Game.clickFrom = 0;
+		Game.Scroll = 0;
+		Game.ScrollFrames = 0;
 		Game.mouseDown=0;
 		if (!Game.touchEvents)
 		{
@@ -15412,8 +15413,15 @@ Game.Launch=function()
 			Game.UpdateGrandmapocalypse();
 			
 			//these are kinda fun
-			//if (Game.BigCookieState==2 && !Game.promptOn && Game.Scroll!=0) Game.ClickCookie();
-			//if (Game.BigCookieState==1 && !Game.promptOn) Game.ClickCookie();
+			if (Game.ascensionMode==2 && !Game.promptOn && Game.Scroll!=0 && Game.ScrollFrames++==2) {
+				Game.ScrollFrames=0;
+				if (Game.BigCookieState==1) {
+					Game.BigCookieState=2;
+				} else if (Game.BigCookieState==2) {
+					Game.BigCookieState=1;
+					Game.ClickCookie();
+				}
+			}
 			
 			//handle graphic stuff
 			if (Game.prefs.wobbly) {
@@ -16064,7 +16072,7 @@ Game.Launch=function()
 			Game.Logic();
 		} catch (error) {
 			alert(error);
-			setTimeout(Game.Loop, 1000 / Game.fps);
+			setTimeout(Game.Loop, 2000 / Game.fps);
 			return
 		}
 		Timer.track('end of main logic', true);

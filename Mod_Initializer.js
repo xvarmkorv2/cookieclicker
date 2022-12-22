@@ -6,7 +6,8 @@ var waitForGame = function waitForGame() {
         Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE-POCs/BlackholeInverter.js?v=1.12')
         Game.LoadMod('https://klattmose.github.io/CookieClicker/minigameCasino.js?v=3.16')
         Game.LoadMod('https://klattmose.github.io/CookieClicker/FortuneCookie.js?v=2.8')
-		Game.LoadMod('Mods/ameliaWatson/main.js')
+        Game.LoadMod('Mods/ameliaWatson/lang.js')
+        Game.LoadMod('Mods/ameliaWatson/main.js')
 		Game.LoadMod('Mods/evenMoreBackgrounds/main.js')
         //Game.LoadMod('https://mtarnuhal.github.io/FrozenCookies/frozen_cookies.js');
         if (EnableCookiStocker) {

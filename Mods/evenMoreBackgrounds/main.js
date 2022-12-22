@@ -3,19 +3,10 @@ Game.registerMod("evenMoreBackgrounds", {
 	
 	dir: 'Mods/evenMoreBackgrounds',
 	
-	init: function() {
-        if (typeof(CCSE) !== 'undefined') {
-            if (CCSE && CCSE.isLoaded) {
-                this.launch();
-            } else {
-                if (!CCSE.postLoadHooks) CCSE.postLoadHooks = [];
-                CCSE.postLoadHooks.push(this.launch);
-            }
-        } else {
-            Game.registerHook('create', () => {
-                this.launch();
-            });
-        }
+    init: function () {
+        Game.registerHook('create', () => {
+            this.launch();
+        });
     },
 
 	save: function () {
@@ -27,7 +18,7 @@ Game.registerMod("evenMoreBackgrounds", {
 	},
 
     launch: function() {
-        let JPG = name => `${this.dir}/img/${name}${typeof(CCSE) !== 'undefined' ? '.jpg' : ''}`;
+        let JPG = name => `${this.dir}/img/${name}.jpg`;
 
         let iconPath = `${this.dir}/img/icons.png`;
         let ICON = (x,y) => [x,y,iconPath];

@@ -99,7 +99,7 @@ Game.registerMod("despacito AmeliaWatson", {
 					document.getElementById("productIconOff11").classList.add("ameliaWatsonOff");
 					document.getElementById("mutedProduct11").classList.add("ameliaWatson");
 				}
-
+				Game.BuildStore()
 			}
 
 			/* Edits to the function not written by me, t'was by AgentZero ;) [im stupid lol] */

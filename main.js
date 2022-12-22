@@ -14761,40 +14761,37 @@ Game.Launch=function()
 					}
 					
 					//cursors
-					if (Game.prefs.cursors)
-					{
+					if (Game.prefs.cursors && Game.Objects['Cursor'].amount>0) {
 						ctx.save();
-						ctx.translate(Game.cookieOriginX,Game.cookieOriginY);
+						ctx.translate(Game.cookieOriginX, Game.cookieOriginY);
 						var pic=Pic('cursor.png');
 						var fancy=Game.prefs.fancy;
-						
 						if (showDragon) ctx.globalAlpha=0.25;
+						//
 						var amount=Game.Objects['Cursor'].amount;
+						var rect={ w: Game.BackgroundObj.width, h: Game.BackgroundObj.height };
 						//var spe=-1;
-						let missedRot=0;
-						for (var i=0;i<amount;i++)
-						{
-							var n=Math.floor(i/50);
+						let unusedRot =0;
+						for (var i=0; i<amount; i++) {
+							var n=Math.floor(i / 50);
 							//var a=((i+0.5*n)%50)/50;
 							var w=0;
-							if (fancy) w=(Math.sin(Game.T*0.025+(((i+n*12)%25)/25)*Math.PI*2));
+							if (fancy) w=(Math.sin(Game.T * 0.025 + (((i + n * 12) % 25) / 25) * Math.PI * 2));
 							if (w>0.997) w=1.5;
 							else if (w>0.994) w=0.5;
 							else w=0;
 							w*=-4;
-							if (fancy) w+=Math.sin((n+Game.T*0.01)*Math.PI/2)*4;
+							if (fancy) w+=Math.sin((n + Game.T * 0.01) * Math.PI / 2) * 4;
 							var x=0;
-							var y=(140/* *Game.BigCookieSize*/+n*16+w)-16;
-							
-							var rot=7.2;//(1/50)*360
-							if (i==0 && fancy) rot-=Game.T*0.1;
-							if (i%50==0) rot+=7.2/2;
-							if (y > 0 && y < ctx.canvas.height){
-								ctx.rotate((rot / 360) * Math.PI * 2);
-								missedRot=0;
+							var y=(140 * Game.BigCookieCursorOffset + n * 16 + w) - 16;
+							var rot = 7.2;//(1/50)*360
+							if (i == 0 && fancy) rot -= Game.T * 0.1;
+							if (i % 50 == 0) rot += 7.2 / 2;
+							if (y>0 && y<rect.h) {
+								ctx.rotate(((rot+unusedRot) / 360) * Math.PI * 2);
 								ctx.drawImage(pic, 0, 0, 32, 32, x, y, 32, 32);
+								unusedRot=0
 								//ctx.drawImage(pic,32*(i==spe),0,32,32,x,y,32,32);
-
 								/*if (i==spe)
 								{
 									y+=16;
@@ -14802,7 +14799,9 @@ Game.Launch=function()
 									y=Game.cookieOriginY+Math.cos(-((r-5)/360)*Math.PI*2)*y;
 									if (Game.CanClick && ctx && Math.abs(Game.mouseX-x)<16 && Math.abs(Game.mouseY-y)<16) Game.mousePointer=1;
 								}*/
-							}else {missedRot+=rot}
+							} else {
+								unusedRot+=rot
+							}
 						}
 						ctx.restore();
 						Timer.track('cursors');

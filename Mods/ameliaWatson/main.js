@@ -77,10 +77,9 @@ Game.registerMod("despacito AmeliaWatson", {
 		Game.Loader.Replace('timemachineBackground.png', this.dir + "/kroniiBG.png");
 		Game.Loader.Replace('timemachine.png', this.dir + "/smolwatson.png");
 
-		Game.registerHook('check', () => this.check);
 		const watson = document.createElement("style");
 		watson.innerHTML = `
-			ameliaWatson {
+		.ameliaWatson {
 			background: url('${this.dir}/watson.png') !important;
 			background-position: 0px 0px !important;
 		}
@@ -93,6 +92,7 @@ Game.registerMod("despacito AmeliaWatson", {
 		document.body.appendChild(watson);
 
 		setTimeout(() => {
+			Game.registerHook('check', () => this.check);
 			this.check()
 			/* Edits to the function not written by me, t'was by AgentZero ;) [im stupid lol] */
 			Game.Objects['Time machine'].tooltip = function () {

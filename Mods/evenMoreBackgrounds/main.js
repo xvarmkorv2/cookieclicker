@@ -43,15 +43,16 @@ Game.registerMod("evenMoreBackgrounds", {
             Game.BGsByChoice[i++] = bg;
         });
 
-        let choicesFunction = Game.Upgrades['Background selector'].choicesFunction.bind({});
-        Game.Upgrades['Background selector'].choicesFunction = () => {
+        let BackgroundSelector = Game.Upgrades['Background selector']
+        let choicesFunction = BackgroundSelector.choicesFunction.bind({});
+        BackgroundSelector.choicesFunction = () => {
             let choices = choicesFunction();
             choices[div].div = true;
             return choices;
         };
 
-        let choicesPick = Game.Upgrades['Background selector'].choicesPick.bind({});
-        Game.Upgrades['Background selector'].choicesPick = (id) => {
+        let choicesPick = BackgroundSelector.choicesPick.bind({});
+        BackgroundSelector.choicesPick = (id) => {
             this.bgType = id;
             choicesPick(id);
         };

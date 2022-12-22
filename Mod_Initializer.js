@@ -15,7 +15,7 @@ var waitForGame = function waitForGame() {
         Game.LoadMod('https://klattmose.github.io/CookieClicker/minigameCasino.js?v=3.16')
         Game.LoadMod('https://klattmose.github.io/CookieClicker/FortuneCookie.js?v=2.8')
         LoadModFolder('Mods/ameliaWatson', true)
-        LoadModFolder('Mods/evenMoreBackgrounds', false)
+        //LoadModFolder('Mods/evenMoreBackgrounds', false)
         //Game.LoadMod('https://mtarnuhal.github.io/FrozenCookies/frozen_cookies.js');
         if (EnableCookiStocker) {
             Game.LoadMod('https://xvarmkorv2.github.io/cookieclicker/CookiStocker.js')

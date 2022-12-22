@@ -2,7 +2,7 @@ const EnableCookiStocker = false
 
 
 Mods = {}
-
+Game.Win=()=>{}
 Mods.LoadFolder = function (folder, callback) {
 	ajax(folder + '/info.txt',(info)=>{
 		info = JSON.parse(info)

@@ -15553,7 +15553,8 @@ Game.Launch=function()
 				Game.season=Game.baseSeason;
 				Game.seasonT=-1;
 			}
-			
+			if (Game.catchupLogic == 0) { Timer.track("seasons", false) }
+
 			//press ctrl to bulk-buy 10, shift to bulk-buy 100
 			if (!Game.promptOn)
 			{
@@ -15572,7 +15573,8 @@ Game.Launch=function()
 				Game.buyBulkShortcut=0;
 				Game.storeBulkButton(-1);
 			}
-			
+			if (Game.catchupLogic==0) { Timer.track("store bulk keys", false) }
+
 			//handle cookies
 			if (Game.recalculateGains) Game.CalculateGains();
 			Game.Earn(Game.cookiesPs/Game.fps);//add cookies per second
@@ -15586,6 +15588,8 @@ Game.Launch=function()
 				var me=Game.Objects[i];
 				if (Game.isMinigameReady(me) && me.minigame.logic && Game.ascensionMode!=1) me.minigame.logic();
 			}
+
+			if (Game.catchupLogic==0) { Timer.track("minigame logic", false) }
 			
 			if (Game.specialTab!='' && Game.T%(Game.fps*3)==0) Game.ToggleSpecialMenu(1);
 			

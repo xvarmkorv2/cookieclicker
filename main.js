@@ -2138,7 +2138,8 @@ Game.Launch=function()
 		Game.lastActivity=Date.now();//reset on mouse move, key press or click
 		
 		//latency compensator stuff
-		Game.time=Date.now();
+		Game.time = Date.now();
+		Game.lasttime=Game.time;
 		Game.accumulatedDelay=0;
 		Game.delayTimeouts=0;//how many times we've gone over the timeout delay
 		Game.catchupLogic=0;
@@ -15246,6 +15247,11 @@ Game.Launch=function()
 				//str+='<a class="option neato" '+Game.clickStr+'="Game.goldenCookie.force=\''+Game.goldenCookie.choices[i*2+1]+'\';Game.goldenCookie.spawn();">'+Game.goldenCookie.choices[i*2]+'</a>';
 				//str+='<a class="option neato" '+Game.clickStr+'="Game.goldenCookie.click(0,\''+Game.goldenCookie.choices[i*2+1]+'\');">'+Game.goldenCookie.choices[i*2]+'</a>';
 			}
+			str+='<div class="line"></div>';
+			str+='<div class="title" style="font-size:13px;margin:6px;">Code Executor</div>';
+			str+='<textarea id="devConsoleExecutorInput" rows="2" cols="15"></textarea>'
+			str+='<a class="option neato" ' + Game.clickStr + '="Game.SesameCodeExecutorHandler()">Executor</a>';
+			str+='</div>';
 			str+='</div>';
 			
 			l('devConsole').innerHTML=str;
@@ -15273,7 +15279,21 @@ Game.Launch=function()
 			Game.sesame=1;
 			Game.Achievements['Cheated cookies taste awful'].won=1;
 		}
-		
+		Game.SesameCodeExecutorHandler = function (bypass) {
+			if (!bypass) {
+				Game.Prompt('<h3>Execute Code</h3><div class="block">Are you REALLY sure you want to execute this code?<br><small>This could mess with the game and/or break your save-file.</small></div>', [['Yes!', 'Game.ClosePrompt();Game.SesameCodeExecutorHandler(1);'], 'No']);
+			}
+			else if (bypass == 1) {
+				var Input = l('devConsoleExecutorInput').value;
+				try {
+					var func = Function(Input)
+					func();
+				} catch (error) {
+					console.error(error);
+					Game.Notify('Error', error, [11, 5]);
+				}
+			}
+		}
 		Game.EditAscend=function()
 		{
 			if (!Game.DebuggingPrestige)
@@ -15988,8 +16008,15 @@ Game.Launch=function()
 		Timer.track('browser stuff');
 		Timer.say('LOGIC');
 		//update game logic !
-		Game.catchupLogic=0;
-		Game.Logic();
+		Game.catchupLogic = 0; 
+		try {
+			Game.Logic();
+		} catch (error) {
+			alert(error);
+			setTimeout(Game.Loop, 1000 / Game.fps);
+			return
+		}
+		Timer.track('end of main logic', true);
 		Game.catchupLogic=1;
 		
 		var time=Date.now();
@@ -16005,6 +16032,7 @@ Game.Launch=function()
 		}
 		
 		Game.accumulatedDelay=Math.min(Game.accumulatedDelay,1000*5);//don't compensate over 5 seconds; if you do, something's probably very wrong
+		Game.lasttime = Game.time
 		Game.time=time;
 		
 		//if (Game.accumulatedDelay>=Game.fps) console.log('delay:',Math.round(Game.accumulatedDelay/Game.fps));
@@ -16013,8 +16041,8 @@ Game.Launch=function()
 			Game.Logic();
 			Game.accumulatedDelay-=1000/Game.fps;//as long as we're detecting latency (slower than target fps), execute logic (this makes drawing slower but makes the logic behave closer to correct target fps)
 		}
-		Game.catchupLogic=0;
-		Timer.track('logic');
+		Game.catchupLogic = 0; 
+		Timer.track('catchup logic');
 		Timer.say('END LOGIC');
 		/*
 		if (!Game.prefs.altDraw)
@@ -16030,11 +16058,9 @@ Game.Launch=function()
 		
 		//if (!hasFocus) Game.tooltip.hide();
 		
-		if (Game.sesame)
-		{
-			//fps counter and graph
-			Game.previousFps=Game.currentFps;
-			Game.currentFps=Game.getFps();
+		Game.previousFps = Game.currentFps;
+		Game.currentFps = Game.getFps();
+		if (Game.sesame) {
 				var ctx=Game.fpsGraphCtx;
 				ctx.drawImage(Game.fpsGraph,-1,0);
 				ctx.fillStyle='rgb('+Math.round((1-Game.currentFps/Game.fps)*128)+',0,0)';
@@ -16056,7 +16082,7 @@ Game.Launch=function()
 		Timer.reset();
 		
 		Game.loopT++;
-		setTimeout(Game.Loop,1000/Game.fps);
+		setTimeout(Game.Loop, (1000 / Game.fps) - ((Game.lasttime - Game.time) / (Game.currentFps - Game.fps)));
 	}
 }
 

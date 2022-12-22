@@ -86,22 +86,22 @@ Game.registerMod("despacito AmeliaWatson", {
 		`;
 
 		document.body.appendChild(watson);
-
-		{
-			let BuildStore = Game.BuildStore
-			Game.BuildStore = function(){
-				BuildStore()
-				/* haha i only know rudimentary html and css so thank you obama prism */
-				document.getElementById("productIcon11").classList.add("ameliaWatson");
-				document.getElementById("productIconOff11").classList.add("ameliaWatsonOff");
-				document.getElementById("mutedProduct11").classList.add("ameliaWatson");
-			}
-
-		}
-
 		setTimeout(() => {
 			Game.registerHook('check', () => this.check());
 			this.check()
+
+			{
+				let BuildStore = Game.BuildStore
+				Game.BuildStore = function(){
+					BuildStore()
+					/* haha i only know rudimentary html and css so thank you obama prism */
+					document.getElementById("productIcon11").classList.add("ameliaWatson");
+					document.getElementById("productIconOff11").classList.add("ameliaWatsonOff");
+					document.getElementById("mutedProduct11").classList.add("ameliaWatson");
+				}
+
+			}
+
 			/* Edits to the function not written by me, t'was by AgentZero ;) [im stupid lol] */
 			Game.Objects['Time machine'].tooltip = function () {
 				var backgroundImgUnlocked = true;

@@ -37,8 +37,17 @@ Mods.LoadFolder = function (folder, callback) {
 	})
 }
 
+Mods.CreateTempFunctions = function () {
+	let temp = () => { }
+	Game.Win = temp
+	Game.Unlock = temp
+	Game.Lock = temo
+	Game.Has = temp
+	Game.HasUnlocked = temp
+}
+
 Mods.LoadMods = function (callback) {
-	Game.Win=()=>{}
+	Mods.CreateTempFunctions()
     let promises=[];
 	let modLoadCheck = (func, path) => {
         promises.push(new Promise((resolve,reject)=>{

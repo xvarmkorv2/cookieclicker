@@ -15,7 +15,10 @@ Mods.LoadFolder = function (folder, callback) {
 	ajax(folder + '/info.txt', (info) => {
 		info = JSON.parse(info)
 		info.dir = folder
-		Mods.ModData[info.ID] = info
+		Mods.ModData[info.ID] = {
+			dir: folder,
+			info: info
+		}
 		let promises=[];
 		promises.push(new Promise((resolve,reject)=>{
 			Game.LoadMod(folder + '/main.js',resolve,()=>{console.log(`Failed to load mod file:`,folder + '/main.js');resolve();});
@@ -46,6 +49,27 @@ Mods.CreateTempFunctions = function () {
 	Game.HasUnlocked = temp
 }
 
+Mods.ChangeCCSE = function(){
+	CCSE.GetModPath = (modName) => {
+		let mod = Mods.ModData[modName];
+		return mod.dir
+	}
+
+	CCSE.GetModFolder = (modName) => Mods.ModData[modName].path;
+
+	CCSE.MenuHelper.AutoVersion = (mod) => {
+		let func = function () {
+			let modInfo = Steam.mods[mod.id].info;
+			Game.customStatsMenu.push(function () {
+				CCSE.AppendStatsVersionNumber(modInfo.Name, modInfo.ModVersion);
+			});
+		}
+
+		if (CCSE.isLoaded) func();
+		else CCSE.postLoadHooks.push(func);
+	}
+}
+
 Mods.LoadMods = function (callback) {
 	Mods.CreateTempFunctions()
     let promises=[];
@@ -67,7 +91,16 @@ Mods.LoadMods = function (callback) {
     //Game.LoadMod('https://mtarnuhal.github.io/FrozenCookies/frozen_cookies.js');
     if (EnableCookiStocker) {
         modLoadCheck(Game.LoadMod, '/CookiStocker.js')
-    }
+	}
+
+	if (CCSE && CCSE.isLoaded) {
+		Mods.ChangeCCSE();
+	}
+	else {
+		if (!CCSE) var CCSE = {};
+		if (!CCSE.postLoadHooks) CCSE.postLoadHooks = [];
+		CCSE.postLoadHooks.push(Mods.ChangeCCSE);
+	}
 	Promise.all(promises)
 	.then(()=>{
 		callback();

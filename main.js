@@ -14884,6 +14884,7 @@ Game.Launch=function()
 						//
 						var amount=Game.Objects['Cursor'].amount;
 						//var spe=-1;
+						let missedRot=0;
 						for (var i=0; i<amount; i++) {
 							var n=Math.floor(i / 50);
 							//var a=((i+0.5*n)%50)/50;
@@ -14899,17 +14900,20 @@ Game.Launch=function()
 							var rot = 7.2;//(1/50)*360
 							if (i == 0 && fancy) rot -= Game.T * 0.1;
 							if (i % 50 == 0) rot += 7.2 / 2;
-							ctx.rotate((rot/360)*Math.PI*2);
-							ctx.drawImage(pic,0,0,32,32,x,y,32,32);
-							//ctx.drawImage(pic,32*(i==spe),0,32,32,x,y,32,32);
-							
-							/*if (i==spe)
-							{
-								y+=16;
-								x=Game.cookieOriginX+Math.sin(-((r-5)/360)*Math.PI*2)*y;
-								y=Game.cookieOriginY+Math.cos(-((r-5)/360)*Math.PI*2)*y;
-								if (Game.CanClick && ctx && Math.abs(Game.mouseX-x)<16 && Math.abs(Game.mouseY-y)<16) Game.mousePointer=1;
-							}*/
+							if (y > 0 && y < ctx.canvas.height){
+								ctx.rotate((rot / 360) * Math.PI * 2);
+								missedRot=0;
+								ctx.drawImage(pic, 0, 0, 32, 32, x, y, 32, 32);
+								//ctx.drawImage(pic,32*(i==spe),0,32,32,x,y,32,32);
+
+								/*if (i==spe)
+								{
+									y+=16;
+									x=Game.cookieOriginX+Math.sin(-((r-5)/360)*Math.PI*2)*y;
+									y=Game.cookieOriginY+Math.cos(-((r-5)/360)*Math.PI*2)*y;
+									if (Game.CanClick && ctx && Math.abs(Game.mouseX-x)<16 && Math.abs(Game.mouseY-y)<16) Game.mousePointer=1;
+								}*/
+							}else {missedRot+=rot}
 						}
 						ctx.restore();
 						Timer.track('cursors');

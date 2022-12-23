@@ -58,8 +58,9 @@ Mods.LoadMods = function (callback) {
     //modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/InsugarTrading/dist/main.js')
     modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE-POCs/BlackholeInverter.js?v=1.12')
     modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/minigameCasino.js?v=3.16')
-    modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/FortuneCookie.js?v=2.8')
-    modLoadCheck(Mods.LoadFolder, 'Mods/ameliaWatson')
+	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/FortuneCookie.js?v=2.8')
+	modLoadCheck(Mods.LoadFolder, 'Mods/ameliaWatson')
+	modLoadCheck(Mods.LoadFolder, 'Mods/wikiMinigame')
     //Mods.LoadFolder('Mods/evenMoreBackgrounds', false)
     //Game.LoadMod('https://mtarnuhal.github.io/FrozenCookies/frozen_cookies.js');
     if (EnableCookiStocker) {

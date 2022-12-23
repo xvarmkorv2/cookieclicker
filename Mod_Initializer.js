@@ -60,6 +60,7 @@ Mods.LoadMods = function (callback) {
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/minigameCasino.js?v=3.16')
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/FortuneCookie.js?v=2.8')
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE-POCs/TimerWidget.js')
+	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/AmericanSeason.js?v=1.7')
 	modLoadCheck(Mods.LoadFolder, 'Mods/ameliaWatson')
 	modLoadCheck(Mods.LoadFolder, 'Mods/wikiMinigame')
     //Mods.LoadFolder('Mods/evenMoreBackgrounds', false)

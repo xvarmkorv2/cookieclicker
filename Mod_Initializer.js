@@ -91,7 +91,7 @@ Mods.LoadMods = function (callback) {
     //Mods.LoadFolder('Mods/evenMoreBackgrounds', false)
     //Game.LoadMod('https://mtarnuhal.github.io/FrozenCookies/frozen_cookies.js');
     if (EnableCookiStocker) {
-        modLoadCheck(Game.LoadMod, '/CookiStocker.js')
+        modLoadCheck(Game.LoadMod, 'Mods/CookiStocker.js')
 	}
 
 	if (CCSE && CCSE.isLoaded) {

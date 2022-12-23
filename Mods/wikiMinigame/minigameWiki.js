@@ -23,7 +23,7 @@ M.launch=function()
 		var frame = document.createElement('iframe');
 
 		//frame.type = 'text/html'
-		frame.src = 'http://cookieclicker.fandom.com/wiki/';
+		frame.src = 'https://cookieclicker.fandom.com/wiki/';
 		frame.style.width = '100%';
 		frame.style.height = '700px';
 

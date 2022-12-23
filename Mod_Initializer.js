@@ -41,7 +41,7 @@ Mods.CreateTempFunctions = function () {
 	let temp = () => { }
 	Game.Win = temp
 	Game.Unlock = temp
-	Game.Lock = temo
+	Game.Lock = temp
 	Game.Has = temp
 	Game.HasUnlocked = temp
 }

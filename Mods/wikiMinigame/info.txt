@@ -1,0 +1,13 @@
+{
+ "Name": "Cookie Clicker Wiki Minigame",
+ "ID": "wiki minigame",
+ "Author": "Owen \"Ohead\" Parker",
+ "Description": "Adds a minigame for the Cortex Baker that allows you to view the Cookie Clicker wiki in-game",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "6/18/2022",
+ "Dependencies": [],
+ "Disabled": 1,
+ "AllowSteamAchievs": 1,
+ "Workshop": "2822863092"
+}

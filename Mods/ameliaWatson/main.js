@@ -1,7 +1,7 @@
 Game.registerMod("despacito AmeliaWatson", {
 	check: function () {
 		let watsonicons = this.dir + "/watsoniconfull.png";
-		Game.Objects['Time machine'].displayName = '<span style="font-size:67%;letter-spacing:-1px;position:relative;bottom:4px;">Amelia Watson</span>';//shrink
+		Game.Objects['Time machine'].displayName = '<span style="font-size:70%;letter-spacing:-1px;position:relative;bottom:4px;">Amelia Watson</span>';//shrink
 		Game.Objects['Time machine'].pic = [0, 0, watsonicons];
 
 		// check out the wiki for upgrade lists or the game's main.js file! thanks orteil! i love ctrl-f !!

@@ -1217,7 +1217,8 @@ var Game={};
 		Game.sortedMods.push(mod);
 		mod.id=id;
 		mod.name=mod.name||id;
-		if (App) App.registerMod(mod);
+		if (App) {App.registerMod(mod);}
+		else if (Mods) { Mods.registerMod(mod) }
 		console.log('Mod "'+id+'" added.');
 		if (Game.ready && mod.init)
 		{

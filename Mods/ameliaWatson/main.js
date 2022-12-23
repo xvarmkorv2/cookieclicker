@@ -1,5 +1,4 @@
 Game.registerMod("despacito AmeliaWatson", {
-	dir: 'Mods/ameliaWatson',
 	check: function () {
 		let watsonicons = this.dir + "/watsoniconfull.png";
 		Game.Objects['Time machine'].displayName = "Amelia Watson";

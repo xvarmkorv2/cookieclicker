@@ -3,9 +3,19 @@ const EnableCookiStocker = false
 
 Mods = {}
 
+Mods.ModData = {}
+
+Mods.registerMod = function (mod) {
+	if (Mods.ModData[mod.id]) {
+		let steamSide = Mods.ModData[mod.id];
+		mod.dir = steamSide.dir.replace(/\\/g, "/");
+	}
+}
 Mods.LoadFolder = function (folder, callback) {
-	ajax(folder + '/info.txt',(info)=>{
+	ajax(folder + '/info.txt', (info) => {
 		info = JSON.parse(info)
+		info.dir = folder
+		Mods.ModData[info.ID] = info
 		let promises=[];
 		promises.push(new Promise((resolve,reject)=>{
 			Game.LoadMod(folder + '/main.js',resolve,()=>{console.log(`Failed to load mod file:`,folder + '/main.js');resolve();});

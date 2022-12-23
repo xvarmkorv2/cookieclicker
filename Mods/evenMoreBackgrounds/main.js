@@ -1,8 +1,6 @@
 Game.registerMod("evenMoreBackgrounds", {
     bgType: 0,
 	
-	dir: 'Mods/evenMoreBackgrounds',
-	
     init: function () {
         Game.registerHook('create', () => {
             this.launch();

@@ -87,6 +87,7 @@ Mods.LoadMods = function (callback) {
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/AmericanSeason.js?v=1.7')
 	modLoadCheck(Mods.LoadFolder, 'Mods/ameliaWatson')
 	modLoadCheck(Mods.LoadFolder, 'Mods/wikiMinigame')
+	modLoadCheck(Mods.LoadFolder, 'https://klattmose.github.io/CookieClicker/SteamMods/DecideDestiny')
     //Mods.LoadFolder('Mods/evenMoreBackgrounds', false)
     //Game.LoadMod('https://mtarnuhal.github.io/FrozenCookies/frozen_cookies.js');
     if (EnableCookiStocker) {

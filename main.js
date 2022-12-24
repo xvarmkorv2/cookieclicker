@@ -8849,16 +8849,16 @@ Game.Launch=function()
 		
 		Game.magicCpS=function(what)
 		{
-			/*
+			
 			if (Game.Objects[what].amount>=250)
 			{
-				//this makes buildings give 1% more cookies for every building over 250.
+				//this makes buildings give 1% more cookies for every 250th building over 250.
 				//this turns out to be rather stupidly overpowered.
-				var n=Game.Objects[what].amount-250;
+				var n=Game.Objects[what].amount/250;
 				return 1+Math.pow(1.01,n);
 			}
 			else return 1;
-			*/
+			
 			return 1;
 		}
 		

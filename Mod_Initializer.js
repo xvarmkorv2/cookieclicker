@@ -67,6 +67,47 @@ Mods.ChangeCCSE = function(){
 	}
 }
 
+PRELOAD = function(callback){
+	//dark fade-in
+	(function () {
+		let timesLoaded = 1
+		var css = document.createElement('style');
+		css.type = 'text/css';
+		css.innerHTML = `
+			#darkOverlay,#darkOverlay2
+			{
+				position:absolute;
+				left:0px;top:0px;right:0px;bottom:0px;
+				padding:0px;margin:0px;
+				background:#000;
+				z-index:10000000000;
+				animation:darkOverlayFade ${timesLoaded == 1 ? '2' : '0.2'}s ease-out;
+				animation-fill-mode:both;
+				opacity:0.5;
+				pointer-events:none;
+			}
+			#darkOverlay2
+			{
+				background:#f60;
+				mix-blend-mode:multiply;
+				z-index:99;
+			}
+			
+			@keyframes darkOverlayFade{
+				0% {opacity:1;}
+				50% {opacity:1;}
+				100% {opacity:0;}
+			}
+		`;
+		document.head.appendChild(css);
+		let darken = document.createElement('div');
+		darken.innerHTML = '<div id="darkOverlay"></div><div id="darkOverlay2"></div>';
+		document.body.appendChild(darken);
+		setTimeout(() => { darken.parentNode.removeChild(darken); }, 3000);
+	})();
+	callback()
+}
+
 Mods.LoadMods = function (callback) {
 	Mods.CreateTempFunctions()
     let promises=[];

@@ -1,6 +1,3 @@
-const EnableCookiStocker = false
-
-
 Mods = {}
 
 Mods.ModData = {}
@@ -80,10 +77,10 @@ Mods.LoadMods = function (callback) {
     }
     modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE.js')
     //modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/InsugarTrading/dist/main.js')
-    modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE-POCs/BlackholeInverter.js?v=1.12')
+	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE-POCs/BlackholeInverter.js?v=1.12')
+	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE-POCs/TimerWidget.js')
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/minigameCasino.js?v=3.16')
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/FortuneCookie.js?v=2.8')
-	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE-POCs/TimerWidget.js')
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/AmericanSeason.js?v=1.7')
 	modLoadCheck(Mods.LoadFolder, 'Mods/ameliaWatson')
 	modLoadCheck(Mods.LoadFolder, 'Mods/wikiMinigame')
@@ -93,7 +90,7 @@ Mods.LoadMods = function (callback) {
 	if (document.location.search.indexOf('richpresence')) {
 		modLoadCheck(Game.LoadMod, 'https://angelolz.dev/mods/ccrpc/main.js')
 	}
-    if (EnableCookiStocker) {
+	if (document.location.search.indexOf('cookistocker')) {
         modLoadCheck(Game.LoadMod, 'Mods/CookiStocker.js')
 	}
 

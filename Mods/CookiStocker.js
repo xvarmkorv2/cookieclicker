@@ -15,7 +15,6 @@
 // Announce transactions in game notifications
 const stockerTransactionNotifications = true
 // Announce transactions in game notifications
-const disableAutoBuy = true
 
 // Make regular profit reports
 const stockerActivityReport = true
@@ -162,7 +161,7 @@ var waitForGame = function waitForGame() {
                     }, stockerActivityReportFrequency);
                 }
 
-                if (!disableAutoBuy) {
+                if (true) {
 
                     var stockerLoop = setInterval(function () {
                         if (stockerForceLoopUpdates) Game.ObjectsById[5].minigame.tick();

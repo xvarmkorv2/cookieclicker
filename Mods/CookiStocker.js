@@ -14,6 +14,8 @@
 
 // Announce transactions in game notifications
 const stockerTransactionNotifications = true
+// Announce transactions in game notifications
+const disableAutoBuy = true
 
 // Make regular profit reports
 const stockerActivityReport = true
@@ -160,81 +162,84 @@ var waitForGame = function waitForGame() {
                     }, stockerActivityReportFrequency);
                 }
 
-                var stockerLoop = setInterval(function () {
-                    if (stockerForceLoopUpdates) Game.ObjectsById[5].minigame.tick();
-                    // setting stockerForceLoopUpdates to true will make the logic loop force the market to tick every time it triggers,
-                    // making this an obvious cheat, and i will personally resent you.
+                if (!disableAutoBuy) {
 
-                    // but
-                    // if you backup your save and set stockerLoopFrequency to like 10 milliseconds it looks very fun and effective.
-                    // yes, this is how i made the gif on the steam guide page.
+                    var stockerLoop = setInterval(function () {
+                        if (stockerForceLoopUpdates) Game.ObjectsById[5].minigame.tick();
+                        // setting stockerForceLoopUpdates to true will make the logic loop force the market to tick every time it triggers,
+                        // making this an obvious cheat, and i will personally resent you.
+
+                        // but
+                        // if you backup your save and set stockerLoopFrequency to like 10 milliseconds it looks very fun and effective.
+                        // yes, this is how i made the gif on the steam guide page.
 
 
-                    stockList.stocksRising = 0;
+                        stockList.stocksRising = 0;
 
-                    market = Game.ObjectsById[5].minigame.goodsById; // update market
-                    for (let i = 0; i < market.length; i++) {
-                        //let i = 3;
+                        market = Game.ObjectsById[5].minigame.goodsById; // update market
+                        for (let i = 0; i < market.length; i++) {
+                            //let i = 3;
 
-                        // update stockList
-                        stockList.goods[i].stock = market[i].stock;
-                        stockList.goods[i].currentPrice = market[i].val;
-                        stockList.goods[i].mode = market[i].mode;
+                            // update stockList
+                            stockList.goods[i].stock = market[i].stock;
+                            stockList.goods[i].currentPrice = market[i].val;
+                            stockList.goods[i].mode = market[i].mode;
 
-                        let md = stockList.goods[i].mode;
-                        let lmd = stockList.goods[i].lastMode;
+                            let md = stockList.goods[i].mode;
+                            let lmd = stockList.goods[i].lastMode;
 
-                        if (
-                            (md != lmd) && (Game.ObjectsById[i + 2].amount > 0) // new trend detected in a stock that is active
-                        ) {
-                            if (stockerConsoleAnnouncements) {
-                                console.log(stockList.goods[i].name + ' has changed the mode from [' + modeDecoder[lmd] + '] to [' + modeDecoder[md] + ']');
-                            }
-
-                            if (lmd != 5 && md == 5) { // ignore unstable stocks
-                                if (stockerTransactionNotifications) Game.Notify(stockList.goods[i].name + ' went unstable', 'Ignoring the stock for a time', [1, 33], stockerFastNotifications);
-                            }
-
-                            if ( // buy conditions
-                                (
-                                    (lmd == 2) && ((md != 4) && (md != 5)) || // slow fall stopped
-                                    (lmd == 4) && ((md != 2) && (md != 5)) || // fast fall stopped
-                                    (lmd == 5) && ((md != 2) && (md != 4)) // chaotic stopped
-                                ) &&
-                                (stockList.goods[i].currentPrice < stockList.goods[i].restingPrice) // only if the price is lower than resting price
+                            if (
+                                (md != lmd) && (Game.ObjectsById[i + 2].amount > 0) // new trend detected in a stock that is active
                             ) {
-                                // buying
-                                stockList.goods[i].priceBought = stockList.goods[i].currentPrice;
-                                Game.ObjectsById[5].minigame.buyGood(i, 10000);
-                                stockList.sessionPurchases++;
-                                if (stockerTransactionNotifications) Game.Notify('Buying ' + stockList.goods[i].name, 'The price has stopped ' + modeDecoder[stockList.goods[i].lastMode] + ' at ' + Math.floor(stockList.goods[i].priceBought) + '$ per unit, and is ' + modeDecoder[stockList.goods[i].mode] + ' now.', goodIcons[i], stockerFastNotifications);
-                                if (stockerConsoleAnnouncements) console.log('=====$$$== Buying ' + stockList.goods[i].name);
+                                if (stockerConsoleAnnouncements) {
+                                    console.log(stockList.goods[i].name + ' has changed the mode from [' + modeDecoder[lmd] + '] to [' + modeDecoder[md] + ']');
+                                }
+
+                                if (lmd != 5 && md == 5) { // ignore unstable stocks
+                                    if (stockerTransactionNotifications) Game.Notify(stockList.goods[i].name + ' went unstable', 'Ignoring the stock for a time', [1, 33], stockerFastNotifications);
+                                }
+
+                                if ( // buy conditions
+                                    (
+                                        (lmd == 2) && ((md != 4) && (md != 5)) || // slow fall stopped
+                                        (lmd == 4) && ((md != 2) && (md != 5)) || // fast fall stopped
+                                        (lmd == 5) && ((md != 2) && (md != 4)) // chaotic stopped
+                                    ) &&
+                                    (stockList.goods[i].currentPrice < stockList.goods[i].restingPrice) // only if the price is lower than resting price
+                                ) {
+                                    // buying
+                                    stockList.goods[i].priceBought = stockList.goods[i].currentPrice;
+                                    Game.ObjectsById[5].minigame.buyGood(i, 10000);
+                                    stockList.sessionPurchases++;
+                                    if (stockerTransactionNotifications) Game.Notify('Buying ' + stockList.goods[i].name, 'The price has stopped ' + modeDecoder[stockList.goods[i].lastMode] + ' at ' + Math.floor(stockList.goods[i].priceBought) + '$ per unit, and is ' + modeDecoder[stockList.goods[i].mode] + ' now.', goodIcons[i], stockerFastNotifications);
+                                    if (stockerConsoleAnnouncements) console.log('=====$$$== Buying ' + stockList.goods[i].name);
+                                }
+
+                                if ( // sell conditions
+                                    (stockList.goods[i].stock > 0) // only if the stock is present
+                                    &&
+                                    (
+                                        (lmd == 1) && ((md != 3) && (md != 5)) || // slow rise stopped
+                                        (lmd == 3) && ((md != 1) && (md != 5)) || // fast rise stopped
+                                        (lmd == 5) && ((md != 1) && (md != 3)) // chaotic stopped
+                                    ) &&
+                                    (stockList.goods[i].currentPrice > stockList.goods[i].priceBought) // only if the price is higher than the price it was bought at
+                                ) {
+                                    // selling
+                                    stockList.goods[i].priceBought = -1;
+                                    Game.ObjectsById[5].minigame.sellGood(i, 10000);
+                                    stockList.sessionSales++;
+                                    if (stockerTransactionNotifications) Game.Notify('Selling ' + stockList.goods[i].name, 'At a profit of ' + Math.floor(stockList.goods[i].currentPrice - stockList.goods[i].priceBought) + '$ per unit (total ' + Math.floor(stockList.goods[i].currentPrice - stockList.goods[i].priceBought) * stockList.goods[i].stock + '$ profit), and is ' + modeDecoder[stockList.goods[i].mode] + ' now.', goodIcons[i], stockerFastNotifications);
+                                    if (stockerConsoleAnnouncements) ('=====$$$== Selling ' + stockList.goods[i].name + ' at a profit of ' + (stockList.goods[i].currentPrice - stockList.goods[i].priceBought).toFixed(2));
+
+                                }
+
+                                stockList.sessionProfits = Game.ObjectsById[5].minigame.profit - stockList.startingProfits;
+                                stockList.goods[i].lastMode = stockList.goods[i].mode // update last mode
                             }
-
-                            if ( // sell conditions
-                                (stockList.goods[i].stock > 0) // only if the stock is present
-                                &&
-                                (
-                                    (lmd == 1) && ((md != 3) && (md != 5)) || // slow rise stopped
-                                    (lmd == 3) && ((md != 1) && (md != 5)) || // fast rise stopped
-                                    (lmd == 5) && ((md != 1) && (md != 3)) // chaotic stopped
-                                ) &&
-                                (stockList.goods[i].currentPrice > stockList.goods[i].priceBought) // only if the price is higher than the price it was bought at
-                            ) {
-                                // selling
-                                stockList.goods[i].priceBought = -1;
-                                Game.ObjectsById[5].minigame.sellGood(i, 10000);
-                                stockList.sessionSales++;
-                                if (stockerTransactionNotifications) Game.Notify('Selling ' + stockList.goods[i].name, 'At a profit of ' + Math.floor(stockList.goods[i].currentPrice - stockList.goods[i].priceBought) + '$ per unit (total ' + Math.floor(stockList.goods[i].currentPrice - stockList.goods[i].priceBought) * stockList.goods[i].stock + '$ profit), and is ' + modeDecoder[stockList.goods[i].mode] + ' now.', goodIcons[i], stockerFastNotifications);
-                                if (stockerConsoleAnnouncements) ('=====$$$== Selling ' + stockList.goods[i].name + ' at a profit of ' + (stockList.goods[i].currentPrice - stockList.goods[i].priceBought).toFixed(2));
-
-                            }
-
-                            stockList.sessionProfits = Game.ObjectsById[5].minigame.profit - stockList.startingProfits;
-                            stockList.goods[i].lastMode = stockList.goods[i].mode // update last mode
                         }
-                    }
-                }, stockerLoopFrequency);
+                    }, stockerLoopFrequency);
+                }
             },
         });
 

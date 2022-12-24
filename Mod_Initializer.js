@@ -90,6 +90,9 @@ Mods.LoadMods = function (callback) {
 	modLoadCheck(Mods.LoadFolder, 'https://klattmose.github.io/CookieClicker/SteamMods/DecideDestiny')
     //Mods.LoadFolder('Mods/evenMoreBackgrounds', false)
     //Game.LoadMod('https://mtarnuhal.github.io/FrozenCookies/frozen_cookies.js');
+	if (document.location.search.indexOf('richpresence')) {
+		modLoadCheck(Game.LoadMod, 'https://angelolz.dev/mods/ccrpc/main.js')
+	}
     if (EnableCookiStocker) {
         modLoadCheck(Game.LoadMod, 'Mods/CookiStocker.js')
 	}

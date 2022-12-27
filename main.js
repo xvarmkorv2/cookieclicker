@@ -5041,6 +5041,9 @@ Game.Launch=function()
 		Game.BigCookieCursorOffset=0;
 		Game.BigCookieSizeD=0;
 		Game.BigCookieSizeT=1;
+		Game.BigCookieRot=0;
+		Game.BigCookieRotBase=0;
+		Game.BigCookieRotTarget=0;
 		Game.cookieClickSound=Math.floor(Math.random()*7)+1;
 		Game.playCookieClickSound=function()
 		{
@@ -14905,6 +14908,7 @@ Game.Launch=function()
 								ctx.drawImage(Pic('nest.png'),-nestW/2,-nestH/2+130,nestW,nestH);
 							}
 							//ctx.rotate(((Game.startDate%360)/360)*Math.PI*2);
+							ctx.rotate(Game.BigCookieRot * Math.pi * 2)
 							ctx.drawImage(Pic('perfectCookie.png'),-s/2,-s/2,s,s);
 							
 							if (goodBuff && Game.prefs.particles)//sparkle
@@ -14947,6 +14951,7 @@ Game.Launch=function()
 						var s=256*Game.BigCookieSize;
 						var x=Game.cookieOriginX-s/2;
 						var y=Game.cookieOriginY-s/2;
+						ctx.rotate(Game.BigCookieRot*Math.pi*2)
 						if (Game.prefs.fancy) ctx.drawImage(Pic('cookieShadow.png'),x,y+20,s,s);
 						ctx.drawImage(Pic('perfectCookie.png'),x,y,s,s);
 					}
@@ -15507,10 +15512,12 @@ Game.Launch=function()
 				switch (Game.BigCookieState) {
 					case 1: {
 						Game.BigCookieSizeT=0.98;
+						Game.BigCookieRotBase += (0.8 - Game.BigCookieRotBase) * 0.5;
 						break;
 					}
 					case 2: {
 						Game.BigCookieSizeT=1.05;
+						Game.BigCookieRotBase += (0.1 - Game.BigCookieRotBase) * 0.5;
 						break;
 					}
 					case 3: {
@@ -15525,13 +15532,16 @@ Game.Launch=function()
 					}
 					default: {
 						Game.BigCookieSizeT=1;
+						Game.BigCookieRotBase += (0 - Game.BigCookieRotBase) * 0.5;
 						break
 					}
 				}
 				Game.BigCookieSizeD+=(Game.BigCookieSizeT - Game.BigCookieSize) * Game.BigCookieSpeed;
 				Game.BigCookieSizeD*=0.75;
 				Game.BigCookieSize+=Game.BigCookieSizeD;
-				Game.BigCookieSize=Math.max(0, Game.BigCookieSize);
+				Game.BigCookieSize = Math.max(0, Game.BigCookieSize);
+				Game.BigCookieRotTarget = Game.BigCookieRotTarget + 0.25(Game.BigCookieRotTarget - Math.sin(Game.T))
+				Game.BigCookieRot = Game.BigCookieRotBase * Game.BigCookieRotTarget
 			}
 			else {
 				switch (Game.BigCookieState) {

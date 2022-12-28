@@ -56,7 +56,7 @@ Mods.ChangeCCSE = function(){
 
 	CCSE.MenuHelper.AutoVersion = (mod) => {
 		let func = function () {
-			let modInfo = Steam.mods[mod.id].info;
+			let modInfo = Mods.ModData[mod.id].info;
 			Game.customStatsMenu.push(function () {
 				CCSE.AppendStatsVersionNumber(modInfo.Name, modInfo.ModVersion);
 			});

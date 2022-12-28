@@ -1131,6 +1131,7 @@ var initMusic = function () {
 
 		if (Game.initJukebox) { Game.initJukebox() }
 		if (Game.ready && !Music.playing) { Music.cue('launch') }
+		if (Game.ready && (Game.visible || Game.prefs.bgMusic)) { Music.setVolume(Game.volumeMusic / 100, 1.5); }
 	}
 }; 
 /*=====================================================================================

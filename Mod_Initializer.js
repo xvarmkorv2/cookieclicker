@@ -48,7 +48,7 @@ Mods.CreateTempFunctions = function () {
 }
 
 Mods.ChangeCCSE = function(){
-	if (!CCSE) window.CCSE = {};
+	if (!window.CCSE) window.CCSE = {};
 	CCSE.GetModPath = (modName) => {
 		let mod = Mods.ModData[modName];
 		return mod.dir

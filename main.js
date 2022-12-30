@@ -824,7 +824,7 @@ var Loader=function()//asset-loading system
 		this.assetsLoaded.push(e.target.alt);
 		this.assetsLoading.splice(this.assetsLoading.indexOf(e.target.alt),1);
 		this.loadingN--;
-		if (this.doneLoading==0 && this.loadingN<=0 && this.loaded!=0)
+		if (this.doneLoading==0 && this.loadingN<=0 && typeof this.loaded == 'function')
 		{
 			this.doneLoading=1;
 			this.loaded();

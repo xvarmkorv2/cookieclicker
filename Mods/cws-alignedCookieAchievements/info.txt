@@ -1,0 +1,11 @@
+{
+ "Name": "Better Cookie Achievements",
+ "ID": "cws-alignedCookieAchievements",
+ "Author": "Camwoodstock & Tori",
+ "Description": "Properly aligns the backgrounds of various cookie-related achievements.",
+ "ModVersion": 3,
+ "GameVersion": 2.048,
+ "Date": "26/11/2022",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2829406821"
+}

@@ -1,0 +1,11 @@
+{
+ "Name": "Mitten Cursors",
+ "ID": "cws-mittenCursors",
+ "Author": "Camwoodstock & Tori",
+ "Description": "A mod that gives the cursor upgrade and achievement icons some nice, snug mittens. Merry Christmas!",
+ "ModVersion": 3,
+ "GameVersion": 2.048,
+ "Date": "26/12/2022",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2906460636"
+}

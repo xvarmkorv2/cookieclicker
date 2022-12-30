@@ -125,6 +125,15 @@ Mods.LoadMods = function (callback) {
     //modLoadCheck(Game.LoadMod, 'https://mtarnuhal.github.io/FrozenCookies/frozen_cookies.js')
 	modLoadCheck(Mods.LoadFolder, 'Mods/ameliaWatson')
 	modLoadCheck(Mods.LoadFolder, 'Mods/wikiMinigame')
+	modLoadCheck(Mods.LoadFolder, 'Mods/cws-uniqueJellicles')
+	modLoadCheck(Mods.LoadFolder, 'Mods/cws-uniqueGrandmas')
+	modLoadCheck(Mods.LoadFolder, 'Mods/cws-squashyPress')
+	modLoadCheck(Mods.LoadFolder, 'Mods/cws-alignedCookieAchievements')
+	modLoadCheck(Mods.LoadFolder, 'Mods/cws-betterTrueSanta')
+	modLoadCheck(Mods.LoadFolder, 'Mods/cws-consistentUpgradeBuildingIcons')
+	if (document.location.search.indexOf('mittens') != -1) {
+		modLoadCheck(Mods.LoadFolder, 'Mods/cws-mittenCursors')
+	}
 	modLoadCheck(Mods.LoadFolder, 'https://klattmose.github.io/CookieClicker/SteamMods/DecideDestiny')
 	modLoadCheck(Mods.LoadFolder, 'https://klattmose.github.io/CookieClicker/SteamMods/Casino')
     //modLoadCheck(Mods.LoadFolder, 'Mods/evenMoreBackgrounds')
@@ -132,7 +141,7 @@ Mods.LoadMods = function (callback) {
 		modLoadCheck(Game.LoadMod, 'https://angelolz.dev/mods/ccrpc/main.js')
 	}
 	if (document.location.search.indexOf('cookistocker') != -1) {
-        modLoadCheck(Game.LoadMod, 'Mods/CookiStocker.js')
+		modLoadCheck(Game.LoadMod, 'Mods/CookiStocker.js')
 	}
 
 	if (CCSE && CCSE.isLoaded) {

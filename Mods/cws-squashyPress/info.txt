@@ -1,0 +1,11 @@
+{
+ "Name": "Better Stifled Press",
+ "ID": "cws-squashyPress",
+ "Author": "Camwoodstock & Tori",
+ "Description": "Gives the Stifling the press achievement a squashier, crumpled, more prodded look to it to distinguish it from Tabloid addiction.",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "10/08/2022",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2847353107"
+}

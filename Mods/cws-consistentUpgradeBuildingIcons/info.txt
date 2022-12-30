@@ -1,0 +1,11 @@
+{
+ "Name": "Consistent Upgrade & Building Achievement Icons",
+ "ID": "cws-consistentUpgradeBuildingIcons",
+ "Author": "Camwoodstock & Tori",
+ "Description": "Did it ever bug you that the icons for the building achievements, upgrade achievements, and -illion building achievements all used a wholly different color scheme? Now you can fix that.",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "16/06/2022",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2821989147"
+}

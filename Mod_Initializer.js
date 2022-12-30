@@ -118,14 +118,8 @@ Mods.LoadMods = function (callback) {
 		}));
     }
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE.js')
-	if (CCSE && CCSE.isLoaded) {
-		Mods.ChangeCCSE();
-	}
-	else {
-		if (!CCSE) var CCSE = {};
-		if (!CCSE.postLoadHooks) CCSE.postLoadHooks = [];
-		CCSE.postLoadHooks.push(Mods.ChangeCCSE);
-	}
+	if (!CCSE) var CCSE = {};
+	Mods.ChangeCCSE();
     //modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/InsugarTrading/dist/main.js')
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE-POCs/BlackholeInverter.js?v=1.12')
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE-POCs/TimerWidget.js')

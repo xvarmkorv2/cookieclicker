@@ -4297,7 +4297,7 @@ Game.Launch=function()
 			{
 				PlayCue('ascend');
 				PlayMusicSound('snd/cymbalRev.mp3');
-				if (!App || Game.volumeMusic==0) PlaySound('snd/choir.mp3');
+				if (!Music || Game.volumeMusic==0) PlaySound('snd/choir.mp3');
 				Game.EarnHeavenlyChips(Game.cookiesEarned);
 				Game.AscendTimer=0;
 				Game.OnAscend=1;Game.removeClass('ascendIntro');

@@ -48,6 +48,7 @@ Mods.CreateTempFunctions = function () {
 }
 
 Mods.ChangeCCSE = function(){
+	if (!CCSE) window.CCSE = {};
 	CCSE.GetModPath = (modName) => {
 		let mod = Mods.ModData[modName];
 		return mod.dir
@@ -118,7 +119,6 @@ Mods.LoadMods = function (callback) {
 		}));
     }
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE.js')
-	if (!CCSE) var CCSE = {};
 	Mods.ChangeCCSE();
     //modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/InsugarTrading/dist/main.js')
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE-POCs/BlackholeInverter.js?v=1.12')

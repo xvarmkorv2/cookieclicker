@@ -1,6 +1,6 @@
 {
  "Name": "Unique Jellicles Icon",
- "ID": "cws-uniqueJellicles",
+ "ID": "cws uniqueJellicles",
  "Author": "Camwoodstock & Tori",
  "Description": "Gives the Jellicles achievement an icon that's not just a tiered kitten!",
  "ModVersion": 1,

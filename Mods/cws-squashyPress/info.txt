@@ -1,6 +1,6 @@
 {
  "Name": "Better Stifled Press",
- "ID": "cws-squashyPress",
+ "ID": "cws squashyPress",
  "Author": "Camwoodstock & Tori",
  "Description": "Gives the Stifling the press achievement a squashier, crumpled, more prodded look to it to distinguish it from Tabloid addiction.",
  "ModVersion": 1,

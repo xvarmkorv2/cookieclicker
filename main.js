@@ -12058,7 +12058,7 @@ Game.Launch=function()
 				if (Game.Achievements[what])
 				{
 					var it=Game.Achievements[what];
-					if (it.won==0)
+					if (it.won==0 && what != 'Third-party')
 					{
 						var name=it.shortName?it.shortName:it.dname;
 						it.won=1;

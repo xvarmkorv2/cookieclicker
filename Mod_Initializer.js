@@ -33,7 +33,7 @@ Mods.LoadFolder = function (folder, callback) {
 		}
 		Promise.all(promises)
 		.then(()=>{
-			callback();
+			if (callback) { callback(); }
 		});
 	})
 }
@@ -153,7 +153,12 @@ Mods.LoadMods = function (callback) {
 		modLoadCheck(Game.LoadMod, 'Mods/CookiStocker.js')
 	}
 	Promise.all(promises)
-	.then(()=>{
+		.then(() => {
+			let loadedMods = [];
+			for (let i = 0; i < Game.mods.length; i++) {
+				loadedMods.push(Game.mods[i].id);
+			}
+			console.log('loaded mods:', loadedMods.join(',') || '(none)');
 		callback();
 	});
 }

@@ -117,7 +117,15 @@ Mods.LoadMods = function (callback) {
 			func(path,resolve,()=>{console.log(`Failed to load mod language file:`,file);resolve();});
 		}));
     }
-    modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE.js')
+	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE.js')
+	if (CCSE && CCSE.isLoaded) {
+		Mods.ChangeCCSE();
+	}
+	else {
+		if (!CCSE) var CCSE = {};
+		if (!CCSE.postLoadHooks) CCSE.postLoadHooks = [];
+		CCSE.postLoadHooks.push(Mods.ChangeCCSE);
+	}
     //modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/InsugarTrading/dist/main.js')
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE-POCs/BlackholeInverter.js?v=1.12')
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE-POCs/TimerWidget.js')
@@ -143,15 +151,6 @@ Mods.LoadMods = function (callback) {
 	}
 	if (document.location.search.indexOf('cookistocker') != -1) {
 		modLoadCheck(Game.LoadMod, 'Mods/CookiStocker.js')
-	}
-
-	if (CCSE && CCSE.isLoaded) {
-		Mods.ChangeCCSE();
-	}
-	else {
-		if (!CCSE) var CCSE = {};
-		if (!CCSE.postLoadHooks) CCSE.postLoadHooks = [];
-		CCSE.postLoadHooks.push(Mods.ChangeCCSE);
 	}
 	Promise.all(promises)
 	.then(()=>{

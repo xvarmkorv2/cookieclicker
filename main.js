@@ -15571,6 +15571,7 @@ Game.Launch=function()
 						Game.BigCookieSize+=(1 - Game.BigCookieSize) * 0.5;
 					}
 				}
+				Game.BigCookieRot = 0
 			}
 			Game.BigCookieCursorOffset+=(Game.BigCookieSize - Game.BigCookieCursorOffset) * 0.25;
 			if (Game.catchupLogic==0) { Timer.track("big cookie size", false) }

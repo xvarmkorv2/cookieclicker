@@ -2173,6 +2173,9 @@ Game.Launch=function()
 		Game.Loop();
 		Game.LoadSave();
 		console.log('[=== Game resumed! Data was loaded. ===]');
+
+		if (Game.clicksThisSession == 0) { PlayCue('launch'); } else { PlayCue('preplay'); }
+		
 	}
 	
 	

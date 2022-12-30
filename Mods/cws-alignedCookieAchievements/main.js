@@ -6,7 +6,7 @@ Game.registerMod("cws-alignedCookieAchievements", {
 		var custImg = this.dir + "/alignedCheevos.png";
 		
 		// and a notification
-		Game.Notify(`Various achievement icons changed!`, `The stars are aligned!`, [28,4],10,1);
+		//Game.Notify(`Various achievement icons changed!`, `The stars are aligned!`, [28,4],10,1);
 		
 		// cookies per run achievements
 		Game.Achievements['Brought to you by the letter <div style="display:inline-block;background:url(img/money.png);width:16px;height:16px;"></div>'].icon = [0,0,custImg];

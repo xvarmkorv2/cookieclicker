@@ -6,7 +6,7 @@ Game.registerMod("cws-consistentUpgradeBuildingIcons", {
 		var custImg = this.dir + "/PillarRuler.png";
 		
 		// and a notification
-		Game.Notify(`Various achievement icons changed!`, `Flasks and pillars and rulers, oh my!`, [10,10],10,1);
+		//Game.Notify(`Various achievement icons changed!`, `Flasks and pillars and rulers, oh my!`, [10,10],10,1);
 		
 		// starting with upgrade icons
 		// hilariously, these are just unused. in the game data. smh orteil it was so easy

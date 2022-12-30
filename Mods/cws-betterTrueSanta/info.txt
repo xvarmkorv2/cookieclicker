@@ -1,6 +1,6 @@
 {
  "Name": "Better Final Claus",
- "ID": "cws betterTrueSanta",
+ "ID": "cws-betterTrueSanta",
  "Author": "Camwoodstock & Tori",
  "Description": "A mod to improve the look of the Final Claus-related upgrades and achievements into something more resembling actual Final Claus. Merry Christmas!",
  "ModVersion": 1,

@@ -1,6 +1,6 @@
 {
  "Name": "Better Cookie Achievements",
- "ID": "cws alignedCookieAchievements",
+ "ID": "cws-alignedCookieAchievements",
  "Author": "Camwoodstock & Tori",
  "Description": "Properly aligns the backgrounds of various cookie-related achievements.",
  "ModVersion": 3,

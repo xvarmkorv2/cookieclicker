@@ -12,6 +12,7 @@ Mods.LoadFolder = function (folder, callback) {
 	ajax(folder + '/info.txt', (info) => {
 		info = JSON.parse(info)
 		info.dir = folder
+		info.ID = info.ID.replace(/\W+/g, ' ');
 		Mods.ModData[info.ID] = {
 			dir: folder,
 			info: info

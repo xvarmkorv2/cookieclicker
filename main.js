@@ -15545,7 +15545,7 @@ Game.Launch=function()
 				Game.BigCookieSizeD*=0.75;
 				Game.BigCookieSize+=Game.BigCookieSizeD;
 				Game.BigCookieSize = Math.max(0, Game.BigCookieSize);
-				Game.BigCookieRotTarget = Game.BigCookieRotTarget + 0.25*(Game.BigCookieRotTarget - Math.sin(Game.T))
+				Game.BigCookieRotTarget = Game.BigCookieRotTarget + 0.5*(Game.BigCookieRotTarget - Math.sin(Game.T))
 				Game.BigCookieRot = Game.BigCookieRotBase * Game.BigCookieRotTarget
 			}
 			else {

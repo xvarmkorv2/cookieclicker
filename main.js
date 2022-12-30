@@ -6925,6 +6925,15 @@ Game.Launch=function()
 							App.writeModUI()+
 							'</div>'+
 						'</div>';
+				} else if (Mods && Mods.writeModUI) {
+					str+=
+						'<div class="block" style="padding:0px;margin:8px 4px;">'+
+							'<div class="subsection" style="padding:0px;">'+
+							
+							'<div class="title">'+loc("Mods")+'</div>'+
+							Mods.writeModUI()+
+							'</div>'+
+						'</div>';
 				}
 				
 				str+='<div style="height:128px;"></div>';

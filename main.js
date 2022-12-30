@@ -9950,7 +9950,7 @@ Game.Launch=function()
 		{
 			if (Game.Upgrades[what] && !Game.Has(what))
 			{
-				Game.researchT=Game.baseResearchTime;
+				Game.researchT = time ? time : Game.baseResearchTime;
 				if (Game.Has('Persistent memory')) Game.researchT=Math.ceil(Game.baseResearchTime/10);
 				if (Game.Has('Ultrascience')) Game.researchT=Game.fps*5;
 				Game.nextResearch=Game.Upgrades[what].id;

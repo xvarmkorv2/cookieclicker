@@ -14679,9 +14679,9 @@ Game.Launch=function()
 					//additional star layer
 					Game.Background.globalAlpha=0.5*(0.5+Math.sin(Game.T*0.02)*0.3);
 					var s=2*Game.AscendZoom*(1+Math.sin(Game.T*0.002)*0.07);
-					//Game.Background.globalCompositeOperation='lighter';
+					Game.Background.globalCompositeOperation='lighter';
 					Game.Background.fillPattern(Pic('starbg.jpg'),0,0,w,h,1024*s,1024*s,x+Game.AscendOffX*0.25*s,y+Game.AscendOffY*0.25*s);
-					//Game.Background.globalCompositeOperation='source-over';
+					Game.Background.globalCompositeOperation='source-over';
 					Timer.track('star layer 2');
 					
 					x=x+Game.AscendOffX*Game.AscendZoom;

@@ -872,6 +872,7 @@ AddLanguage('EN','english',{
 	"None [ascension type]": "None",
 	"No special modifiers.": "/",
 	"Born again [ascension type]": "Born again",
+	"Trigger finger [ascension type]": "Trigger finger",
 	"This run will behave as if you'd just started the game from scratch. Prestige levels and heavenly upgrades will have no effect, as will sugar lumps and building levels. Perma-upgrades and minigames will be unavailable.<div class=\"line\"></div>Some achievements are only available in this mode.": "/",
 	"Your bingo center/research facility is conducting experiments.": "/",
 	"Research has begun": "/",

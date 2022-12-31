@@ -15828,20 +15828,36 @@ Game.Launch=function()
 				if (minAmount>=600) {Game.Win('Sexcentennial');Game.Unlock('Butter biscuit (with butter)');}
 				if (minAmount>=650) {Game.Win('Sexcentennial and a half');Game.Unlock('Everybutter biscuit');}
 				
-				if (Game.handmadeCookies>=1000) {Game.Win('Clicktastic');Game.Unlock('Plastic mouse');}
-				if (Game.handmadeCookies>=100000) {Game.Win('Clickathlon');Game.Unlock('Iron mouse');}
-				if (Game.handmadeCookies>=10000000) {Game.Win('Clickolympics');Game.Unlock('Titanium mouse');}
-				if (Game.handmadeCookies>=1000000000) {Game.Win('Clickorama');Game.Unlock('Adamantium mouse');}
-				if (Game.handmadeCookies>=100000000000) {Game.Win('Clickasmic');Game.Unlock('Unobtainium mouse');}
-				if (Game.handmadeCookies>=10000000000000) {Game.Win('Clickageddon');Game.Unlock('Eludium mouse');}
-				if (Game.handmadeCookies>=1000000000000000) {Game.Win('Clicknarok');Game.Unlock('Wishalloy mouse');}
-				if (Game.handmadeCookies>=100000000000000000) {Game.Win('Clickastrophe');Game.Unlock('Fantasteel mouse');}
-				if (Game.handmadeCookies>=10000000000000000000) {Game.Win('Clickataclysm');Game.Unlock('Nevercrack mouse');}
-				if (Game.handmadeCookies>=1000000000000000000000) {Game.Win('The ultimate clickdown');Game.Unlock('Armythril mouse');}
-				if (Game.handmadeCookies>=100000000000000000000000) {Game.Win('All the other kids with the pumped up clicks');Game.Unlock('Technobsidian mouse');}
-				if (Game.handmadeCookies>=10000000000000000000000000) {Game.Win('One...more...click...');Game.Unlock('Plasmarble mouse');}
-				if (Game.handmadeCookies>=1000000000000000000000000000) {Game.Win('Clickety split');Game.Unlock('Miraculite mouse');}
-				if (Game.handmadeCookies>=100000000000000000000000000000) {Game.Win('Ain\'t that a click in the head');Game.Unlock('Aetherice mouse');}
+				if (Game.ascensionMode != 2) {
+					if (Game.handmadeCookies >= 1000) { Game.Win('Clicktastic'); }
+					if (Game.handmadeCookies >= 100000) { Game.Win('Clickathlon'); }
+					if (Game.handmadeCookies >= 10000000) { Game.Win('Clickolympics'); }
+					if (Game.handmadeCookies >= 1000000000) { Game.Win('Clickorama'); }
+					if (Game.handmadeCookies >= 100000000000) { Game.Win('Clickasmic'); }
+					if (Game.handmadeCookies >= 10000000000000) { Game.Win('Clickageddon'); }
+					if (Game.handmadeCookies >= 1000000000000000) { Game.Win('Clicknarok'); }
+					if (Game.handmadeCookies >= 100000000000000000) { Game.Win('Clickastrophe'); }
+					if (Game.handmadeCookies >= 10000000000000000000) { Game.Win('Clickataclysm'); }
+					if (Game.handmadeCookies >= 1000000000000000000000) { Game.Win('The ultimate clickdown'); }
+					if (Game.handmadeCookies >= 100000000000000000000000) { Game.Win('All the other kids with the pumped up clicks'); }
+					if (Game.handmadeCookies >= 10000000000000000000000000) { Game.Win('One...more...click...'); }
+					if (Game.handmadeCookies >= 1000000000000000000000000000) { Game.Win('Clickety split'); }
+					if (Game.handmadeCookies >= 100000000000000000000000000000) { Game.Win('Ain\'t that a click in the head'); }
+				}
+				if (Game.handmadeCookies >= 1000) { Game.Unlock('Plastic mouse'); }
+				if (Game.handmadeCookies >= 100000) { Game.Unlock('Iron mouse'); }
+				if (Game.handmadeCookies >= 10000000) { Game.Unlock('Titanium mouse'); }
+				if (Game.handmadeCookies >= 1000000000) { Game.Unlock('Adamantium mouse'); }
+				if (Game.handmadeCookies >= 100000000000) { Game.Unlock('Unobtainium mouse'); }
+				if (Game.handmadeCookies >= 10000000000000) { Game.Unlock('Eludium mouse'); }
+				if (Game.handmadeCookies >= 1000000000000000) { Game.Unlock('Wishalloy mouse'); }
+				if (Game.handmadeCookies >= 100000000000000000) { Game.Unlock('Fantasteel mouse'); }
+				if (Game.handmadeCookies >= 10000000000000000000) { Game.Unlock('Nevercrack mouse'); }
+				if (Game.handmadeCookies >= 1000000000000000000000) { Game.Unlock('Armythril mouse'); }
+				if (Game.handmadeCookies >= 100000000000000000000000) { Game.Unlock('Technobsidian mouse'); }
+				if (Game.handmadeCookies >= 10000000000000000000000000) { Game.Unlock('Plasmarble mouse'); }
+				if (Game.handmadeCookies >= 1000000000000000000000000000) { Game.Unlock('Miraculite mouse'); }
+				if (Game.handmadeCookies >= 100000000000000000000000000000) { Game.Unlock('Aetherice mouse'); }
 				
 				if (Game.cookiesEarned<Game.cookies) Game.Win('Cheated cookies taste awful');
 				

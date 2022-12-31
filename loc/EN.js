@@ -874,6 +874,7 @@ AddLanguage('EN','english',{
 	"Born again [ascension type]": "Born again",
 	"Trigger finger [ascension type]": "Trigger finger",
 	"This run will behave as if you'd just started the game from scratch. Prestige levels and heavenly upgrades will have no effect, as will sugar lumps and building levels. Perma-upgrades and minigames will be unavailable.<div class=\"line\"></div>Some achievements are only available in this mode.": "/",
+	"In this run, scrolling your mouse wheel on the cookie counts as clicking it. Some upgrades introduce new clicking behaviors.<br>No clicking achievements may be obtained in this mode.<div class=\"line\"></div>Reaching 1 quadrillion cookies in this mode unlocks a special heavenly upgrade.": "/",
 	"Your bingo center/research facility is conducting experiments.": "/",
 	"Research has begun": "/",
 	"Research complete": "/",

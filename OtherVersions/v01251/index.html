@@ -1005,8 +1005,8 @@ Main=function()
 		if (Cookies>=1000000000) l('whole').style.background='url(kaleigrandma.png) '+Math.floor(T*0.2)+'px -'+Math.floor(T*0.1)+'px';
 		else if (Math.random()<r)
 		{
-			l('whole').style.background='url('+icon+'.png) '+Math.floor(Math.random()*4)+'px '+Math.floor(Math.random()*4)+'px';
-			l('whole').style.backgroundSize=Math.floor(r2*Math.random()*64+64)+'px '+Math.floor(r2*Math.random()*64+64)+'px ';
+			l('whole').style.background='url('+icon+'.png) '+Math.floor(Math.sin(0.432*T)*4)+'px '+Math.floor(Math.cos(0.432*T)*4)+'px';
+			l('whole').style.backgroundSize=Math.floor(r2*Math.sin(0.654*T)*64+64)+'px '+Math.floor(r2*Math.cos(0.654*T)*64+64)+'px ';
 		}
 	}//sorry
 	else l('whole').style.background='#ccc';

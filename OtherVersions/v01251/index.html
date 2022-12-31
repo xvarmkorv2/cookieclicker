@@ -926,7 +926,7 @@ Main=function()
         var x = (Math.sin(a * Math.PI * 2) * (60 + n * 16 + w)) - 16;
         var y = (Math.cos(a * Math.PI * 2) * (60 + n * 16 + w)) - 16;
         var r = Math.floor(-(a) * 360);
-		str+='<div class="cursor" style="left:'+x+'px;top:'+y+'px;transform:rotate('+-rot+'rad);-webkit-transform:rotate('+rot+'rad);-moz-transform:rotate('+rot+'rad);-ms-transform:rotate('+rot+'rad);"></div>';
+		str+='<div class="cursor" style="left:'+x+'px;top:'+y+'px;transform:rotate('+-r+'deg);-webkit-transform:rotate('+r+'deg);-moz-transform:rotate('+r+'deg);-ms-transform:rotate('+r+'deg);"></div>';
 	}
 	l('cookie').innerHTML=str;
 	

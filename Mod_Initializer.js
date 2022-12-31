@@ -17,24 +17,22 @@ Mods.LoadFolder = function (folder, callback) {
 			dir: folder,
 			info: info
 		}
-		let promises=[];
-		promises.push(new Promise((resolve,reject)=>{
-			Game.LoadMod(folder + '/main.js',resolve,()=>{console.log(`Failed to load mod file:`,folder + '/main.js');resolve();});
+		let promises = [];
+		promises.push(new Promise((resolve, reject) => {
+			Game.LoadMod(folder + '/main.js', resolve, () => { console.log(`Failed to load mod file:`, folder + '/main.js'); resolve(); });
 		}));
-		if (info.LanguagePacks)
-		{
-			for (let ii in info.LanguagePacks)
-			{
-				let file=folder+'/'+info.LanguagePacks[ii];
-				promises.push(new Promise((resolve,reject)=>{
-					LoadLang(file,resolve,()=>{console.log(`Failed to load mod language file:`,file);resolve();});
+		if (info.LanguagePacks) {
+			for (let ii in info.LanguagePacks) {
+				let file = folder + '/' + info.LanguagePacks[ii];
+				promises.push(new Promise((resolve, reject) => {
+					LoadLang(file, resolve, () => { console.log(`Failed to load mod language file:`, file); resolve(); });
 				}));
 			}
 		}
 		Promise.all(promises)
-		.then(()=>{
-			if (callback) { callback(); }
-		});
+			.then(() => {
+				if (callback) { callback(); }
+			});
 	})
 }
 
@@ -47,7 +45,7 @@ Mods.CreateTempFunctions = function () {
 	Game.HasUnlocked = temp
 }
 
-Mods.ChangeCCSE = function(){
+Mods.ChangeCCSE = function () {
 	if (!window.CCSE) window.CCSE = {};
 	if (!CCSE.MenuHelper) CCSE.MenuHelper = {};
 	CCSE.GetModPath = (modName) => {
@@ -70,8 +68,8 @@ Mods.ChangeCCSE = function(){
 	}
 }
 
-PRELOAD = function(callback){
-	return ()=>{
+PRELOAD = function (callback) {
+	return () => {
 		//dark fade-in
 		(function () {
 			let timesLoaded = 1
@@ -115,20 +113,20 @@ PRELOAD = function(callback){
 
 Mods.LoadMods = function (callback) {
 	Mods.CreateTempFunctions()
-    let promises=[];
+	let promises = [];
 	let modLoadCheck = (func, path) => {
-        promises.push(new Promise((resolve,reject)=>{
-			func(path,resolve,()=>{console.log(`Failed to load mod language file:`,file);resolve();});
+		promises.push(new Promise((resolve, reject) => {
+			func(path, resolve, () => { console.log(`Failed to load mod language file:`, file); resolve(); });
 		}));
-    }
+	}
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE.js')
 	Mods.ChangeCCSE();
-    //modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/InsugarTrading/dist/main.js')
+	//modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/InsugarTrading/dist/main.js')
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE-POCs/BlackholeInverter.js?v=1.12')
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE-POCs/TimerWidget.js')
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/FortuneCookie.js?v=2.8')
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/AmericanSeason.js?v=1.7')
-    //modLoadCheck(Game.LoadMod, 'https://mtarnuhal.github.io/FrozenCookies/frozen_cookies.js')
+	//modLoadCheck(Game.LoadMod, 'https://mtarnuhal.github.io/FrozenCookies/frozen_cookies.js')
 	modLoadCheck(Mods.LoadFolder, 'Mods/ameliaWatson')
 	modLoadCheck(Mods.LoadFolder, 'Mods/wikiMinigame')
 	modLoadCheck(Mods.LoadFolder, 'Mods/cws-uniqueJellicles')
@@ -142,7 +140,7 @@ Mods.LoadMods = function (callback) {
 	}
 	modLoadCheck(Mods.LoadFolder, 'https://klattmose.github.io/CookieClicker/SteamMods/DecideDestiny')
 	modLoadCheck(Mods.LoadFolder, 'https://klattmose.github.io/CookieClicker/SteamMods/Casino')
-    //modLoadCheck(Mods.LoadFolder, 'Mods/evenMoreBackgrounds')
+	//modLoadCheck(Mods.LoadFolder, 'Mods/evenMoreBackgrounds')
 	if (document.location.search.indexOf('richpresence') != -1) {
 		modLoadCheck(Game.LoadMod, 'https://angelolz.dev/mods/ccrpc/main.js')
 	}
@@ -151,11 +149,9 @@ Mods.LoadMods = function (callback) {
 	}
 	Promise.all(promises)
 		.then(() => {
-			let loadedMods = [];
-			for (let i = 0; i < Game.mods.length; i++) {
-				loadedMods.push(Game.mods[i].id);
-			}
+			let loadedMods = []; 
+			for (var i in Game.mods) { loadedMods.push(Game.mods[i].id); }
 			console.log('loaded mods:', loadedMods.join(',') || '(none)');
-		callback();
-	});
+			callback();
+		});
 }

@@ -69,7 +69,7 @@ Mods.ChangeCCSE = function () {
 }
 
 PRELOAD = function (callback) {
-	return () => {
+	return async () => {
 		//dark fade-in
 		(function () {
 			let timesLoaded = 1

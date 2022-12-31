@@ -6527,8 +6527,7 @@ Game.Launch=function()
 		{
 			if (Game.prefs.notifs)
 			{
-				if (!quick) quick=6;
-				quick=Math.min(6,quick);
+				quick=quick?Math.min(6,quick):6;
 			}
 			desc=replaceAll('==CLOSETHIS()==','Game.CloseNote('+Game.noteId+');',desc);
 			if (Game.popups) new Game.Note(title,desc,pic,quick);

@@ -921,11 +921,11 @@ Main=function()
         else if (w > 0.994) w = 0.5;
         else w = 0;
         w *= -4;
-        //w+=Math.pow(Math.sin(((Game.T*0.05+(i/amount)*Game.fps)%Game.fps)/Game.fps*Math.PI*3),2)*15+5;
+        w+=Math.sin((n + T * 0.01) * Math.PI / 2) * 4;
 
         var x = 64 + (Math.sin(a * Math.PI * 2) * (75 + n * 20 + w)) - 16;
         var y = 64 + (Math.cos(a * Math.PI * 2) * (75 + n * 20 + w)) - 16;
-        var r = Math.floor(-(a) * 360);
+        var r = Math.floor(-(a) * 360-T*0.1);
 		str+='<div class="cursor" style="left:'+x+'px;top:'+y+'px;transform:rotate('+-r+'deg);-webkit-transform:rotate('+r+'deg);-moz-transform:rotate('+r+'deg);-ms-transform:rotate('+r+'deg);"></div>';
 	}
 	l('cookie').innerHTML=str;

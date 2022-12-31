@@ -913,11 +913,20 @@ Main=function()
 	var str='';
 	for (var i=0;i<Cursors;i++)
 	{
-		var rot=-Math.floor((360/Cursors)*i);
-		var x=Math.floor(64+Math.sin((Math.PI*2/Cursors)*i)*64)-16;
-		var y=Math.floor(64+Math.cos((Math.PI*2/Cursors)*i)*64)-16;
-		if ((T)%150==Math.ceil((150/Cursors)*i)) y+=2;
-		str+='<div class="cursor" style="left:'+x+'px;top:'+y+'px;transform:rotate('+rot+'deg);-webkit-transform:rotate('+rot+'deg);-moz-transform:rotate('+rot+'deg);-ms-transform:rotate('+rot+'deg);"></div>';
+		var n = Math.floor(i / 50);
+        var a = ((i + 0.5 * n) % 50) / 50;
+        var w = 0;
+        w = (Math.sin(T * 0.025 + (((i + n * 12) % 25) / 25) * Math.PI * 2));
+        if (w > 0.997) w = 1.5;
+        else if (w > 0.994) w = 0.5;
+        else w = 0;
+        w *= -4;
+        //w+=Math.pow(Math.sin(((Game.T*0.05+(i/amount)*Game.fps)%Game.fps)/Game.fps*Math.PI*3),2)*15+5;
+
+        var x = (Math.sin(a * Math.PI * 2) * (60 + n * 16 + w)) - 16;
+        var y = (Math.cos(a * Math.PI * 2) * (60 + n * 16 + w)) - 16;
+        var r = Math.floor(-(a) * 360);
+		str+='<div class="cursor" style="left:'+x+'px;top:'+y+'px;transform:rotate('+-rot+'rad);-webkit-transform:rotate('+rot+'rad);-moz-transform:rotate('+rot+'rad);-ms-transform:rotate('+rot+'rad);"></div>';
 	}
 	l('cookie').innerHTML=str;
 	

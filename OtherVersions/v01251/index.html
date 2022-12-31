@@ -913,8 +913,8 @@ Main=function()
 	var str='';
 	for (var i=0;i<Cursors;i++)
 	{
-		var n = Math.floor(i / 50);
-        var a = ((i + 0.5 * n) % 50) / 50;
+		var n = Math.floor(i / 25);
+        var a = ((i + 0.5 * n) % 25) / 25;
         var w = 0;
         w = (Math.sin(T * 0.025 + (((i + n * 12) % 25) / 25) * Math.PI * 2));
         if (w > 0.997) w = 1.5;

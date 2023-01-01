@@ -1078,7 +1078,7 @@ var initMusic = function () {
 			'fadeTo': (what) => {
 				if (Music.playing && Music.playing.name == what) return false;
 				Music.setFilter(0, 3);
-				if (Game.visible || Game.prefs.bgMusic) { Music.setVolume(0, 3); }
+				//if (Game.visible || Game.prefs.bgMusic) { Music.setVolume(0, 3); }
 				setTimeout(() => {
 					var prev = Music.playing ? Music.playing.audio.currentTime : 0;
 					Music.setFilter(0);

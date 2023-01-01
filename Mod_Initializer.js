@@ -124,7 +124,7 @@ Mods.LoadMods = function (callback) {
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/AmericanSeason.js?v=1.7')
 	modLoadCheck(Mods.LoadFolder, 'https://klattmose.github.io/CookieClicker/SteamMods/DecideDestiny')
 	modLoadCheck(Mods.LoadFolder, 'https://klattmose.github.io/CookieClicker/SteamMods/Casino')
-	modLoadCheck(Mods.LoadFolder, 'https://klattmose.github.io/CookieClicker/SteamMods/BlackholeInverter/main.js')
+	modLoadCheck(Mods.LoadFolder, 'https://klattmose.github.io/CookieClicker/SteamMods/BlackholeInverter')
 	//modLoadCheck(Game.LoadMod, 'https://mtarnuhal.github.io/FrozenCookies/frozen_cookies.js')
 	modLoadCheck(Mods.LoadFolder, 'Mods/ameliaWatson')
 	modLoadCheck(Mods.LoadFolder, 'Mods/wikiMinigame')

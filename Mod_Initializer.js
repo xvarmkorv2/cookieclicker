@@ -9,7 +9,9 @@ Mods.registerMod = function (mod) {
 	}
 }
 Mods.LoadFolder = function (folder, callback) {
+	let ajaxFailed=true;
 	ajax(folder + '/info.txt', (info) => {
+		ajaxFailed=false;
 		info = JSON.parse(info)
 		info.dir = folder
 		info.ID = info.ID.replace(/\W+/g, ' ');
@@ -34,6 +36,7 @@ Mods.LoadFolder = function (folder, callback) {
 				if (callback) { callback(); }
 			});
 	})
+	setTimeout(() => { if (ajaxFailed){callback()}}, 2500)
 }
 
 Mods.CreateTempFunctions = function () {

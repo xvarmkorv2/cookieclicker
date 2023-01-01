@@ -1082,9 +1082,9 @@ var initMusic = function () {
 				setTimeout(() => {
 					var prev = Music.playing ? Music.playing.audio.currentTime : 0;
 					Music.setFilter(0);
-					if (Game.visible || Game.prefs.bgMusic) { Music.setVolume(0); }
+					//if (Game.visible || Game.prefs.bgMusic) { Music.setVolume(0); }
 					Music.setFilter(1, 3);
-					if (Game.visible || Game.prefs.bgMusic) { Music.setVolume(Game.volumeMusic / 100, 1.5); }
+					//if (Game.visible || Game.prefs.bgMusic) { Music.setVolume(Game.volumeMusic / 100, 1.5); }
 					Music.loopTrack(what, (track) => { track.audio.currentTime = prev % (1 * 4); });
 				}, 3000);
 			},

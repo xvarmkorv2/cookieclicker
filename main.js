@@ -875,7 +875,7 @@ var PlaySound=function(url,vol,pitchVar)
 	{
 		//sound isn't loaded, cache it
 		Sounds[url]=new Audio(url);
-		Sounds[url].onloadeddata=function(e){PlaySound(url,vol,pitchVar);}
+		Sounds[url].onloadeddata=(e)=>{PlaySound(url,vol,pitchVar);}
 		//Sounds[url].load();
 	}
 	else if (Sounds[url].readyState>=2 && SoundInsts[SoundI].paused)

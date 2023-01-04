@@ -94,7 +94,7 @@ var AmeliaWatson = {
 		});
 
 		Game.customBuildings['Time machine'].tooltip.push((obj, ret) => {
-			if (me.locked) return ret;
+			if (obj.locked) return ret;
 			else {
 				var oldicon = [obj.iconColumn, 0];
 				var newicon = [0, 0, this.dir + '/watsonicon.png'];

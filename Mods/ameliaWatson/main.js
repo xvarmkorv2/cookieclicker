@@ -102,7 +102,7 @@ var AmeliaWatson = {
 			};
 		});
 		Game.BuildStore()
-
+		this.check()
 	}
 }
 AmeliaWatson.launch = () => { Game.registerMod("despacito AmeliaWatson", AmeliaWatson); }

@@ -98,7 +98,7 @@ var AmeliaWatson = {
 			else {
 				var oldicon = [obj.iconColumn, 0];
 				var newicon = [0, 0, this.dir + '/watsonicon.png'];
-				return ret.replace(writeicon(oldicon), writeicon(newicon));
+				return ret.replace(writeIcon(oldicon), writeIcon(newicon));
 			};
 		});
 		Game.BuildStore()

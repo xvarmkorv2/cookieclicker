@@ -92,114 +92,16 @@ var AmeliaWatson = {
 			document.getElementById("productIconOff11").classList.add("ameliaWatsonOff");
 			document.getElementById("mutedProduct11").classList.add("ameliaWatson");
 		});
+
+		Game.customBuildings['Time machine'].tooltip.push((obj, ret) => {
+			if (me.locked) return ret;
+			else {
+				var oldicon = [obj.iconColumn, 0];
+				var newicon = [0, 0, this.dir + '/watsonicon.png'];
+				return ret.replace(writeicon(oldicon), writeicon(newicon));
+			};
+		});
 		Game.BuildStore()
-		setTimeout(() => {
-			this.check()
-
-			/* Edits to the function not written by me, t'was by AgentZero ;) [im stupid lol] */
-			Game.Objects['Time machine'].tooltip = function () {
-				var backgroundImgUnlocked = true;
-				var me = Game.Objects['Time machine'];
-				var ariaText = '';
-				var desc = me.desc;
-				var name = me.dname;
-				if (Game.season == 'fools') {
-					if (!Game.foolObjects[me.name]) {
-						name = Game.foolObjects['Unknown'].name;
-						desc = Game.foolObjects['Unknown'].desc;
-					}
-					else {
-						name = Game.foolObjects[me.name].name;
-						desc = Game.foolObjects[me.name].desc;
-					}
-				}
-				if (me.locked) {
-					name = '???';
-					desc = '???';
-					backgroundImgUnlocked = false;
-				}
-				//if (l('rowInfo'+me.id) && Game.drawT%10==0) l('rowInfoContent'+me.id).innerHTML='&bull; '+me.amount+' '+(me.amount==1?me.single:me.plural)+'<br>&bull; producing '+Beautify(me.storedTotalCps,1)+' '+(me.storedTotalCps==1?'cookie':'cookies')+' per second<br>&bull; total : '+Beautify(me.totalCookies)+' '+(Math.floor(me.totalCookies)==1?'cookie':'cookies')+' '+me.actionName;
-
-				var canBuy = false;
-				var price = me.bulkPrice;
-				if ((Game.buyMode == 1 && Game.cookies >= price) || (Game.buyMode == -1 && me.amount > 0)) canBuy = true;
-
-				var synergiesStr = '';
-				//note : might not be entirely accurate, math may need checking
-				if (me.amount > 0) {
-					var synergiesWith = {};
-					var synergyBoost = 0;
-
-					if (me.name == 'Grandma') {
-						for (var i in Game.GrandmaSynergies) {
-							if (Game.Has(Game.GrandmaSynergies[i])) {
-								var other = Game.Upgrades[Game.GrandmaSynergies[i]].buildingTie;
-								var mult = me.amount * 0.01 * (1 / (other.id - 1));
-								var boost = (other.storedTotalCps * Game.globalCpsMult) - (other.storedTotalCps * Game.globalCpsMult) / (1 + mult);
-								synergyBoost += boost;
-								if (!synergiesWith[other.plural]) synergiesWith[other.plural] = 0;
-								synergiesWith[other.plural] += mult;
-							}
-						}
-					}
-					else if (me.name == 'Portal' && Game.Has('Elder Pact')) {
-						var other = Game.Objects['Grandma'];
-						var boost = (me.amount * 0.05 * other.amount) * Game.globalCpsMult;
-						synergyBoost += boost;
-						if (!synergiesWith[other.plural]) synergiesWith[other.plural] = 0;
-						synergiesWith[other.plural] += boost / (other.storedTotalCps * Game.globalCpsMult);
-					}
-
-					for (var i in me.synergies) {
-						var it = me.synergies[i];
-						if (Game.Has(it.name)) {
-							var weight = 0.05;
-							var other = it.buildingTie1;
-							if (me == it.buildingTie1) { weight = 0.001; other = it.buildingTie2; }
-							var boost = (other.storedTotalCps * Game.globalCpsMult) - (other.storedTotalCps * Game.globalCpsMult) / (1 + me.amount * weight);
-							synergyBoost += boost;
-							if (!synergiesWith[other.plural]) synergiesWith[other.plural] = 0;
-							synergiesWith[other.plural] += me.amount * weight;
-						}
-					}
-					if (synergyBoost > 0) {
-						for (var i in synergiesWith) {
-							if (synergiesStr != '') synergiesStr += ', ';
-							synergiesStr += '<span style="color:#fff;font-weight:bold;font-size:80%;background:#000;box-shadow:0px 0px 0px 1px rgba(255,255,255,0.2);border-radius:3px;padding:0px 2px;display:inline-block;">' + i + ' +' + Beautify(synergiesWith[i] * 100, 1) + '%</span>';
-						}
-						synergiesStr = loc("...also boosting some other buildings:") + ' ' + synergiesStr + ' - ' + loc("all combined, these boosts account for <b>%1</b> per second (<b>%2%</b> of total CpS)", [loc("%1 cookie", LBeautify(synergyBoost, 1)), Beautify((synergyBoost / Game.cookiesPs) * 100, 1)]);
-					}
-				}
-
-				if (Game.prefs.screenreader) {
-					if (me.locked) ariaText = 'This building is not yet unlocked. ';
-					else ariaText = name + '. ';
-					if (!me.locked) ariaText += 'You own ' + me.amount + '. ';
-					ariaText += (canBuy ? 'Can buy 1 for' : 'Cannot afford the') + ' ' + Beautify(Math.round(price)) + ' cookies. ';
-					if (!me.locked && me.totalCookies > 0) {
-						ariaText += 'Each ' + me.single + ' produces ' + Beautify((me.storedTotalCps / me.amount) * Game.globalCpsMult, 1) + ' cookies per second. ';
-						ariaText += Beautify(me.totalCookies) + ' cookies ' + me.actionName + ' so far. ';
-					}
-					if (!me.locked) ariaText += desc;
-
-					var ariaLabel = l('ariaReader-product-' + (me.id));
-					if (ariaLabel) ariaLabel.innerHTML = ariaText.replace(/(<([^>]+)>)/gi, ' ');
-				}
-
-				var icon = backgroundImgUnlocked ? 'background-image:url(\'' + 'Mods/ameliaWatson' + '/watsonicon.png\')' : writeIcon([0, 7]);
-
-				return '<div style="position:absolute;left:1px;top:1px;right:1px;bottom:1px;background:linear-gradient(125deg,' + (false ? 'rgba(15,115,130,1) 0%,rgba(15,115,130,0)' : 'rgba(50,40,40,1) 0%,rgba(50,40,40,0)') + ' 20%);mix-blend-mode:screen;z-index:1;"></div><div style="z-index:10;min-width:350px;padding:8px;position:relative;" id="tooltipBuilding"><div class="icon" style="float:left;margin-left:-8px;margin-top:-8px;' + icon + '"></div><div style="float:right;text-align:right;"><span class="price' + (canBuy ? '' : ' disabled') + '">' + Beautify(Math.round(price)) + '</span>' + Game.costDetails(price) + '</div><div class="name">' + name + '</div>' + '<small><div class="tag">' + loc("owned: %1", me.amount) + '</div>' + (me.free > 0 ? '<div class="tag">' + loc("free: %1!", me.free) + '</div>' : '') + '</small>' +
-					'<div class="line"></div><div class="description"><q>' + desc + '</q></div>' +
-					(me.totalCookies > 0 ? (
-						'<div class="line"></div>' +
-						(me.amount > 0 ? '<div class="descriptionBlock">' + loc("each %1 produces <b>%2</b> per second", [me.single, loc("%1 cookie", LBeautify((me.storedTotalCps / me.amount) * Game.globalCpsMult, 1))]) + '</div>' : '') +
-						'<div class="descriptionBlock">' + loc("%1 producing <b>%2</b> per second", [loc("%1 " + me.bsingle, LBeautify(me.amount)), loc("%1 cookie", LBeautify(me.storedTotalCps * Game.globalCpsMult, 1))]) + ' (' + loc("<b>%1%</b> of total CpS", Beautify(Game.cookiesPs > 0 ? ((me.amount > 0 ? ((me.storedTotalCps * Game.globalCpsMult) / Game.cookiesPs) : 0) * 100) : 0, 1)) + ')</div>' +
-						(synergiesStr ? ('<div class="descriptionBlock">' + synergiesStr + '</div>') : '') +
-						(EN ? '<div class="descriptionBlock"><b>' + Beautify(me.totalCookies) + '</b> ' + (Math.floor(me.totalCookies) == 1 ? 'cookie' : 'cookies') + ' ' + me.actionName + ' so far</div>' : '<div class="descriptionBlock">' + loc("<b>%1</b> produced so far", loc("%1 cookie", LBeautify(me.totalCookies))) + '</div>')
-					) : '') +
-					'</div>';
-			}
-		}, 1000)
 
 	}
 }

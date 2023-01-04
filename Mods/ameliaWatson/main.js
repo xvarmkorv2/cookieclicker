@@ -1,4 +1,4 @@
-Game.registerMod("despacito AmeliaWatson", {
+var AmeliaWatson = {
 	check: function () {
 		let watsonicons = this.dir + "/watsoniconfull.png";
 		Game.Objects['Time machine'].displayName = '<span style="font-size:70%;letter-spacing:-1px;position:relative;bottom:4px;">Amelia Watson</span>';//shrink
@@ -100,7 +100,7 @@ Game.registerMod("despacito AmeliaWatson", {
 
 			if (!CCSE) {
 				let BuildStore = Game.BuildStore
-				Game.BuildStore = function(){
+				Game.BuildStore = function () {
 					BuildStore()
 					/* haha i only know rudimentary html and css so thank you obama prism */
 					document.getElementById("productIcon11").classList.add("ameliaWatson");
@@ -216,4 +216,13 @@ Game.registerMod("despacito AmeliaWatson", {
 		}, 1000)
 
 	}
-});
+}
+AmeliaWatson.launch = () => { Game.registerMod("despacito AmeliaWatson", AmeliaWatson); }
+if (CCSE && CCSE.isLoaded) {
+	AmeliaWatson.launch()
+}
+else {
+	if (!CCSE) var CCSE = {};
+	if (!CCSE.postLoadHooks) CCSE.postLoadHooks = [];
+	CCSE.postLoadHooks.push(AmeliaWatson.launch);
+}

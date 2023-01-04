@@ -85,7 +85,7 @@ var AmeliaWatson = {
 		`;
 
 		document.body.appendChild(watson);
-		Game.registerHook('check', this.check);
+		Game.registerHook('check', ()=>{this.check()});
 		Game.customBuildStore.push(() => {
 			/* haha i only know rudimentary html and css so thank you obama prism */
 			document.getElementById("productIcon11").classList.add("ameliaWatson");

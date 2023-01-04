@@ -717,7 +717,11 @@ CanvasRenderingContext2D.prototype.fillPattern=function(img,X,Y,W,H,iW,iH,offX,o
 		var offY=offY||0;
 		if (offX<0) {offX=offX-Math.floor(offX/iW)*iW;} if (offX>0) {offX=(offX%iW)-iW;}
 		if (offY<0) {offY=offY-Math.floor(offY/iH)*iH;} if (offY>0) {offY=(offY%iH)-iH;}
-		for (var y=offY;y<H;y+=iH){for (var x=offX;x<W;x+=iW){this.drawImage(img,X+x,Y+y,iW,iH);}}
+		for (var y=offY;y<H;y+=iH){
+			for (var x=offX;x<W;x+=iW){
+				this.drawImage(img,X+x,Y+y,iW,iH);
+			}
+		}
 	}
 }
 

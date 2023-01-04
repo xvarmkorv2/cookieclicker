@@ -85,11 +85,20 @@ Game.registerMod("despacito AmeliaWatson", {
 		`;
 
 		document.body.appendChild(watson);
+		Game.registerHook('check', this.check);
+		if (CCSE) {
+			Game.customBuildStore.push(() => {
+				/* haha i only know rudimentary html and css so thank you obama prism */
+				document.getElementById("productIcon11").classList.add("ameliaWatson");
+				document.getElementById("productIconOff11").classList.add("ameliaWatsonOff");
+				document.getElementById("mutedProduct11").classList.add("ameliaWatson");
+			});
+			Game.BuildStore()
+		}
 		setTimeout(() => {
-			Game.registerHook('check', () => this.check());
 			this.check()
 
-			{
+			if (!CCSE) {
 				let BuildStore = Game.BuildStore
 				Game.BuildStore = function(){
 					BuildStore()

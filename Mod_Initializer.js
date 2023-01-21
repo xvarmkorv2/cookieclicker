@@ -114,7 +114,7 @@ PRELOAD = function (callback) {
 Mods.LoadMods = function (callback) {
 	Mods.CreateTempFunctions()
 	let promises = [];
-	let modLoadCheck = (func, path) => {
+	const modLoadCheck = (func, path) => {
 		promises.push(new Promise((resolve, reject) => {
 			func(path, resolve, () => { console.log(`Failed to load mod language file:`, file); resolve(); });
 		}));

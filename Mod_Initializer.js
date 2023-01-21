@@ -155,6 +155,5 @@ Mods.LoadMods = function (callback) {
 			for (var i in Game.mods) { loadedMods.push(Game.mods[i].id); }
 			console.log('loaded mods:', loadedMods.join(',') || '(none)');
 			callback();
-			Game.LoadMod('https://hyoretsu.github.io/ccideas-mod/dist/CCIdeas.js')
 		});
 }

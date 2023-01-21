@@ -138,7 +138,7 @@ Mods.LoadMods = function (callback) {
 	modLoadCheck(Mods.LoadFolder, 'Mods/cws-alignedCookieAchievements')
 	modLoadCheck(Mods.LoadFolder, 'Mods/cws-betterTrueSanta')
 	modLoadCheck(Mods.LoadFolder, 'Mods/cws-consistentUpgradeBuildingIcons')
-	modLoadCheck(Mods.LoadFolder, 'Mods/cws-ccidea')
+	modLoadCheck(Mods.LoadFolder, 'Mods/ccidea')
 	if (document.location.search.indexOf('mittens') != -1) {
 		modLoadCheck(Mods.LoadFolder, 'Mods/cws-mittenCursors')
 	}

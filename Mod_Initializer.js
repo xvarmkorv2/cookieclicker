@@ -126,7 +126,7 @@ Mods.LoadMods = function (callback) {
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE-POCs/TimerWidget.js')
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/FortuneCookie.js?v=2.8')
 	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/AmericanSeason.js?v=1.7')
-	modLoadCheck(Game.LoadMod, 'https://hyoretsu.github.io/ccideas-mod/dist/CCIdeas.js')
+	//modLoadCheck(Game.LoadMod, 'https://hyoretsu.github.io/ccideas-mod/dist/CCIdeas.js')
 	modLoadCheck(Mods.LoadFolder, 'https://klattmose.github.io/CookieClicker/SteamMods/DecideDestiny')
 	modLoadCheck(Mods.LoadFolder, 'https://klattmose.github.io/CookieClicker/SteamMods/Casino')
 	modLoadCheck(Mods.LoadFolder, 'https://klattmose.github.io/CookieClicker/SteamMods/BlackholeInverter')
@@ -155,5 +155,6 @@ Mods.LoadMods = function (callback) {
 			for (var i in Game.mods) { loadedMods.push(Game.mods[i].id); }
 			console.log('loaded mods:', loadedMods.join(',') || '(none)');
 			callback();
+			Game.LoadMod('https://hyoretsu.github.io/ccideas-mod/dist/CCIdeas.js')
 		});
 }

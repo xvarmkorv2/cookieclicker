@@ -93,6 +93,12 @@ var AmeliaWatson = {
 			document.getElementById("mutedProduct11").classList.add("ameliaWatson");
 		});
 
+		Game.customBuildings['Time machine'].rebuild.push((obj) => {
+			document.getElementById("productIcon11").classList.add("ameliaWatson");
+			document.getElementById("productIconOff11").classList.add("ameliaWatsonOff");
+			document.getElementById("mutedProduct11").classList.add("ameliaWatson");
+		});
+
 		Game.customBuildings['Time machine'].tooltip.push((obj, ret) => {
 			if (obj.locked) return ret;
 			else {

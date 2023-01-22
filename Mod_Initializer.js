@@ -140,6 +140,7 @@ Mods.LoadMods = function (callback) {
 	modLoadCheck(Mods.LoadFolder, 'Mods/cws-betterTrueSanta')
 	modLoadCheck(Mods.LoadFolder, 'Mods/cws-consistentUpgradeBuildingIcons')
 	modLoadCheck(Mods.LoadFolder, 'Mods/ccideas')
+	modLoadCheck(Mods.LoadFolder, 'Mods/Pride_Backgrounds')
 	if (document.location.search.indexOf('mittens') != -1) {
 		modLoadCheck(Mods.LoadFolder, 'Mods/cws-mittenCursors')
 	}

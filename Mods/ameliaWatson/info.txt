@@ -6,7 +6,7 @@
 	"ModVersion": 1,
 	"GameVersion": 2.043,
 	"Date": "30/01/2021",
- 	"Dependencies": [],
+ 	"Dependencies": ["CCSE"],
  	"Disabled": 0,
  	"AllowSteamAchievs": 1,
 	"LanguagePacks": ["lang.js"]

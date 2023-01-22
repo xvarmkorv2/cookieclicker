@@ -66,6 +66,7 @@ Mods.ChangeCCSE = function () {
 		if (CCSE.isLoaded) func();
 		else CCSE.postLoadHooks.push(func);
 	}
+	confirm = function(){return true}
 }
 
 PRELOAD = function (callback) {

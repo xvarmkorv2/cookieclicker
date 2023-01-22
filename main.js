@@ -14061,7 +14061,7 @@ Game.Launch=function()
 				var len=Game.specialTabs.length;
 				if (len==0) return;
 				var y=Game.LeftBackground.canvas.height-24-48*len;
-				for (var i=0;i<Game.specialTabs.length;i++)
+				for (var i=0;i<len;i++)
 				{
 					var selected=0;
 					if (Game.specialTab==Game.specialTabs[i]) selected=1;

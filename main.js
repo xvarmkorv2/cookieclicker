@@ -8103,7 +8103,7 @@ Game.Launch=function()
 						success=1;
 					}
 				}
-				if (success) {PlaySound('snd/buy'+choose([1,2,3,4])+'.mp3',0.75);this.refresh();}
+				if (success) {PlaySound('snd/buy'+choose([1,2,3,4])+'.mp3',0.75);Game.LoadMinigames();this.refresh();}
 				//if (moni>0 && amount>1) Game.Notify(this.name,'Bought <b>'+bought+'</b> for '+Beautify(moni)+' cookies','',2);
 			}
 			this.sell=function(amount,bypass)

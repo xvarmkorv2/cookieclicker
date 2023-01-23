@@ -2166,6 +2166,7 @@ Game.Launch=function()
 		l('offGameMessageWrap').style.display='table';
 		Game.timedout=true;
 		console.log('[=== Game timed out and has been put in sleep mode. Data was saved. ===]');
+		if (Music) {Music.pause()}
 	}
 	Game.Resume=function()
 	{

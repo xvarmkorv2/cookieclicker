@@ -12002,7 +12002,7 @@ Game.Launch=function()
 			if (me.pool=='prestige' || me.pool=='prestigeDecor')
 			{
 				Game.PrestigeUpgrades.push(me);
-				if (me.posX || Game.Upgrades[i].posY) me.placedByCode=true;
+				if (me.posX || me.posY) me.placedByCode=true;
 				else {me.posX=0;me.posY=0;}
 				if (me.parents.length==0 && me.name!='Legacy') me.parents=['Legacy'];
 				for (var ii in me.parents) {me.parents[ii]=Game.Upgrades[me.parents[ii]];}

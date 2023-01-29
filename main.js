@@ -5068,7 +5068,7 @@ Game.Launch=function()
 		{
 			var now=Date.now();
 			if (e) e.preventDefault();
-			if (Game.OnAscend || Game.AscendTimer>0 || Game.T<3 || now-Game.lastClick<1000/((e?e.detail:1)===0?3:50)) {}
+			if (Game.OnAscend || Game.AscendTimer > 0 || Game.T < 3 || Game.ascensionMode != 2 && now-Game.lastClick<1000/((e?e.detail:1)===0?3:50)) {}
 			else
 			{
 				if (now-Game.lastClick<(1000/15))

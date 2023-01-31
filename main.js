@@ -5754,7 +5754,7 @@ Game.Launch=function()
 					
 					//create buff for effect
 					//buff duration multiplier
-					var effectDurMod=1 + (Math.random()/10);
+					var effectDurMod=1 + ((Math.random()-0.5)/10);
 					if (Game.Has('Get lucky')) effectDurMod*=2;
 					if (Game.Has('Lasting fortune')) effectDurMod*=1.1;
 					if (Game.Has('Lucky digit')) effectDurMod*=1.01;

@@ -7253,6 +7253,8 @@ Game.Launch=function()
 			
 			var NEWS=loc("News :").replace(' ','&nbsp;')+' ';
 			
+			Math.seedrandom(Game.seed + '/' + Game.TickerN + '/' + Game.TickerClicks)
+
 			if (Game.TickerN%2==0 || Game.cookiesEarned>=10100000000)
 			{
 				var animals=['newts','penguins','scorpions','axolotls','puffins','porpoises','blowfish','horses','crayfish','slugs','humpback whales','nurse sharks','giant squids','polar bears','fruit bats','frogs','sea squirts','velvet worms','mole rats','paramecia','nematodes','tardigrades','giraffes','monkfish','wolfmen','goblins','hippies'];
@@ -7811,6 +7813,7 @@ Game.Launch=function()
 				var arr=Game.modHooks['ticker'][i]();
 				if (arr) list=list.concat(arr);
 			}
+			Math.seedrandom()
 			
 			Game.TickerEffect=0;
 			

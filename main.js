@@ -8880,7 +8880,7 @@ Game.Launch=function()
 			{
 				//this makes buildings give 1% more cookies for every 250th building over 250.
 				//this turns out to be rather stupidly overpowered.
-				var n=Game.Objects[what].amount/250;
+				var n = Math.floor(Game.Objects[what].amount / 250);
 				return 1+Math.pow(1.01,n);
 			}
 			else return 1;

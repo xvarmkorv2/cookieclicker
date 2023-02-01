@@ -712,9 +712,7 @@ M.launch=function()
 				{
 					for (var x=Math.max(0,X-s);x<Math.min(6,X+s+1);x++)
 					{
-						if (X==x && Y==y) {}
-						else
-						{
+						if (X!=x && Y!=y) {
 							for (var i=0;i<mult.length;i++)
 							{
 								M.plotBoost[y][x][i]*=mult[i];
@@ -1054,20 +1052,14 @@ M.launch=function()
 		
 		
 		M.plot=[];
-		for (var y=0;y<6;y++)
-		{
-			M.plot[y]=[];
-			for (var x=0;x<6;x++)
-			{
-				M.plot[y][x]=[0,0];
-			}
-		}
 		M.plotBoost=[];
 		for (var y=0;y<6;y++)
 		{
+			M.plot[y]=[];
 			M.plotBoost[y]=[];
 			for (var x=0;x<6;x++)
 			{
+				M.plot[y][x]=[0,0];
 				//age mult, power mult, weed mult
 				M.plotBoost[y][x]=[1,1,1];
 			}

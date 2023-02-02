@@ -1,4 +1,54 @@
 var AmeliaWatson = {
+
+	init: function () {
+		let watsonicons = this.dir + "/watsoniconfull.png";
+		let modDir = this.dir;
+
+		/* btw i am not fluent in JS at all so i kinda have no [$!$!]ing clue what im doing and its a miracle everything is working */
+
+		Game.Notify(`WARNING: A gremlin has breached the continuum!`, `The timeline has been distorted!`, [21, 0, watsonicons]);
+
+		Game.Loader.Replace('timemachineBackground.png', this.dir + "/kroniiBG.png");
+		Game.Loader.Replace('timemachine.png', this.dir + "/smolwatson.png");
+
+		const watson = document.createElement("style");
+		watson.innerHTML = `
+		.ameliaWatson {
+			background: url('${this.dir}/watson.png') !important;
+			background-position: 0px 0px !important;
+		}
+		.ameliaWatsonOff {
+			background: url('${this.dir}/watson.png') !important;
+			background-position: -64px 0px !important;
+		}
+		`;
+
+		document.body.appendChild(watson);
+		Game.registerHook('check', () => { this.check() });
+		Game.customBuildStore.push(() => {
+			/* haha i only know rudimentary html and css so thank you obama prism */
+			document.getElementById("productIcon11").classList.add("ameliaWatson");
+			document.getElementById("productIconOff11").classList.add("ameliaWatsonOff");
+			document.getElementById("mutedProduct11").classList.add("ameliaWatson");
+		});
+
+		Game.customBuildings['Time machine'].rebuild.push((obj) => {
+			document.getElementById("productIcon11").classList.add("ameliaWatson");
+			document.getElementById("productIconOff11").classList.add("ameliaWatsonOff");
+			document.getElementById("mutedProduct11").classList.add("ameliaWatson");
+		});
+
+		Game.customBuildings['Time machine'].tooltip.push((obj, ret) => {
+			if (obj.locked) return ret;
+			else {
+				var oldicon = [obj.iconColumn, 0];
+				var newicon = [0, 0, this.dir + '/watsonicon.png'];
+				return ret.replace(writeIcon(oldicon), writeIcon(newicon));
+			};
+		});
+		Game.BuildStore()
+		this.check()
+	},
 	check: function () {
 		let watsonicons = this.dir + "/watsoniconfull.png";
 		Game.Objects['Time machine'].displayName = '<span style="font-size:70%;letter-spacing:-1px;position:relative;bottom:4px;">Amelia Watson</span>';//shrink
@@ -60,55 +110,6 @@ var AmeliaWatson = {
 
 		Game.dragonAuras[13].pic = [15, 0, watsonicons];
 		//IT WORKS LETS GOOOOOOO I AM AN ARRAY GOOOOOD
-	},
-	init: function () {
-		let watsonicons = this.dir + "/watsoniconfull.png";
-		let modDir = this.dir;
-
-		/* btw i am not fluent in JS at all so i kinda have no [$!$!]ing clue what im doing and its a miracle everything is working */
-
-		Game.Notify(`WARNING: A gremlin has breached the continuum!`, `The timeline has been distorted!`, [21, 0, watsonicons]);
-
-		Game.Loader.Replace('timemachineBackground.png', this.dir + "/kroniiBG.png");
-		Game.Loader.Replace('timemachine.png', this.dir + "/smolwatson.png");
-
-		const watson = document.createElement("style");
-		watson.innerHTML = `
-		.ameliaWatson {
-			background: url('${this.dir}/watson.png') !important;
-			background-position: 0px 0px !important;
-		}
-		.ameliaWatsonOff {
-			background: url('${this.dir}/watson.png') !important;
-			background-position: -64px 0px !important;
-		}
-		`;
-
-		document.body.appendChild(watson);
-		Game.registerHook('check', ()=>{this.check()});
-		Game.customBuildStore.push(() => {
-			/* haha i only know rudimentary html and css so thank you obama prism */
-			document.getElementById("productIcon11").classList.add("ameliaWatson");
-			document.getElementById("productIconOff11").classList.add("ameliaWatsonOff");
-			document.getElementById("mutedProduct11").classList.add("ameliaWatson");
-		});
-
-		Game.customBuildings['Time machine'].rebuild.push((obj) => {
-			document.getElementById("productIcon11").classList.add("ameliaWatson");
-			document.getElementById("productIconOff11").classList.add("ameliaWatsonOff");
-			document.getElementById("mutedProduct11").classList.add("ameliaWatson");
-		});
-
-		Game.customBuildings['Time machine'].tooltip.push((obj, ret) => {
-			if (obj.locked) return ret;
-			else {
-				var oldicon = [obj.iconColumn, 0];
-				var newicon = [0, 0, this.dir + '/watsonicon.png'];
-				return ret.replace(writeIcon(oldicon), writeIcon(newicon));
-			};
-		});
-		Game.BuildStore()
-		this.check()
 	}
 }
 AmeliaWatson.launch = () => { Game.registerMod("despacito AmeliaWatson", AmeliaWatson); }

@@ -913,7 +913,7 @@ var PlayMusicSound=function(url,vol,pitchVar)
 	PlaySound(url,(vol||1)-(Music?10:0),pitchVar);
 }
 
-Music=false;
+Music=false; 
 PlayCue=function (cue, arg) {
 	if (Music && (Game.jukebox ? Game.jukebox.trackAuto : true)) Music.cue(cue, arg);
 }

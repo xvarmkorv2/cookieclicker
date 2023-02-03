@@ -51,7 +51,7 @@ var AmeliaWatson = {
 	},
 	check: function () {
 		let watsonicons = this.dir + "/watsoniconfull.png";
-		let shouldRebuild = false
+		let shouldRebuild = true
 		if (this.firstCheck) shouldRebuild = true
 		this.firstCheck = false
 		Game.Objects['Time machine'].displayName = '<span style="font-size:70%;letter-spacing:-1px;position:relative;bottom:4px;">Amelia Watson</span>';//shrink

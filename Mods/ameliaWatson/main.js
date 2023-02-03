@@ -1,5 +1,5 @@
 var AmeliaWatson = {
-
+	firstCheck: true,
 	init: function () {
 		let watsonicons = this.dir + "/watsoniconfull.png";
 		let modDir = this.dir;
@@ -52,8 +52,13 @@ var AmeliaWatson = {
 	check: function () {
 		let watsonicons = this.dir + "/watsoniconfull.png";
 		let shouldRebuild = false
+		if (this.firstCheck) shouldRebuild = true
+		this.firstCheck = false
 		Game.Objects['Time machine'].displayName = '<span style="font-size:70%;letter-spacing:-1px;position:relative;bottom:4px;">Amelia Watson</span>';//shrink
-		if (Game.Objects['Time machine'].pic[2] != watsonicons) shouldRebuild = true
+
+		if (!shouldRebuild) {
+			if (Game.Objects['Time machine'].pic[2] != watsonicons) shouldRebuild = true
+		} 
 
 		if (!shouldRebuild) {
 			const upgrades = ['Flux capacitors', 'Time paradox resolver', 'Quantum conundrum', 'Causality enforcer',

@@ -67,7 +67,10 @@ var AmeliaWatson = {
 				'Second seconds', 'Additional clock hands', 'Nostalgia', 'Split seconds', 'Patience abolished',
 				'Relativistic parsec-skipping', 'Primeval glow', 'Fortune #012', 'D&eacute;j&agrave; vu']
 
-			for (var i in upgrades) { if (Game.Upgrades[upgrades[i]].icon[2] != watsonicons) shouldRebuild = true; break }
+			for (var i in upgrades) {
+				if (Game.Upgrades[upgrades[i]].icon.length != 3) shouldRebuild = true; break 
+				if (Game.Upgrades[upgrades[i]].icon[2] != watsonicons) shouldRebuild = true; break 
+			}
 		}
 
 		if (!shouldRebuild) {
@@ -76,7 +79,10 @@ var AmeliaWatson = {
 				'Way back then', 'Invited to yesterday\'s party', 'Groundhog day', 'The years start coming',
 				'Caveman to cosmos', 'Back already?', 'Spacetime jigamaroo', 'Be kind, rewind', 'The long now']
 
-			for (var i in achievements) { if (Game.Upgrades[Achievements[i]].icon[2] != watsonicons) shouldRebuild = true; break }
+			for (var i in achievements) {
+				if (Game.Achievements[achievements[i]].icon.length != 3) shouldRebuild = true; break 
+				if (Game.Achievements[achievements[i]].icon[2] != watsonicons) shouldRebuild = true; break 
+			}
 		}
 
 		if (!shouldRebuild) {

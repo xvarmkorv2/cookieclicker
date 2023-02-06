@@ -14830,8 +14830,8 @@ Game.Launch=function()
 							ctx.fillPattern(Pic(pic),0,0,ctx.canvas.width,ctx.canvas.height+512,512,512,0,y);
 							ctx.globalAlpha=1;
 						}
-						//snow
-						if (Game.season=='christmas')
+						
+						if (Game.season == 'christmas')//snow
 						{
 							var y=(Math.floor(Game.T*2.5)%512);
 							ctx.globalAlpha=0.75;
@@ -14839,9 +14839,7 @@ Game.Launch=function()
 							ctx.fillPattern(Pic('snow2.jpg'),0,0,ctx.canvas.width,ctx.canvas.height+512,512,512,0,y);
 							ctx.globalCompositeOperation='source-over';
 							ctx.globalAlpha=1;
-						}
-						//hearts
-						if (Game.season=='valentines')
+						} else if (Game.season=='valentines')//hearts
 						{
 							var y=(Math.floor(Game.T*2.5)%512);
 							ctx.globalAlpha=1;

@@ -12015,13 +12015,13 @@ Game.Launch=function()
 				else {me.posX=0;me.posY=0;}
 				if (me.parents.length==0 && me.name!='Legacy') me.parents=['Legacy'];
 				for (var ii in me.parents) {me.parents[ii]=Game.Upgrades[me.parents[ii]];}
+				Game.Upgrades[i].order=Game.Upgrades[i].id;
 			}
 			if ((me.pool=='cookie' || me.pseudoCookie)) Game.cookieUpgrades.push(me);
 			if (me.tier) Game.Tiers[me.tier].upgrades.push(me);
 		}
 		
 		for (var i in Game.UnlockAt){Game.Upgrades[Game.UnlockAt[i].name].unlockAt=Game.UnlockAt[i];}
-		for (var i in Game.Upgrades){if (Game.Upgrades[i].pool=='prestige') Game.Upgrades[i].order=Game.Upgrades[i].id;}
 		
 		/*var oldPrestigePrices={"Chimera":5764801,"Synergies Vol. I":2525,"Synergies Vol. II":252525,"Label printer":9999};
 		for (var i in oldPrestigePrices){Game.Upgrades[i].basePrice=oldPrestigePrices[i];}*/

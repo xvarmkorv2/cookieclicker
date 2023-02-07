@@ -8095,24 +8095,26 @@ Game.Launch=function()
 				for (var i=0;i<amount;i++)
 				{
 					var price=this.getPrice();
-					if (Game.cookies>=price)
-					{
-						bought++;
-						moni+=price;
-						Game.Spend(price);
-						this.amount++;
-						this.bought++;
-						price=this.getPrice();
-						this.price=price;
-						if (this.buyFunction) this.buyFunction();
-						Game.recalculateGains=1;
-						if (this.amount==1 && this.id!=0) l('row'+this.id).classList.add('enabled');
-						this.highest=Math.max(this.highest,this.amount);
-						Game.BuildingsOwned++;
-						success=1;
-					}
+					if (Game.cookies<price) break
+					bought++;
+					moni += price;
+					Game.Spend(price);
+					this.amount++;
+					this.bought++;
+					price = this.getPrice();
+					this.price = price;
+					if (this.buyFunction) this.buyFunction();
+					if (this.amount == 1 && this.id != 0) l('row' + this.id).classList.add('enabled');
+					this.highest = Math.max(this.highest, this.amount);
+					Game.BuildingsOwned++;
+					success = 1;
 				}
-				if (success) {PlaySound('snd/buy'+choose([1,2,3,4])+'.mp3',0.75);Game.LoadMinigames();this.refresh();}
+				if (success) {
+					PlaySound('snd/buy'+choose([1,2,3,4])+'.mp3',0.75);
+					Game.recalculateGains = 1;
+					Game.LoadMinigames();
+					this.refresh();
+				}
 				//if (moni>0 && amount>1) Game.Notify(this.name,'Bought <b>'+bought+'</b> for '+Beautify(moni)+' cookies','',2);
 			}
 			this.sell=function(amount,bypass)
@@ -8127,21 +8129,19 @@ Game.Launch=function()
 					var price=this.getPrice();
 					var giveBack=this.getSellMultiplier();
 					price=Math.floor(price*giveBack);
-					if (this.amount>0)
-					{
-						sold++;
-						moni+=price;
-						Game.cookies+=price;
-						Game.cookiesEarned=Math.max(Game.cookies,Game.cookiesEarned);//this is to avoid players getting the cheater achievement when selling buildings that have a higher price than they used to
-						this.amount--;
-						price=this.getPrice();
-						this.price=price;
-						if (this.sellFunction) this.sellFunction();
-						Game.recalculateGains=1;
-						if (this.amount==0 && this.id!=0) l('row'+this.id).classList.remove('enabled');
-						Game.BuildingsOwned--;
-						success=1;
-					}
+					if (this.amount<=0) break
+					sold++;
+					moni += price;
+					Game.cookies += price;
+					Game.cookiesEarned = Math.max(Game.cookies, Game.cookiesEarned);//this is to avoid players getting the cheater achievement when selling buildings that have a higher price than they used to
+					this.amount--;
+					price = this.getPrice();
+					this.price = price;
+					if (this.sellFunction) this.sellFunction();
+					
+					if (this.amount == 0 && this.id != 0) l('row' + this.id).classList.remove('enabled');
+					Game.BuildingsOwned--;
+					success = 1;
 				}
 				if (success && Game.hasGod)
 				{
@@ -8175,7 +8175,7 @@ Game.Launch=function()
 						}
 					}
 				}
-				if (success) {PlaySound('snd/sell'+choose([1,2,3,4])+'.mp3',0.75);this.refresh();}
+				if (success) {PlaySound('snd/sell'+choose([1,2,3,4])+'.mp3',0.75);Game.recalculateGains = 1;this.refresh();}
 				//if (moni>0) Game.Notify(this.name,'Sold <b>'+sold+'</b> for '+Beautify(moni)+' cookies','',2);
 			}
 			this.sacrifice=function(amount)//sell without getting back any money
@@ -8189,40 +8189,35 @@ Game.Launch=function()
 				{
 					var price=this.getPrice();
 					price=Math.floor(price*0.5);
-					if (this.amount>0)
-					{
-						sold++;
-						//moni+=price;
-						//Game.cookies+=price;
-						//Game.cookiesEarned=Math.max(Game.cookies,Game.cookiesEarned);
-						this.amount--;
-						price=this.getPrice();
-						this.price=price;
-						if (this.sellFunction) this.sellFunction();
-						Game.recalculateGains=1;
-						if (this.amount==0 && this.id!=0) l('row'+this.id).classList.remove('enabled');
-						Game.BuildingsOwned--;
-						success=1;
-					}
+					if (this.amount<=0) break
+					sold++;
+					//moni+=price;
+					//Game.cookies+=price;
+					//Game.cookiesEarned=Math.max(Game.cookies,Game.cookiesEarned);
+					this.amount--;
+					price = this.getPrice();
+					this.price = price;
+					if (this.sellFunction) this.sellFunction();
+					if (this.amount == 0 && this.id != 0) l('row' + this.id).classList.remove('enabled');
+					Game.BuildingsOwned--;
+					success = 1;
 				}
-				if (success) {this.refresh();}
+				if (success) { Game.recalculateGains = 1; this.refresh();}
 				//if (moni>0) Game.Notify(this.name,'Sold <b>'+sold+'</b> for '+Beautify(moni)+' cookies','',2);
 			}
 			this.buyFree=function(amount)//unlike getFree, this still increases the price
 			{
 				for (var i=0;i<amount;i++)
 				{
-					if (Game.cookies>=price)
-					{
-						this.amount++;
-						this.bought++;
-						this.price=this.getPrice();
-						Game.recalculateGains=1;
-						if (this.amount==1 && this.id!=0) l('row'+this.id).classList.add('enabled');
-						this.highest=Math.max(this.highest,this.amount);
-						Game.BuildingsOwned++;
-					}
+					if (Game.cookies<=price)break
+					this.amount++;
+					this.bought++;
+					this.price = this.getPrice();
+					if (this.amount == 1 && this.id != 0) l('row' + this.id).classList.add('enabled');
+					this.highest = Math.max(this.highest, this.amount);
+					Game.BuildingsOwned++;
 				}
+				Game.recalculateGains = 1;
 				this.refresh();
 			}
 			this.getFree=function(amount)//get X of this building for free, with the price behaving as if you still didn't have them

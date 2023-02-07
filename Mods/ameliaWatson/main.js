@@ -54,8 +54,7 @@ var AmeliaWatson = {
 		let shouldRebuild = false
 		if (this.firstCheck) shouldRebuild = true
 		this.firstCheck = false
-		Game.Objects['Time machine'].displayName = '<span style="font-size:70%;letter-spacing:-1px;position:relative;bottom:4px;">Amelia Watson</span>';//shrink
-
+		
 		if (!shouldRebuild) {
 			if (Game.Objects['Time machine'].pic.length != 3) shouldRebuild = true
 			if (!shouldRebuild && Game.Objects['Time machine'].pic[2] != watsonicons) shouldRebuild = true
@@ -90,8 +89,8 @@ var AmeliaWatson = {
 		}
 
 		if (shouldRebuild) {
+			Game.Objects['Time machine'].displayName = '<span style="font-size:70%;letter-spacing:-1px;position:relative;bottom:4px;">Amelia Watson</span>';//shrink
 			Game.Objects['Time machine'].pic = [0, 0, watsonicons];
-
 			// check out the wiki for upgrade lists or the game's main.js file! thanks orteil! i love ctrl-f !!
 
 			/* UPGRADES */

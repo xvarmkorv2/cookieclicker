@@ -15708,8 +15708,9 @@ Game.Launch=function()
 			//wrinklers
 			if (Game.cpsSucked>0)
 			{
-				Game.Dissolve((Game.cookiesPs/Game.fps)*Game.cpsSucked);
-				Game.cookiesSucked+=((Game.cookiesPs/Game.fps)*Game.cpsSucked);
+				var sucked = (Game.cookiesPs/Game.fps)*Game.cpsSucked
+				Game.Dissolve(sucked);
+				Game.cookiesSucked+=sucked;
 				//should be using one of the following, but I'm not sure what I'm using this stat for anymore
 				//Game.cookiesSucked=Game.wrinklers.reduce(function(s,w){return s+w.sucked;},0);
 				//for (var i in Game.wrinklers) {Game.cookiesSucked+=Game.wrinklers[i].sucked;}

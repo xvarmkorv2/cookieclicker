@@ -46,8 +46,8 @@ var AmeliaWatson = {
 				return ret.replace(writeIcon(oldicon), writeIcon(newicon));
 			};
 		});
-		Game.BuildStore()
 		this.check()
+		Game.storeToRefresh=1
 	},
 	check: function () {
 		let watsonicons = this.dir + "/watsoniconfull.png";
@@ -147,6 +147,7 @@ var AmeliaWatson = {
 
 			Game.dragonAuras[13].pic = [15, 0, watsonicons];
 			//IT WORKS LETS GOOOOOOO I AM AN ARRAY GOOOOOD
+			Game.upgradesToRebuild = 1
 		}
 	}
 }

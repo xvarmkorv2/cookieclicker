@@ -163,7 +163,7 @@ var waitForGame = function waitForGame() {
 
                 if (true) {
 
-                    Game.registerHook("logic",function () {
+                    var stockerLoop = setInterval(function () {
                         if (stockerForceLoopUpdates) Game.ObjectsById[5].minigame.tick();
                         // setting stockerForceLoopUpdates to true will make the logic loop force the market to tick every time it triggers,
                         // making this an obvious cheat, and i will personally resent you.

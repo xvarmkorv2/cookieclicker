@@ -191,9 +191,9 @@ Mods.modsPopup = function () {
 	AddEvent(l('openModsFolder'), 'click', () => { send({ id: 'open folder', loc: 'DIR/mods' }); });
 	AddEvent(l('openWorkshop'), 'click', () => { send({ id: 'open workshop' }); });
 	AddEvent(l('promptOption0'), 'click', () => {
-		Steam.modList = mods.map(mod => (mod.id));
+		Mods.ModList = mods.map(mod => (mod.id));
 		for (var i = 0; i < mods.length; i++) {
-			if (Steam.mods[mods[i].id]) Steam.mods[mods[i].id].disabled = mods[i].disabled;
+			if (Mods.ModData[mods[i].id]) Mods.ModData[mods[i].id].disabled = mods[i].disabled;
 		}
 		Game.toSave = true;
 		Game.toReload = true;

@@ -286,7 +286,7 @@ Mods.LoadMods = function (callback) {
 	if (document.location.search.indexOf('mittens') != -1) {
 		modLoadCheck(Mods.LoadFolder, 'Mods/cws-mittenCursors')
 	}
-	modLoadCheck(Mods.LoadFolder, 'Mods/evenMoreBackgrounds')
+	//modLoadCheck(Mods.LoadFolder, 'Mods/evenMoreBackgrounds')
 	if (document.location.search.indexOf('richpresence') != -1) {
 		modLoadCheck(Game.LoadMod, 'https://angelolz.dev/mods/ccrpc/main.js')
 	}

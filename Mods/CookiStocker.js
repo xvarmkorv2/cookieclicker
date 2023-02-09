@@ -29,6 +29,7 @@ const stockerConsoleAnnouncements = true
 
 // Logic loop frequency; do not touch it unless you are cheating.
 const stockerLoopFrequency = 1000 * 30
+const stockerLoopOnLogic = false
 
 // The cheat itself. Rolls the cycle every time logic loop triggers
 const stockerForceLoopUpdates = false
@@ -105,7 +106,6 @@ var waitForGame = function waitForGame() {
 
         Game.registerMod("gincookistocker", {
             init: function () {
-
                 this.startStocking();
             },
             startStocking: function () {
@@ -162,8 +162,7 @@ var waitForGame = function waitForGame() {
                 }
 
                 if (true) {
-
-                    var stockerLoop = setInterval(function () {
+                    const stockerFunc = function () {
                         if (stockerForceLoopUpdates) Game.ObjectsById[5].minigame.tick();
                         // setting stockerForceLoopUpdates to true will make the logic loop force the market to tick every time it triggers,
                         // making this an obvious cheat, and i will personally resent you.
@@ -237,7 +236,12 @@ var waitForGame = function waitForGame() {
                                 stockList.goods[i].lastMode = stockList.goods[i].mode // update last mode
                             }
                         }
-                    }, stockerLoopFrequency);
+                    }
+                    if (stockerLoopOnLogic){
+                        Game.registerHook('logic', stockerFunc)
+                    } else {
+                        setInterval(stockerFunc, stockerLoopFrequency);
+                    }
                 }
             },
         });

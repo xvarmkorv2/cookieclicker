@@ -191,8 +191,7 @@ Mods.modsPopup = function () {
 				${mod.desc ? '<textarea readonly id="modDesc" style="margin:4px;padding:4px 8px;width:80%;box-sizing:border-box;height:80px;font-size:11px;"></textarea>' : ''}
 				<div class="line" style="clear:both;"></div>
 				`+ (mod.workshop ? `
-					<a class="option" id="modOpenWorkshop" ${Game.clickStr}="PlaySound('snd/tick.mp3');">${loc("Open Workshop page")}</a>
-					<a class="option" id="modUnsubscribeWorkshop" ${Game.clickStr}="PlaySound('snd/tick.mp3');">${loc("Unsubscribe")}</a>
+					<a class="option" id="modOpenWorkshop" target="_blank" href="https://steamcommunity.com/sharedfiles/filedetails/?id=${mod.workshop}" ${Game.clickStr}="PlaySound('snd/tick.mp3');">${loc("Open Workshop page")}</a>
 				`: `<div style="opacity:0.5;margin:4px;">${loc("Local mod")}</div>`) + `
 				`+ (mod.dependenciesStr ? `
 					<div style="margin:4px;"><span style="opacity:0.5;">${loc("Dependencies")} - </span>${mod.dependenciesStr}</div>
@@ -205,19 +204,6 @@ Mods.modsPopup = function () {
 			l('modId').textContent = mod.id ? ('ID: ' + mod.id) : '';
 			if (mod.desc) l('modDesc').textContent = mod.desc;
 			if (mod.loc) AddEvent(l('modOpenFolder'), 'click', () => { send({ id: 'open folder', loc: mod.loc }); });
-			if (mod.workshop) {
-				AddEvent(l('modOpenWorkshop'), 'click', () => { send({ id: 'open workshop', loc: mod.workshop }); });
-				AddEvent(l('modUnsubscribeWorkshop'), 'click', () => {
-					l('modUnsubscribeWorkshop').style.cssText = 'opacity:0.5;pointer-events:none;'; send({ id: 'unsubscribe workshop', loc: mod.workshop, dir: Mods.ModData[mod.id].dir }, async (response) => {
-						if (response == true) {
-							mods.splice(mods.indexOf(mod), 1);
-							selectedMod = 0;
-							changeMods();
-							updateModList();
-						}
-					});
-				});
-			}
 		}
 		else el.innerHTML = loc("Select a mod.");
 	}

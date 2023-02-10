@@ -1426,7 +1426,15 @@ Game.Launch=function()
 
 	
 	Game.visible=true;
-	AddEvent(document,'visibilitychange',function(e){if (document.visibilityState==='hidden') Game.visible=false; else Game.visible=true;});
+	AddEvent(document,'visibilitychange',function(e){
+		if (document.visibilityState==='hidden') {
+			Game.visible=false; 
+			if (!Game.prefs.bgMusic) { Music.setVolume(0, 1.5); }
+		} else {
+			Game.visible = true;
+			if (!Game.prefs.bgMusic) { Music.setVolume(Game.volumeMusic / 100, 1.5); }
+		}
+	});
 	
 	
 	if (!EN)

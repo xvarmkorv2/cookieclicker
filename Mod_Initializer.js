@@ -252,7 +252,7 @@ Mods.GetMods = function(callback){
 	let promises = [];
 	const getInfo = (path) => {
 		promises.push(new Promise((resolve, reject) => {
-			Mods.LoadModInfo(path, (mod)=>{mods.push(mod);resolve()}, () => { console.log(`Failed to load mod language file:`, file); resolve(); });
+			Mods.LoadModInfo(path, (mod)=>{mods.push(mod);resolve()}, () => { console.log(`Failed to load mod info:`, path); resolve(); });
 		}));
 	}
 

@@ -333,8 +333,6 @@ Mods.LoadMods = function (callback) {
 
 
 		Mods.ChangeCCSE();
-		//modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/InsugarTrading/dist/main.js')
-		modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/SpicedCookies/dist/main.js')
 		
 		//modLoadCheck(Mods.LoadFolder, 'Mods/evenMoreBackgrounds')
 		if (document.location.search.indexOf('richpresence') != -1) {
@@ -361,7 +359,10 @@ Mods.LoadMods = function (callback) {
 				}
 			}
 			loadedMods.push(mod.id);
-
+		}
+		if (!Mods.ModData.CCSE.disabled) {
+			modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/SpicedCookies/dist/main.js')
+			//modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/InsugarTrading/dist/main.js')
 		}
 		Promise.all(promises)
 			.then(() => {

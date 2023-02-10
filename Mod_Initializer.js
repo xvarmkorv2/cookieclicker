@@ -230,7 +230,7 @@ Mods.modsPopup = function () {
 		Game.toReload = true;
 	});
 }
-Mods.workshopPopup = () =>{Game.Notify("No")}
+Mods.workshopPopup = () =>{Game.Notify("No","")}
 
 Mods.writeModUI=()=>
 {

@@ -2415,7 +2415,7 @@ Game.Launch=function()
 		
 		window.onbeforeunload=function(event)
 		{
-			if (Game.prefs && Game.prefs.warn && !Game.toReload && !Game.toQuit)
+			if (Game.prefs && Game.prefs.warn && !Game.isReloading)
 			{
 				if (typeof event=='undefined') event=window.event;
 				if (event) event.returnValue=loc("Are you sure you want to close Cookie Clicker?");
@@ -2879,7 +2879,8 @@ Game.Launch=function()
 		
 		Game.toReload=false;
 		Game.toSave=false;
-		Game.toQuit=false;
+		Game.toQuit = false;
+		Game.isReloading = false;//used to block close warning
 		Game.isSaving=false;//true while we're saving, to block some behavior; when in App mode saving may be asynchronous
 		Game.lastSaveData='';
 		Game.WriteSave=function(type)
@@ -16058,7 +16059,7 @@ Game.Launch=function()
 		}
 		if (!Game.toSave && !Game.isSaving)
 		{
-			if (Game.toReload) {Game.toReload=false;if (!App){location.reload();}else{App.reload();}}
+			if (Game.toReload) {Game.toReload=false;Game.isReloading=true;if (!App){location.reload();}else{App.reload();}}
 			if (Game.toQuit) {Game.toQuit=false;if (!App){window.close();}else{App.quit();}}
 		}
 		

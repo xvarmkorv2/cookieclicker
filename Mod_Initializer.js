@@ -4,7 +4,7 @@ Mods.ModData = {}
 Mods.ModList = []
 
 send = ()=>{}
-Steam.saveMods = function () {
+Mods.saveMods = function () {
 	//save mod order
 	if (Mods.ModList.length == 0) return '';
 	str = 'META:';

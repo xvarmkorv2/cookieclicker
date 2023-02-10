@@ -3,10 +3,9 @@
 
 Game.registerMod("ReloadGameButton", {
 	init:function(){
-		var menu = Game.UpdateMenu;
-		Game.UpdateMenu = function(){
-			menu();
-			if(Game.onMenu == 'prefs'){
+		if (CCSE){
+			if(!Game.customOptionsMenu) Game.customOptionsMenu = [];
+			Game.customOptionsMenu.push(function () {
 				// create button
 				var reloadBtn = document.createElement("div");
 				reloadBtn.classList.add("listing");
@@ -15,10 +14,24 @@ Game.registerMod("ReloadGameButton", {
 				// add button to menu
 				var topBtns = document.querySelector("#menu").querySelector(".subsection").querySelectorAll(".listing");
 				var saveBtn = topBtns[2];
-				saveBtn.after(reloadBtn);
+				saveBtn.after(reloadBtn); CCSE.AppendCollapsibleOptionsMenu(CCSE.name, CCSE.GetMenuString());
+			});
+		} else {
+			var menu = Game.UpdateMenu;
+			Game.UpdateMenu = function () {
+				menu();
+				if (Game.onMenu == 'prefs') {
+					// create button
+					var reloadBtn = document.createElement("div");
+					reloadBtn.classList.add("listing");
+					reloadBtn.innerHTML = "<a class='option smallFancyButton' onclick='Game.toReload=true;'>Reload Last Save</a><a class='option smallFancyButton' onclick='Game.toSave=true;Game.toReload=true;'>Save & Reload</a><label>Reload the game without closing it</label>";
+
+					// add button to menu
+					var topBtns = document.querySelector("#menu").querySelector(".subsection").querySelectorAll(".listing");
+					var saveBtn = topBtns[2];
+					saveBtn.after(reloadBtn);
+				}
 			}
 		}
-
-		Game.Notify('Reload Game Button','Reload buttons added!',[16,5],5);
 	}
 });

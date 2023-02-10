@@ -253,7 +253,7 @@ Mods.getSave = (callback) => {
 };
 Mods.LoadMods = function (callback) {
 	Mods.CreateTempFunctions()
-	Steam.modList = await new Promise((resolve, reject) => {
+	Mods.ModList = await new Promise((resolve, reject) => {
 		Mods.getSave((data) => { resolve(analyzeSaveData(data).modMeta); });
 	});
 	if (!Steam.modList) Steam.modList = [];

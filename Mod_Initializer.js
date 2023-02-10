@@ -347,13 +347,9 @@ Mods.LoadMods = function (callback) {
 			Steam.mods[mod.id] = mod;
 			if (Game.modless || !mod.dependencies.every(v => loadedMods.includes(v))) mod.disabled = true;
 			if (mod.disabled) continue;
-			let file = mod.jsFile;
-			if (file) {
-				promises.push(new Promise((resolve, reject) => {
-					Game.LoadMod(file, resolve, () => { console.log(`Failed to load mod file:`, file); resolve(); });
-				}));
-				if (!mod.info.AllowSteamAchievs) Steam.allowSteamAchievs = false;
-			}
+			promises.push(new Promise((resolve, reject) => {
+				Game.LoadMod(mod.dir + '/main.js', resolve, () => { console.log(`Failed to load mod file:`, file); resolve(); });
+			}));
 			if (mod.info.LanguagePacks) {
 				for (let ii in mod.info.LanguagePacks) {
 					let file = mod.dir + '/' + mod.info.LanguagePacks[ii];

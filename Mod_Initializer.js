@@ -344,7 +344,6 @@ Mods.LoadMods = function (callback) {
 		let loadedMods = [];
 		for (let i = 0; i < mods.length; i++) {
 			let mod = mods[i];
-			Steam.mods[mod.id] = mod;
 			if (Game.modless || !mod.dependencies.every(v => loadedMods.includes(v))) mod.disabled = true;
 			if (mod.disabled) continue;
 			promises.push(new Promise((resolve, reject) => {

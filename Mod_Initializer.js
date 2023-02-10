@@ -57,7 +57,7 @@ Mods.LoadModInfo = function(folder, callback){
 			id: info.ID,
 			dir: folder,
 			info: info,
-			disabled: false,
+			disabled: info.Disabled ? true : false,
 			dependencies: info.Dependencies || [],
 			workshop: info.Workshop || false
 		}

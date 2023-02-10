@@ -2415,7 +2415,7 @@ Game.Launch=function()
 		
 		window.onbeforeunload=function(event)
 		{
-			if (Game.prefs && Game.prefs.warn)
+			if (Game.prefs && Game.prefs.warn && !Game.toReload && !Game.toQuit)
 			{
 				if (typeof event=='undefined') event=window.event;
 				if (event) event.returnValue=loc("Are you sure you want to close Cookie Clicker?");

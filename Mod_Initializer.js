@@ -4,6 +4,30 @@ Mods.ModData = {}
 Mods.ModList = []
 
 send = ()=>{}
+let analyzeSaveData = function (data) {
+	if (!data || data == '') return false;
+	var str = unescape(data);
+	var version = 0;
+	str = str.split('!END!')[0];
+	str = b64_to_utf8(str);
+	if (!str || str == '' || str.length < 5) return false;
+	var spl = '';
+	str = str.split('|');
+	version = parseFloat(str[0]);
+	if (isNaN(version) || version < 0/* || version>Game.version*/) return false;
+
+	spl = str[2].split(';');
+	let startDate = parseInt(spl[1]);
+	let lastDate = parseInt(spl[2]);
+	spl = str[4].split(';');
+	let cookiesEarned = parseFloat(spl[1]);
+	let cookiesReset = spl[8] ? parseFloat(spl[8]) : 0;
+	let cookiesTotal = cookiesEarned + cookiesReset;
+	spl = (str[9] || '').split(';');
+	let modMeta = spl.find(it => it.indexOf('META:') == 0);
+	if (modMeta && modMeta.split(':')[1].length > 0) modMeta = modMeta.split(':')[1].split(','); else modMeta = [];
+	return { startDate, lastDate, cookiesTotal, modMeta };
+}
 Mods.saveMods = function () {
 	//save mod order
 	if (Mods.ModList.length == 0) return '';
@@ -223,51 +247,16 @@ Mods.writeModUI=()=>
 	return str;
 }
 
-PRELOAD = function (callback) {
-	return async () => {
-		//dark fade-in
-		(function () {
-			let timesLoaded = 1
-			var css = document.createElement('style');
-			css.type = 'text/css';
-			css.innerHTML = `
-				#darkOverlay,#darkOverlay2
-				{
-					position:absolute;
-					left:0px;top:0px;right:0px;bottom:0px;
-					padding:0px;margin:0px;
-					background:#000;
-					z-index:10000000000;
-					animation:darkOverlayFade ${timesLoaded == 1 ? '2' : '0.2'}s ease-out;
-					animation-fill-mode:both;
-					opacity:0.5;
-					pointer-events:none;
-				}
-				#darkOverlay2
-				{
-					background:#f60;
-					mix-blend-mode:multiply;
-					z-index:99;
-				}
-				
-				@keyframes darkOverlayFade{
-					0% {opacity:1;}
-					50% {opacity:1;}
-					100% {opacity:0;}
-				}
-			`;
-			document.head.appendChild(css);
-			let darken = document.createElement('div');
-			darken.innerHTML = '<div id="darkOverlay"></div><div id="darkOverlay2"></div>';
-			document.body.appendChild(darken);
-			setTimeout(() => { darken.parentNode.removeChild(darken); }, 3000);
-		})();
-		callback()
-	}
-}
 
+Mods.getSave = (callback) => {
+	callback(localStorageGet(Game.SaveTo));
+};
 Mods.LoadMods = function (callback) {
 	Mods.CreateTempFunctions()
+	Steam.modList = await new Promise((resolve, reject) => {
+		Mods.getSave((data) => { resolve(analyzeSaveData(data).modMeta); });
+	});
+	if (!Steam.modList) Steam.modList = [];
 	let promises = [];
 	const modLoadCheck = (func, path) => {
 		promises.push(new Promise((resolve, reject) => {
@@ -312,4 +301,47 @@ Mods.LoadMods = function (callback) {
 			console.log('loaded mods:', loadedMods.join(',') || '(none)');
 			callback();
 		});
+}
+
+PRELOAD = function (callback) {
+	return async () => {
+		//dark fade-in
+		(function () {
+			let timesLoaded = 1
+			var css = document.createElement('style');
+			css.type = 'text/css';
+			css.innerHTML = `
+				#darkOverlay,#darkOverlay2
+				{
+					position:absolute;
+					left:0px;top:0px;right:0px;bottom:0px;
+					padding:0px;margin:0px;
+					background:#000;
+					z-index:10000000000;
+					animation:darkOverlayFade ${timesLoaded == 1 ? '2' : '0.2'}s ease-out;
+					animation-fill-mode:both;
+					opacity:0.5;
+					pointer-events:none;
+				}
+				#darkOverlay2
+				{
+					background:#f60;
+					mix-blend-mode:multiply;
+					z-index:99;
+				}
+				
+				@keyframes darkOverlayFade{
+					0% {opacity:1;}
+					50% {opacity:1;}
+					100% {opacity:0;}
+				}
+			`;
+			document.head.appendChild(css);
+			let darken = document.createElement('div');
+			darken.innerHTML = '<div id="darkOverlay"></div><div id="darkOverlay2"></div>';
+			document.body.appendChild(darken);
+			setTimeout(() => { darken.parentNode.removeChild(darken); }, 3000);
+		})();
+		callback()
+	}
 }

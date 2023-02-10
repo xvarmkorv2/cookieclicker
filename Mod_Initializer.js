@@ -262,7 +262,7 @@ Mods.LoadMods = function (callback) {
 			func(path, resolve, () => { console.log(`Failed to load mod language file:`, file); resolve(); });
 		}));
 	}
-	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE.js')
+	modLoadCheck(Mods.LoadFolder, 'https://klattmose.github.io/CookieClicker/SteamMods/CCSE')
 	Mods.ChangeCCSE();
 	//modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/InsugarTrading/dist/main.js')
 	modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/SpicedCookies/dist/main.js')

@@ -1318,7 +1318,8 @@ var Game={};
 		{
 			str+=i+':'+Game.safeSaveString(Game.modSaveData[i])+';';
 		}
-		if (App && App.saveMods) str+=App.saveMods();
+		if (App && App.saveMods) str += App.saveMods();
+		if (Mods && Mods.saveMods) str+=Mods.saveMods();
 		return str;
 	}
 	Game.loadModData=function()

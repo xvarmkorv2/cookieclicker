@@ -3,6 +3,18 @@ Mods = {}
 Mods.ModData = {}
 Mods.ModList = []
 
+send = ()=>{}
+Steam.saveMods = function () {
+	//save mod order
+	if (Mods.ModList.length == 0) return '';
+	str = 'META:';
+	for (var i = 0; i < Mods.ModList.length; i++) {
+		if (!Mods.ModData[Mods.ModList[i]]) continue;
+		str += (Mods.ModData[Mods.ModList[i]].disabled ? '*' : '') + Mods.ModList[i] + (i < Mods.ModList.length - 1 ? ',' : '');
+	}
+	str += ';'
+	return str;
+}
 Mods.registerMod = function (mod) {
 	if (Mods.ModData[mod.id]) {
 		let steamSide = Mods.ModData[mod.id];
@@ -20,7 +32,7 @@ Mods.LoadFolder = function (folder, callback) {
 		Mods.ModData[info.ID] = {
 			dir: folder,
 			info: info,
-			disabled: info.Disabled ?true : false,
+			disabled: false,
 			dependencies:  info.Dependencies || [],
 			workshop:  info.Workshop || false
 		}
@@ -163,7 +175,7 @@ Mods.modsPopup = function () {
 			if (mod.workshop) {
 				AddEvent(l('modOpenWorkshop'), 'click', () => { send({ id: 'open workshop', loc: mod.workshop }); });
 				AddEvent(l('modUnsubscribeWorkshop'), 'click', () => {
-					l('modUnsubscribeWorkshop').style.cssText = 'opacity:0.5;pointer-events:none;'; send({ id: 'unsubscribe workshop', loc: mod.workshop, dir: Steam.mods[mod.id].dir }, async (response) => {
+					l('modUnsubscribeWorkshop').style.cssText = 'opacity:0.5;pointer-events:none;'; send({ id: 'unsubscribe workshop', loc: mod.workshop, dir: Mods.ModData[mod.id].dir }, async (response) => {
 						if (response == true) {
 							mods.splice(mods.indexOf(mod), 1);
 							selectedMod = 0;

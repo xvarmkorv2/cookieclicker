@@ -121,7 +121,7 @@ Mods.modsPopup = function () {
 
 	let mods = [];
 	for (var i = 0; i < Mods.ModList.length; i++) {
-		if (!Steam.mods[Steam.modList[i]]) continue;
+		if (!Mods.ModData[Mods.ModList[i]]) continue;
 		let mod = Mods.ModData[Mods.ModList[i]];
 		let obj = {};
 		obj.name = mod.info.Name;
@@ -299,7 +299,7 @@ Mods.GetMods = function(callback){
 }
 
 Mods.LoadMods = function (callback) {
-	Mods.GetMods(async(mods) => {
+	Mods.GetMods(async (mods) => {
 		Mods.CreateTempFunctions()
 		Mods.ModList = await new Promise((resolve, reject) => {
 			Mods.getSave((data) => { resolve(analyzeSaveData(data).modMeta); });

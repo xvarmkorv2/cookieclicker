@@ -341,7 +341,6 @@ Mods.LoadMods = function (callback) {
 		if (document.location.search.indexOf('cookistocker') != -1) {
 			modLoadCheck(Game.LoadMod, 'Mods/CookiStocker.js')
 		}
-		let promises = [];
 		let loadedMods = [];
 		for (let i = 0; i < mods.length; i++) {
 			let mod = mods[i];

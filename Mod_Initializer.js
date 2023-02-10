@@ -259,7 +259,7 @@ Mods.GetMods = function(callback){
 	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/CCSE')
 	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/DecideDestiny')
 	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/Casino')
-	//getInfo('https://klattmose.github.io/CookieClicker/SteamMods/BlackholeInverter')//causes and error
+	//getInfo('https://klattmose.github.io/CookieClicker/SteamMods/BlackholeInverter')//causes an error
 	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/DecideDestiny')
 	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/TimerWidget')
 	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/AmericanSeason')

@@ -54,6 +54,7 @@ Mods.LoadModInfo = function(folder, callback){
 		info.dir = folder
 		info.ID = info.ID.replace(/\W+/g, ' ');
 		Mods.ModData[info.ID] = {
+			id: info.ID,
 			dir: folder,
 			info: info,
 			disabled: false,

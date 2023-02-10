@@ -139,11 +139,11 @@ Mods.modsPopup = function () {
 	let checkModDependencies = (mod) => {
 		let okay = true;
 		mod.dependenciesStr = 0;
-		let loadedMods = [];
-		for (var i = 0; i < mod.i; i++) {
-			if (!mods[i].disabled) loadedMods.push(mods[i].id);
-		}
 		if (mod.dependencies.length > 0) {
+			let loadedMods = [];
+			for (var i = 0; i < mod.i; i++) {
+				if (!mods[i].disabled) loadedMods.push(mods[i].id);
+			}
 			mod.dependenciesStr = [];
 			for (let ii = 0; ii < mod.dependencies.length; ii++) {
 				if (loadedMods.includes(mod.dependencies[ii])) mod.dependenciesStr.push(`<div class="tag">${mod.dependencies[ii]}</div>`);

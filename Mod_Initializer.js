@@ -120,7 +120,8 @@ Mods.modsPopup = function () {
 	let selectedMod = 0;
 
 	let mods = [];
-	for (var i=0;i<Mods.ModList.length;i++){
+	for (var i = 0; i < Mods.ModList.length; i++) {
+		if (!Steam.mods[Steam.modList[i]]) continue;
 		let mod = Mods.ModData[Mods.ModList[i]];
 		let obj = {};
 		obj.name = mod.info.Name;
@@ -344,6 +345,7 @@ Mods.LoadMods = function (callback) {
 		let loadedMods = [];
 		for (let i = 0; i < mods.length; i++) {
 			let mod = mods[i];
+			Mods.ModData[mod.id] = mod;
 			if (Game.modless || !mod.dependencies.every(v => loadedMods.includes(v))) mod.disabled = true;
 			if (mod.disabled) continue;
 			promises.push(new Promise((resolve, reject) => {

@@ -256,7 +256,7 @@ Mods.LoadMods = function (callback) {
 	Mods.ModList = await new Promise((resolve, reject) => {
 		Mods.getSave((data) => { resolve(analyzeSaveData(data).modMeta); });
 	});
-	if (!Steam.modList) Steam.modList = [];
+	if (!Mods.ModList) Mods.ModList = [];
 	let promises = [];
 	const modLoadCheck = (func, path) => {
 		promises.push(new Promise((resolve, reject) => {

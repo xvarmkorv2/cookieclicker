@@ -45,39 +45,46 @@ Mods.registerMod = function (mod) {
 		mod.dir = steamSide.dir.replace(/\\/g, "/");
 	}
 }
-Mods.LoadFolder = function (folder, callback) {
-	let ajaxFailed=true;
+
+Mods.LoadModInfo = function(folder, callback){
+	let ajaxFailed = true;
 	ajax(folder + '/info.txt', (info) => {
-		ajaxFailed=false;
+		ajaxFailed = false;
 		info = JSON.parse(info)
 		info.dir = folder
 		info.ID = info.ID.replace(/\W+/g, ' ');
-		Mods.ModList.push(info.ID)
 		Mods.ModData[info.ID] = {
 			dir: folder,
 			info: info,
 			disabled: false,
-			dependencies:  info.Dependencies || [],
-			workshop:  info.Workshop || false
+			dependencies: info.Dependencies || [],
+			workshop: info.Workshop || false
 		}
-		let promises = [];
-		promises.push(new Promise((resolve, reject) => {
-			Game.LoadMod(folder + '/main.js', resolve, () => { console.log(`Failed to load mod file:`, folder + '/main.js'); resolve(); });
-		}));
-		if (info.LanguagePacks) {
-			for (let ii in info.LanguagePacks) {
-				let file = folder + '/' + info.LanguagePacks[ii];
-				promises.push(new Promise((resolve, reject) => {
-					LoadLang(file, resolve, () => { console.log(`Failed to load mod language file:`, file); resolve(); });
-				}));
-			}
-		}
-		Promise.all(promises)
-			.then(() => {
-				if (callback) { callback(); }
-			});
+		callback(Mods.ModData[info.ID])
 	})
-	setTimeout(() => { if (ajaxFailed){callback()}}, 2500)
+	setTimeout(() => { if (ajaxFailed) { callback() } }, 2500)
+}
+Mods.LoadFolder = function (folder, callback) {
+	Mods.LoadModInfo(folder, (info) =>{
+		if (info) {
+			let promises = [];
+			promises.push(new Promise((resolve, reject) => {
+				Game.LoadMod(folder + '/main.js', resolve, () => { console.log(`Failed to load mod file:`, folder + '/main.js'); resolve(); });
+			}));
+			if (info.LanguagePacks) {
+				for (let ii in info.LanguagePacks) {
+					let file = folder + '/' + info.LanguagePacks[ii];
+					promises.push(new Promise((resolve, reject) => {
+						LoadLang(file, resolve, () => { console.log(`Failed to load mod language file:`, file); resolve(); });
+					}));
+				}
+			}
+			Promise.all(promises)
+				.then(() => {
+					if (callback) { callback(); }
+				});
+		} else callback()
+	})
 }
 
 Mods.CreateTempFunctions = function () {
@@ -251,56 +258,120 @@ Mods.writeModUI=()=>
 Mods.getSave = (callback) => {
 	callback(localStorageGet(Game.SaveTo));
 };
-Mods.LoadMods = function (callback) {
-	Mods.CreateTempFunctions()
-	Mods.ModList = await new Promise((resolve, reject) => {
-		Mods.getSave((data) => { resolve(analyzeSaveData(data).modMeta); });
-	});
-	if (!Mods.ModList) Mods.ModList = [];
+
+Mods.GetMods = function(callback){
+	let mods = []
 	let promises = [];
-	const modLoadCheck = (func, path) => {
+	const getInfo = (path) => {
 		promises.push(new Promise((resolve, reject) => {
-			func(path, resolve, () => { console.log(`Failed to load mod language file:`, file); resolve(); });
+			Mods.LoadModInfo(path, (mod)=>{mods.push(mod);resolve()}, () => { console.log(`Failed to load mod language file:`, file); resolve(); });
 		}));
 	}
-	modLoadCheck(Mods.LoadFolder, 'https://klattmose.github.io/CookieClicker/SteamMods/CCSE')
-	Mods.ChangeCCSE();
-	//modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/InsugarTrading/dist/main.js')
-	modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/SpicedCookies/dist/main.js')
-	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/CCSE-POCs/TimerWidget.js')
-	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/FortuneCookie.js?v=2.8')
-	modLoadCheck(Game.LoadMod, 'https://klattmose.github.io/CookieClicker/AmericanSeason.js?v=1.7')
-	modLoadCheck(Mods.LoadFolder, 'https://klattmose.github.io/CookieClicker/SteamMods/DecideDestiny')
-	modLoadCheck(Mods.LoadFolder, 'https://klattmose.github.io/CookieClicker/SteamMods/Casino')
-	modLoadCheck(Mods.LoadFolder, 'https://klattmose.github.io/CookieClicker/SteamMods/BlackholeInverter')
-	//modLoadCheck(Game.LoadMod, 'https://mtarnuhal.github.io/FrozenCookies/frozen_cookies.js')
-	modLoadCheck(Mods.LoadFolder, 'Mods/ameliaWatson')
-	modLoadCheck(Mods.LoadFolder, 'Mods/wikiMinigame')
-	modLoadCheck(Mods.LoadFolder, 'Mods/cws-uniqueJellicles')
-	modLoadCheck(Mods.LoadFolder, 'Mods/cws-uniqueGrandmas')
-	modLoadCheck(Mods.LoadFolder, 'Mods/cws-squashyPress')
-	modLoadCheck(Mods.LoadFolder, 'Mods/cws-alignedCookieAchievements')
-	modLoadCheck(Mods.LoadFolder, 'Mods/cws-betterTrueSanta')
-	modLoadCheck(Mods.LoadFolder, 'Mods/cws-consistentUpgradeBuildingIcons')
-	modLoadCheck(Mods.LoadFolder, 'Mods/ccideas')
-	modLoadCheck(Mods.LoadFolder, 'Mods/Pride_Backgrounds')
+
+	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/CCSE')
+	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/DecideDestiny')
+	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/Casino')
+	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/BlackholeInverter')
+	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/DecideDestiny')
+	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/Casino')
+	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/TimerWidget')
+	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/AmericanSeason')
+	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/BlackholeInverter')
+	getInfo('Mods/ameliaWatson')
+	getInfo('Mods/wikiMinigame')
+	getInfo('Mods/cws-uniqueJellicles')
+	getInfo('Mods/cws-uniqueGrandmas')
+	getInfo('Mods/cws-squashyPress')
+	getInfo('Mods/cws-alignedCookieAchievements')
+	getInfo('Mods/cws-betterTrueSanta')
+	getInfo('Mods/cws-consistentUpgradeBuildingIcons')
+	getInfo('Mods/ccideas')
+	getInfo('Mods/Pride_Backgrounds')
 	if (document.location.search.indexOf('mittens') != -1) {
-		modLoadCheck(Mods.LoadFolder, 'Mods/cws-mittenCursors')
+		getInfo('Mods/cws-mittenCursors')
 	}
-	//modLoadCheck(Mods.LoadFolder, 'Mods/evenMoreBackgrounds')
-	if (document.location.search.indexOf('richpresence') != -1) {
-		modLoadCheck(Game.LoadMod, 'https://angelolz.dev/mods/ccrpc/main.js')
-	}
-	if (document.location.search.indexOf('cookistocker') != -1) {
-		modLoadCheck(Game.LoadMod, 'Mods/CookiStocker.js')
-	}
+
 	Promise.all(promises)
 		.then(() => {
-			let loadedMods = []; 
-			for (var i in Game.mods) { loadedMods.push(Game.mods[i].id); }
-			console.log('loaded mods:', loadedMods.join(',') || '(none)');
-			callback();
+			callback(mods)
 		});
+}
+
+Mods.LoadMods = function (callback) {
+	Mods.GetMods(async(mods) => {
+		Mods.CreateTempFunctions()
+		Mods.ModList = await new Promise((resolve, reject) => {
+			Mods.getSave((data) => { resolve(analyzeSaveData(data).modMeta); });
+		});
+		if (!Mods.ModList) Mods.ModList = [];
+
+		for (let i = 0; i < mods.length; i++) {
+			let mod = mods[i];
+			if (!mod.info) Game.brokenMods.push(mod.path);
+		}
+		mods = mods.filter(it => it.info);
+
+		for (let i = 0; i < mods.length; i++) {
+			let mod = mods[i];
+			if (Mods.ModList.includes('*' + mod.id)) { mod.disabled = true; Mods.ModList.splice(Mods.ModList.indexOf('*' + mod.id), 1, mod.id); }
+			else if (Mods.ModList.includes(mod.id)) { mod.disabled = false; }
+			else Mods.ModList.push(mod.id);//new mods get pushed to the bottom
+		}
+
+		mods.sort(function (a, b) {
+			return Mods.ModList.indexOf(a.id) - Mods.ModList.indexOf(b.id);
+		});
+		let promises = [];
+		const modLoadCheck = (func, path) => {
+			promises.push(new Promise((resolve, reject) => {
+				func(path, resolve, () => { console.log(`Failed to load mod language file:`, file); resolve(); });
+			}));
+		}
+
+
+
+		Mods.ChangeCCSE();
+		//modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/InsugarTrading/dist/main.js')
+		modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/SpicedCookies/dist/main.js')
+		
+		//modLoadCheck(Mods.LoadFolder, 'Mods/evenMoreBackgrounds')
+		if (document.location.search.indexOf('richpresence') != -1) {
+			modLoadCheck(Game.LoadMod, 'https://angelolz.dev/mods/ccrpc/main.js')
+		}
+		if (document.location.search.indexOf('cookistocker') != -1) {
+			modLoadCheck(Game.LoadMod, 'Mods/CookiStocker.js')
+		}
+		let promises = [];
+		let loadedMods = [];
+		for (let i = 0; i < mods.length; i++) {
+			let mod = mods[i];
+			Steam.mods[mod.id] = mod;
+			if (Game.modless || !mod.dependencies.every(v => loadedMods.includes(v))) mod.disabled = true;
+			if (mod.disabled) continue;
+			let file = mod.jsFile;
+			if (file) {
+				promises.push(new Promise((resolve, reject) => {
+					Game.LoadMod(file, resolve, () => { console.log(`Failed to load mod file:`, file); resolve(); });
+				}));
+				if (!mod.info.AllowSteamAchievs) Steam.allowSteamAchievs = false;
+			}
+			if (mod.info.LanguagePacks) {
+				for (let ii in mod.info.LanguagePacks) {
+					let file = mod.dir + '/' + mod.info.LanguagePacks[ii];
+					promises.push(new Promise((resolve, reject) => {
+						LoadLang(file, resolve, () => { console.log(`Failed to load mod language file:`, file); resolve(); });
+					}));
+				}
+			}
+			loadedMods.push(mod.id);
+
+		}
+		Promise.all(promises)
+			.then(() => {
+				console.log('loaded mods:', loadedMods.join(',') || '(none)');
+				callback();
+			});
+	})
 }
 
 PRELOAD = function (callback) {

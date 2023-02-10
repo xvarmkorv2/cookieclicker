@@ -1,0 +1,36 @@
+Game.registerMod("bettermilk",{
+	init:function(){
+		
+		//this mod increases the size of milk images to 200% and sharpens the surface
+		Game.Loader.Replace('milkBanana.png',this.dir+'/milkBanana.png');
+		Game.Loader.Replace('milkBlack.png',this.dir+'/milkBlack.png');
+		Game.Loader.Replace('milkBlood.png',this.dir+'/milkBlood.png');
+		Game.Loader.Replace('milkBlueberry.png',this.dir+'/milkBlueberry.png');
+		Game.Loader.Replace('milkBlueFire.png',this.dir+'/milkBlueFire.png');
+		Game.Loader.Replace('milkCaramel.png',this.dir+'/milkCaramel.png');
+		Game.Loader.Replace('milkCherry.png',this.dir+'/milkCherry.png');
+		Game.Loader.Replace('milkChocolate.png',this.dir+'/milkChocolate.png');
+		Game.Loader.Replace('milkCoconut.png',this.dir+'/milkCoconut.png');
+		Game.Loader.Replace('milkCoffee.png',this.dir+'/milkCoffee.png');
+		Game.Loader.Replace('milkDragonfruit.png',this.dir+'/milkDragonfruit.png');
+		Game.Loader.Replace('milkFire.png',this.dir+'/milkFire.png');
+		Game.Loader.Replace('milkGold.png',this.dir+'/milkGold.png');
+		Game.Loader.Replace('milkGreenFire.png',this.dir+'/milkGreenFire.png');
+		Game.Loader.Replace('milkHoney.png',this.dir+'/milkHoney.png');
+		Game.Loader.Replace('milkLicorice.png',this.dir+'/milkLicorice.png');
+		Game.Loader.Replace('milkLime.png',this.dir+'/milkLime.png');
+		Game.Loader.Replace('milkMaple.png',this.dir+'/milkMaple.png');
+		Game.Loader.Replace('milkMint.png',this.dir+'/milkMint.png');
+		Game.Loader.Replace('milkOrange.png',this.dir+'/milkOrange.png');
+		Game.Loader.Replace('milkPlain.png',this.dir+'/milkPlain.png');
+		Game.Loader.Replace('milkRaspberry.png',this.dir+'/milkRaspberry.png');
+		Game.Loader.Replace('milkRose.png',this.dir+'/milkRose.png');
+		Game.Loader.Replace('milkSoy.png',this.dir+'/milkSoy.png');
+		Game.Loader.Replace('milkSpiced.png',this.dir+'/milkSpiced.png');
+		Game.Loader.Replace('milkStars.png',this.dir+'/milkStars.png');
+		Game.Loader.Replace('milkStrawberry.png',this.dir+'/milkStrawberry.png');
+		Game.Loader.Replace('milkTea.png',this.dir+'/milkTea.png');
+		Game.Loader.Replace('milkVanilla.png',this.dir+'/milkVanilla.png');
+		Game.Loader.Replace('milkZebra.png',this.dir+'/milkZebra.png');
+	},
+});

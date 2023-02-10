@@ -1,0 +1,13 @@
+{
+ "Name": "Prestige Level Calculator",
+ "ID": "prestigeCalc",
+ "Author": "Authrec",
+ "Description": "Displays total prestige level after ascension, and how many sevens are present in your prestige level",
+ "ModVersion": 1.2,
+ "GameVersion": 2.048,
+ "Date": "14/09/2022",
+ "Dependencies": [],
+ "Disabled": 0,
+ "AllowSteamAchievs": 1,
+ "Workshop": "2862745054"
+}

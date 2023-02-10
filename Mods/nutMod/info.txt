@@ -1,0 +1,13 @@
+{
+ "Name": "Nut Button",
+ "ID": "nut",
+ "Author": "Piramiddo",
+ "Description": "Nut.",
+ "ModVersion": 1,
+ "GameVersion": 2.04,
+ "Date": "13/03/2022",
+ "Dependencies": [],
+ "Disabled": 1,
+ "AllowSteamAchievs": 1,
+ "Workshop": "2778710012"
+}

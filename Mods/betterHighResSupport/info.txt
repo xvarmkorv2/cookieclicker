@@ -1,0 +1,13 @@
+{
+ "Name": "Better High-Res Support",
+ "ID": "betterHighResSupport",
+ "Author": "boba",
+ "Description": "A small mod that makes graphics look less blurry and more crisp on high-res displays.",
+ "ModVersion": 2.02,
+ "GameVersion": 2.048,
+ "Date": "5/31/2022",
+ "Dependencies": [],
+ "Disabled": 0,
+ "AllowSteamAchievs": 1,
+ "Workshop": "2686674790"
+}

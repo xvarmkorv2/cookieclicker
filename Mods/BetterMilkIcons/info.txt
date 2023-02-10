@@ -1,0 +1,11 @@
+{
+ "Name": "Better Milk Icons",
+ "ID": "BetterMilkIcons",
+ "Author": "Real_RUBB3R",
+ "Description": "Fixes some of the Milk Bottle icons in the Milk selector so they are more accurate to their milk texture. Changes the following Milks: Plain, Orange, Caramel, Banana, Lime, Blueberry, Strawbery, Vanilla, Honey, Coffee, Tea, Maple, Mint, Licorice, Dragonfruit, Melon, and Blackcurrant, as well as the extra Midnight and Soy milk icons.",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "9/20/2022",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2865438207"
+}

@@ -1,0 +1,13 @@
+{
+ "Name": "Better Accounting",
+ "ID": "nabiBetterAccounting",
+ "Author": "Nabikunyoi",
+ "Description": "Displays additional metrics related to the stock market minigame, such as your current portfolio value. This mod does not disable Steam achievements.",
+ "ModVersion": 2,
+ "GameVersion": 2.048,
+ "Date": "26/01/2023",
+ "Dependencies": [],
+ "Disabled": 0,
+ "AllowSteamAchievs": 1,
+ "Workshop": "2924055107"
+}

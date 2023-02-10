@@ -1,0 +1,16 @@
+{
+ "Name": "Evangelion Re-skin Mod",
+ "ID": "evangelion skin",
+ "Author": "Cariuz",
+ "Description": "A mod for Evangelion fans like me",
+ "ModVersion": 1.2,
+ "GameVersion": 2.048,
+ "Date": "6/18/2022",
+ "Dependencies": [],
+ "Disabled": 1,
+ "AllowSteamAchievs": 1,
+ "LanguagePacks": [
+  "lang.js"
+ ],
+ "Workshop": "2711644076"
+}

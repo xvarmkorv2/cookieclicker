@@ -1,0 +1,11 @@
+{
+ "Name": "Grandma Cookie",
+ "ID": "grandmacookie",
+ "Author": "OpenSauce",
+ "Description": "Enables the Grandma Cookie.",
+ "ModVersion": 1,
+ "GameVersion": 2.043,
+ "Date": "04/09/2021",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2687284606"
+}

@@ -1,0 +1,16 @@
+{
+ "Name": "eva builds",
+ "ID": "eva builds",
+ "Author": "Cariuz",
+ "Description": "Adds skins for builds",
+ "ModVersion": 1,
+ "GameVersion": 2.043,
+ "Date": "7/1/2022",
+ "Dependencies": [],
+ "AllowSteamAchievs": 1,
+ "LanguagePacks": [
+  "lang.js"
+ ],
+ "Disabled": 0,
+ "Workshop": "2711635513"
+}

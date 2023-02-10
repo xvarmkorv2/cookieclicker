@@ -1,0 +1,13 @@
+{
+ "Name": "Cookies Per Minute",
+ "ID": "cpm",
+ "Author": "Claudz",
+ "Description": "Above the big cookie, adds a line under the cookies per second that tells you the cookies per minute. Should be compatible with mods that change number formatting like Cookie Monster",
+ "ModVersion": 1.1,
+ "GameVersion": 2.048,
+ "Date": "25/07/2022",
+ "AllowSteamAchievs": 1,
+ "Dependencies": [],
+ "Disabled": 0,
+ "Workshop": "2837570274"
+}

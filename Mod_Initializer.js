@@ -273,6 +273,18 @@ Mods.GetMods = function(callback){
 	getInfo('Mods/cws-consistentUpgradeBuildingIcons')
 	getInfo('Mods/ccideas')
 	getInfo('Mods/Pride_Backgrounds')
+	getInfo('Mods/betterHighResSupport')
+	getInfo('Mods/BetterMilk')
+	getInfo('Mods/BetterMilkIcons')
+	getInfo('Mods/eva_builds')
+	getInfo('Mods/evangelion_skin')
+	getInfo('Mods/grandmacookie')
+	getInfo('Mods/MoreBackgroundOptions')
+	getInfo('Mods/nabiBetterAccounting')
+	getInfo('Mods/nutMod')
+	getInfo('Mods/perMinuteMod')
+	getInfo('Mods/prestigeCalc')
+	getInfo('Mods/ReloadGameButton')
 	if (document.location.search.indexOf('mittens') != -1) {
 		getInfo('Mods/cws-mittenCursors')
 	}

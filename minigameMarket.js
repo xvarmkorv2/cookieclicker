@@ -923,7 +923,6 @@ M.launch=function()
 		}
 		var neededSize=Math.max(maxVal,10)+10;
 		var newScale=(Math.max(.1,currentSize/neededSize));
-		var dif=(currentSize/M.graphScale)/neededSize;
 		var dif=(currentSize/M.graphScale)-neededSize;
 		if (M.graphScale!=newScale && dif>5 || dif<-5)
 		{

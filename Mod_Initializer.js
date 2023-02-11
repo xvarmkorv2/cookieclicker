@@ -284,9 +284,7 @@ Mods.GetMods = function(callback){
 	getInfo('Mods/perMinuteMod')
 	getInfo('Mods/prestigeCalc')
 	getInfo('Mods/ReloadGameButton') //incompatable with CCSE
-	if (document.location.search.indexOf('mittens') != -1) {
-		getInfo('Mods/cws-mittenCursors')
-	}
+	getInfo('Mods/cws-mittenCursors')
 
 	Promise.all(promises)
 		.then(() => {

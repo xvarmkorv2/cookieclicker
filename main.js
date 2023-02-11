@@ -3616,7 +3616,38 @@ Game.Launch=function()
 						
 					}
 					else//importing old version save
-					{
+					{/*
+						Game.startDate=parseInt(new Date().getTime());
+						Game.cookies=parseInt(str[1]);
+						Game.cookiesEarned=parseInt(str[1]);
+
+						for (var i in Game.ObjectsById)
+						{
+							var me=Game.ObjectsById[i];
+							me.amount=0;me.bought=0;me.totalCookies=0;
+							me.refresh();
+						}
+						for (var i in Game.UpgradesById)
+						{
+							var me=Game.UpgradesById[i];
+							me.unlocked=0;me.bought=0;
+						}
+
+						var moni=0;
+						moni+=15*Math.pow(1.1,parseInt(str[2]));
+						moni+=100*Math.pow(1.1,parseInt(str[4]));
+						moni+=500*Math.pow(1.1,parseInt(str[6]));
+						moni+=2000*Math.pow(1.1,parseInt(str[8]));
+						moni+=7000*Math.pow(1.1,parseInt(str[10]));
+						moni+=50000*Math.pow(1.1,parseInt(str[12]));
+						moni+=1000000*Math.pow(1.1,parseInt(str[14]));
+						if (parseInt(str[16])) moni+=123456789*Math.pow(1.1,parseInt(str[16]));
+
+						alert('Imported old save from version '+version+'; recovered '+Beautify(Game.cookies)+' cookies, and converted buildings back to '+Beautify(moni)+' cookies.');
+
+						Game.cookies+=moni;
+						Game.cookiesEarned+=moni;
+						*/
 						Game.Notify(loc("Error importing save"),loc("Sorry, you can't import saves from the classic version."),'',6,1);
 						return false;
 					}

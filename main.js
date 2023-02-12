@@ -2697,7 +2697,7 @@ Game.Launch=function()
 		=======================================================================================*/
 		Game.CheckUpdates=function()
 		{
-			if (!App) ajax('server.php?q=checkupdate',Game.CheckUpdatesResponse);
+			//if (!App) ajax('server.php?q=checkupdate',Game.CheckUpdatesResponse);
 		}
 		Game.CheckUpdatesResponse=function(response)
 		{

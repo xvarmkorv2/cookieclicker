@@ -920,7 +920,7 @@ M.launch=function()
 			for (var ii=0;ii<me.vals.length;ii++)
 			{
 				maxVal=Math.max(maxVal,me.vals[ii]);
-				maxVal=Math.min(maxVal,me.vals[ii]);
+				minVal=Math.min(minVal,me.vals[ii]);
 			}
 		}
 		var neededSize=Math.max(maxVal,10)+10;

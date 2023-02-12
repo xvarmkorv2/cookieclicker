@@ -911,6 +911,7 @@ M.launch=function()
 		var currentSize=M.graph.height;
 		if (!currentSize) return false;
 		var maxVal=0;
+		var minVal=0;
 		for (var i=0;i<M.goodsById.length;i++)
 		{
 			var me=M.goodsById[i];
@@ -919,6 +920,7 @@ M.launch=function()
 			for (var ii=0;ii<me.vals.length;ii++)
 			{
 				maxVal=Math.max(maxVal,me.vals[ii]);
+				maxVal=Math.min(maxVal,me.vals[ii]);
 			}
 		}
 		var neededSize=Math.max(maxVal,10)+10;

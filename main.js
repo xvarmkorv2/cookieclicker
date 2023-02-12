@@ -2683,7 +2683,7 @@ Game.Launch=function()
 		Game.tooltip.wobble=function()
 		{
 			//disabled because this effect doesn't look good with the slight slowdown it might or might not be causing.
-			if (false)
+			if (true)
 			{
 				this.tt.className='framed';
 				void this.tt.offsetWidth;

@@ -2519,11 +2519,13 @@ Game.Launch=function()
 		/*=====================================================================================
 		TOOLTIP
 		=======================================================================================*/
-		Game.tooltip={text:'',x:0,y:0,origin:'',on:0,tt:l('tooltip'),tta:l('tooltipAnchor'),shouldHide:1,dynamic:0,from:0};
+		Game.tooltip={text:'', rawtext:'', lastrawtext:'',x:0,y:0,origin:'',on:0,tt:l('tooltip'),tta:l('tooltipAnchor'),shouldHide:1,dynamic:0,from:0};
 		Game.tooltip.draw=function(from,text,origin)
 		{
 			this.shouldHide=0;
 			this.text=text;
+			this.lastrawtext=this.rawtext
+			this.rawtext=text
 			this.from=from;
 			//this.x=x;
 			//this.y=y;
@@ -2537,6 +2539,7 @@ Game.Launch=function()
 			if (typeof this.text==='function')
 			{
 				var text=this.text();
+				this.rawtext=text
 				if (text=='') tta.style.opacity='0';
 				else
 				{
@@ -2683,7 +2686,7 @@ Game.Launch=function()
 		Game.tooltip.wobble=function()
 		{
 			//disabled because this effect doesn't look good with the slight slowdown it might or might not be causing.
-			if (true)
+			if (this.lastrawtext != this.rawtext)
 			{
 				this.tt.className='framed';
 				void this.tt.offsetWidth;

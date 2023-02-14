@@ -14,7 +14,7 @@ Game.registerMod("ReloadGameButton", {
 				// add button to menu
 				var topBtns = document.querySelector("#menu").querySelector(".subsection").querySelectorAll(".listing");
 				var saveBtn = topBtns[2];
-				saveBtn.after(reloadBtn); CCSE.AppendCollapsibleOptionsMenu(CCSE.name, CCSE.GetMenuString());
+				saveBtn.after(reloadBtn); 
 			});
 		} else {
 			var menu = Game.UpdateMenu;

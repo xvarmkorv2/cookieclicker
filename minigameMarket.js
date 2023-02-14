@@ -565,70 +565,73 @@ M.launch=function()
 		
 		for (var i=0;i<M.goodsById.length;i++)
 		{
-			var me=M.goodsById[i];
-			me.l=l('bankGood-'+me.id);
-			me.symbolNumL=l('bankGood-'+me.id+'-sym');
-			me.valL=l('bankGood-'+me.id+'-val');
-			me.stockBoxL=l('bankGood-'+me.id+'-stockBox');
-			me.stockL=l('bankGood-'+me.id+'-stock');
-			me.stockMaxL=l('bankGood-'+me.id+'-stockMax');
-			me.viewHideL=l('bankGood-'+me.id+'-viewHide');
-			me.graphIconL=l('bankGood-'+me.id+'-graphIcon');
-			
-			AddEvent(l('bankGood-'+i),'mouseover',function(i){return function(e){
-				if (M.hoverOnGood!=i) {M.hoverOnGood=i;M.toRedraw=2;}
-			}}(i));
-			AddEvent(l('bankGood-'+i),'mouseout',function(i){return function(e){
-				if (M.hoverOnGood==i) {M.hoverOnGood=-1;M.toRedraw=2;}
-			}}(i));
-			
-			AddEvent(l('bankGood-'+i+'-viewHide'),'click',function(i){return function(e){
-				if (Game.keys[16])//solo with shift-click
-				{
-					var mode=M.goodsById[i].hidden;
-					for (var ii=0;ii<M.goodsById.length;ii++)
+			(function(i){
+				var me=M.goodsById[i];
+				me.l=l('bankGood-'+me.id);
+				me.symbolNumL=l('bankGood-'+me.id+'-sym');
+				me.valL=l('bankGood-'+me.id+'-val');
+				me.stockBoxL=l('bankGood-'+me.id+'-stockBox');
+				me.stockL=l('bankGood-'+me.id+'-stock');
+				me.stockMaxL=l('bankGood-'+me.id+'-stockMax');
+				me.viewHideL=l('bankGood-'+me.id+'-viewHide');
+				me.graphIconL=l('bankGood-'+me.id+'-graphIcon');
+				
+				AddEvent(l('bankGood-' + i), 'mouseover', function (e) {
+					if (M.hoverOnGood != i) { M.hoverOnGood = i; M.toRedraw = 2; }
+				});
+				AddEvent(l('bankGood-'+i),'mouseout', function(e){
+					if (M.hoverOnGood==i) {M.hoverOnGood=-1;M.toRedraw=2;}
+				});
+				
+				AddEvent(l('bankGood-'+i+'-viewHide'),'click',function(e){
+					if (Game.keys[16])//solo with shift-click
 					{
-						if (ii==i) M.goodsById[ii].hidden=!mode;
-						else if (!mode) M.goodsById[ii].hidden=false;
-						else M.goodsById[ii].hidden=true;
-						M.updateGoodStyle(ii);
+						var mode=M.goodsById[i].hidden;
+						for (var ii=0;ii<M.goodsById.length;ii++)
+						{
+							if (ii==i) M.goodsById[ii].hidden=!mode;
+							else if (!mode) M.goodsById[ii].hidden=false;
+							else M.goodsById[ii].hidden=true;
+							M.updateGoodStyle(ii);
+						}
 					}
-				}
-				else
-				{
-					if (M.goodsById[i].hidden) M.goodsById[i].hidden=false;
-					else M.goodsById[i].hidden=true;
-					M.updateGoodStyle(i);
-				}
-				M.checkGraphScale();
-				M.toRedraw=2;
-				PlaySound('snd/tick.mp3');
-			}}(i));
+					else
+					{
+						if (M.goodsById[i].hidden) M.goodsById[i].hidden=false;
+						else M.goodsById[i].hidden=true;
+						M.updateGoodStyle(i);
+					}
+					M.checkGraphScale();
+					M.toRedraw=2;
+					PlaySound('snd/tick.mp3');
+				});
+				
+				AddEvent(l('bankGood-'+i+'_1'),'click',function(e){
+					if (M.buyGood(i,1)) Game.SparkleOn(e.target);
+				});
+				AddEvent(l('bankGood-'+i+'_-1'),'click', function(e){
+					if (M.sellGood(i,1)) Game.SparkleOn(e.target);
+				});
+				AddEvent(l('bankGood-'+i+'_10'),'click', function(e){
+					if (M.buyGood(i,10)) Game.SparkleOn(e.target);
+				});
+				AddEvent(l('bankGood-'+i+'_-10'),'click', function(e){
+					if (M.sellGood(i,10)) Game.SparkleOn(e.target);
+				});
+				AddEvent(l('bankGood-'+i+'_100'),'click', function(e){
+					if (M.buyGood(i,100)) Game.SparkleOn(e.target);
+				});
+				AddEvent(l('bankGood-'+i+'_-100'),'click', function(e){
+					if (M.sellGood(i,100)) Game.SparkleOn(e.target);
+				});
+				AddEvent(l('bankGood-'+i+'_Max'),'click', function(e){
+					if (M.buyGood(i,10000)) Game.SparkleOn(e.target);
+				});
+				AddEvent(l('bankGood-'+i+'_-All'),'click', function(e){
+					if (M.sellGood(i,10000)) Game.SparkleOn(e.target);
+				});
+			})(i)
 			
-			AddEvent(l('bankGood-'+i+'_1'),'click',function(i){return function(e){
-				if (M.buyGood(i,1)) Game.SparkleOn(e.target);
-			}}(i));
-			AddEvent(l('bankGood-'+i+'_-1'),'click',function(i){return function(e){
-				if (M.sellGood(i,1)) Game.SparkleOn(e.target);
-			}}(i));
-			AddEvent(l('bankGood-'+i+'_10'),'click',function(i){return function(e){
-				if (M.buyGood(i,10)) Game.SparkleOn(e.target);
-			}}(i));
-			AddEvent(l('bankGood-'+i+'_-10'),'click',function(i){return function(e){
-				if (M.sellGood(i,10)) Game.SparkleOn(e.target);
-			}}(i));
-			AddEvent(l('bankGood-'+i+'_100'),'click',function(i){return function(e){
-				if (M.buyGood(i,100)) Game.SparkleOn(e.target);
-			}}(i));
-			AddEvent(l('bankGood-'+i+'_-100'),'click',function(i){return function(e){
-				if (M.sellGood(i,100)) Game.SparkleOn(e.target);
-			}}(i));
-			AddEvent(l('bankGood-'+i+'_Max'),'click',function(i){return function(e){
-				if (M.buyGood(i,10000)) Game.SparkleOn(e.target);
-			}}(i));
-			AddEvent(l('bankGood-'+i+'_-All'),'click',function(i){return function(e){
-				if (M.sellGood(i,10000)) Game.SparkleOn(e.target);
-			}}(i));
 		}
 		
 		

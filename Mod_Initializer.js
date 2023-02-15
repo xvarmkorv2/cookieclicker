@@ -122,8 +122,8 @@ Mods.modsPopup = function () {
 
 	let mods = [];
 	for (var i = 0; i < Mods.ModList.length; i++) {
-		if (!Mods.ModData[Mods.ModList[i]]) continue;
 		let mod = Mods.ModData[Mods.ModList[i]];
+		if (!mod) continue;
 		let obj = {};
 		obj.name = mod.info.Name;
 		obj.desc = mod.info.Description || 0;
@@ -230,7 +230,7 @@ Mods.modsPopup = function () {
 		Game.toReload = true;
 	});
 }
-Mods.workshopPopup = () =>{Game.Notify("No","")}
+Mods.workshopPopup = () =>{Game.Notify("No","The Web Version of Cookie Clicker does not have Steam Workshop support.")}
 
 Mods.writeModUI=()=>
 {

@@ -143,6 +143,7 @@ var waitForGame = function waitForGame() {
 
                 if (stockerActivityReport) {
                     var stockerReportInterval = setInterval(function () {
+                        if (Game.timedout) return
                         var stockerUptime = new Date() - stockList.sessionStart;
                         if ((stockList.sessionPurchases + stockList.sessionSales) == 0) {
                             Game.Notify(
@@ -163,6 +164,7 @@ var waitForGame = function waitForGame() {
 
                 if (true) {
                     const stockerFunc = function () {
+                        if (Game.timedout) return
                         if (Game.ObjectsById[5].amount > 0) {return}
                         if (stockerForceLoopUpdates) Game.ObjectsById[5].minigame.tick();
                         // setting stockerForceLoopUpdates to true will make the logic loop force the market to tick every time it triggers,

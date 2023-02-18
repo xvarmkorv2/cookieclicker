@@ -285,6 +285,18 @@ Mods.GetMods = function(callback){
 	getInfo('Mods/prestigeCalc')
 	getInfo('Mods/ReloadGameButton') //incompatable with CCSE
 	getInfo('Mods/cws-mittenCursors')
+	getInfo('Mods/Burger%20cookie%201.0')
+	getInfo('Mods/Food%20Buildings%201.0')
+	getInfo('Mods/Fries%20cookie%201.0')
+	getInfo('Mods/Pizza%20cookie%201.0')
+	getInfo('Mods/Plunger%20wrinklers%201.0')
+	getInfo('Mods/shimejiMod')
+	getInfo('Mods/time-in-bank')
+	getInfo('Mods/GuraMod')
+	getInfo('Mods/Just%20Monika!')
+	getInfo('Mods/fortuneFacts')
+	getInfo('Mods/modLogger')
+	getInfo('Mods/moreMonospaceNumbers')
 
 	Promise.all(promises)
 		.then(() => {

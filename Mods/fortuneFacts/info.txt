@@ -1,0 +1,13 @@
+{
+ "Name": "Fortune Facts",
+ "ID": "fortuneFacts",
+ "Author": "KmanKnight",
+ "Description": "Adds fun facts to the news ticker!",
+ "ModVersion": 1,
+ "GameVersion": 2.031,
+ "Date": "1/08/2023",
+ "Dependencies": [],
+ "Disabled": 1,
+ "AllowSteamAchievs": 0,
+ "Workshop": "2914975047"
+}

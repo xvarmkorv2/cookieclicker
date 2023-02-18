@@ -1,0 +1,11 @@
+{
+ "Name": "Fries cookie",
+ "ID": "fries",
+ "Author": "Vajko OwO",
+ "Description": "Changed perfect cookie with fries | Version 1.0",
+ "ModVersion": 1,
+ "GameVersion": 2.043,
+ "Date": "12/19/2021",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2687467869"
+}

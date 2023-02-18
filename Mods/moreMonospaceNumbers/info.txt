@@ -1,0 +1,12 @@
+{
+ "Name": "More Monospace Numbers",
+ "ID": "more monospace numbers",
+ "Author": "KittenClinic",
+ "Description": "Makes CpS and CpM (if mod is installed) monospace when the Alt Font option is enabled.",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "18/09/2022",
+ "Disabled": 1,
+ "AllowSteamAchievs": 1,
+ "Workshop": "2875205965"
+}

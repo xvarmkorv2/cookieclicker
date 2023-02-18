@@ -1,0 +1,13 @@
+{
+ "Name": "Time in Bank",
+ "ID": "time in bank",
+ "Description": "Enhances Genius accounting with the effective time stored in your bank.",
+ "ModVersion": 1,
+ "GameVersion": 2.043,
+ "Date": "12/18/2021",
+ "LanguagePacks": [
+  "lang.js"
+ ],
+ "AllowSteamAchievs": 1,
+ "Workshop": "2914494196"
+}

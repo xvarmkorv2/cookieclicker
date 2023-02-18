@@ -1,0 +1,12 @@
+{
+ "Name": "Just Monika",
+ "ID": "Just Monika",
+ "Author": "Just Monika",
+ "Description": "Just Monika",
+ "ModVersion": 1,
+ "GameVersion": 1,
+ "Date": "1/16/2022",
+ "Dependencies": [],
+ "Disabled": 1,
+ "Workshop": "2721156759"
+}

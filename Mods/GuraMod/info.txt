@@ -1,0 +1,13 @@
+{
+ "Name": "Gawr Gura Cookie",
+ "ID": "guracookie",
+ "Author": "MrSpaghetti",
+ "Description": "Everybodys favourite English Hololive member Gawr Gura has become a cookie, because Atlantis was so boring.",
+ "ModVersion": 1,
+ "GameVersion": 2.04,
+ "Date": "11/04/2022",
+ "Dependencies": [],
+ "Disabled": 0,
+ "AllowSteamAchievs": 1,
+ "Workshop": "2792630564"
+}

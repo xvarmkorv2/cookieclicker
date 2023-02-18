@@ -1,0 +1,11 @@
+{
+ "Name": "Pizza cookie",
+ "ID": "pizza",
+ "Author": "Vajko OwO",
+ "Description": "Changed perfect cookie with pizza | Version 1.0",
+ "ModVersion": 2,
+ "GameVersion": 2.043,
+ "Date": "12/19/2021",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2686941448"
+}

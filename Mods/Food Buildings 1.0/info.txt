@@ -1,0 +1,14 @@
+{
+ "Name": "Food Buildings",
+ "ID": "food",
+ "Author": "Vajko OwO",
+ "Description": "Changed buildings with food | Version 1.2",
+ "ModVersion": 3,
+ "GameVersion": 2.048,
+ "Date": "06/04/2022",
+ "LanguagePacks": [
+  "lang.js"
+ ],
+ "AllowSteamAchievs": 1,
+ "Workshop": "2738314029"
+}

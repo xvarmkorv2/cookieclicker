@@ -1,0 +1,11 @@
+{
+ "Name": "Plunger wrinklers",
+ "ID": "plunger",
+ "Author": "Vajko OwO",
+ "Description": "Changed wrinklers with plungers | Version 1.2",
+ "ModVersion": 3,
+ "GameVersion": 2.048,
+ "Date": "01/23/2022",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2703540785"
+}

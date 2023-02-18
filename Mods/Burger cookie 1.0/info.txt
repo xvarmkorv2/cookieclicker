@@ -1,0 +1,11 @@
+{
+ "Name": "Burger cookie",
+ "ID": "burger",
+ "Author": "Vajko OwO",
+ "Description": "Changed perfect cookie with burger | Version 1.0",
+ "ModVersion": 1,
+ "GameVersion": 2.043,
+ "Date": "12/19/2021",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2687436500"
+}

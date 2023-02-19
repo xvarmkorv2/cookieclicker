@@ -4,25 +4,25 @@ Mods.ModData = {}
 Mods.ModList = []
 
 send = ()=>{}
-let analyzeSaveData = function (data) {
+const analyzeSaveData = function (data) {
 	if (!data || data == '') return false;
 	var str = unescape(data);
 	var version = 0;
 	str = str.split('!END!')[0];
 	str = b64_to_utf8(str);
 	if (!str || str == '' || str.length < 5) return false;
-	var spl = '';
+	let spl = '';
 	str = str.split('|');
 	version = parseFloat(str[0]);
 	if (isNaN(version) || version < 0/* || version>Game.version*/) return false;
 
 	spl = str[2].split(';');
-	let startDate = parseInt(spl[1]);
-	let lastDate = parseInt(spl[2]);
+	const startDate = parseInt(spl[1]);
+	const lastDate = parseInt(spl[2]);
 	spl = str[4].split(';');
-	let cookiesEarned = parseFloat(spl[1]);
-	let cookiesReset = spl[8] ? parseFloat(spl[8]) : 0;
-	let cookiesTotal = cookiesEarned + cookiesReset;
+	const cookiesEarned = parseFloat(spl[1]);
+	const cookiesReset = spl[8] ? parseFloat(spl[8]) : 0;
+	const cookiesTotal = cookiesEarned + cookiesReset;
 	spl = (str[9] || '').split(';');
 	let modMeta = spl.find(it => it.indexOf('META:') == 0);
 	if (modMeta && modMeta.split(':')[1].length > 0) modMeta = modMeta.split(':')[1].split(','); else modMeta = [];

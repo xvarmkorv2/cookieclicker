@@ -16252,7 +16252,7 @@ Game.Launch=function()
 			Game.Logic();
 		} catch (error) {
 			alert(error);
-			setTimeout(Game.Loop, 2000 / Game.fps);
+			setTimeout(Game.Loop, 12000 / Game.fps);
 			return
 		}
 		Timer.track('end of main logic', true);
@@ -16298,7 +16298,7 @@ Game.Launch=function()
 				Game.Draw();
 			} catch (error) {
 				alert(error);
-				setTimeout(Game.Loop, 2000 / Game.fps);
+				setTimeout(Game.Loop, 12000 / Game.fps);
 				return
 			} 
 		}

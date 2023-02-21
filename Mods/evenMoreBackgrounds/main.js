@@ -6,6 +6,7 @@ Game.registerMod("evenMoreBackgrounds", {
         let ICON = (x, y) => [x, y, iconPath];
 
         var runAfterCCSEload = function () {
+            let div, i = div = Object.getOwnPropertyNames(Game.BGsByChoice).length;
             CCSE.NewBackgroundSelection('White Noise', ICON(0, 0), JPG('bgWhiteNoise'));
             CCSE.NewBackgroundSelection('Black Noise', ICON(1, 0), JPG('bgBlackNoise'));
             CCSE.NewBackgroundSelection('Polished Silver', ICON(10, 0), JPG('bgPolishedSilver'));
@@ -22,7 +23,10 @@ Game.registerMod("evenMoreBackgrounds", {
                 // let curIcon = Game.Upgrades['Background selector'].icon;
                 Game.Upgrades['Background selector'].icon = ICON(Game.Has("Distinguished wallpaper assortment"), 1);
                 // if (Game.Upgrades['Background selector'].icon !== curIcon) Game.upgradesToRebuild = 1;
-            };
+            }; 
+            Game.customUpgrades['Background selector'].choicesFunction.push(function (choices) {
+                choices[div].div = true;
+            });
 
             Game.registerHook('check', updateIcon);
             updateIcon();

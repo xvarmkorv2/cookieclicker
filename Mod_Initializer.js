@@ -278,7 +278,7 @@ Mods.GetMods = function(callback){
 	getInfo('Mods/eva_builds')
 	getInfo('Mods/evangelion_skin')
 	getInfo('Mods/grandmacookie')
-	getInfo('Mods/MoreBackgroundOptions')
+	//getInfo('Mods/MoreBackgroundOptions')
 	getInfo('Mods/nabiBetterAccounting')
 	getInfo('Mods/nutMod')
 	getInfo('Mods/perMinuteMod')

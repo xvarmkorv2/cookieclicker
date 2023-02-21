@@ -297,6 +297,7 @@ Mods.GetMods = function(callback){
 	getInfo('Mods/fortuneFacts')
 	getInfo('Mods/modLogger')
 	getInfo('Mods/moreMonospaceNumbers')
+	getInfo('Mods/evenMoreBackgrounds')
 
 	Promise.all(promises)
 		.then(() => {
@@ -339,7 +340,6 @@ Mods.LoadMods = function (callback) {
 
 		Mods.ChangeCCSE();
 		
-		//modLoadCheck(Mods.LoadFolder, 'Mods/evenMoreBackgrounds')
 		if (document.location.search.indexOf('richpresence') != -1) {
 			modLoadCheck(Game.LoadMod, 'https://angelolz.dev/mods/ccrpc/main.js')
 		}

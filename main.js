@@ -3757,6 +3757,7 @@ Game.Launch=function()
 			
 			Game.cookiesReset+=Game.cookiesEarned;
 			Game.cookies=0;
+			Game.cookiesd=0;
 			Game.cookiesEarned=0;
 			Game.cookieClicks=0;
 			Game.goldenClicksLocal=0;

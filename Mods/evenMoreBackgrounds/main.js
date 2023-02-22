@@ -26,6 +26,9 @@ Game.registerMod("evenMoreBackgrounds", {
             }; 
             Game.customUpgrades['Background selector'].choicesFunction.push(function (choices) {
                 choices[div].div = true;
+                if (PrideBG !== undefined) {
+                    choices[div+10].div = true;
+                }
             });
 
             Game.registerHook('check', updateIcon);

@@ -299,6 +299,7 @@ Mods.GetMods = function(callback){
 	getInfo('Mods/moreMonospaceNumbers')
 	getInfo('Mods/evenMoreBackgrounds')
 	getInfo('Mods/MoreHeavenlyUpgrades')
+	getInfo('Mods/betterCCSEVersionNumber')
 
 	Promise.all(promises)
 		.then(() => {

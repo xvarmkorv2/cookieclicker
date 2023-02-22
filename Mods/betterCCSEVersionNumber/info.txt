@@ -1,0 +1,13 @@
+{
+	"Name": "Better CCSE Version Number",
+	"ID": "betterCCSEVersionNumber",
+	"Author": "Varmkorv_Tva",
+	"Description": "Improves teh CCSE version number",
+	"ModVersion": 1,
+	"GameVersion": 2.048,
+	"Date": "22/02/2023",
+ 	"Dependencies": ["CCSE"],
+ 	"Disabled": 0,
+ 	"AllowSteamAchievs": 1,
+	"LanguagePacks": []
+}

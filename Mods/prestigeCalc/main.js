@@ -62,7 +62,7 @@ Game.registerMod("prestigeCalc",{
 		};
 
 		Game.registerHook('logic', () => {
-			if (Number.isInteger(Game.T / 15)) logic();
+			if (Game.T % 15 == 0) logic();
 		});
 
 		logic();

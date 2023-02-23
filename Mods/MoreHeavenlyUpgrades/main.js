@@ -6,7 +6,7 @@ MoreHeavenlyUpgrades.GameVersion = '2.043';
 MoreHeavenlyUpgrades.launch = function() {
     MoreHeavenlyUpgrades.init = function() {
         MoreHeavenlyUpgrades.isLoaded = 1;
-        Game.Notify('More heavenly upgrades loaded', '', [19, 7], 6);
+        //Game.Notify('More heavenly upgrades loaded', '', [19, 7], 6);
         const CheckForWatson = (dir) => dir["despacito AmeliaWatson"] !== undefined
         const WatsonIcons = 
             (Game.mods["despacito AmeliaWatson"] !== undefined ? Game.mods["despacito AmeliaWatson"].dir + "/watsoniconfull.png" : 0)

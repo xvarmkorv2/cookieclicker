@@ -7,7 +7,11 @@ MoreHeavenlyUpgrades.launch = function() {
     MoreHeavenlyUpgrades.init = function() {
         MoreHeavenlyUpgrades.isLoaded = 1;
         Game.Notify('More heavenly upgrades loaded', '', [19, 7], 6);
-        const WatsonIcons = Game.mods["despacito AmeliaWatson"] !== undefined ? Game.mods["despacito AmeliaWatson"].dir + "/watsoniconfull.png" : 0
+        const CheckForWatson = (dir) => dir["despacito AmeliaWatson"] !== undefined
+        const WatsonIcons = 
+            (Game.mods["despacito AmeliaWatson"] !== undefined ? Game.mods["despacito AmeliaWatson"].dir + "/watsoniconfull.png" : 0)
+            || (App && CheckForWatson(App.mods) ? App.mods["despacito AmeliaWatson"].dir + "/watsoniconfull.png" : 0)
+            || (Mods && CheckForWatson(Mods.ModData) ? Mods.ModData["despacito AmeliaWatson"].dir + "/watsoniconfull.png" : 0)
 
         //-----------------------------------permanent upgrade slots maybe
 

@@ -7,6 +7,7 @@ MoreHeavenlyUpgrades.launch = function() {
     MoreHeavenlyUpgrades.init = function() {
         MoreHeavenlyUpgrades.isLoaded = 1;
         Game.Notify('More heavenly upgrades loaded', '', [19, 7], 6);
+        const WatsonIcons = Game.Mods["despacito AmeliaWatson"] !== undefined ? Game.Mods["despacito AmeliaWatson"].dir + "/watsoniconfull.png" : 0
 
         //-----------------------------------permanent upgrade slots maybe
 
@@ -159,7 +160,7 @@ MoreHeavenlyUpgrades.launch = function() {
 
         var timeMachineBasePrice = 14000000000000;
         everythingBasePrice += timeMachineBasePrice;
-        CCSE.NewHeavenlyUpgrade('Starter flux capacitor', 'You start with 10 time machines<q>Just wait untill this baby hits 140kmh</q>', timeMachineBasePrice * 10, [8, 0], -1475, -435, ['Starter cookieverse map']);
+        CCSE.NewHeavenlyUpgrade('Starter flux capacitor', `You start with 10 ${WatsonIcons ? "Amelia Watsons" : "time machines"}<q>Just wait untill this baby hits 140kmh</q>`, timeMachineBasePrice * 10, WatsonIcons ? [0, 0, WatsonIcons]:[8, 0], -1475, -435, ['Starter cookieverse map']);
         Game.last.showIf = function() { return (Game.Achievements["Alternate timeline"].won == 1); };
 
         var antimatteBasePrice = 170000000000000;
@@ -294,7 +295,7 @@ MoreHeavenlyUpgrades.launch = function() {
 
 
         CCSE.NewHeavenlyUpgrade('Infinite knowledge', "At the other side of the portal there is a.. Cat?<br>They seem to know you,<br>to know <b>everything</b><br>They ask you to forfeit a small amount of chips for all their knowledge<br><br>Also the minimum time for lumps to mature now is 1 minute<q>They are the key to the multiverse's secrets</q>", 10000000000, [26, 7], -700, -2450, ['Misterious portal']);
-        CCSE.NewHeavenlyUpgrade('Time-altering process', "Each Time machine (up to 300) makes sugar lumps ripen and mature <b>6 seconds</b> sooner.<q>The cat gave you some formulas, that, combined with your flux capacitors would speed up the process of growing lumps</q>", 1800000000, [8, 17], -600, -2450, ['Infinite knowledge']);
+        CCSE.NewHeavenlyUpgrade('Time-altering process', `Each ${WatsonIcons ? "Amelia Watson" : "time machine"} (up to 300) makes sugar lumps ripen and mature <b>6 seconds</b> sooner.<q>The cat gave you some formulas, that, combined with your flux capacitors would speed up the process of growing lumps</q>`, 1800000000, WatsonIcons ? [7, 0, WatsonIcons] : [8, 17], -600, -2450, ['Infinite knowledge']);
 
         var secretPrice = Game.Upgrades["Kitten helpers"].basePrice +
             Game.Upgrades["Kitten workers"].basePrice +

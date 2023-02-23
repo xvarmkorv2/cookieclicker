@@ -28,6 +28,24 @@ const analyzeSaveData = function (data) {
 	if (modMeta && modMeta.split(':')[1].length > 0) modMeta = modMeta.split(':')[1].split(','); else modMeta = [];
 	return { startDate, lastDate, cookiesTotal, modMeta };
 }
+Mods.hardSave = (save) => {
+	//just raw-save the data to disk and cloud without passing by Game.WriteSave()
+	if (Game.useLocalStorage) localStorageSet(Game.SaveTo, save);
+};
+Mods.onImportSave = (out, save) => {
+	if (!out) return false;
+	let data = analyzeSaveData(save);
+	if (!data.modMeta) return false
+	let Continue = false;
+	for (var i = 0; i < data.modMeta.length; i++) {
+		if (data.modMeta[i] !== Mods.ModList[i]) {
+			Continue = true; break
+		}
+	}
+	if (!Continue) return false
+	Mods.hardSave(save);
+	Game.toReload = true;
+};
 Mods.saveMods = function () {
 	//save mod order
 	if (Mods.ModList.length == 0) return '';

@@ -2860,8 +2860,9 @@ Game.Launch=function()
 		Game.ImportSaveCode=function(save)
 		{
 			var out=false;
-			if (save && save!='') out=Game.LoadSave(save);
-			if (out && App && App.onImportSave) App.onImportSave(out,save);
+			if (save && save != '') out = Game.LoadSave(save);
+			if (out && App && App.onImportSave) App.onImportSave(out, save);
+			if (out && Mods && Mods.onImportSave) Mods.onImportSave(out, save);
 			return out;
 		}
 		

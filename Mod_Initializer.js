@@ -434,7 +434,7 @@ PRELOAD = function (callback) {
 			let darken = document.createElement('div');
 			darken.innerHTML = '<div id="darkOverlay"></div><div id="darkOverlay2"></div>';
 			document.body.appendChild(darken);
-			setTimeout(() => { darken.parentNode.removeChild(darken); }, 3000);
+			setTimeout(() => { darken.parentNode.removeChild(darken); css.parentNode.removeChild(css); }, 3000);
 		})();
 		callback()
 	}

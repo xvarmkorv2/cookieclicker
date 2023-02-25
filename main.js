@@ -1147,8 +1147,8 @@ initMusic();
 if (!App) {
 	Game.firstClick = false;
 	AddEvent(window, 'click', function () {
+			if (Game.firstClick || !Music) return;
 			Game.firstClick = true;
-			if (Game.firstClick) return;
 			Music.context.resume()
 		}
 	);

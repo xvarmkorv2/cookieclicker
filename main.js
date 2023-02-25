@@ -1143,18 +1143,16 @@ var initMusic = function () {
 GAME INITIALIZATION
 =======================================================================================*/
 var Game = {};
-
+initMusic();
 if (!App) {
 	Game.firstClick = false;
-	AddEvent(window, 'click', function (initMusic) {
-		return function () {
-			if (Game.firstClick) return;
+	AddEvent(window, 'click', function () {
 			Game.firstClick = true;
-			initMusic();
+			if (Game.firstClick) return;
+			Music.context.resume()
 		}
-	}(initMusic));
+	);
 }
-else initMusic();
 
 
 /*=====================================================================================

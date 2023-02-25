@@ -318,6 +318,7 @@ Mods.GetMods = function(callback){
 	getInfo('Mods/evenMoreBackgrounds')
 	getInfo('Mods/MoreHeavenlyUpgrades')
 	getInfo('Mods/betterCCSEVersionNumber')
+	getInfo('Mods/AHatInTimeMusic')
 
 	Promise.all(promises)
 		.then(() => {

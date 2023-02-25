@@ -9525,6 +9525,7 @@ Game.Launch=function()
 						Game.tooltip.hide();
 						PlaySound('snd/buy'+choose([1,2,3,4])+'.mp3',0.75);
 						success=1;
+						if (Game.onMenu=='stats') Game.UpdateMenu();
 					}
 				}
 				else

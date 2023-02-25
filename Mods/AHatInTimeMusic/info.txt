@@ -2,7 +2,7 @@
 	"Name": "A Hat in Time Music",
 	"ID": "A Hat in Time Music",
 	"Author": "Varmkorv_Tva",
-	"Description": "Adds A Hat in Time music to Cookie Clicker",
+	"Description": "Adds A Hat in Time music to Cookie Clicker. Requires the jukebox to work.",
 	"ModVersion": 1,
 	"GameVersion": 2.048,
 	"Date": "25/02/2023",

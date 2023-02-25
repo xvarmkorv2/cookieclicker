@@ -8488,7 +8488,7 @@ Game.Launch=function()
 					else l('productMinigameButton'+me.id).textContent=loc("Close %1",me.minigameName);
 				}
 				else l('productMinigameButton'+me.id).style.display='none';
-				if (Game.isMinigameReady(me) && Game.ascensionMode!=1 && me.minigame.dragonBoostTooltip && Game.hasAura('Supreme Intellect'))
+				if (Game.isMinigameReady(me) && Game.ascensionMode != 1 && me.minigame.dragonBoostTooltip && (me == Game.Objects.Temple ? Game.hasAura('Supreme Intellect') : Game.auraMult('Supreme Intellect') > 0))
 				{
 					l('productDragonBoost'+me.id).style.display='block';
 				}

@@ -3824,7 +3824,7 @@ Game.Launch=function()
 				var me=Game.UpgradesById[i];
 				if (hard || me.pool!='prestige') me.bought=0;
 				if (hard) me.unlocked=0;
-				if (me.pool!='prestige' && !me.lasting)
+				if (me.pool!='prestige' && me.pool!='debug' && !me.lasting)
 				{
 					if (Game.Has('Keepsakes') && Game.seasonDrops.indexOf(me.name)!=-1 && Math.random()<1/5){}
 					else if (Game.ascensionMode==1 && Game.HasAchiev('O Fortuna') && me.tier=='fortune'){}

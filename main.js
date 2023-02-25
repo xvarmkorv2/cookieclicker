@@ -4607,7 +4607,7 @@ Game.Launch=function()
 					{
 						for (var ii in me.parents)
 						{
-							if (me.parents[ii]!=-1 && !me.parents[ii].bought) me.canBePurchased=0;
+							if (me.parents[ii]!=-1 && !me.parents[ii].bought) {me.canBePurchased=0; break;}
 						}
 					}
 				}

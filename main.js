@@ -12124,6 +12124,7 @@ Game.Launch=function()
 						if (Game.CountsAsAchievementOwned(it.pool)) Game.AchievementsOwned++;
 						Game.recalculateGains=1;
 						if (App && it.vanilla) App.gotAchiev(it.id);
+						if (Game.onMenu == 'stats') Game.UpdateMenu();
 					}
 				}
 			}
@@ -12137,7 +12138,8 @@ Game.Launch=function()
 				{
 					Game.Achievements[what].won=0;
 					if (Game.CountsAsAchievementOwned(Game.Achievements[what].pool)) Game.AchievementsOwned--;
-					Game.recalculateGains=1;
+					Game.recalculateGains = 1;
+					if (Game.onMenu == 'stats') Game.UpdateMenu();
 				}
 			}
 		}
@@ -12151,7 +12153,6 @@ Game.Launch=function()
 			{
 				Game.RemoveAchiev(this.name);
 			}
-			if (Game.onMenu=='stats') Game.UpdateMenu();
 		}
 		
 		Game.CountsAsAchievementOwned=function(pool)

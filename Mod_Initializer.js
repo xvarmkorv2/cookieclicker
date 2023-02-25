@@ -356,16 +356,6 @@ Mods.LoadMods = function (callback) {
 			}));
 		}
 
-
-
-		Mods.ChangeCCSE();
-		
-		if (document.location.search.indexOf('richpresence') != -1) {
-			modLoadCheck(Game.LoadMod, 'https://angelolz.dev/mods/ccrpc/main.js')
-		}
-		if (document.location.search.indexOf('cookistocker') != -1) {
-			modLoadCheck(Game.LoadMod, 'Mods/CookiStocker.js')
-		}
 		let loadedMods = [];
 		for (let i = 0; i < mods.length; i++) {
 			let mod = mods[i];
@@ -385,7 +375,14 @@ Mods.LoadMods = function (callback) {
 			}
 			loadedMods.push(mod.id);
 		}
+		if (document.location.search.indexOf('cookistocker') != -1) {
+			modLoadCheck(Game.LoadMod, 'Mods/CookiStocker.js')
+		}
 		if (!Mods.ModData.CCSE.disabled) {
+			Mods.ChangeCCSE();
+			if (document.location.search.indexOf('richpresence') != -1) {
+				modLoadCheck(Game.LoadMod, 'https://angelolz.dev/mods/ccrpc/main.js')
+			}
 			modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/SpicedCookies/dist/main.js')
 			//modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/InsugarTrading/dist/main.js')
 		}

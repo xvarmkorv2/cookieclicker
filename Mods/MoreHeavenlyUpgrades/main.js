@@ -525,7 +525,7 @@ MoreHeavenlyUpgrades.launch = function() {
                 }
 
                 if (Game.Has('Glucose-charged air')) {
-                    minMatureTime=1
+                    minMatureTime=42
                 }
                 Game.lumpMatureAge = Math.min(Game.lumpMatureAge, minMatureTime)
                 Game.lumpRipeAge = Math.min(Game.lumpRipeAge, minMatureTime * 2)

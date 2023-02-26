@@ -13735,6 +13735,7 @@ Game.Launch=function()
 			me.hp=Game.wrinklerHP;
 			me.type=0;
 			if (Math.random()<0.0001) me.type=1;//shiny wrinkler
+			if (Game.onMenu=='stats') Game.UpdateMenu();
 			return me;
 		}
 		Game.PopRandomWrinkler=function()
@@ -13874,6 +13875,7 @@ Game.Launch=function()
 					me.close=0;
 					me.hurt=0;
 					me.hp=3;
+					if (Game.onMenu=='stats') Game.UpdateMenu();
 					var toSuck=1.1;
 					if (Game.Has('Sacrilegious corruption')) toSuck*=1.05;
 					if (me.type==1) toSuck*=3;//shiny wrinklers are an elusive, profitable breed

@@ -13,7 +13,7 @@ evenMoreBackgrounds.launch = function () {
             choices.push(bg);
         });
     }
-        this.init = function () {
+    this.init = function () {
         let JPG = name => `${this.dir}/img/${name}.jpg`;
 
         let iconPath = `${this.dir}/img/icons.png`;

@@ -13875,7 +13875,6 @@ Game.Launch=function()
 					me.close=0;
 					me.hurt=0;
 					me.hp=3;
-					if (Game.onMenu=='stats') Game.UpdateMenu();
 					var toSuck=1.1;
 					if (Game.Has('Sacrilegious corruption')) toSuck*=1.05;
 					if (me.type==1) toSuck*=3;//shiny wrinklers are an elusive, profitable breed
@@ -13931,6 +13930,7 @@ Game.Launch=function()
 							Game.particleAdd(x+Math.random()*50-25,y+Math.random()*50-25,Math.random()*4-2,Math.random()*-2-2,1,1,2,'wrinklerBits.png');
 						}
 					}*/
+					if (Game.onMenu=='stats') Game.UpdateMenu();
 					if (Game.prefs.particles)
 					{
 						var x=me.x+(Math.sin(me.r*Math.PI/180)*90);

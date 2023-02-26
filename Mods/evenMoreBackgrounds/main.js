@@ -1,8 +1,8 @@
 if (evenMoreBackgrounds === undefined) var evenMoreBackgrounds = {};
 if (typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
-PrideBG.launch = function () {
-    PrideBG.isLoaded = 1;
+evenMoreBackgrounds.launch = function () {
+    evenMoreBackgrounds.isLoaded = 1;
     CCSE.NewBackgroundSelection = function (name, icon, pic) {
         // name		What the game will display in the selector
         // icon		An array [x, y, (optional)url] See how upgrades handle icons to get an idea

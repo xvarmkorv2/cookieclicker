@@ -13,8 +13,7 @@ PrideBG.launch = function(){
 	CCSE.NewBackgroundSelection('Intersex',    [0, 2, 'https://files.catbox.moe/45g5hf.png'], 'https://files.catbox.moe/zaj36a.png');
 	CCSE.NewBackgroundSelection('Ace',         [1, 2, 'https://files.catbox.moe/45g5hf.png'], 'https://files.catbox.moe/2dpzqh.png');
 	CCSE.NewBackgroundSelection('Pan',         [2, 2, 'https://files.catbox.moe/45g5hf.png'], 'https://files.catbox.moe/aryd6i.png');
-
-	}
+}
 
 if(!PrideBG.isLoaded){
 	if(CCSE && CCSE.isLoaded){

@@ -4,8 +4,17 @@ Game.registerMod("evenMoreBackgrounds", {
 
         let iconPath = `${this.dir}/img/icons.png`;
         let ICON = (x, y) => [x, y, iconPath];
-
         var runAfterCCSEload = function () {
+            CCSE.NewBackgroundSelection = function (name, icon, pic) {
+                // name		What the game will display in the selector
+                // icon		An array [x, y, (optional)url] See how upgrades handle icons to get an idea
+                // pic		Url to your picture
+
+                let bg = { name: name, icon: icon, pic: pic, order: 100 };
+                Game.customUpgrades['Background selector'].choicesFunction.push(function (choices) {
+                    choices.push(bg);
+                });
+            }
             let div, i = div = Object.getOwnPropertyNames(Game.BGsByChoice).length;
             CCSE.NewBackgroundSelection('White Noise', ICON(0, 0), JPG('bgWhiteNoise'));
             CCSE.NewBackgroundSelection('Black Noise', ICON(1, 0), JPG('bgBlackNoise'));

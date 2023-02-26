@@ -13,7 +13,7 @@ PrideBG.launch = function(){
 			choices.push(bg);
 		});
 	}
-	NewBackgroundSelection('Transgender', [0, 0, 'https://files.catbox.moe/45g5hf.png'], 'https://files.catbox.moe/923ftq.png');
+	NewBackgroundSelection('Transgender', [0, 0, 'https://files.catbox.moe/45g5hf.png'], 'https://files.catbox.moe/923ftq.png', true);
 	NewBackgroundSelection('Lesbian',     [1, 0, 'https://files.catbox.moe/45g5hf.png'], 'https://files.catbox.moe/4nd0wm.png');
 	NewBackgroundSelection('Gay',         [2, 0, 'https://files.catbox.moe/45g5hf.png'], 'https://files.catbox.moe/vanq8s.png');
 	NewBackgroundSelection('Genderfluid', [3, 0, 'https://files.catbox.moe/45g5hf.png'], 'https://files.catbox.moe/uay9qh.png');
@@ -22,7 +22,7 @@ PrideBG.launch = function(){
 	NewBackgroundSelection('Bi',          [2, 1, 'https://files.catbox.moe/45g5hf.png'], 'https://files.catbox.moe/eaupei.png');
 	NewBackgroundSelection('Intersex',    [0, 2, 'https://files.catbox.moe/45g5hf.png'], 'https://files.catbox.moe/zaj36a.png');
 	NewBackgroundSelection('Ace',         [1, 2, 'https://files.catbox.moe/45g5hf.png'], 'https://files.catbox.moe/2dpzqh.png');
-	NewBackgroundSelection('Pan',         [2, 2, 'https://files.catbox.moe/45g5hf.png'], 'https://files.catbox.moe/aryd6i.png', true);
+	NewBackgroundSelection('Pan',         [2, 2, 'https://files.catbox.moe/45g5hf.png'], 'https://files.catbox.moe/aryd6i.png');
 }
 
 if(!PrideBG.isLoaded){

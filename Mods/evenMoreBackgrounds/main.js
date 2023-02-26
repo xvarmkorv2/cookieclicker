@@ -19,7 +19,7 @@ evenMoreBackgrounds.launch = function () {
         let iconPath = `${this.dir}/img/icons.png`;
         let ICON = (x, y) => [x, y, iconPath];
         let div, i = div = Object.getOwnPropertyNames(Game.BGsByChoice).length;
-        CCSE.NewBackgroundSelection('White Noise', ICON(0, 0), JPG('bgWhiteNoise'));
+        CCSE.NewBackgroundSelection('White Noise', ICON(0, 0), JPG('bgWhiteNoise'), true);
         CCSE.NewBackgroundSelection('Black Noise', ICON(1, 0), JPG('bgBlackNoise'));
         CCSE.NewBackgroundSelection('Polished Silver', ICON(10, 0), JPG('bgPolishedSilver'));
         CCSE.NewBackgroundSelection('Polished Gold', ICON(9, 0), JPG('bgPolishedGold'));
@@ -29,16 +29,13 @@ evenMoreBackgrounds.launch = function () {
         CCSE.NewBackgroundSelection('Neverending Legacy', ICON(5, 0), JPG('bgNeverendingLegacy'));
         CCSE.NewBackgroundSelection('Cloudy', ICON(6, 0), JPG('bgCloudy'));
         CCSE.NewBackgroundSelection('Icy', ICON(7, 0), JPG('bgIcy'));
-        CCSE.NewBackgroundSelection('Space', ICON(8, 0), JPG('bgSpace'), true);
+        CCSE.NewBackgroundSelection('Space', ICON(8, 0), JPG('bgSpace'));
 
         let updateIcon = () => {
             // let curIcon = Game.Upgrades['Background selector'].icon;
             Game.Upgrades['Background selector'].icon = ICON(Game.Has("Distinguished wallpaper assortment"), 1);
             // if (Game.Upgrades['Background selector'].icon !== curIcon) Game.upgradesToRebuild = 1;
         };
-        Game.customUpgrades['Background selector'].choicesFunction.push(function (choices) {
-            choices[div].div = true;
-        });
 
         Game.registerHook('check', updateIcon);
         updateIcon();

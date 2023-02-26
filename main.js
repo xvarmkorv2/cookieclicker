@@ -14231,14 +14231,14 @@ Game.Launch=function()
             { name: 'Krumblor, cookie dragon', action: 'Train Supreme Intellect<br><small>Aura : confers various powers to your minigames</small>', pic: 5, },
             {
                 name: 'Krumblor, cookie dragon', action: loc("Bake dragon cookie") + '<br><small>' + loc("Delicious!") + '</small>', pic: 6,
-                cost: function () { var fail = 0; for (var i in Game.Objects) { if (Game.Objects[i].amount < 50) fail = 1; } return (fail == 0); },
-                buy: function () { for (var i in Game.Objects) { Game.Objects[i].sacrifice(50); } Game.Unlock('Dragon cookie'); },
+				cost: function () { var fail = 0; for (var i in Game.Objects) { if (Game.Objects[i].vanilla && Game.Objects[i].amount < 50) fail = 1; } return (fail == 0); },
+				buy: function () { for (var i in Game.Objects) { if (Game.Objects[i].vanilla) { Game.Objects[i].sacrifice(50); }; } Game.Unlock('Dragon cookie'); },
                 costStr: function () { return loc("%1 of every building", 50); }
             },
             {
                 name: 'Krumblor, cookie dragon', action: loc("Train secondary aura") + '<br><small>' + loc("Lets you use two dragon auras simultaneously") + '</small>', pic: 7,
-                cost: function () { var fail = 0; for (var i in Game.Objects) { if (Game.Objects[i].amount < 200) fail = 1; } return (fail == 0); },
-                buy: function () { for (var i in Game.Objects) { Game.Objects[i].sacrifice(200); } },
+				cost: function () { var fail = 0; for (var i in Game.Objects) { if (Game.Objects[i].vanilla && Game.Objects[i].amount < 200) fail = 1; } return (fail == 0); },
+				buy: function () { for (var i in Game.Objects) { if (Game.Objects[i].vanilla) {Game.Objects[i].sacrifice(200); }; } },
                 costStr: function () { return loc("%1 of every building", 200); }
             },
             { name: 'Krumblor, cookie dragon', action: loc("Your dragon is fully trained."), pic: 8 }

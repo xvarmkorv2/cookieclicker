@@ -1,7 +1,7 @@
 if (MoreHeavenlyUpgrades === undefined) var MoreHeavenlyUpgrades = {};
 MoreHeavenlyUpgrades.name = 'More heavenly upgrades';
 MoreHeavenlyUpgrades.version = '1.12';
-MoreHeavenlyUpgrades.GameVersion = '2.043';
+MoreHeavenlyUpgrades.GameVersion = '2.048';
 
 MoreHeavenlyUpgrades.launch = function() {
     MoreHeavenlyUpgrades.init = function() {

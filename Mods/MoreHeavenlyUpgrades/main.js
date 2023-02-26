@@ -529,7 +529,7 @@ MoreHeavenlyUpgrades.launch = function() {
                 }
                 Game.lumpMatureAge = Math.min(Game.lumpMatureAge, minMatureTime)
                 Game.lumpRipeAge = Math.min(Game.lumpRipeAge, minMatureTime * 2)
-                
+
                 Game.lumpOverripeAge = Game.lumpRipeAge + minMatureTime;
             }
         });
@@ -653,7 +653,7 @@ MoreHeavenlyUpgrades.launch = function() {
                     }
 
                     if (Game.Has('Divine round numbers') && Game.BuildingsOwned % 10 == 0) {
-                        Game.globalCpsMult = (Game.globalCpsMult * 2);
+                        Game.globalCpsMult *= 2;
 
                     }
                 }

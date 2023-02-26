@@ -8976,7 +8976,7 @@ Game.Launch=function()
 		
 		Game.SpecialGrandmaUnlock=15;
 		new Game.Object('Grandma','grandma|grandmas|baked|Grandmas are [X] year older|Grandmas are [X] years older','A nice grandma to bake more cookies.',1,1,{pic:function(i){
-			if ((Game.elderWrath == 1 && Math.random() < 1 / 3) || (Game.elderWrath == 2 && Math.random() < 2 / 3) || (Game.elderWrath == 3 && Math.random() < 5 / 6)){ return 'alteredGrandma.png'}
+			if ((Game.elderWrath == 1 && Math.random() < 1 / 6) || (Game.elderWrath == 2 && Math.random() < 1 / 3) || (Game.elderWrath == 3 && Math.random() < 1 / 2)){ return 'alteredGrandma.png'}
 			var list=['grandma'];
 			if (Game.Has('Farmer grandmas')) list.push('farmerGrandma');
 			if (Game.Has('Worker grandmas')) list.push('workerGrandma');

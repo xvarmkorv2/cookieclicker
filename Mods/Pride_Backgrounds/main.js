@@ -3,12 +3,12 @@ if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieC
 
 PrideBG.launch = function(){
 	PrideBG.isLoaded = 1;
-	const NewBackgroundSelection = function (name, icon, pic) {
+	const NewBackgroundSelection = function (name, icon, pic, div) {
 		// name		What the game will display in the selector
 		// icon		An array [x, y, (optional)url] See how upgrades handle icons to get an idea
 		// pic		Url to your picture
 
-		let bg = { name: name, icon: icon, pic: pic, order: 100 };
+		let bg = { name: name, icon: icon, pic: pic, order: 99, div: div ? true : false };
 		Game.customUpgrades['Background selector'].choicesFunction.push(function (choices) {
 			choices.push(bg);
 		});
@@ -22,7 +22,7 @@ PrideBG.launch = function(){
 	NewBackgroundSelection('Bi',          [2, 1, 'https://files.catbox.moe/45g5hf.png'], 'https://files.catbox.moe/eaupei.png');
 	NewBackgroundSelection('Intersex',    [0, 2, 'https://files.catbox.moe/45g5hf.png'], 'https://files.catbox.moe/zaj36a.png');
 	NewBackgroundSelection('Ace',         [1, 2, 'https://files.catbox.moe/45g5hf.png'], 'https://files.catbox.moe/2dpzqh.png');
-	NewBackgroundSelection('Pan',         [2, 2, 'https://files.catbox.moe/45g5hf.png'], 'https://files.catbox.moe/aryd6i.png');
+	NewBackgroundSelection('Pan',         [2, 2, 'https://files.catbox.moe/45g5hf.png'], 'https://files.catbox.moe/aryd6i.png', true);
 }
 
 if(!PrideBG.isLoaded){

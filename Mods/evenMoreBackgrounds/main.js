@@ -3,12 +3,12 @@ if (typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/Cookie
 
 evenMoreBackgrounds.launch = function () {
     evenMoreBackgrounds.isLoaded = 1;
-    CCSE.NewBackgroundSelection = function (name, icon, pic) {
+    CCSE.NewBackgroundSelection = function (name, icon, pic, div) {
         // name		What the game will display in the selector
         // icon		An array [x, y, (optional)url] See how upgrades handle icons to get an idea
         // pic		Url to your picture
 
-        let bg = { name: name, icon: icon, pic: pic, order: 100 };
+        let bg = { name: name, icon: icon, pic: pic, order: 100, div: div ? true : false };
         Game.customUpgrades['Background selector'].choicesFunction.push(function (choices) {
             choices.push(bg);
         });
@@ -29,7 +29,7 @@ evenMoreBackgrounds.launch = function () {
         CCSE.NewBackgroundSelection('Neverending Legacy', ICON(5, 0), JPG('bgNeverendingLegacy'));
         CCSE.NewBackgroundSelection('Cloudy', ICON(6, 0), JPG('bgCloudy'));
         CCSE.NewBackgroundSelection('Icy', ICON(7, 0), JPG('bgIcy'));
-        CCSE.NewBackgroundSelection('Space', ICON(8, 0), JPG('bgSpace'));
+        CCSE.NewBackgroundSelection('Space', ICON(8, 0), JPG('bgSpace'), true);
 
         let updateIcon = () => {
             // let curIcon = Game.Upgrades['Background selector'].icon;
@@ -38,9 +38,6 @@ evenMoreBackgrounds.launch = function () {
         };
         Game.customUpgrades['Background selector'].choicesFunction.push(function (choices) {
             choices[div].div = true;
-            if (PrideBG !== undefined) {
-                choices[div + 10].div = true;
-            }
         });
 
         Game.registerHook('check', updateIcon);

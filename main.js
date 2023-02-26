@@ -1082,13 +1082,13 @@ var initMusic = function () {
 			'fadeTo': (what) => {
 				if (Music.playing && Music.playing.name == what) return false;
 				Music.setFilter(0, 3);
-				//if (Game.visible || Game.prefs.bgMusic) { Music.setVolume(0, 3); }
+				if (Game.visible || Game.prefs.bgMusic) { Music.setVolume(Game.volumeMusic / 250, 3); }
 				setTimeout(() => {
 					var prev = Music.playing ? Music.playing.audio.currentTime : 0;
 					Music.setFilter(0);
-					//if (Game.visible || Game.prefs.bgMusic) { Music.setVolume(0); }
+					if (Game.visible || Game.prefs.bgMusic) { Music.setVolume(Game.volumeMusic / 250); }
 					Music.setFilter(1, 3);
-					//if (Game.visible || Game.prefs.bgMusic) { Music.setVolume(Game.volumeMusic / 100, 1.5); }
+					if (Game.visible || Game.prefs.bgMusic) { Music.setVolume(Game.volumeMusic / 100, 1.5); }
 					Music.loopTrack(what, (track) => { track.audio.currentTime = prev % (1 * 4); });
 				}, 3000);
 			},

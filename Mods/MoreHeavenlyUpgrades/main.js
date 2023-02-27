@@ -199,7 +199,7 @@ MoreHeavenlyUpgrades.launch = function() {
 
         var cortexBakerBasePrice = 1.9e+24;
         everythingBasePrice += cortexBakerBasePrice;
-        CCSE.NewHeavenlyUpgrade('Starter brain matter', 'You start with 10 cortex bakers<q></q>', cortexBakerBasePrice * 10, [33, 0], -2175, -425, ['Starter multiverse']);
+        CCSE.NewHeavenlyUpgrade('Starter brain matter', 'You start with 10 cortex bakers<q></q>', cortexBakerBasePrice * 10, [34, 0], -2175, -425, ['Starter multiverse']);
         Game.last.showIf = function () { return (Game.Achievements["Just my imagination"].won == 1); };
 
 

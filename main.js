@@ -4553,7 +4553,7 @@ Game.Launch=function()
 				if (Game.Scroll > 0) {
 					Game.AscendZoomT += 0.075;
 				}
-				Game.AscendZoomT = Math.max(Math.min(Game.AscendZoomT, 5), 0.25)
+				Game.AscendZoomT = Math.max(Math.min(Game.AscendZoomT, 1.5), 0.15)
 			}
 			
 			if (Game.T%2==0)

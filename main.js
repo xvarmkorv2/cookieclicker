@@ -10948,7 +10948,7 @@ Game.Launch=function()
 		new Game.Upgrade('Kitten consultants',strKittenDesc+'<q>glad to be overpaid to work with you, sir</q>',900000000000000000000000000000000,Game.GetIcon('Kitten',9));Game.last.kitten=1;Game.MakeTiered(Game.last,9,18);
 		
 		order=99999;
-		var years=Math.floor((Date.now()-new Date(2013,7,8))/(1000*60*60*24*365));
+		var years=new Date((Date.now()-new Date(2013,7,8))).getFullYear()-1970
 		//only updates on page load
 		//may behave strangely on leap years
 		Game.NewUpgradeCookie({name:'Birthday cookie',desc:'<q>-</q>',icon:[22,13],power:years,price:99999999999999999999999999999});Game.last.baseDesc=loc("Cookie production multiplier <b>+%1%</b> for every year Cookie Clicker has existed (currently: <b>+%2%</b>).",[1,Beautify(years)])+'<q>Thank you for playing Cookie Clicker!<br>-Orteil</q>';

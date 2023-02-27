@@ -1406,7 +1406,10 @@ Game.https=!App?((location.protocol!='https:')?false:true):true;
 Game.SaveTo='CookieClickerGame';
 if (Game.beta) Game.SaveTo='CookieClickerGameBeta';
 if (App && new URL(window.location.href).searchParams.get('modless')) Game.modless=1;
-
+window.onbeforeunload = function (event) {
+	if (typeof event == 'undefined') event = window.event;
+	if (event) event.returnValue = 'no'
+}
 Game.Launch=function()
 {
 	Game.mobile=0;

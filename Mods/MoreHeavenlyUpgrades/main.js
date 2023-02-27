@@ -197,11 +197,17 @@ MoreHeavenlyUpgrades.launch = function() {
         CCSE.NewHeavenlyUpgrade('Starter multiverse', 'You start with 10 idleverses<q>Your little pocket of the multiverse to play around in</q>', idlevereBasePrice * 10, [33, 0], -2075, -415, ['Starter {hello world}']);
         Game.last.showIf = function() { return (Game.Achievements["Well-versed"].won == 1); };
 
-        CCSE.NewHeavenlyUpgrade('Starter 100 pack', 'You start with 100 of everything<q>You\'ve gotten here once before</q>', everythingBasePrice * 90, [6, 6], -2175, -425, ['Starter multiverse']);
+        var cortexBakerBasePrice = 1.9e+24;
+        everythingBasePrice += cortexBakerBasePrice;
+        CCSE.NewHeavenlyUpgrade('Starter brain matter', 'You start with 10 cortex bakers<q></q>', cortexBakerBasePrice * 10, [33, 0], -2175, -425, ['Starter multiverse']);
+        Game.last.showIf = function () { return (Game.Achievements["Just my imagination"].won == 1); };
+
+
+        CCSE.NewHeavenlyUpgrade('Starter 100 pack', 'You start with 100 of everything<q>You\'ve gotten here once before</q>', everythingBasePrice * 90, [6, 6], -2275, -415, ['Starter brain matter']);
         Game.last.showIf = function() { return (Game.Achievements["Centennial"].won == 1); };
 
         let heavenlyPacksNumbers = 100;
-        let heavenlyPacksStarting_X = -2175;
+        let heavenlyPacksStarting_X = -2275;
         let heavenlyPacksAchievs = ['Centennial and a half', 'Bicentennial', 'Bicentennial and a half', 'Tricentennial', 'Tricentennial and a half', 'Quadricentennial', 'Quadricentennial and a half', 'Quincentennial', 'Quincentennial and a half', 'Sexcentennial'];
         let heavenlyPacks_Last = 'Starter 100 pack';
 
@@ -566,8 +572,8 @@ MoreHeavenlyUpgrades.launch = function() {
             if (Game.Has('Starter kit for starter kits')) Game.Objects["Fractal engine"].getFree(10);
             if (Game.Has('Starter {hello world}')) Game.Objects["Javascript console"].getFree(10);
             if (Game.Has('Starter multiverse')) Game.Objects["Idleverse"].getFree(10);
+            if (Game.Has('Starter brain matter')) Game.Objects["Cortex baker"].getFree(10);
             if (Game.Has('Starter 100 pack')) {
-                console.log("hi");
                 for (let o = 0; o < Game.ObjectsById.length; o++) {
                     Game.ObjectsById[o].getFree(90);
                 }

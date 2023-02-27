@@ -16367,7 +16367,7 @@ window.onload=function()
 			
 			//LoadLang('../Cookie Clicker Localization/EN.js',function(lang){return function(){
 			LoadLang('loc/EN.js?v='+Game.version,function(lang){return function(){
-				locStringsFallback=locStrings;
+				locStringsFallback=Object.assign(locStringsFallback,locStrings);
 				LoadLang('loc/'+lang+'.js?v='+Game.version,function(){
 					var launch=function(){
 						Game.Launch();

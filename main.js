@@ -4546,8 +4546,15 @@ Game.Launch=function()
 			Game.ascendZoomablel.style.transform='scale('+(Game.AscendZoom)+','+(Game.AscendZoom)+')';
 			
 			//if (Game.Scroll!=0) Game.ascendContentl.style.transformOrigin=Math.floor(Game.windowW/2-Game.mouseX)+'px '+Math.floor(Game.windowH/2-Game.mouseY)+'px';
-			if (Game.Scroll<0 && !Game.promptOn) {Game.AscendZoomT=0.5;}
-			if (Game.Scroll>0 && !Game.promptOn) {Game.AscendZoomT=1;}
+			if (!Game.promptOn) {
+				if (Game.Scroll < 0) {
+					Game.AscendZoomT -= 0.075;
+				}
+				if (Game.Scroll > 0) {
+					Game.AscendZoomT += 0.075;
+				}
+				Game.AscendZoomT = Math.max(Math.min(Game.AscendZoomT, 5), 0.25)
+			}
 			
 			if (Game.T%2==0)
 			{

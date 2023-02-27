@@ -184,8 +184,14 @@ MoreHeavenlyUpgrades.launch = function() {
 
         var fractalBasePrice = 310000000000000000;
         everythingBasePrice += chancemakerBasePrice;
-        CCSE.NewHeavenlyUpgrade('Starter kit for starter kits', 'You start with 10 fractal engines<q>There are just infinite kits inside this one</q>', fractalBasePrice * 10, [20, 0], -1875, -410, ['Starter dice set']);
-        Game.last.showIf = function() { return (Game.Achievements["Threw you for a loop"].won == 1); };
+        CCSE.NewHeavenlyUpgrade('Starter kit for starter kits', 'You start with 10 fractal engines', fractalBasePrice * 10, [20, 0], -1875, -410, ['Starter dice set']);
+        Game.last.showIf = function () { return (Game.Achievements["Threw you for a loop"].won == 1); }; 
+        Game.last.descFunc = function () {
+            var str = 'the end is never the end is never ';
+            var n = 25;
+            var i = Math.floor(Game.T * 0.1);
+            return this.desc + '<q style="font-family:Courier;">' + (str.substr(i % str.length, n) + (i % str.length > (str.length - n) ? str.substr(0, i % str.length - (str.length - n)) : '')) + '</q>';
+        };
 
         var consoleBasePrice = 71000000000000000000;
         everythingBasePrice += consoleBasePrice;

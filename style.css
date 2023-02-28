@@ -550,7 +550,7 @@ a.orangeLink:hover,#topBar a.orangeLink:hover
 	animation-name:appearLater;
 	animation-iteration-count:1;
 	animation-timing-function:ease-out;
-	animation-duration:15s;
+	animation-duration:25s;
 }
 @keyframes appearLater
 {

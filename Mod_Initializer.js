@@ -336,9 +336,9 @@ Mods.LoadMods = function (callback) {
 
 		for (let i = 0; i < mods.length; i++) {
 			let mod = mods[i];
-			if (!mod.info) Game.brokenMods.push(mod.path);
+			if (mod && !mod.info) Game.brokenMods.push(mod.path);
 		}
-		mods = mods.filter(it => it.info);
+		mods = mods.filter(it => it && it.info);
 
 		for (let i = 0; i < mods.length; i++) {
 			let mod = mods[i];

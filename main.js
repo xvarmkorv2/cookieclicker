@@ -13831,7 +13831,7 @@ Game.Launch=function()
 						if (me.hp<Game.wrinklerHP*3) me.hp+=0.04;
 						me.hp=Math.min(Game.wrinklerHP*3,me.hp);
 					}
-					var d=128*(2-me.close);//*Game.BigCookieSize;
+					var d=128*(2-me.close)*(Game.BigCookieSize*0.5+0.5);
 					if (Game.prefs.fancy) d+=Math.cos(Game.T*0.05+parseInt(me.id))*4;
 					me.r=(me.id/max)*360;
 					if (Game.prefs.fancy) me.r+=Math.sin(Game.T*0.05+parseInt(me.id))*4;
@@ -16243,7 +16243,7 @@ Game.Launch=function()
 			}
 			
 			Timer.clean();
-			if (Game.prefs.animate && ((Game.prefs.fancy && Game.drawT%1==0) || (!Game.prefs.fancy && Game.drawT%10==0)) && Game.AscendTimer==0 && Game.onMenu=='') Game.DrawBuildings();Timer.track('buildings');
+			if (Game.prefs.animate && (Game.prefs.fancy || (!Game.prefs.fancy && Game.drawT%10==0)) && Game.AscendTimer==0 && Game.onMenu=='') Game.DrawBuildings();Timer.track('buildings');
 			
 			Game.textParticlesUpdate();Timer.track('text particles');
 		}

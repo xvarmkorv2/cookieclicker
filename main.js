@@ -16372,19 +16372,18 @@ window.onload=function()
 			//LoadLang('../Cookie Clicker Localization/EN.js',function(lang){return function(){
 			LoadLang('loc/EN.js?v='+Game.version,function(lang){return function(){
 				locStringsFallback=Object.assign(locStringsFallback,locStrings);
-				LoadLang('loc/'+lang+'.js?v='+Game.version,function(){
-					var launch=function(){
+				var doStuff = function(){
+					var launch = function () {
 						Game.Launch();
-						if (top!=self) Game.ErrorFrame();
-						else
-						{
-							console.log('[=== '+choose([
+						if (top != self) Game.ErrorFrame();
+						else {
+							console.log('[=== ' + choose([
 								'Oh, hello!',
 								'hey, how\'s it hangin',
 								'About to cheat in some cookies or just checking for bugs?',
 								'Remember : cheated cookies taste awful!',
 								'Hey, Orteil here. Cheated cookies taste awful... or do they?',
-							])+' ===]');
+							]) + ' ===]');
 							Game.Load();
 							//try {Game.Load();}
 							//catch(err) {console.log('ERROR : '+err.message);}
@@ -16392,8 +16391,10 @@ window.onload=function()
 					}
 					if (App && App.loadMods) { App.loadMods(launch); }
 					else if (Mods && Mods.LoadMods) { Mods.LoadMods(launch); }
-					else {launch();}
-				});
+					else { launch(); }
+				}
+				if (lang == "EN") doStuff()
+				else LoadLang('loc/' + lang + '.js?v=' + Game.version, doStuff);
 			}}(lang));
 		}
 		

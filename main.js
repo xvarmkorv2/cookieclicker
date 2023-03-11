@@ -9746,7 +9746,18 @@ Game.Launch=function()
 			l('techUpgrades').innerHTML=techStr;
 			if (techStr=='') l('techUpgrades').style.display='none'; else l('techUpgrades').style.display='block';
 			l('vaultUpgrades').innerHTML=vaultStr;
-			if (vaultStr=='') l('vaultUpgrades').style.display='none'; else l('vaultUpgrades').style.display='block';
+			if (vaultStr == '') l('vaultUpgrades').style.display = 'none'; else l('vaultUpgrades').style.display = 'block';
+			for (var i in Game.UpgradesInStore) {
+				var me = Game.UpgradesInStore[i];
+				if (me.timerDisplay) {
+					var T = me.timerDisplay();
+					if (T != -1) {
+						if (!l('upgradePieTimer' + i)) l('upgrade' + i).innerHTML = l('upgrade' + i).innerHTML + '<div class="pieTimer" id="upgradePieTimer' + i + '"></div>';
+						T = (T * 144) % 144;
+						l('upgradePieTimer' + i).style.backgroundPosition = (-Math.floor(T % 18)) * 48 + 'px ' + (-Math.floor(T / 18)) * 48 + 'px';
+					}
+				}
+			}
 		}
 		
 		Game.UnlockAt=[];//this contains an array of every upgrade with a cookie requirement in the form of {cookies:(amount of cookies earned required),name:(name of upgrade or achievement to unlock)} (and possibly require:(name of upgrade of achievement to own))

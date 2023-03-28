@@ -9664,6 +9664,11 @@ Game.Launch=function()
 			{
 				me.canvas=l('rowCanvas'+me.id);
 				me.ctx=me.canvas.getContext('2d',{alpha:false});
+				if (me.id == 19) {
+					me.canvasAdd = l('rowCanvasAdd' + me.id);
+					me.ctxAdd = me.canvasAdd.getContext('2d');
+					Game.YouCustomizer.render();
+				}
 				me.pics=[];
 				var icon=[0*64,me.icon*64];
 				muteStr+='<div class="tinyProductIcon" id="mutedProduct'+me.id+'" style="display:none;background-position:-'+icon[0]+'px -'+icon[1]+'px;" '+Game.clickStr+'="Game.ObjectsById['+me.id+'].mute(0);PlaySound(Game.ObjectsById['+me.id+'].muted?\'snd/clickOff2.mp3\':\'snd/clickOn2.mp3\');" '+Game.getDynamicTooltip('Game.mutedBuildingTooltip('+me.id+')','this')+'></div>';

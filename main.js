@@ -2753,8 +2753,12 @@ Game.Launch=function()
 		
 		Game.GrabData=function()
 		{
-			if (!App) ajax('https://cors.eu.org/https://orteil.dashnet.org/patreon/grab.php',Game.GrabDataResponse);//ajax('patreon/grab.php',Game.GrabDataResponse);
-			else App.grabData(function(res){
+			
+			if (!App) {
+				ajax('https://api.allorigins.win/raw?url=https://orteil.dashnet.org/patreon/grab.php', Game.GrabDataResponse);
+				//ajax('https://cors.eu.org/https://orteil.dashnet.org/patreon/grab.php',Game.GrabDataResponse);
+				//ajax('patreon/grab.php',Game.GrabDataResponse);
+			} else App.grabData(function(res){
 				Game.heralds=res?(res.playersN||1):1;
 				Game.heralds=Math.max(0,Math.min(100,Math.ceil(Game.heralds/100*100)/100));
 				l('heraldsAmount').textContent=Math.floor(Game.heralds);

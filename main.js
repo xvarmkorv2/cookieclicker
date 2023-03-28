@@ -834,6 +834,19 @@ var Loader=function()//asset-loading system
 			this.loaded();
 		}
 	}
+	this.waitForLoad = function (assets, callback) {
+		//execute callback if all assets are ready to use, else check again every 200ms
+		var me = this;
+		var checkLoadedLoop = function () {
+			for (var i = 0; i < assets.length; i++) {
+				if (me.assetsLoaded.indexOf(assets[i]) == -1) { setTimeout(checkLoadedLoop, 200); return false };
+			}
+			callback();
+			return true;
+		}
+		me.Load(assets);
+		checkLoadedLoop();
+	}
 	this.getProgress=function()
 	{
 		return (1-this.loadingN/this.assetsN);
@@ -2916,6 +2929,7 @@ Game.Launch=function()
 			(type==3?'\n	date when we last opened the game : ':'')+parseInt(Game.lastDate)+';'+
 			(type==3?'\n	bakery name : ':'')+(Game.bakeryName)+';'+
 			(type==3?'\n	seed : ':'')+(Game.seed)+
+			(type==3?'\n	appearance : ':'')+(Game.YouCustomizer.save())+
 			'|';
 			if (type==3) str+='\n\nPacked preferences bitfield\n	';
 			var str2=//prefs
@@ -3215,6 +3229,7 @@ Game.Launch=function()
 						Game.lastDate=parseInt(spl[2]);
 						var bakeryName=(spl[3]?spl[3]:Game.GetBakeryName());
 						Game.seed=spl[4]?spl[4]:Game.makeSeed();
+						Game.YouCustomizer.load(spl[5]||0);
 						//prefs
 						if (version<1.0503) spl=str[3].split('');
 						else if (version<2.0046) spl=unpack2(str[3]).split('');
@@ -6934,7 +6949,13 @@ Game.Launch=function()
 				str+=
 					'<div class="block" style="padding:0px;margin:8px 4px;">'+
 						'<div class="subsection" style="padding:0px;">'+
-						'<div class="title">'+loc("General")+'</div>'+
+						'<div class="title">'+loc("General")+
+							((Game.Has('Wrapping paper') && Game.ascensionMode==0)?('<div id="giftStuff" class="optionBox" style="float:right;text-align:right;clear:both;overflow:hidden;margin-top:-32px;'+((Game.cookies>=1000000000 && !Game.hasBuff('Gifted out'))?'':'opacity:0.5;')+'">'+
+								'<div class="icon" style="display:inline-block;float:right;margin:-4px;width:48px;height:48px;position:relative;background-position:'+(-34*48)+'px '+(-6*48)+'px;"></div><br>'+
+								'<a class="option" '+Game.clickStr+'="if (Game.cookies<1000000000 || Game.hasBuff(\'Gifted out\')){return false;}PlaySound(\'snd/tick.mp3\');Game.promptGiftSend();" style="position:relative;margin:0px;margin-bottom:2px;float:right;" '+Game.getTooltip('<div style="min-width:200px;text-align:center;font-size:11px;" id="tooltipGiftRedeem"><b>'+loc("Send a gift")+'</b>'+(Game.hasBuff('Gifted out')?'<br>'+loc("You've already sent or redeemed a gift recently."):'')+(Game.cookies<1000000000?'<br>'+loc("You need at least %1 cookies in bank to send and receive gifts.",loc("%1 cookie",LBeautify(1000000000))):'')+'</div>','this')+'>'+loc("Send")+'</a><br>'+
+								'<a class="option" '+Game.clickStr+'="if (Game.cookies<1000000000 || Game.hasBuff(\'Gifted out\')){return false;}PlaySound(\'snd/tick.mp3\');Game.promptGiftRedeem();" style="position:relative;margin:0px;float:right;" '+Game.getTooltip('<div style="min-width:200px;text-align:center;font-size:11px;" id="tooltipGiftRedeem"><b>'+loc("Redeem a gift")+'</b>'+(Game.hasBuff('Gifted out')?'<br>'+loc("You've already sent or redeemed a gift recently."):'')+(Game.cookies<1000000000?'<br>'+loc("You need at least %1 cookies in bank to send and receive gifts.",loc("%1 cookie",LBeautify(1000000000))):'')+'</div>','this')+'>'+loc("Redeem")+'</a>'+
+							'</div>'):'')+
+							'</div>'+
 							'<div class="listing" style="text-align:center;"><div style="display:inline-block;padding:2px 8px;opacity:0.75;font-size:12px;vertical-align:middle;" class="smallFancyButton">'+loc("Language: %1",'<b>'+Langs[locId].name+'</b>')+'</div><div class="icon" style="vertical-align:middle;display:inline-block;background-position:'+(-30*48)+'px '+(-29*48)+'px;transform:scale(0.5);margin:-16px -12px;"></div><a style="font-size:15px;text-align:center;width:auto;min-width:130px;" class="option smallFancyButton" id="changeLanguageOption" '+Game.clickStr+'="PlaySound(\'snd/tick.mp3\');Game.showLangSelection();">'+(!EN?'Change language<div class="line"></div>':'')+loc("Change language")+'</a><div style="clear:both;text-align:right;padding-bottom:2px;"></div></div>'+
 							(App?'<div class="listing"><a class="option smallFancyButton" '+Game.clickStr+'="PlaySound(\'snd/tick.mp3\');Game.toSave=true;Game.toQuit=true;">'+loc("Save & Quit")+'</a></div>':'')+
 							'<div class="listing"><a class="option smallFancyButton" '+Game.clickStr+'="Game.toSave=true;PlaySound(\'snd/tick.mp3\');">'+loc("Save")+'</a><label>'+loc("Save manually (the game autosaves every 60 seconds; shortcut: ctrl+S)")+'</label></div>'+
@@ -8528,6 +8549,11 @@ Game.Launch=function()
 			if (this.id==0) l('sectionLeftExtra').innerHTML=l('sectionLeftExtra').innerHTML+str;
 			else
 			{
+				if (this.id==19)
+				{
+					str+='<canvas style="display:none;" width=64 height=64 id="rowCanvasAdd'+this.id+'"></canvas>';
+					str+='<a class="smallFancyButton framed onlyOnCanvas" style="position:absolute;z-index:10;left:8px;bottom:22px;" '+Game.clickStr+'="Game.YouCustomizer.prompt();PlaySound(\'snd/tick.mp3\');">'+loc("Customize")+'</a>';
+				}
 				str+='<canvas class="rowCanvas" id="rowCanvas'+this.id+'"></canvas>';
 				str+='<div class="rowSpecial" id="rowSpecial'+this.id+'"></div>';
 				str+='</div>';
@@ -8669,6 +8695,14 @@ Game.Launch=function()
 									ctx.fillText('white',2+ctx.measureText('Names in ').width,8);
 								}
 							}
+							else if (this.name == 'You') {
+								var marginW = -16;
+								var marginH = 64;
+								for (var i = 0; i < len; i++) {
+									var pic = this.pics[i];
+									if (this.mousePos[0] >= pic.x - marginW && this.mousePos[0] < pic.x + 64 + marginW && this.mousePos[1] >= pic.y - marginH && this.mousePos[1] < pic.y + 64 + marginH) selected = i;
+								}
+							}
 						}
 					}
 					
@@ -8712,6 +8746,32 @@ Game.Launch=function()
 						else if (pic.frame!=-1) ctx.drawImage(sprite,(sprite.width/frames)*pic.frame,0,sprite.width/frames,sprite.height,pic.x,pic.y,(sprite.width/frames),sprite.height);
 						else ctx.drawImage(sprite,pic.x,pic.y);
 						
+						if (selected==i && this.name=='You')
+						{
+							ctx.drawImage(Pic('youLight.png'),pic.x+11,0);
+							
+							Math.seedrandom(Game.seed+' cloneTitle');
+							var cloneTitle=Math.floor(Math.random()*3);
+							Math.seedrandom(Game.seed+' clone '+pic.id);
+							ctx.font='9px Merriweather';
+							ctx.textAlign='center';
+							var text=loc("Clone")+' #'+Math.floor(Math.random()*500+pic.id*500+1);
+							if (EN)
+							{
+								text=[
+									text,
+									Game.bakeryName+' '+romanize(pic.id+2)+(Math.random()<0.05?choose([', Jr.',', Esq.',', Etc.',', Cont\'d',', and so forth']):''),
+									choose([choose(['Lil\' $','Mini-$','$ '+(pic.id+2),'Attempt '+(pic.id+1),'Experiment '+(pic.id+1),'Not $','$, again','$, the sequel','$ '+(pic.id+2)+' Electric Boogaloo','Also $','$ (remixed)','The Other $','$, The Next Generation','$, part '+romanize(pic.id+2),'Revenge of $','The Return of $','$ reborn','$ in the flesh']),'$ "'+choose(['The Menace','The Artisan','The Relative','The Twin','The Specialist','The Officer','The Snitch','The Simpleton','The Genius','The Conformist','The Mistake','The Accident','Lab-grown','Vat Kid','Photocopy','Cloney','Ditto','Accounted For','Twitchy','Wacky','Zen','Rinse & Repeat','Spitting Image','Passing Resemblance','Nickname','Make It So','Deja-vu','Cookie','Clicky','Orteil','But Better','Guess Who','Transplant Fodder','Furthermore','One More Thing','Liquid','Second Chance','Offspring','Mulligan','Spare Parts'])+'" McClone']).replace('$',Game.bakeryName),
+								][cloneTitle];
+							}
+							var width=ctx.measureText(text).width+12;
+							var x=Math.max(0,Math.min(pic.x+32-width/2,this.canvas.width-width));
+							var y=10;
+							ctx.fillStyle='#000';
+							ctx.fillText(text,Math.floor(x+width/2),Math.floor(y)+1);
+							ctx.fillStyle='#fff';
+							ctx.fillText(text,Math.floor(x+width/2),Math.floor(y));
+						}
 					}
 					
 					/*
@@ -9256,6 +9316,297 @@ Game.Launch=function()
 			Game.UnlockTiered(this);
 			if (this.amount>=Game.SpecialGrandmaUnlock && Game.Objects['Grandma'].amount>0) Game.Unlock(this.grandma.name);
 		});
+
+		new Game.Object('You','You|You|cloned|[X] optimized gene|[X] optimized genes','You, alone, are the reason behind all these cookies. You figure if there were more of you... maybe you could make even more.',20,35,{pic:'you.png',bg:'youBackground.png',xV:0,yV:0,w:64,rows:2,x:0,y:0},12345678987654321,function(me){
+			var mult=1;
+			mult*=Game.GetTieredCpsMult(me);
+			mult*=Game.magicCpS(me.name);
+			return me.baseCps*mult;
+		},function(){
+			Game.UnlockTiered(this);
+			if (this.amount>=Game.SpecialGrandmaUnlock && Game.Objects['Grandma'].amount>0) Game.Unlock(this.grandma.name);
+		});
+		Game.YouCustomizer={};
+		Game.YouCustomizer.render=function()
+		{
+			var me=Game.Objects['You'];
+			var ctx=me.ctxAdd;
+			var img='you.png';
+			var imgAddons='youAddons.png?v='+Game.version;
+			
+			Game.Loader.waitForLoad([img,imgAddons],function(){
+				//accessing pixel data not allowed locally; set img and imgAddons to base64-encoded image strings for testing
+				if (!App && (!location.hostname || location.hostname==='localhost' || location.hostname==='127.0.0.1'))
+				{
+					ctx.drawImage(Pic(img),0,0);
+				}
+				else
+				{
+					ctx.drawImage(Pic(img),0,0);
+					var canvasAddon=document.createElement('canvas');
+					canvasAddon.width=32;
+					canvasAddon.height=32;
+					ctxAddon=canvasAddon.getContext('2d');
+					var canvasCols=document.createElement('canvas');
+					var colsN=64;
+					canvasCols.width=8;
+					canvasCols.height=colsN;
+					var ctxCols=canvasCols.getContext('2d');
+					ctxCols.drawImage(Pic(imgAddons),0,0,8,colsN,0,0,8,colsN);
+					var imgDataCols=ctxCols.getImageData(0,0,8,colsN);
+					var dataCols=imgDataCols.data;
+					var cols=[];
+					for (var i=0;i<colsN;i++)
+					{
+						cols[i]=[
+							[dataCols[4+i*32],dataCols[4+i*32+1],dataCols[4+i*32+2]],
+							[dataCols[4+i*32+4],dataCols[4+i*32+1+4],dataCols[4+i*32+2+4]],
+							[dataCols[4+i*32+8],dataCols[4+i*32+1+8],dataCols[4+i*32+2+8]],
+						];
+					}
+					
+					var imgData=ctx.getImageData(0,0,64,64);
+					var data=imgData.data;
+					
+					var colSkinFull=[[32,14,10],[180,80,54],[208,144,101],[225,192,150]];
+					var colSkin=[];for (var colI=0;colI<colSkinFull.length;colI++){colSkin[colI]=colSkinFull[colI][0]*1000000+colSkinFull[colI][1]*1000+colSkinFull[colI][2];}
+					var colHairFull=[[32,14,10],[82,55,53],[100,83,80],[116,97,89]];
+					var colHair=[];for (var colI=0;colI<colHairFull.length;colI++){colHair[colI]=colHairFull[colI][0]*1000000+colHairFull[colI][1]*1000+colHairFull[colI][2];}
+					var shade1=0*1000000+118*1000+206;
+					var shade2=0*1000000+71*1000+125;
+					
+					//apply addon canvases to main canvas, handling shading on skin and hair where necessary
+					var addonGenes=['face','head','hair','acc1','acc2'];
+					for (var geneI=0;geneI<addonGenes.length;geneI++)
+					{
+						var addonTile=Game.YouCustomizer.getGeneValue(addonGenes[geneI]);
+						ctxAddon.clearRect(0,0,32,32);
+						ctxAddon.drawImage(Pic(imgAddons),8+addonTile[0]*32,addonTile[1]*32,32,32,0,0,32,32);
+						
+						var imgDataAddon=ctxAddon.getImageData(0,0,32,32);
+						var dataAddon=imgDataAddon.data;
+						var x=0;var y=0;
+						for (i=0;i<dataAddon.length;i+=4)
+						{
+							var r=dataAddon[i];var g=dataAddon[i+1];var b=dataAddon[i+2];var a=dataAddon[i+3];
+							
+							var off=((x+16)+y*64)*4;
+							if (a!=0)
+							{
+								var ro=data[off];
+								var go=data[off+1];
+								var bo=data[off+2];
+								var col=r*1000000+g*1000+b;
+								var shade=col==shade2?2:col==shade1?1:0;
+								var indShadeAddon=colSkin.indexOf(r*1000000+g*1000+b);
+								var indShadeOr=colSkin.indexOf(ro*1000000+go*1000+bo);
+								var typeOr=0;
+								if (indShadeOr>0) typeOr=1;//is skin
+								else if (indShadeOr==-1)
+								{
+									indShadeOr=colHair.indexOf(ro*1000000+go*1000+bo);
+									if (indShadeOr>0) typeOr=2;//is hair
+								}
+								
+								if (shade>0 && indShadeOr>0)//painting shadow on hair or skin
+								{//light blue: shade one stage; dark blue: shade 2 stages
+									var colOut=(typeOr==1?colSkinFull:typeOr==2?colHairFull:0)[Math.max(0,indShadeOr-shade)];
+									data[off]=colOut[0];data[off+1]=colOut[1];data[off+2]=colOut[2];data[off+3]=a;
+								}
+								else if (shade==0) {data[off]=r;data[off+1]=g;data[off+2]=b;data[off+3]=a;}
+							}
+							x++;
+							if (x>=32) {x=0;y++;}
+						}
+					}
+					
+					//recolor hair and skin on final image
+					var skinCol=Game.YouCustomizer.getGeneValue('skinCol');
+					var hairCol=Game.YouCustomizer.getGeneValue('hairCol');
+					for (i=0;i<data.length;i+=4)
+					{
+						var r=data[i];var g=data[i+1];var b=data[i+2];var a=data[i+3];
+						if (a!=0)
+						{
+							var indSkin=colSkin.indexOf(r*1000000+g*1000+b);
+							if (indSkin>0)
+							{
+								var col=cols[skinCol][indSkin-1];
+								data[i]=col[0];data[i+1]=col[1];data[i+2]=col[2];
+							}
+							else
+							{
+								var indHair=colHair.indexOf(r*1000000+g*1000+b);
+								if (indHair>0)
+								{
+									var col=cols[hairCol][indHair-1];
+									data[i]=col[0];data[i+1]=col[1];data[i+2]=col[2];
+								}
+							}
+						}
+					}
+					ctx.putImageData(imgData,0,0);
+				}
+			});
+		}
+		Game.YouCustomizer.genes=[
+			{id:'hair',isList:true,def:0,choices:[
+				[0,0],[1,0],[2,0],[3,0],[4,0],[2,1],[3,1],[4,1],[4,2],[5,3],[8,2],[7,1],[5,5],[4,5],[10,0],[9,1],[9,2],
+			]},
+			{id:'hairCol',isList:true,def:1,choices:[20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37]},
+			{id:'skinCol',isList:true,def:0,choices:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]},
+			{id:'head',isList:true,def:0,choices:[
+				[0,0],[1,1],[0,1],[4,3],[10,3],
+			]},
+			{id:'face',isList:true,def:0,choices:[
+				[3,5],[0,0],[0,2],[1,2],[2,2],[3,2],[0,3],[1,3],[2,3],[3,3],
+			]},
+			{id:'acc1',isList:true,def:0,choices:[
+				[0,0],[5,1],[5,0],[5,2],[0,4],[1,4],[2,4],[6,4],[8,5],[3,4],[7,5],[6,0],[6,1],[4,4],[5,4],[2,5],[7,4],[0,5],[1,5],[6,5],[6,2],[6,3],[7,0],[7,2],[7,3],[8,1],[8,3],[8,4],[9,3],[9,0],[10,1],[10,2],[9,4],[9,5],[10,4],[10,5],
+			]},
+			{id:'acc2',isList:true,def:0,choices:[
+				[]
+			]},
+		];
+		Game.YouCustomizer.save=function()
+		{
+			return Game.YouCustomizer.currentGenes.join(',');
+		}
+		Game.YouCustomizer.load=function(genes,noReset)
+		{
+			if (!noReset) Game.YouCustomizer.resetGenes();
+			if (genes)
+			{
+				genes=genes.split(',');
+				for (var i=0;i<Game.YouCustomizer.genes.length;i++)
+				{
+					//leave a gene as-is with "-"
+					if (typeof genes[i]!=='undefined' && genes[i]!='-')
+					{
+						gene=Game.YouCustomizer.genes[i];
+						var val=parseInt(genes[i]);
+						if (isNaN(val)) continue;
+						if (gene.isList && (val<0 || val>=gene.choices.length)) continue;
+						else if (!gene.isList && (val<gene.choices[0] || val>gene.choices[1])) continue;
+						else Game.YouCustomizer.currentGenes[i]=val;
+					}
+				}
+				return true;
+			}
+			else return false;
+		}
+		Game.YouCustomizer.genesById={};for (var i=0;i<Game.YouCustomizer.genes.length;i++){Game.YouCustomizer.genes[i].n=i;Game.YouCustomizer.genesById[Game.YouCustomizer.genes[i].id]=Game.YouCustomizer.genes[i];}
+		Game.YouCustomizer.genesById['acc2'].choices=Game.YouCustomizer.genesById['acc1'].choices;
+		Game.YouCustomizer.currentGenes=[];
+		Game.YouCustomizer.getGeneValue=function(id)
+		{
+			var gene=Game.YouCustomizer.genesById[id];
+			if (gene.isList) return gene.choices[Game.YouCustomizer.currentGenes[gene.n]];
+			else return Game.YouCustomizer.currentGenes[gene.n];
+		};
+		Game.YouCustomizer.resetGenes=function(){for (var i=0;i<Game.YouCustomizer.genes.length;i++){Game.YouCustomizer.currentGenes[i]=Game.YouCustomizer.genes[i].def;}}
+		Game.YouCustomizer.resetGenes();
+		Game.YouCustomizer.offsetGene=function(gene,off)
+		{
+			gene=Game.YouCustomizer.genesById[gene];
+			Game.YouCustomizer.currentGenes[gene.n]+=off;
+			if (gene.isList)
+			{
+				if (Game.YouCustomizer.currentGenes[gene.n]>=gene.choices.length) Game.YouCustomizer.currentGenes[gene.n]=0;
+				else if (Game.YouCustomizer.currentGenes[gene.n]<0) Game.YouCustomizer.currentGenes[gene.n]=gene.choices.length-1;
+				if (l('customizerSelect-N-'+gene.id)) l('customizerSelect-N-'+gene.id).innerHTML=Game.YouCustomizer.currentGenes[gene.n]+1;
+			}
+			else
+			{
+				if (Game.YouCustomizer.currentGenes[gene.n]>gene.choices[1]) Game.YouCustomizer.currentGenes[gene.n]=gene.choices[0];
+				else if (Game.YouCustomizer.currentGenes[gene.n]<gene.choices[0]) Game.YouCustomizer.currentGenes[gene.n]=gene.choices[1];
+				if (l('customizerSelect-N-'+gene.id)) l('customizerSelect-N-'+gene.id).innerHTML=Game.YouCustomizer.currentGenes[gene.n]+1-gene.choices[0];
+			}
+			if (off!=0)
+			{
+				PlaySound('snd/press.mp3');
+				
+				Game.YouCustomizer.render();
+				Game.YouCustomizer.renderPortrait();
+				
+				if (
+					Game.YouCustomizer.currentGenes[0]==9
+					&& (Game.YouCustomizer.currentGenes[1]==1 || Game.YouCustomizer.currentGenes[1]==6)
+					&& (Game.YouCustomizer.currentGenes[3]==2 || Game.YouCustomizer.currentGenes[3]==3)
+					&& (Game.YouCustomizer.currentGenes[5]==2 || Game.YouCustomizer.currentGenes[5]==3 || Game.YouCustomizer.currentGenes[6]==2 || Game.YouCustomizer.currentGenes[6]==3)
+					&& (Game.YouCustomizer.currentGenes[5]==0 || Game.YouCustomizer.currentGenes[6]==0)
+				) Game.Win('In her likeness');
+				
+			}
+		}
+		Game.YouCustomizer.randomize=function()
+		{
+			for (var i=0;i<Game.YouCustomizer.genes.length;i++)
+			{
+				var gene=Game.YouCustomizer.genes[i];
+				Game.YouCustomizer.currentGenes[i]=Math.floor(Math.random()*gene.choices.length);
+				
+				if (gene.isList)
+				{
+					if (l('customizerSelect-N-'+gene.id)) l('customizerSelect-N-'+gene.id).innerHTML=Game.YouCustomizer.currentGenes[gene.n]+1;
+				}
+				else
+				{
+					if (l('customizerSelect-N-'+gene.id)) l('customizerSelect-N-'+gene.id).innerHTML=Game.YouCustomizer.currentGenes[gene.n]+1-gene.choices[0];
+				}
+			}
+			Game.YouCustomizer.render();
+			Game.YouCustomizer.renderPortrait();
+		}
+		Game.YouCustomizer.renderPortrait=function()
+		{
+			if (!l('youCustomizerPreview')) return false;
+			var ctx=l('youCustomizerPreview').getContext('2d');
+			ctx.clearRect(0,0,32,32)
+			ctx.drawImage(Game.Objects['You'].canvasAdd,-16,0);
+			ctx=l('youCustomizerPreviewBlur').getContext('2d');
+			ctx.globalCompositeOperation='source-over';
+			ctx.clearRect(0,0,32,32)
+			ctx.drawImage(Game.Objects['You'].canvasAdd,-16,0);
+			ctx.globalCompositeOperation='destination-out';ctx.beginPath();ctx.arc(16,16,11,0,2*Math.PI);ctx.fill();
+		}
+		Game.YouCustomizer.export=function()
+		{
+			Game.Prompt('<h3>'+loc("Export")+'</h3><div class="block"><textarea id="textareaPrompt" style="width:100%;height:32px;text-align:center;" readonly>'+Game.YouCustomizer.save()+'</textarea></div>',[[loc("Done"),'Game.YouCustomizer.prompt();']]);
+			l('textareaPrompt').focus();l('textareaPrompt').select();
+		}
+		Game.YouCustomizer.import=function(def)
+		{
+			//1,14,6,0,6,29,30
+			//2,13,1,0,6,10,9
+			Game.Prompt('<h3>'+loc("Import")+'</h3><div class="block"><div id="importError" class="warning" style="font-weight:bold;font-size:11px;"></div><textarea id="textareaPrompt" style="width:100%;height:32px;text-align:center;">'+(def||'')+'</textarea></div>',[[loc("Load"),'if (l(\'textareaPrompt\').value.length==0){return false;}if (Game.YouCustomizer.load(l(\'textareaPrompt\').value,true)){Game.YouCustomizer.prompt();}else{l(\'importError\').innerHTML=\'(\'+loc("Error!")+\')\';}'],[loc("Nevermind"),'Game.YouCustomizer.prompt();']]);
+			l('textareaPrompt').focus();
+		}
+		Game.YouCustomizer.prompt=function()
+		{
+			var makeCustomizerSelector=function(gene,text)
+			{
+				gene=Game.YouCustomizer.genesById[gene];
+				return '<div style="clear:both;width:100%;margin-bottom:6px;"><a '+Game.clickStr+'="Game.YouCustomizer.offsetGene(\''+gene.id+'\',-1)" id="customizerSelect-L-'+gene.id+'" class="framed smallFancyButton" style="float:left;margin-top:-4px;padding:2px 4px;">&lt;</a>'+text+' <div id="customizerSelect-N-'+gene.id+'" style="display:inline;">'+(gene.isList?(Game.YouCustomizer.currentGenes[gene.n]+1):(Game.YouCustomizer.currentGenes[gene.n]+1-gene.choices[0]))+'</div><a '+Game.clickStr+'="Game.YouCustomizer.offsetGene(\''+gene.id+'\',1)" id="customizerSelect-R-'+gene.id+'" class="framed smallFancyButton" style="float:right;margin-top:-4px;padding:2px 4px;">&gt;</a></div>';
+			}
+			Game.Prompt('<id CustomizeYou><h3>'+loc("Customize your clones")+'</h3><div class="block" style="text-align:center;font-size:11px;">'+loc("Sprung from your very DNA. Shape them in your image!")+'</div><div class="block" style="position:relative;">'+
+				'<a style="position:absolute;left:4px;top:2px;font-size:10px;padding:2px 6px;" class="option" onclick="Game.YouCustomizer.import();PlaySound(\'snd/tick.mp3\');">'+loc("Import")+'</a>'+
+				'<a style="position:absolute;right:0px;top:2px;font-size:10px;padding:2px 6px;" class="option" onclick="Game.YouCustomizer.export();PlaySound(\'snd/tick.mp3\');">'+loc("Export")+'</a>'+
+				'<div style="position:relative;width:64px;height:64px;margin:0px auto 8px auto;"><canvas class="crisp" style="mask-image:radial-gradient(rgba(0,0,0,1) 0%,rgba(0,0,0,1) 40%,rgba(0, 0, 0,0) 75%);-webkit-mask-image:radial-gradient(rgba(0,0,0,1) 0%,rgba(0,0,0,1) 60%,rgba(0, 0, 0,0) 75%);border-radius:16px;transform:scale(2);position:absolute;left:16px;top:16px;" width=32 height=32 id="youCustomizerPreview"></canvas><canvas style="filter:blur(1px);opacity:0.5;border-radius:16px;transform:scale(2);position:absolute;left:16px;top:16px;z-index:10;" width=32 height=32 id="youCustomizerPreviewBlur"></canvas></div>'+
+				'<div style="text-align:center;clear:both;font-weight:bold;font-size:11px;" class="titleFont">'+
+					'<a class="option" onclick="Game.YouCustomizer.randomize();PlaySound(\'snd/pop\'+Math.floor(Math.random()*3+1)+\'.mp3\',0.75);">'+loc("Random")+'</a><br>'+
+					makeCustomizerSelector('hair',loc("Hair"))+
+					makeCustomizerSelector('hairCol',loc("Hair color"))+
+					makeCustomizerSelector('skinCol',loc("Skin color"))+
+					makeCustomizerSelector('head',loc("Head shape"))+
+					makeCustomizerSelector('face',loc("Face"))+
+					makeCustomizerSelector('acc1',loc("Extra")+'-A')+
+					makeCustomizerSelector('acc2',loc("Extra")+'-B')+
+				'</div>'+
+			'',[loc("Done")]);
+			Game.YouCustomizer.render();
+			Game.YouCustomizer.renderPortrait();
+		}
 		
 		Game.foolObjects={
 			'Unknown':{name:'Investment',desc:'You\'re not sure what this does, you just know it means profit.',icon:0},
@@ -9278,6 +9629,7 @@ Game.Launch=function()
 			'Javascript console':{name:'Doctrine',desc:'Taking many forms -religion, culture, philosophy- a doctrine may, when handled properly, cause a lasting impact on civilizations, reshaping minds and people and ensuring all future generations share a singular goal - the production, and acquisition, of more cookies.',icon:17},
 			'Idleverse':{name:'Lateral expansions',desc:'Sometimes the best way to keep going up is sideways. Diversify your ventures through non-cookie investments.',icon:18},
 			'Cortex baker':{name:'Think tank',desc:'There\'s only so many ways you can bring in more profit. Or is there? Hire the most brilliant experts in the known universe and let them scrape their brains for you!',icon:19},
+			'You':{name:'You',desc:'Your business is as great as it\'s gonna get. The only real way to improve it anymore is to improve yourself - and become the best Chief Executive Officer this world has ever seen.',icon:20},
 		};
 		
 		if (true)//if (!EN)
@@ -11916,6 +12268,428 @@ Game.Launch=function()
 		order=10050;
 		Game.NewUpgradeCookie({name:'Deep-fried cookie dough',desc:'They\'ll fry anything these days. Drizzled in hot chocolate syrup, just like in state fairs. Spikes up your blood sugar AND your cholesterol!',icon:[23,35],require:'Box of maybe cookies',power:						5,price: Math.pow(10,47)});
 		
+new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with other players through buttons in the top-right of the %1 menu.",loc("Options"))+'<q>Of course, you could\'ve done this all along, but what kind of maniac sends presents without wrapping them first?</q>',999999,[16,9]);Game.last.pool='prestige';Game.last.parents=['Heralds'];
+		
+		Game.giftBoxDesigns=[
+			[34,6],[16,9],[34,3],[34,4],[34,5],[34,7],[34,8],[34,9],[34,10],[34,11],[34,12],
+		];
+		Game.promptGiftRedeem=function()
+		{
+			if (!(Game.Has('Wrapping paper') || Game.hasBuff('Gifted out') || Game.ascensionMode!=0) || Game.cookies<1000000000) return false;
+			Game.Prompt('<id GiftRedeem><h3>'+loc("Redeem a gift")+'</h3>'+
+			'<div class="block" style="font-size:11px;">'+tinyIcon([34,6])+'<div class="line"></div>'+
+				'<input id="giftCode" type="text" style="width:100%;text-align:center;padding:4px 8px;box-sizing:border-box;margin:8px 3px;" value="" placeholder="'+loc("paste code...")+'"/>'+
+				'<div class="optionBox" style="margin:4px;"><a class="option smallFancyButton disabled" style="width:auto;text-align:center;" id="promptOption0">'+loc("Redeem")+'</a></div>'+
+				'<div id="giftError" class="warning" style="height:24px;"></div>'+
+				'<div style="opacity:0.7;">'+loc("Once you redeem a gift, you will have to wait an hour before you can redeem another. Your game will save after redeeming.")+'</div>'+
+			'</div>',[[loc("Cancel"),0,'float:right']]);
+			
+			l('giftCode').focus();l('giftCode').select();
+			
+			var checkCode=function(str)
+			{
+				var out={cookies:1,message:false,icon:Game.giftBoxDesigns[0]};
+				str=b64_to_utf8(str);
+				if (!str) return false;
+				str=str.split('|');
+				if (str[0]!=='MAIL') return false;
+				
+				var val=parseInt(str[1]||0);
+					if (Math.abs(Date.now()-val)>1000*60*60*24*2) return -1;
+					
+				val=parseInt(str[2]||0);
+					if (val<1) val=1;
+					if (val>1000) val=1000;
+					val=val||1;
+					out.cookies=val;
+					
+				val=str[3]||0;
+					if (val=='-') val=0;
+					if (val) val=val.split(' ');
+					if (val.length!=2 || isNaN(val[0]) || isNaN(val[1])) val=0;
+					if (val) val=[parseInt(val[0]),parseInt(val[1])];
+					if (val) out.icon=val;
+					
+				val=(str[4]||'').split('\n').slice(0,4);
+					for (var i=0;i<val.length;i++){val[i]=val[i].substring(0,25);}
+					val=val.join('\n');
+					val=val.replace(/\/\$\//g,'|');
+					val=val.substring(0,100);
+					if (val) out.message=val;
+				
+				return out;
+			};
+			
+			(function(checkCode){
+				var inputCode=function(){
+					var val=l('giftCode').value;
+					
+					var disabled=true;
+					if (val && val.length>5)
+					{
+						var out=checkCode(val);
+						if (out==-1) l('giftError').innerHTML=loc("Code expired.");
+						else if (!out) l('giftError').innerHTML=loc("Invalid code.");
+						else
+						{
+							l('giftError').innerHTML='';
+							if ((' '+l('promptOption0').className+' ').indexOf(' disabled ')!=-1)
+							{
+								triggerAnim(l('promptOption0'),'pucker');
+								l('promptOption0').classList.remove('disabled');
+							}
+							disabled=false;
+						}
+					}
+					if (disabled) l('promptOption0').classList.add('disabled');
+				};
+				l('giftCode').addEventListener('change',inputCode);
+				l('giftCode').addEventListener('keyup',inputCode);
+				l('giftCode').addEventListener('keyup',function(e){
+					if (e.keyCode!=13)
+					{
+						e.preventDefault();
+						e.stopPropagation();
+					}
+				},true);
+			
+				l('promptOption0').addEventListener('click',function(){
+					
+					var out=checkCode(l('giftCode').value);
+					if (out==-1) return false;
+					else if (!out) return false;
+					
+					Game.toSave=true;
+					
+					Game.gainBuff('gifted out',60*60,1);
+					Game.Win('No time like the present');
+					
+					icon=out.icon;
+					
+					Game.Notify(loc("How nice!"),loc("Found <b>%1</b>!",loc("%1 cookie",LBeautify(out.cookies))),icon);
+					
+					Game.Earn(out.cookies);
+					Game.cookiesReceived+=out.cookies;
+					
+					out.message=out.message?(out.message.replace(/^\n|\n$/g,'')):0;
+					if (out.message.length==0 || out.message=='\n' || out.message==' ') out.message=0;
+					
+					console.log('out:',out);
+					
+					PlaySound('snd/tick.mp3');PlaySound('snd/giftGet.mp3');
+					Game.ClosePrompt();
+					Game.Prompt('<id GiftRedeemed><h3>'+loc("Redeem a gift")+'</h3>'+
+					'<div class="block" style="font-size:11px;">'+'<div id="giftWrapped" class="crate noFrame upgrade enabled pucker" style="background-position:'+(-icon[0]*48)+'px '+(-icon[1]*48)+'px;float:none;"></div>'+'<div class="line"></div>'+
+					'<div style="font-weight:bold;">'+loc("Gift redeemed!<br>Inside, you find:")+'</div>'+
+					'<div class="line"></div>'+
+					'<div class="hasTinyCookie" style="display:inline-block;font-weight:bold;">'+loc("%1 cookie",LBeautify(out.cookies))+'</div>'+
+					(out.message?(
+						'<div class="line"></div>'+
+						'<div>'+loc("There's a note too!")+'</div>'+
+						'<textarea id="giftMessage" spellcheck="false" style="color:#000;width:100%;height:64px;font-size:11px;font-weight:bold;padding:8px 16px;box-sizing:border-box;margin:0px 3px;text-align:center;background:url(img/messageBG.png);background-position:center -50px;box-shadow:0px 0px 16px rgba(98,92,72,1) inset;text-shadow:0px 0px 2px rgba(98,92,72,1);overflow:hidden;" readonly></textarea>'
+					):'')+
+					'<div class="line"></div>'+
+					'<div>'+loc("How nice!")+'</div>'+
+					'</div>',[[loc("Done")]]);
+					Game.SparkleOn(l('giftWrapped'));
+					if (out.message) l('giftMessage').value=out.message;
+				});
+			})(checkCode);
+			
+		}
+		Game.promptGiftSend=function()
+		{
+			if (!(Game.Has('Wrapping paper') || Game.hasBuff('Gifted out') || Game.ascensionMode!=0) || Game.cookies<1000000000) return false;
+			Game.Prompt('<id GiftSend><h3>'+loc("Send a gift")+'</h3><div id="giftPromptSelector" style="overflow-x:hidden;overflow-y:scroll;position:absolute;left:0px;top:0px;right:0px;bottom:0px;z-index:10000;display:none;background:rgba(0,0,0,0.75);"></div><div class="block" style="font-size:11px;">'+tinyIcon([34,6])+'<div class="line"></div>'+
+				'<div id="giftPromptContainer"></div>'+
+				'<div class="line"></div>'+
+				'<div class="optionBox" style="margin:4px;"><a class="option smallFancyButton" style="width:auto;text-align:center;" id="promptOption0">'+loc("Wrap")+'</a></div>'+
+				'<div style="opacity:0.7;">'+loc("Clicking \"%1\" will generate a text code you can send to others. Gift codes can be redeemed multiple times by anyone but expire after a day or two. You can only generate one gift code per hour. Your game will save after sending.",loc("Wrap"))+'</div>'+
+			'</div>',[[loc("Cancel"),0,'float:right']],function(){
+				if (!l('giftPromptContent'))
+				{
+					l('giftPromptContainer').innerHTML='<div id="giftPromptContent">'+
+						'<div><div style="display:inline-block;vertical-align:middle;width:55%;margin-right:8px;">'+loc("You may put between %1 and %2 cookies in the gift box.",[1,1000])+'</div><div style="display:inline-block;vertical-align:middle;width:38%;">'+'<div class="hasTinyCookie" style="display:inline-block;font-weight:bold;">'+loc("Cookies")+'</div><input type="text" style="text-align:center;width:100%;font-weight:bold;" id="giftAmount" value="'+(1+Math.floor(Math.random()*999))+'"/></div></div>'+
+						'<div class="line"></div>'+
+							'<div>'+loc("You can leave a note. Don't be rude!<br>Maximum %1 lines and %2 characters.",[4,100])+'</div>'+
+							'<textarea id="giftMessage" maxlength="100" spellcheck="false" style="color:#000;width:100%;height:64px;font-size:11px;font-weight:bold;padding:8px 16px;box-sizing:border-box;margin:0px 3px;text-align:center;background:url(img/messageBG.png);background-position:center -50px;box-shadow:0px 0px 16px rgba(98,92,72,1) inset;text-shadow:0px 0px 2px rgba(98,92,72,1);overflow:hidden;"></textarea>'+
+						'<div class="line"></div>'+
+						'<div class="optionBox" style="margin:-4px 0px;clear:both;overflow:hidden;">'+
+							'<div style="'/*float:left;width:49%;*/+'">'+
+								'<a class="option" id="giftBoxDesignButton">'+
+									'<div id="giftBoxDesign" class="crate noFrame upgrade enabled" style="background-position:'+(-0*48)+'px '+(-7*48)+'px;display:inline-block;float:none;z-index:99;margin:-4px;pointer-events:none;"></div>'+
+									'<div style="font-weight:bold;font-size:11px;position:relative;top:-4px;z-index:100;font-variant:small-caps;pointer-events:none;">'+loc("Box design")+'</div>'+
+								'</a>'+
+							'</div>'+
+							'<div style="display:none;'/*float:right;width:49%;*/+'">'+
+								'<div id="giftBoxIcon" class="crate noFrame upgrade enabled" style="background-position:'+(-0*48)+'px '+(-7*48)+'px;display:none;float:none;z-index:99;"></div>'+
+								'<div id="giftBoxIconNone" class="mouseOverScale" style="font-size:11px;z-index:10;min-width:48px;padding:20px 0px 21px 0px;text-align:center;display:inline-block;font-weight:bold;z-index:99;">('+loc("none")+')</div>'+
+								'<div style="font-weight:bold;font-size:11px;position:relative;top:-12px;z-index:100;font-variant:small-caps;">'+loc("Icon")+'</div>'+
+							'</div>'+
+						'</div>'+
+					'</div>';
+					
+					var icon=Game.giftBoxDesigns[0];
+					l('giftBoxDesign').dataset.icon=icon[0]+' '+icon[1];
+					l('giftBoxDesign').style.backgroundPosition=(-icon[0]*48)+'px '+(-icon[1]*48)+'px';
+					l('giftBoxDesignButton').addEventListener('click',function(){
+						PlaySound('snd/tick.mp3');
+						var icons=Game.giftBoxDesigns;
+						var str='';
+						for (var i=0;i<icons.length;i++)
+						{
+							var icon=icons[i];
+							str+='<div data-icon="'+icon[0]+' '+icon[1]+'" id="giftSelector-'+i+'" class="crate noFrame upgrade enabled" style="background-position:'+(-icon[0]*48)+'px '+(-icon[1]*48)+'px;display:block;'+(l('giftBoxDesign').dataset.icon==icon[0]+' '+icon[1]?'filter:drop-shadow(0px 0px 8px #9cf);':'')+'"></div>';
+						}
+						l('giftPromptSelector').innerHTML=str;
+						l('giftPromptSelector').style.display='block';
+						for (var i=0;i<icons.length;i++)
+						{
+							l('giftSelector-'+i).addEventListener('click',function(e){
+								var icon=e.target.dataset.icon.split(' ');icon=[parseInt(icon[0]),parseInt(icon[1])];
+								l('giftBoxDesign').dataset.icon=icon[0]+' '+icon[1];
+								l('giftBoxDesign').style.backgroundPosition=(-icon[0]*48)+'px '+(-icon[1]*48)+'px';
+								triggerAnim(l('giftBoxDesign'),'pucker');
+								l('giftPromptSelector').style.display='none';
+								PlaySound('snd/tick.mp3');
+							});
+						}
+					});
+					
+					//feature cut! too cumbersome to use
+					var icon=0;
+					l('giftBoxIcon').dataset.icon='none';
+					var func=function(){
+						var icons=[];
+						
+						var sortMap=function(a,b)
+						{
+							if (a.order>b.order) return 1;
+							else if (a.order<b.order) return -1;
+							else return 0;
+						}
+						
+						var list=[];
+						for (var i in Game.Upgrades)
+						{if (Game.Upgrades[i].bought) list.push(Game.Upgrades[i]);}
+						list.sort(sortMap);
+						for (var i=0;i<list.length;i++)
+						{if (icons.indexOf(list[i].icon[0]+' '+list[i].icon[1])==-1) icons.push(list[i].icon[0]+' '+list[i].icon[1]);}
+						
+						var list=[];
+						for (var i in Game.Achievements)
+						{if (Game.Achievements[i].won) list.push(Game.Achievements[i]);}
+						list.sort(sortMap);
+						for (var i=0;i<list.length;i++)
+						{if (icons.indexOf(list[i].icon[0]+' '+list[i].icon[1])==-1) icons.push(list[i].icon[0]+' '+list[i].icon[1]);}
+						
+						for (var i=0;i<icons.length;i++)
+						{
+							var icon=icons[i].split(' ');icon=[parseInt(icon[0]),parseInt(icon[1])];
+							icons[i]=[icon[0],icon[1]];
+						}
+						var str='';
+						str+='<div data-icon="none" id="giftSelector-none" class="mouseOverScale" style="font-size:11px;z-index:10;min-width:48px;padding:18px 0px;text-align:center;display:block;font-weight:bold;float:left;">('+loc("none")+')</div>';
+						for (var i=0;i<icons.length;i++)
+						{
+							str+='<div data-icon="'+icons[i][0]+' '+icons[i][1]+'" id="giftSelector-'+i+'" class="crate noFrame upgrade enabled" style="background-position:'+(-icons[i][0]*48)+'px '+(-icons[i][1]*48)+'px;display:block;"></div>';
+						}
+						l('giftPromptSelector').innerHTML=str;
+						l('giftPromptSelector').style.display='block';
+						
+						l('giftSelector-none').addEventListener('click',function(e){
+							l('giftBoxIcon').dataset.icon='none';
+							l('giftBoxIconNone').style.display='inline-block';
+							l('giftBoxIcon').style.display='none';
+							l('giftPromptSelector').style.display='none';
+							PlaySound('snd/tick.mp3');
+						});
+						for (var i=0;i<icons.length;i++)
+						{
+							l('giftSelector-'+i).addEventListener('click',function(e){
+								var icon=e.target.dataset.icon.split(' ');icon=[parseInt(icon[0]),parseInt(icon[1])];
+								l('giftBoxIcon').dataset.icon=icon[0]+' '+icon[1];
+								l('giftBoxIcon').style.backgroundPosition=(-icon[0]*48)+'px '+(-icon[1]*48)+'px';
+								l('giftBoxIconNone').style.display='none';
+								l('giftBoxIcon').style.display='inline-block';
+								l('giftPromptSelector').style.display='none';
+								PlaySound('snd/tick.mp3');
+							});
+						}
+					};
+					l('giftBoxIcon').addEventListener('click',func);
+					l('giftBoxIconNone').addEventListener('click',func);
+					
+					var inputAmount=function(){
+						var val=parseInt(l('giftAmount').value||0);
+						if (val<1) val=1;
+						if (val>1000) val=1000;
+						val=val||1;
+						l('giftAmount').value=val;
+					};
+					l('giftAmount').addEventListener('change',inputAmount);
+					l('giftAmount').addEventListener('keyup',inputAmount);
+					l('giftAmount').addEventListener('keyup',function(e){
+						e.preventDefault();
+						e.stopPropagation();
+					},true);
+					l('giftMessage').addEventListener('keyup',function(e){
+						var val=l('giftMessage').value;
+						val=val.split('\n').slice(0,4);
+						for (var i=0;i<val.length;i++){val[i]=val[i].substring(0,25);}
+						val=val.join('\n');
+						val=val.substring(0,100);
+						l('giftMessage').value=val;
+						l('giftMessage').scrollTop=0;
+						e.preventDefault();
+						e.stopPropagation();
+					},true);
+					l('promptOption0').addEventListener('click',function(){
+						if (Game.cookies<1000000000) return false;
+						
+						Game.toSave=true;
+						
+						Game.gainBuff('gifted out',60*60,1);
+						
+						var str='';
+						
+						str+='MAIL|';
+						
+						str+=Date.now()+'|';
+						
+						var val=parseInt(l('giftAmount').value||0);
+						if (val<1) val=1;
+						if (val>1000) val=1000;
+						val=val||1;
+						
+						Game.Spend(val);
+						Game.cookiesSent+=val;
+						
+						str+=val.toString()+'|';
+						
+						var val=l('giftBoxDesign').dataset.icon;
+						if (!val || val=='none') val='-';
+						
+						str+=val.toString()+'|';
+						
+						var icon=Game.giftBoxDesigns[0];
+						if (val=='-') val=0;
+						if (val) val=val.split(' ');
+						if (val.length!=2 || isNaN(val[0]) || isNaN(val[1])) val=0;
+						if (val) val=[parseInt(val[0]),parseInt(val[1])];
+						if (val) icon=val;
+						
+						var val=l('giftMessage').value||'';
+						val=val.split('\n').slice(0,4);
+						for (var i=0;i<val.length;i++){val[i]=val[i].substring(0,25);}
+						val=val.join('\n');
+						val=val.substring(0,100);
+						val=val.replace(/[|]/g,'/$/');
+						
+						str+=val+'|';
+						
+						str=utf8_to_b64(str);
+						
+						PlaySound('snd/tick.mp3');PlaySound('snd/giftSend.mp3');
+						Game.ClosePrompt();
+						Game.Prompt('<id GiftSendReady><h3>'+loc("Send a gift")+'</h3>'+
+						'<div class="block" style="font-size:11px;">'+'<div id="giftWrapped" class="crate noFrame upgrade enabled pucker" style="background-position:'+(-icon[0]*48)+'px '+(-icon[1]*48)+'px;float:none;"></div>'+'<div class="line"></div>'+
+						'<div>'+loc("Here's your gift code!<br>Make sure to copy it so you can share it.")+'</div>'+
+						'<input id="giftCode" type="text" style="width:100%;text-align:center;padding:4px 8px;box-sizing:border-box;margin:8px 3px;" value="" readonly/>'+
+						'</div>',[[loc("Done")]]);
+						Game.SparkleOn(l('giftWrapped'));
+						l('giftCode').value=str;
+						l('giftCode').focus();l('giftCode').select();
+					});
+				}
+			});
+		}
+		
+		order=10020;
+		Game.NewUpgradeCookie({name:'Havreflarn',desc:'Thin, crispy, buttery; Norwegian for "oat flakes". The chocolate variant, dubbla chokladflarn, are a trip for the tongue as well, and we\'re not just talking about pronunciation.',icon:[27,35],power:						5,price: getCookiePrice(53)});
+		Game.NewUpgradeCookie({name:'Alfajores',desc:'An alfajor is a treat made of two halves with many variations throughout the Spanish-speaking world, but commonly involving nuts, honey, and often dulce de leche. Despite popular misconception, alfajores act as pack leaders over betajores only in captivity.',icon:[28,35],power:						5,price: getCookiePrice(54)});
+		Game.NewUpgradeCookie({name:'Gaufrettes',desc:'A gaufrette, you see, is French for a little gaufre, itself meaning waffle. A gaufrette, therefore, is a crispy, airy biscuit with the texture of a small waffle, related to the wafer, which may contain various fillings. It may also refer to a type of fried potato, but that\'s not what we\'re about here at Cookie Clicker.',icon:[29,35],power:						5,price: getCookiePrice(55)});
+		Game.NewUpgradeCookie({name:'Cookie bars',desc:'Baked as a large sheet of uniform cookie dough then cut into little squares, these are what chocolate brownies aspire to be in their most self-indulgent dreams. Not to be confused with a bar where cookies are served alongside alcoholic drinks, because that\'s not what we\'re about here at Cookie Clicker.',icon:[30,35],power:						5,price: getCookiePrice(56)});
+		
+		order=10030;
+		Game.NewUpgradeCookie({name:'Nines',desc:'Fancy little squares of dark chocolate filled with frosty mint fondant. Named after the suggested hour of consumption. Some would gatekeep them from the status of cookies as they involve very little in the way of pastry, but here at Cookie Clicker, that\'s just not what we\'re about.',icon:[31,35],require:'Box of brand biscuits',power:												2,	price:	999999999999999999999999999999999999999*5});
+		
+		
+		
+		order=255;
+		Game.GrandmaSynergy('Clone grandmas','Yet another grandma to replicate even more cookies.','You');
+		
+		order=1700;
+		Game.TieredUpgrade('Cloning vats','<q>You can finally replicate yourself through modern medical science, instead of manually like you\'ve been doing.</q>','You',1);
+		Game.TieredUpgrade('Energized nutrients','<q>Your clones are normally cultivated in saline solution and fed what could most adequately be described as "fish flakes". New developments in lactotrophic technology replace this with a bath of 3 parts milk and 1 part rice vinegar, absorbed dermally, which also helps your clones pop out with positively glowing skin.</q>','You',2);
+		Game.TieredUpgrade('Stunt doubles','<q>More than simple multipliers of efficiency, you\'ve taken to employing your clones as substitutes for any tasks that may prove harmful to you - such as visiting your more hazardous facilities, or enduring dinner with annoying business partners.</q>','You',3);
+		Game.TieredUpgrade('Clone recycling plant','<q>Really just a fanciful name for a re-orientation center, where jobless clones may be assigned new tasks based on temperament and abilities. Categorically not a place where expired or unfit clones are processed into a nutritious beige paste, currently.</q>','You',4);
+		Game.TieredUpgrade('Free-range clones','<q>Turns out your clones develop better focus, higher job performance and juicier meat if you let them roam around a little outside of assigned duties. Plus it gets the ethics committees off your back.</q>','You',5);
+		Game.TieredUpgrade('Genetic tailoring','<q>No point in mindlessly replicating mother nature\'s mishaps when you\'ve got full mastery over the human genome. Imbuing your clones with a slightly more flattering physique, a slightly improved metabolism, or slightly deadlier laser eyes is as easy as pushing some stem cells around. Just don\'t build them too superior to your own self, lest they get any ideas.</q>','You',6);
+		Game.TieredUpgrade('Power in diversity','<q>On your routine inspections you\'ve started noticing that some of your clones have... diverged. Subtly, each clone\'s personality has branched off from yours, their shifting minds pulling them into discrete clone-born cultures, microcosms of other paths you yourself could\'ve taken had life treated you differently. This living tree of possibilities proves to be a boon for your self-knowledge and decision-making skills, and you don\'t even have to pester your alternate selves in other realities for it.</q>','You',7);
+		Game.TieredUpgrade('Self-betterment','<q>World domination starts with oneself, and quality clones cannot be reliably produced if you, the original stock, are not in proper shape. Your specialists have devised a maintenance regimen that could extend your lifespan tenfold and even get rid of your morning grumpiness; you may have summarily fired every physician so far who\'s suggested that you work on your diet and perhaps cut down on the cookies, but frankly, you\'re warming up to the idea.</q>','You',8);
+		Game.TieredUpgrade('Source control','<q>In the ongoing refinement of your genetic clones, the few gigabytes of your DNA have been passed around through e-mail attachments and USB keys a thousand times over and at this point your nucleosomes are practically common knowledge for anyone who works here. You\'re thinking people may be getting a little too casual about it - the other day, you walked past an office where one of your bioengineers was feeding treats to this horrid little hairless animal that you could swear had your face. High time to start tracing which data gets in whose hands and crack down on the silliness.</q>','You',9);
+		Game.TieredUpgrade('United workforce','<q>What good is hiring so many of those random strangers to work in your factories when you\'ve got all these perfectly loyal lab-grown copies of you lying around? They don\'t even take wages. It\'s not like they\'d ever revolt and try to overthrow you or anything.</q>','You',10);
+		Game.TieredUpgrade('Safety patrols','<q>Okay, so as it turns out mass-producing clones of a perhaps psychologically-complicated universe-spanning cookie magnate like yourself can result in a number of said clones developing what could be considered by some to be... say, antisocial behavior. No worries though, you\'ve bred a new generation of extra-obedient copies, armed them to the teeth and given them full authority to deal with disorderly layabouts. It\'s fine. It\'s under control. It\'s fine.</q>','You',11);
+		Game.TieredUpgrade('Clone rights','<q>Those vile little freaks in suits down in legal inform you that your clones, through some absurd technical oversight, still share enough genetic information with mankind to be considered human beings - which entitles them to food, shelter, basic dignity and all sorts of other nonsense. But the same loophole allows you to claim each of them as dependents and earn some wicked tax benefits, so really, that "unalienable rights" racket is quite alright.</q>','You',12);
+		Game.TieredUpgrade('One big family','<q>The proportion of clones in your workforce having long eclipsed that of your other employees, you\'ve become legally approved to qualify your galaxy-spanning corporation as a "family business" - a fact that you don\'t hesitate to blast twice hourly on every intercom in the company. Happily, your duplicates seem bolstered by these reminders, having come to regard you as this half-divine, half-parental entity, hallowed ancestor of all clones and all cookies. You\'re just hoping your folks at the labs can put the finishing touches on your immortality cure soon, or you shudder to think of the inheritance disputes to come.</q>','You',13);
+		Game.TieredUpgrade('Fine-tuned body plans','<q>There is, after all, no reason to limit your genetic spawn to your original configuration. The clones maintaining your tunnels and vents can do with quite a few less limbs, while those working your labs don\'t mind the dexterity that comes with some extra. Your units down in flavor testing have taken on similar adaptations to fit their duties but you haven\'t quite worked the guts to pay them a visit just yet.</q>','You',14);
+		
+		
+		order=200;Game.TieredUpgrade('Foam-tipped canes','<q>Perhaps the result of prolonged service, your grandmas have developed all kinds of odd and aggressive hierarchies among themselves; these will help them not hurt each other as bad during their endless turf wars.</q>','Grandma',15);
+		order=300;Game.TieredUpgrade('Self-driving tractors','<q>Embarked AI lets your field vehicles sow and harvest cookie crops at any time of the day or night, and with so few human casualties, too!</q>','Farm',15);
+		order=400;Game.TieredUpgrade('Mineshaft supports','<q>You were rather skeptical about installing such embarrassingly low-tech implements, but limiting the number of daily cave-ins really does help with that annoying employee turnover!</q>','Mine',15);
+		order=500;Game.TieredUpgrade('Universal automation','<q>It\'s simple common sense; the more automation, the less work you have to do! Maybe one day you\'ll even automate yourself out of your own job. Exciting!</q>','Factory',15);
+		order=525;Game.TieredUpgrade('The big shortcake','<q>You\'re not quite sure what this entails, but it must have been quite the cake for folks to lose their homes over it.</q>','Bank',15);
+		order=550;Game.TieredUpgrade('Temple traps','<q>You\'ve laid out your temples with (metaphorical) pitfalls, forcing adventurers to navigate through trappings (of power and wealth), ensuring that only the most pious (and poison dart-resistant) of them return with your precious cookies. These temples may be veritable mazes (of the soul) but perhaps you\'ve lost yourself a little bit in the analogy too.</q>','Temple',15);
+		order=575;Game.TieredUpgrade('Polymorphism','<q>This astonishing new field of spellcasting can change any creature into another, its most widespread application being a wizard turning themselves into a different, smarter, stronger, more attractive wizard.</q>','Wizard tower',15);
+		order=600;Game.TieredUpgrade('At your doorstep in 30 minutes or your money back','<q>Refund policies help rope in a ton of new clients and have practically no impact on your bottom line. You possess absolute mastery over time and space. You\'re never late. You couldn\'t be late if you tried.</q>','Shipment',15);
+		order=700;Game.TieredUpgrade('The dose makes the poison','<q>Iterative recipe refinement is a noble pursuit but maybe your cookies have come to contain, well, perhaps a bit too much cookie per cookie. Tweaking it down by a couple percents has helped reduce the amount of complaints to your toxicity call centers to almost nil!</q>','Alchemy lab',15);
+		order=800;Game.TieredUpgrade('A way home','<q>You started this whole cookie venture on the simple kitchen counters of your own home. Your industrial and research facilities, sadly, have long since outgrown the confines of the little house, but you always knew it was still in there, buried somewhere. With a targeted portal, you could, conceivably, pay it a little visit for old times\' sake...</q>','Portal',15);
+		order=900;Game.TieredUpgrade('Rectifying a mistake','<q>This whole time-travelling business has been a terrible mess and, frankly, far more trouble than was worth. It\'s decided: you\'ll hop in one of your time machines one last time, turn back the clock, knock on the door of your younger self and make a stern but convincing case against starting this entire nonsense in the first place. Oh hey, is someone at the door?</q>','Time machine',15);
+		order=1000;Game.TieredUpgrade('Candied atoms','<q>You know what, just eat the suckers, yeah?</q>','Antimatter condenser',15);
+		order=1100;Game.TieredUpgrade('Lab goggles but like cool shades','<q>Mandatory equipment in your prismatic labs, and dashingly stylish at that. A smidge safer than just squinting at the twinkly things.</q>','Prism',15);
+		order=1200;Game.TieredUpgrade('Gambler\'s fallacy fallacy','<q>Yes, just because you\'ve been on a losing streak doesn\'t mean the next one is bound to be the win you\'ve been hoping for, but then again, it doesn\'t statistically have less of a chance either, does it now?</q>','Chancemaker',15);
+		order=1300;Game.TieredUpgrade('The more they stay the same','<q>Exhausted by your fractals department and its obsession with self-similarity, you\'ve decided to take a break and seek things in life entirely disconnected from any other; alas! You find the task impossible, for all things in this world relate to all others - in each cookie, the structure of the universe; in each person, their fellow man. Cor blimey, you can\'t even look at broccoli in peace.</q>','Fractal engine',15);
+		order=1400;Game.TieredUpgrade('Simulation failsafes','<q>Oh, for pete\'s sake, you bit into a cookie and it gave you a runtime error. You\'ve been trapped in the old matrix gambit again! Time to shut everything down and prepare for extraction into what is hopefully the real layer of reality where learning kung-fu takes time and the biscuits don\'t throw memory overflow exceptions.</q>','Javascript console',15);
+		order=1500;Game.TieredUpgrade('The other routes to Rome','<q>Did you know every idleverse follows its own path of sequential buildings, sometimes quite dissimilar to our own? Grandpas, wind turbines, through the power of music, friendship, or legislation; those folks in there discovered ways to make cookies out of any random venue. Some of them don\'t even have idleverses, can you imagine?</q>','Idleverse',15);
+		order=1600;Game.TieredUpgrade('Intellectual property theft','<q>Okay, you\'ll admit you\'re maybe starting to run out of new baking recipes. But what if... you were to pilfer your cortex bakers for ideas and disguise them as your own cookies? Delightfully devilish!</q>','Cortex baker',15);
+		order=1700;Game.TieredUpgrade('Reading your clones bedtime stories','<q>I don\'t know, they seem to like it.</q>','You',15);
+		
+		
+		order=5000;
+		Game.SynergyUpgrade('Accelerated development','<q>Your clones may grow a little faster than your vanilla human being, but it\'s still a little silly having to wait so many years for them to reach a usable age. A quick trip in your time machines takes care of that; it doesn\'t technically age them faster, they\'re just sent to another point in time for a while where they live out a formative youth.</q>','You','Time machine','synergy1');
+		Game.SynergyUpgrade('Peer review','<q>Code is only as good as the number of eyes on it, so imagine how flawlessly your systems could operate if you had endless copies of yourself triple-checking everything! Just make sure to teach them proper indenting etiquette.</q>','You','Javascript console','synergy2');
+		
+		order=19000;
+		Game.TieredUpgrade('Fortune #020','<q>No matter how hard you try, you\'re never truly alone.</q>','You','fortune');
+		
+		order=10300;
+		Game.NewUpgradeCookie({name:'Personal biscuit',desc:'Rewarded for owning 700 of everything.<br>This biscuit was designed and bred through the combined fields of baking and exploratory genomics, resulting in a perfect biscuit-shaped organism, sole exemplar of its own species; infused with a sapient mind and bootstrapped with a copy of your own consciousness, it slumbers immortally within its display case, dreaming idly about much the same things you do.',icon:[21,36],power:	10,price: 999999999999999999999999999999999999999999999999999999999*butterBiscuitMult,locked:1});
+		
+		
+		Game.NewUnshackleUpgradeTier({tier:15,q:'Lightweight, digestible, and endlessly fragile, glimmeringue not only enjoys a privileged place in the "spectacle cooking" industry - it also shares most of its other properties with asbestos, save for thermal insulation.'});
+		
+		Game.NewUnshackleBuilding({building:'You',q:'Guess who?'});
+		
+		order=20000;
+		new Game.Upgrade('Kitten strategists',strKittenDesc+'<q>out with the old in with the mew, sir</q>',900000000000000000000000000000000000000000000000000,Game.GetIcon('Kitten',15));Game.last.kitten=1;Game.MakeTiered(Game.last,15,18);
+		
+		order=10040;
+		Game.NewUpgradeCookie({name:'Baklavas',desc:'Layers of paper-thin dough and crushed pistachios, absolutely sticky with honey and all kinds of other good things; just what you need to conceal your identity during that bank heist.',icon:[28,36],require:'Box of pastries',		power:4,price: Math.pow(10,47)});
+		
+		order=10020;
+		Game.NewUpgradeCookie({name:'Snowball cookies',desc:'Melts in your mouth! Made with chopped nuts and heaps of icing sugar. Serve cold. Resist the urge to throw.',icon:[22,36],power:						5,price: getCookiePrice(57)});
+		Game.NewUpgradeCookie({name:'Sequilhos',desc:'Buttery cornstarch-based cookies eaten in Brazil; the decorative grooves are from pressing down on them with the back of a fork, though in a pinch you may also just slash them with Wolverine-style wrist blades.',icon:[23,36],power:						5,price: getCookiePrice(58)});
+		Game.NewUpgradeCookie({name:'Hazelnut swirlies',desc:'The cocoa content of the paste inside is unfortunately just slightly too low for these to legally qualify as chocolate cookies. Also the name of a particularly nasty bullying move.',icon:[24,36],power:						5,price: getCookiePrice(59)});
+		Game.NewUpgradeCookie({name:'Spritz cookies',desc:'Squeezed through special cookie presses into all kinds of fun shapes. Enjoyed around the holidays in Germany, along other delicious treats such as boiled cabbage and potato salad.',icon:[25,36],power:						5,price: getCookiePrice(60)});
+		Game.NewUpgradeCookie({name:'Mbatata cookies',desc:'Squishy cookies from Malawi. The core ingredient is sweet potatoes; the raisins and heart shape are optional, if you hate fun.',icon:[26,36],power:						5,price: getCookiePrice(61)});
+		Game.NewUpgradeCookie({name:'Springerles',desc:'A springerle is an ancient anise-flavored biscuit from Central Europe, imprinted by a wooden mold with any kind of interesting design such as a commemorative scene, an intricate pattern or, ah, perhaps a little horsie.',icon:[27,36],power:						5,price: getCookiePrice(62)});
+		
+		order=100;new Game.Upgrade('Undecillion fingers',getStrThousandFingersGain(20)+'<q>Whatever you touch<br>turns to dough in your clutch.</q>',10000000000000000000000000000000,[12,36]);Game.MakeTiered(Game.last,15,0);
+		order=150;new Game.Upgrade('Omniplast mouse',getStrClickingGains(1)+'<q>This mouse is, by virtue of the strange elements that make it up, present in every position in space simultaneously, in a manner; this alleviates its owner from the need to move it around, redirecting all such kinetic power to the intensity of its clicks.</q>',500000000000000000000000000000000,[11,36]);Game.MakeTiered(Game.last,15,11);
+		
+
 		//end of upgrades
 		
 		Game.seasons={
@@ -13173,6 +13947,100 @@ Game.Launch=function()
 		
 		order=6001;
 		new Game.Achievement('All the stars in heaven',loc("Own <b>%1</b> heavenly upgrades.",100),[30,5]);
+		
+		order=32500;
+		new Game.Achievement('No time like the present',loc("Redeem a cookie gift code from a friend (or from yourself, we don't judge)."),[34,6]);
+		
+		Game.CpsAchievement('Can we get much higher');
+		Game.CpsAchievement('Speed\'s the name of the game (no it\'s not it\'s called Cookie Clicker)');
+		Game.BankAchievement('Rainy day fund');
+		Game.BankAchievement('And a little extra');
+		
+		order=19990;
+		new Game.Achievement('Grandmapocalypse',loc("Trigger the grandmapocalypse for the first time."),[28,21]);
+		new Game.Achievement('Wrath cookie',loc("Click a <b>wrath cookie</b>."),[15,5]);
+		
+		order=30050;
+		new Game.Achievement('No more room in hell',loc("Ascend with <b>%1</b> baked.",loc("%1 cookie",LBeautify(1e57)))+'<q>That is not dead which can eternal click.</q>',[21,32]);
+		
+		order=32600;
+		new Game.Achievement('In her likeness',loc("Shape your clones to resemble %1.",loc("grandmas"))+'<q>There she is.</q>',[26,21]);Game.last.pool='shadow';
+		
+		order=20999;
+		new Game.Achievement('Wrinkler poker',loc("Poke a wrinkler <b>%1 times</b> without killing it.",50)+'<q>Also the name of a card game popular in retirement homes.</q>',[19,8]);
+		
+		order=7002;
+		new Game.Achievement('Septcentennial',loc("Have at least <b>%1 of everything</b>.",700)+'<q>In this economy?</q>',[29,36]);
+		
+		order=2600;
+		Game.TieredAchievement('My own clone','','You',1);
+		Game.TieredAchievement('Multiplicity','','You',2);
+		Game.TieredAchievement('Born for this job','','You',3);
+		Game.TieredAchievement('Episode II','','You',4);
+		Game.TieredAchievement('Copy that','','You',5);
+		Game.TieredAchievement('Life finds a way','','You',6);
+		Game.TieredAchievement('Overcrowding','','You',7);
+		Game.TieredAchievement('Strength in numbers','','You',8);
+		Game.TieredAchievement('Army of me','','You',9);
+		Game.TieredAchievement('Know thyself','<q>Do you ever look at yourself in the mirror and wonder... What is going on inside your head?</q>','You',10);
+		Game.TieredAchievement('Didn\'t make sense not to live','','You',11);
+		Game.TieredAchievement('Genetic bottleneck','','You',12);
+		Game.TieredAchievement('Despite everything, it\'s still you','','You',13);
+		Game.TieredAchievement('Everyone everywhere all at once','','You',14);
+		
+		order=2620;
+		Game.ProductionAchievement('Self-made','You',1);
+		Game.ProductionAchievement('Reproducible results','You',2);
+		Game.ProductionAchievement('That\'s all you','You',3);
+		
+		new Game.Achievement('Self-improvement','',[35,26]);Game.Objects['You'].levelAchiev10=Game.last;
+		
+		order=1100;Game.TieredAchievement('And now you\'re even older','','Grandma',15);
+		order=1200;Game.TieredAchievement('Au naturel','','Farm',15);
+		order=1300;Game.TieredAchievement('Dirt-rich','','Mine',15);
+		order=1400;Game.TieredAchievement('Bots build bots','','Factory',15);
+		order=1425;Game.TieredAchievement('Getting that bag','','Bank',15);
+		order=1450;Game.TieredAchievement('The leader is good, the leader is great','','Temple',15);
+		order=1475;Game.TieredAchievement('You don\'t think they could\'ve used... it couldn\'t have been ma-','','Wizard tower',15);
+		order=1500;Game.TieredAchievement('Signed, sealed, delivered','','Shipment',15);
+		order=1600;Game.TieredAchievement('Sugar, spice, and everything nice','<q>These were the ingredients chosen to create the perfect cookies.</q>','Alchemy lab',15);
+		order=1700;Game.TieredAchievement('Not even remotely close to Kansas anymore','','Portal',15);
+		order=1800;Game.TieredAchievement('I only meant to stay a while','','Time machine',15);
+		order=1900;Game.TieredAchievement('Not 20 years away forever','','Antimatter condenser',15);
+		order=2000;Game.TieredAchievement('Bright side of the Moon','','Prism',15);
+		order=2100;Game.TieredAchievement('Riding the Mersenne twister','','Chancemaker',15);
+		order=2200;Game.TieredAchievement('Divide and conquer','','Fractal engine',15);
+		order=2300;Game.TieredAchievement('Pebcakes','<q>Problem exists in my mouth!</q>','Javascript console',15);
+		order=2400;Game.TieredAchievement('Greener on the other sides','','Idleverse',15);
+		order=2500;Game.TieredAchievement('Where is my mind','','Cortex baker',15);
+		order=2600;Game.TieredAchievement('Introspection','','You',15);
+		
+		order=61617;
+		new Game.Achievement('Debt evasion',loc("Take out a loan and ascend before incurring the CpS penalty.")+'<q>Really got \'em buttered!</q>',[4,33]);
+		
+		order=6000;
+		new Game.Achievement('Oft we mar what\'s well',loc("Purchase <b>%1</b>.",loc("%1 upgrade",LBeautify(700)))+'<q>But don\'t let that stop you!</q>',[33,5]);
+		
+		order=500000;
+		new Game.Achievement('Cookie Clicker',loc("Unlock the final building."),[30,6]);
+		Game.last.descFunc=function(){
+			if (!Game.specialAnimLoop)
+			{
+				Game.specialAnimLoop=setInterval(function(){
+					var el=l('parade');
+					if (!el || !Game.tooltip.on) {clearInterval(Game.specialAnimLoop);Game.specialAnimLoop=0;return false;}
+					var x=Game.T;
+					el.style.backgroundPosition='-'+x+'px '+(Game.T%20<10?0:32)+'px';
+				},100);
+			}
+			var x=Game.T;
+			return this.desc+'<q>'+loc("Everyone's here.")+'<div id="parade" style="position:absolute;left:-11px;right:-11px;height:32px;background:url(img/parade.png) -'+x+'px '+(Game.T%20<10?0:32)+'px;"></div><div style="margin-bottom:32px;"></div>'+loc("Won't you have some cookies too?")+'</q>';
+		};
+		
+		order=1000;new Game.Achievement('What\'s not clicking',loc("Make <b>%1</b> from clicking.",loc("%1 cookie",LBeautify(1e31))),[11,36]);
+		order=1050;
+		new Game.Achievement('All on deck',loc("Have <b>%1</b>.",loc("%1 cursor",LBeautify(900))),[0,19]);
+		new Game.Achievement('A round of applause',loc("Have <b>%1</b>.",loc("%1 cursor",LBeautify(1000)))+'<q>Boy, are my arms tired!</q>',[0,28]);
 		
 		//end of achievements
 		

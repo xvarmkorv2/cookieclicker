@@ -5496,7 +5496,8 @@ Game.Launch=function()
 				}
 			}
 			var suckRate=1/20;//each wrinkler eats a twentieth of your CpS
-			suckRate*=Game.eff('wrinklerEat');
+			suckRate *= Game.eff('wrinklerEat');
+			suckRate *= 1 + Game.auraMult('Dragon Guts') * 0.2;
 			
 			Game.cpsSucked=sucking*suckRate;
 			
@@ -8712,7 +8713,8 @@ Game.Launch=function()
 					for (var i=0;i<len;i++)
 					{
 						var pic=this.pics[i];
-						var sprite=Pic(pic.pic);
+						var sprite=pic.pic=='canvasAdd'?this.canvasAdd:Pic(pic.pic);
+						//we need to generalize this system at some point
 						if (selected==i && this.name=='Grandma')
 						{
 							ctx.font='14px Merriweather';
@@ -14579,21 +14581,22 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 		
 		Game.wrinklerHP=2.1;
 		Game.wrinklers=[];
-		for (var i=0;i<12;i++)
+		for (var i=0;i<Game.wrinklerLimit;i++)
 		{
-			Game.wrinklers.push({id:parseInt(i),close:0,sucked:0,phase:0,x:0,y:0,r:0,hurt:0,hp:Game.wrinklerHP,selected:0,type:0});
+			Game.wrinklers.push({id:parseInt(i),close:0,sucked:0,phase:0,x:0,y:0,r:0,hurt:0,hp:Game.wrinklerHP,selected:0,type:0,clicks:0});
 		}
 		Game.getWrinklersMax=function()
 		{
 			var n=10;
 			if (Game.Has('Elder spice')) n+=2;
+			n+=Math.round(Game.auraMult('Dragon Guts')*2);
 			return n;
 		}
 		Game.ResetWrinklers=function()
 		{
 			for (var i in Game.wrinklers)
 			{
-				Game.wrinklers[i]={id:parseInt(i),close:0,sucked:0,phase:0,x:0,y:0,r:0,hurt:0,hp:Game.wrinklerHP,selected:0,type:0};
+				Game.wrinklers[i]={id:parseInt(i),close:0,sucked:0,phase:0,x:0,y:0,r:0,hurt:0,hp:Game.wrinklerHP,selected:0,type:0,clicks:0};
 			}
 		}
 		Game.CollectWrinklers=function()
@@ -14737,6 +14740,8 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 							else
 							{
 								Game.playWrinklerSquishSound();
+								me.clicks++;
+								if (me.clicks>=50) Game.Win('Wrinkler poker');
 								me.hurt=1;
 								me.hp-=0.75;
 								if (Game.prefs.particles && !Game.prefs.notScary && !Game.WINKLERS && !(me.hp<=0.5 && me.phase>0))
@@ -14777,6 +14782,7 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 					me.hp=3;
 					var toSuck=1.1;
 					if (Game.Has('Sacrilegious corruption')) toSuck*=1.05;
+					me.sucked*=1+Game.auraMult('Dragon Guts')*0.2;
 					if (me.type==1) toSuck*=3;//shiny wrinklers are an elusive, profitable breed
 					me.sucked*=toSuck;//cookie dough does weird things inside wrinkler digestive tracts
 					if (Game.Has('Wrinklerspawn')) me.sucked*=1.05;

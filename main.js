@@ -10154,6 +10154,7 @@ Game.Launch=function()
 			12:{name:'Alabascream',unlock:450,achievUnlock:550,iconRow:30,color:'#c1a88c',price:		50000000000000000000000000000},
 			13:{name:'Iridyum',unlock:500,achievUnlock:600,iconRow:31,color:'#adb1b3',price:			500000000000000000000000000000000},
 			14:{name:'Glucosmium',unlock:550,achievUnlock:650,iconRow:34,color:'#ff89e7',price:			5000000000000000000000000000000000000},
+			15:{name:'Glimmeringue',unlock:600,achievUnlock:700,iconRow:36,color:'#fffaa8',price:		50000000000000000000000000000000000000000},
 			'synergy1':{name:'Synergy I',unlock:15,iconRow:20,color:'#008595',special:1,req:'Synergies Vol. I',price:			200000},
 			'synergy2':{name:'Synergy II',unlock:75,iconRow:29,color:'#008595',special:1,req:'Synergies Vol. II',price:			200000000000},
 			'fortune':{name:'Fortune',unlock:-1,iconRow:32,color:'#9ab834',special:1,price:				77777777777777777777777777777},

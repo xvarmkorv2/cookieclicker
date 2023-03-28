@@ -15129,7 +15129,8 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
             { name: 'Krumblor, cookie dragon', action: 'Train Dragon\'s Curve<br><small>Aura : sugar lumps grow 5% faster, 50% weirder</small>', pic: 5, },
             { name: 'Krumblor, cookie dragon', action: 'Train Reality Bending<br><small>Aura : 10% of every other aura, combined</small>', pic: 5, },
             { name: 'Krumblor, cookie dragon', action: 'Train Dragon Orbs<br><small>Aura : selling your best building may grant a wish</small>', pic: 5, },
-            { name: 'Krumblor, cookie dragon', action: 'Train Supreme Intellect<br><small>Aura : confers various powers to your minigames</small>', pic: 5, },
+			{ name: 'Krumblor, cookie dragon', action: 'Train Dragon Guts<br><small>Aura: enhanced wrinklers</small>', pic: 5, },
+			{ name: 'Krumblor, cookie dragon', action: 'Train Supreme Intellect<br><small>Aura : confers various powers to your minigames</small>', pic: 5, },
             {
                 name: 'Krumblor, cookie dragon', action: loc("Bake dragon cookie") + '<br><small>' + loc("Delicious!") + '</small>', pic: 6,
 				cost: function () { var fail = 0; for (var i in Game.Objects) { if (Game.Objects[i].vanilla && Game.Objects[i].amount < 50) fail = 1; } return (fail == 0); },
@@ -15167,6 +15168,7 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 			18:{name:'Reality Bending',pic:[32,25],desc:loc("<b>One tenth</b> of every other dragon aura, <b>combined</b>.")},
 			19:{name:'Dragon Orbs',pic:[33,25],desc:loc("With no buffs and no golden cookies on screen, selling your most powerful building has <b>%1% chance to summon one</b>.",10)},
 			20:{name:'Supreme Intellect',pic:[34,25],desc:loc("Confers various powers to your minigames while active.<br>See the bottom of each minigame for more details.")},
+			21:{name:'Dragon Guts',pic:[35,25],desc:loc("You can attract <b>%1 more wrinklers</b>.",2)+'<br>'+loc("Wrinklers digest <b>%1% more cookies</b>.",20)+'<br>'+loc("Wrinklers explode into <b>%1% more cookies</b>.",20)},
 		};
 		
 		Game.dragonAurasBN={};for (var i in Game.dragonAuras){Game.dragonAurasBN[Game.dragonAuras[i].name]=Game.dragonAuras[i];}

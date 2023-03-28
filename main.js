@@ -8593,6 +8593,7 @@ Game.Launch=function()
 					//frames : if present, slice the pic in [frames] horizontal slices and pick one at random
 					
 					var pic=this.art.pic;
+					if (this.id==19) pic='canvasAdd';
 					var bg=this.art.bg;
 					var xV=this.art.xV||0;
 					var yV=this.art.yV||0;

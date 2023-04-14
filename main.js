@@ -16353,6 +16353,13 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 				}
 			}
 		}
+		Game.loadAscendCalibrator=function()
+		{
+			Game.loadAscendCalibrator=0;
+			var script=document.createElement('script');
+			script.setAttribute('src','ascendCalibrator.js'+'?r='+Game.version);
+			document.head.appendChild(script);
+		}
 		Game.EditAscend=function()
 		{
 			if (!Game.DebuggingPrestige)

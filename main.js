@@ -4486,6 +4486,8 @@ Game.Launch=function()
 			Game.AscendOffY+=(Game.AscendOffYT-Game.AscendOffY)*0.5;
 			Game.AscendZoom+=(Game.AscendZoomT-Game.AscendZoom)*0.25;
 			if (Math.abs(Game.AscendZoomT-Game.AscendZoom)<0.005) Game.AscendZoom=Game.AscendZoomT;
+			if (Math.abs(Game.AscendOffXT-Game.AscendOffX)<0.005) Game.AscendOffX=Game.AscendOffXT;
+			if (Math.abs(Game.AscendOffYT-Game.AscendOffY)<0.005) Game.AscendOffY=Game.AscendOffYT;
 			
 			
 			if (Game.mouseDown && !Game.promptOn)

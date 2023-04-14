@@ -4496,35 +4496,6 @@ Game.Launch=function()
 					Game.AscendDragY=Game.mouseY;
 				}
 				Game.AscendDragging=1;
-				
-				if (Game.DebuggingPrestige)
-				{
-					if (Game.SelectedHeavenlyUpgrade)
-					{
-						Game.tooltip.hide();
-						//drag upgrades around
-						var me=Game.SelectedHeavenlyUpgrade;
-						me.posX+=(Game.mouseX-Game.AscendDragX)*(1/Game.AscendZoomT);
-						me.posY+=(Game.mouseY-Game.AscendDragY)*(1/Game.AscendZoomT);
-						var posX=me.posX;//Math.round(me.posX/Game.AscendGridSnap)*Game.AscendGridSnap;
-						var posY=me.posY;//Math.round(me.posY/Game.AscendGridSnap)*Game.AscendGridSnap;
-						l('heavenlyUpgrade'+me.id).style.left=Math.floor(posX)+'px';
-						l('heavenlyUpgrade'+me.id).style.top=Math.floor(posY)+'px';
-						for (var ii in me.parents)
-						{
-							var origX=0;
-							var origY=0;
-							var targX=me.posX+28;
-							var targY=me.posY+28;
-							if (me.parents[ii]!=-1) {origX=me.parents[ii].posX+28;origY=me.parents[ii].posY+28;}
-							var rot=-(Math.atan((targY-origY)/(origX-targX))/Math.PI)*180;
-							if (targX<=origX) rot+=180;
-							var dist=Math.floor(Math.sqrt((targX-origX)*(targX-origX)+(targY-origY)*(targY-origY)));
-							
-							l('heavenlyLink'+me.id+'-'+ii).style='width:'+dist+'px;transform:rotate('+rot+'deg);left:'+(origX)+'px;top:'+(origY)+'px;';
-						}
-					}
-				}
 				if (!Game.SelectedHeavenlyUpgrade)
 				{
 					Game.AscendOffXT+=(Game.mouseX-Game.AscendDragX)*(1/Game.AscendZoomT);
@@ -4587,18 +4558,6 @@ Game.Launch=function()
 				else l('ascendModeButton').style.display='none';
 			}
 			Game.heavenlyChipsDisplayed+=(Game.heavenlyChips-Game.heavenlyChipsDisplayed)*0.4;
-			
-			if (Game.DebuggingPrestige && Game.T%10==0)
-			{
-				var str='';
-				for (var i in Game.PrestigeUpgrades)
-				{
-					var me=Game.PrestigeUpgrades[i];
-					if (me.placedByCode) continue;
-					str+=me.id+':['+Math.floor(me.posX)+','+Math.floor(me.posY)+'],';
-				}
-				l('upgradePositions').value='Game.UpgradePositions={'+str+'};';
-			}
 			//if (Game.T%5==0) Game.BuildAscendTree();
 		}
 		Game.AscendRefocus=function()
@@ -4708,40 +4667,6 @@ Game.Launch=function()
 			str+='</div>';
 			Game.ascendUpgradesl.innerHTML=str;
 			
-			if (Game.DebuggingPrestige)
-			{
-				for (var i in Game.PrestigeUpgrades)
-				{
-					var me=Game.PrestigeUpgrades[i];
-					AddEvent(l('heavenlyUpgrade'+me.id),'mousedown',function(me){return function(){
-						if (!Game.DebuggingPrestige) return;
-						if (Game.keys[16] && typeof LASTHEAVENLYSELECTED!=='undefined' && me!=LASTHEAVENLYSELECTED)
-						{
-							//when clicking an upgrade with ctrl, set it as reference point; clicking any sibling upgrade with shift will align it in a nice arc around their shared parent
-							var parent=0;
-							for (var i=0;i<me.parents.length;i++)
-							{
-								if (LASTHEAVENLYSELECTED.parents.indexOf(me.parents[i])!=-1) parent=me.parents[i];
-							}
-							if (parent)
-							{
-								var origX=parent.posX;var origY=parent.posY;
-								var targX=LASTHEAVENLYSELECTED.posX;var targY=LASTHEAVENLYSELECTED.posY;
-								var rot=Math.atan2(targY-origY,origX-targX)-Math.PI/2;
-								var dist=Math.floor(Math.sqrt((targX-origX)*(targX-origX)+(targY-origY)*(targY-origY)));
-								me.posX=parent.posX+Math.sin(rot-Math.PI*2/8)*dist;
-								me.posY=parent.posY+Math.cos(rot-Math.PI*2/8)*dist;
-							}
-							LASTHEAVENLYSELECTED=me;console.log('Set reference point to',me.name,'.');
-						}
-						if (Game.keys[17]) {LASTHEAVENLYSELECTED=me;console.log('Set reference point to',me.name,'.');}
-						Game.SelectedHeavenlyUpgrade=me;
-					}}(me));
-					AddEvent(l('heavenlyUpgrade'+me.id),'mouseup',function(me){return function(){
-						if (Game.SelectedHeavenlyUpgrade==me) {Game.SelectedHeavenlyUpgrade=0;Game.BuildAscendTree();}
-					}}(me));
-				}
-			}
 			setTimeout(function(){Game.tooltip.shouldHide=true;},100);
 		}
 		

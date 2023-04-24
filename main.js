@@ -1529,6 +1529,27 @@ Game.Launch=function()
 
 		Game.updateLog +=
 
+			'</div><div class="subsection update small">' +
+			'<div class="title">22/03/2023 - beta patch</div>' +
+			'<div class="listing">&bull; buffed new dragon aura</div>' +
+			'<div class="listing">&bull; expanded the final building\'s customizer</div>' +
+			'<div class="listing">&bull; touched up old Santa sprites</div>' +
+			'<div class="listing">&bull; added some cursor upgrades and achievs</div>' +
+
+			'</div><div class="subsection update">' +
+			'<div class="title">08/03/2023 - often imitated, never duplicated</div>' +
+			'<div class="listing">&bull; added the final, 20th building</div>' +
+			'<div class="listing" style="font-size:80%;margin-left:20px;">-currently, no more buildings are planned beyond this one; there are still many more updates to come, but future patches will focus on adding minigames to the existing buildings along with other features!</div>' +
+			'<div class="listing">&bull; added another tier of upgrades and achievements</div>' +
+			'<div class="listing">&bull; updated flavored milk icons</div>' +
+			'<div class="listing">&bull; added visual cue for shimmering veil</div>' +
+			(App ? '<div class="listing">&bull; removed Discord rich presence support (plugin currently broken)</div>' : '') +
+			'<div class="listing">&bull; Cookie Clicker turns 10 years old this year. Thank you for clicking cookies with us!</div>' +
+
+			'</div><div class="subsection update small">' +
+			'<div class="title">08/08/2022 - the baker with all the gifts</div>' +
+			'<div class="listing">&bull; Cookie Clicker turns 9, celebrate and send other players presents with the new heavenly upgrade!</div>' +
+
 			'</div><div class="subsection update">' +
 			'<div class="title">31/05/2022 - a mind of its own</div>' +
 			'<div class="listing">&bull; added a new building</div>' +
@@ -8628,13 +8649,12 @@ Game.Launch=function()
 									ctx.fillText('white',2+ctx.measureText('Names in ').width,8);
 								}
 							}
-							else if (this.name == 'You') {
-								var marginW = -16;
-								var marginH = 64;
-								for (var i = 0; i < len; i++) {
-									var pic = this.pics[i];
-									if (this.mousePos[0] >= pic.x - marginW && this.mousePos[0] < pic.x + 64 + marginW && this.mousePos[1] >= pic.y - marginH && this.mousePos[1] < pic.y + 64 + marginH) selected = i;
-								}
+						} else if (this.name == 'You') {
+							var marginW = -16;
+							var marginH = 64;
+							for (var i = 0; i < len; i++) {
+								var pic = this.pics[i];
+								if (this.mousePos[0] >= pic.x - marginW && this.mousePos[0] < pic.x + 64 + marginW && this.mousePos[1] >= pic.y - marginH && this.mousePos[1] < pic.y + 64 + marginH) selected = i;
 							}
 						}
 					}

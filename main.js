@@ -2953,7 +2953,7 @@ Game.Launch=function()
 			(type==3?'\n	legacy start date : ':'')+parseInt(Game.fullDate)+';'+
 			(type==3?'\n	date when we last opened the game : ':'')+parseInt(Game.lastDate)+';'+
 			(type==3?'\n	bakery name : ':'')+(Game.bakeryName)+';'+
-			(type==3?'\n	seed : ':'')+(Game.seed)+
+			(type==3?'\n	seed : ':'')+(Game.seed)+';'+
 			(type==3?'\n	appearance : ':'')+(Game.YouCustomizer.save())+
 			'|';
 			if (type==3) str+='\n\nPacked preferences bitfield\n	';

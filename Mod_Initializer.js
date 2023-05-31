@@ -267,7 +267,7 @@ Mods.getSave = (callback) => {
 
 Mods.GetMods = function(callback){
 	let ajaxFailed = true;
-	ajax(folder + 'Mods/mods.json', (info) => {
+	ajax('Mods/mods.json', (info) => {
 		ajaxFailed = false;
 		info = JSON.parse(info)
 		let mods = []

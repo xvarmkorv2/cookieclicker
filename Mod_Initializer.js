@@ -248,7 +248,7 @@ Mods.modsPopup = function () {
 		Game.toReload = true;
 	});
 }
-Mods.workshopPopup = () =>{Game.Notify("No","The Web Version of Cookie Clicker does not have Steam Workshop support.")}
+Mods.workshopPopup = () =>{Game.Notify("No","The Web Version of Cookie Clicker does not have Steam Workshop support (it is not possible).")}
 
 Mods.writeModUI=()=>
 {
@@ -266,64 +266,26 @@ Mods.getSave = (callback) => {
 };
 
 Mods.GetMods = function(callback){
-	let mods = []
-	let promises = [];
-	const getInfo = (path) => {
-		promises.push(new Promise((resolve, reject) => {
-			Mods.LoadModInfo(path, (mod)=>{mods.push(mod);resolve()}, () => { console.log(`Failed to load mod info:`, path); resolve(); });
-		}));
-	}
+	let ajaxFailed = true;
+	ajax(folder + 'Mods/mods.json', (mods) => {
+		ajaxFailed = false;
+		info = JSON.parse(info)
+		let mods = []
+		let promises = [];
+		const getInfo = (path) => {
+			promises.push(new Promise((resolve, reject) => {
+				Mods.LoadModInfo(path, (mod)=>{mods.push(mod);resolve()}, () => { console.log(`Failed to load mod info:`, path); resolve(); });
+			}));
+		}
+		for (let i = 0; i < info.length; i++) {getInfo(info[i])}
 
-	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/CCSE')
-	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/Casino')
-	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/BlackholeInverter')
-	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/DecideDestiny')
-	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/TimerWidget')
-	getInfo('https://klattmose.github.io/CookieClicker/SteamMods/AmericanSeason')
-	getInfo('Mods/ameliaWatson')
-	getInfo('Mods/wikiMinigame')
-	getInfo('Mods/cws-uniqueJellicles')
-	getInfo('Mods/cws-uniqueGrandmas')
-	getInfo('Mods/cws-squashyPress')
-	getInfo('Mods/cws-alignedCookieAchievements')
-	getInfo('Mods/cws-betterTrueSanta')
-	getInfo('Mods/cws-consistentUpgradeBuildingIcons')
-	getInfo('Mods/ccideas')
-	getInfo('Mods/Pride_Backgrounds')
-	getInfo('Mods/betterHighResSupport')
-	getInfo('Mods/BetterMilk')
-	getInfo('Mods/BetterMilkIcons')
-	getInfo('Mods/eva_builds')
-	getInfo('Mods/evangelion_skin')
-	getInfo('Mods/grandmacookie')
-	//getInfo('Mods/MoreBackgroundOptions')
-	getInfo('Mods/nabiBetterAccounting')
-	getInfo('Mods/nutMod')
-	getInfo('Mods/perMinuteMod')
-	getInfo('Mods/prestigeCalc')
-	getInfo('Mods/ReloadGameButton')
-	getInfo('Mods/cws-mittenCursors')
-	getInfo('Mods/Burger%20cookie%201.0')
-	getInfo('Mods/Food%20Buildings%201.0')
-	getInfo('Mods/Fries%20cookie%201.0')
-	getInfo('Mods/Pizza%20cookie%201.0')
-	getInfo('Mods/Plunger%20wrinklers%201.0')
-	getInfo('Mods/shimejiMod')
-	getInfo('Mods/time-in-bank')
-	getInfo('Mods/GuraMod')
-	getInfo('Mods/Just%20Monika!')
-	getInfo('Mods/fortuneFacts')
-	getInfo('Mods/modLogger')
-	getInfo('Mods/moreMonospaceNumbers')
-	getInfo('Mods/evenMoreBackgrounds')
-	getInfo('Mods/MoreHeavenlyUpgrades')
-	getInfo('Mods/betterCCSEVersionNumber')
-	getInfo('Mods/AHatInTimeMusic')
-
-	Promise.all(promises)
-		.then(() => {
-			callback(mods)
-		});
+		Promise.all(promises)
+			.then(() => {
+				callback(mods)
+			});
+	})
+	setTimeout(() => { if (ajaxFailed) { callback() } }, 2500)
+	
 }
 
 Mods.LoadMods = function (callback) {

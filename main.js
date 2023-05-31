@@ -1529,22 +1529,17 @@ Game.Launch=function()
 
 		Game.updateLog +=
 
-			'</div><div class="subsection update small">' +
-			'<div class="title">22/03/2023 - beta patch</div>' +
-			'<div class="listing">&bull; buffed new dragon aura</div>' +
-			'<div class="listing">&bull; expanded the final building\'s customizer</div>' +
-			'<div class="listing">&bull; touched up old Santa sprites</div>' +
-			'<div class="listing">&bull; added some cursor upgrades and achievs</div>' +
-
-			'</div><div class="subsection update">' +
-			'<div class="title">08/03/2023 - often imitated, never duplicated</div>' +
-			'<div class="listing">&bull; added the final, 20th building</div>' +
-			'<div class="listing" style="font-size:80%;margin-left:20px;">-currently, no more buildings are planned beyond this one; there are still many more updates to come, but future patches will focus on adding minigames to the existing buildings along with other features!</div>' +
-			'<div class="listing">&bull; added another tier of upgrades and achievements</div>' +
-			'<div class="listing">&bull; updated flavored milk icons</div>' +
-			'<div class="listing">&bull; added visual cue for shimmering veil</div>' +
-			(App ? '<div class="listing">&bull; removed Discord rich presence support (plugin currently broken)</div>' : '') +
-			'<div class="listing">&bull; Cookie Clicker turns 10 years old this year. Thank you for clicking cookies with us!</div>' +
+			'</div><div class="subsection update">'+
+			'<div class="title">07/05/2023 - often imitated, never duplicated</div>'+
+			'<div class="listing">&bull; added the final, 20th building</div>'+
+			'<div class="listing" style="font-size:80%;margin-left:20px;">-currently, no more buildings are planned beyond this one; there are still many more updates to come, but future patches will focus on adding minigames to the existing buildings along with other features!</div>'+
+			'<div class="listing">&bull; added another tier of upgrades and achievements</div>'+
+			'<div class="listing">&bull; updated flavored milk icons</div>'+
+			'<div class="listing">&bull; added visual cue for shimmering veil</div>'+
+			'<div class="listing">&bull; touched up old Santa sprites</div>'+
+			'<div class="listing">&bull; new heavenly upgrade that lets you trade presents with other players</div>'+
+			(App?'<div class="listing">&bull; removed Discord rich presence support (plugin currently broken)</div>':'')+
+			'<div class="listing">&bull; Cookie Clicker turns 10 years old this year. Thank you for clicking cookies with us!</div>'+
 
 			'</div><div class="subsection update small">' +
 			'<div class="title">08/08/2022 - the baker with all the gifts</div>' +
@@ -3793,8 +3788,11 @@ Game.Launch=function()
 				if (cookiesForfeited>=1000000000000000000000000000000000000000000000000) Game.Win('Lazarus');
 				if (cookiesForfeited>=1000000000000000000000000000000000000000000000000000) Game.Win('Smurf account');
 				if (cookiesForfeited>=1000000000000000000000000000000000000000000000000000000) Game.Win('If at first you don\'t succeed');
+				if (cookiesForfeited>=1000000000000000000000000000000000000000000000000000000000) Game.Win('No more room in hell');
 				
 				if (Math.round(Game.cookies)==1000000000000) Game.Win('When the cookies ascend just right');
+				
+				if (Game.hasBuff('Loan 1') || Game.hasBuff('Loan 2') || Game.hasBuff('Loan 3')) Game.Win('Debt evasion');
 			}
 			
 			Game.killBuffs();
@@ -5372,6 +5370,7 @@ Game.Launch=function()
 			if (Game.Has('Kitten analysts')) catMult*=(1+Game.milkProgress*0.125*milkMult);
 			if (Game.Has('Kitten executives')) catMult*=(1+Game.milkProgress*0.115*milkMult);
 			if (Game.Has('Kitten admins')) catMult*=(1+Game.milkProgress*0.11*milkMult);
+			if (Game.Has('Kitten strategists')) catMult*=(1+Game.milkProgress*0.105*milkMult);
 			if (Game.Has('Kitten angels')) catMult*=(1+Game.milkProgress*0.1*milkMult);
 			if (Game.Has('Fortune #103')) catMult*=(1+Game.milkProgress*0.05*milkMult);
 			
@@ -7535,6 +7534,7 @@ Game.Launch=function()
 						if (Game.Has('Kitten analysts')) list.push('News : are your spending habits sensible? For a hefty fee, these kitten analysts will tell you!');
 						if (Game.Has('Kitten executives')) list.push('News : kittens strutting around in hot little business suits shouting cut-throat orders at their assistants, possibly the cutest thing this reporter has ever seen!');
 						if (Game.Has('Kitten admins')) list.push('News : all systems nominal, claim kitten admins obviously in way over their heads.');
+						if (Game.Has('Kitten strategists')) list.push('News : overpaid kittens scratching their fuzzy little heads trying to find new ways to get cookies in your shopping cart!');
 						if (Game.Has('Kitten angels')) list.push('News : "Try to ignore any ghostly felines that may be purring inside your ears," warn scientists. "They\'ll just lure you into making poor life choices."');
 						if (Game.Has('Kitten wages')) list.push('News : kittens break glass ceiling! Do they have any idea how expensive those are!');
 						if (Game.HasAchiev('Jellicles')) list.push('News : local kittens involved in misguided musical production, leave audience perturbed and unnerved.');
@@ -16103,6 +16103,36 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 				if (Game.AscendTimer==0)
 				{
 					Game.DrawWrinklers();Timer.track('wrinklers');
+					
+					//shimmering veil
+					if (Game.Has('Shimmering veil [off]'))
+					{
+						ctx.globalAlpha=1;
+						ctx.globalCompositeOperation='lighter';
+						var s=300+Math.sin(Game.T*0.037)*20;
+						var x=Game.cookieOriginX;
+						var y=Game.cookieOriginY;
+						ctx.save();
+						ctx.translate(x,y);
+						ctx.rotate(-Game.T*0.01);
+						ctx.drawImage(Pic('shimmeringVeil.png'),-s/2,-s/2,s,s);
+						ctx.restore();
+						if (Game.prefs.particles)//sparkles
+						{
+							for (i=0;i<6;i++)
+							{
+								var t=Game.T+i*15;
+								var r=(t%30)/30;
+								var a=(Math.floor(t/30)*30*6-i*30)*0.01;
+								var size=32*(1-Math.pow(r*2-1,2));
+								var xx=x+Math.sin(a)*(110+r*16);
+								var yy=y+Math.cos(a)*(110+r*16);
+								ctx.drawImage(Pic('glint.png'),xx-size/2,yy-size/2,size,size);
+							}
+						}
+						ctx.globalCompositeOperation='source-over';
+					}
+					
 					Game.DrawSpecial();Timer.track('evolvables');
 					
 					Game.particlesDraw(2);Timer.track('text particles');
@@ -16527,6 +16557,7 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 			if (Game.milkProgress>=11) Game.Unlock('Kitten analysts');
 			if (Game.milkProgress>=12) Game.Unlock('Kitten executives');
 			if (Game.milkProgress>=13) Game.Unlock('Kitten admins');
+			if (Game.milkProgress>=14) Game.Unlock('Kitten strategists');
 			Game.milkH=Math.min(1, Game.milkProgress) * 0.35;
 			Game.milkHd+=(Game.milkH - Game.milkHd) * 0.02;
 			Game.Milk=Game.Milks[Math.min(Math.floor(Game.milkProgress), Game.Milks.length - 1)];
@@ -16751,6 +16782,7 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 				if (minAmount>=550) {Game.Win('Quincentennial and a half');Game.Unlock('Cosmic chocolate butter biscuit');}
 				if (minAmount>=600) {Game.Win('Sexcentennial');Game.Unlock('Butter biscuit (with butter)');}
 				if (minAmount>=650) {Game.Win('Sexcentennial and a half');Game.Unlock('Everybutter biscuit');}
+				if (minAmount>=700) {Game.Win('Septcentennial');Game.Unlock('Personal biscuit');}
 				
 				if (Game.ascensionMode != 2) {
 					if (Game.handmadeCookies >= 1000) { Game.Win('Clicktastic'); }
@@ -16767,6 +16799,7 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 					if (Game.handmadeCookies >= 10000000000000000000000000) { Game.Win('One...more...click...'); }
 					if (Game.handmadeCookies >= 1000000000000000000000000000) { Game.Win('Clickety split'); }
 					if (Game.handmadeCookies >= 100000000000000000000000000000) { Game.Win('Ain\'t that a click in the head'); }
+					if (Game.handmadeCookies >= 10000000000000000000000000000000) {Game.Win('What\'s not clicking');}
 				}
 				if (Game.handmadeCookies >= 1000) { Game.Unlock('Plastic mouse'); }
 				if (Game.handmadeCookies >= 100000) { Game.Unlock('Iron mouse'); }
@@ -16782,6 +16815,7 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 				if (Game.handmadeCookies >= 10000000000000000000000000) { Game.Unlock('Plasmarble mouse'); }
 				if (Game.handmadeCookies >= 1000000000000000000000000000) { Game.Unlock('Miraculite mouse'); }
 				if (Game.handmadeCookies >= 100000000000000000000000000000) { Game.Unlock('Aetherice mouse'); }
+				if (Game.handmadeCookies >= 10000000000000000000000000000000) {Game.Unlock('Omniplast mouse');}
 				
 				if (Game.cookiesEarned<Game.cookies) Game.Win('Cheated cookies taste awful');
 				
@@ -17042,7 +17076,7 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 					//make products full-opacity if we can buy them
 					var classes='product';
 					var price=me.bulkPrice;
-					if (Game.cookiesEarned>=me.basePrice || me.bought>0) {classes+=' unlocked';lastLocked=0;me.locked=0;} else {classes+=' locked';lastLocked++;me.locked=1;}
+					if (Game.cookiesEarned>=me.basePrice || me.bought>0) {classes+=' unlocked';lastLocked=0;me.locked=0;if (me.id==19){Game.Win('Cookie Clicker');}} else {classes+=' locked';lastLocked++;me.locked=1;}
 					if ((Game.buyMode==1 && Game.cookies>=price) || (Game.buyMode==-1 && me.amount>0)) classes+=' enabled'; else classes+=' disabled';
 					if (lastLocked>2) classes+=' toggledOff';
 					me.l.className=classes;

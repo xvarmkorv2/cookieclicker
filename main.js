@@ -2717,10 +2717,11 @@ Game.Launch=function()
 			AddEvent(el,'mouseover',function(func,el,origin){return function(){Game.tooltip.dynamic=1;Game.tooltip.draw(el,func,origin);};}(func,el,origin));
 			AddEvent(el,'mouseout',function(){Game.tooltip.shouldHide=1;});
 		}
+		Game.tooltip.enableWobble = false
 		Game.tooltip.wobble=function()
 		{
 			//disabled because this effect doesn't look good with the slight slowdown it might or might not be causing.
-			if (this.lastrawtext != this.rawtext && this.lastfrom != this.from)
+			if (Game.tooltip.enableWobble && this.lastrawtext != this.rawtext && this.lastfrom != this.from)
 			{
 				this.tt.className='framed';
 				void this.tt.offsetWidth;

@@ -16536,7 +16536,7 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 				}
 				Game.BigCookieRot = 0
 			}
-			Game.BigCookieCursorOffset+=(Game.BigCookieSize - Game.BigCookieCursorOffset) * 0.25;
+			Game.BigCookieCursorOffset+=(Game.BigCookieSize - Game.BigCookieCursorOffset) * 0.125;
 			if (Game.catchupLogic==0) { Timer.track("big cookie size", false) }
 			Game.particlesUpdate();
 			if (Game.mousePointer) l('sectionLeft').style.cursor='pointer';

@@ -3937,6 +3937,8 @@ Game.Launch=function()
 			
 			if (hard)
 			{
+				Game.YouCustomizer.resetGenes();
+				
 				Game.clicksThisSession=0;
 				if (Game.T>Game.fps*5 && Game.ReincarnateTimer==0)//fade out of black and pop the cookie
 				{

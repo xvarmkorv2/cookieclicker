@@ -1,0 +1,11 @@
+{
+ "Name": "Roxanne Mod",
+ "ID": "roxy",
+ "Author": "CITRUS",
+ "Description": "This mod simply replaces the cookie with an image of Roxanne. Maybe I'll add something useful, we'll see.",
+ "ModVersion": 1,
+ "GameVersion": 2.043,
+ "Date": "13/08/2021",
+ "Disabled": 1,
+ "Workshop": "2700745541"
+}

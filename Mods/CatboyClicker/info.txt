@@ -1,0 +1,13 @@
+{
+ "Name": "Catboy Clicker",
+ "ID": "catboyclicker",
+ "Author": "Feline Fowl",
+ "Description": "Replaces the Big Cookie with Felix from Re:Zero, and replaces the click sound effect with a \"nya\". Catboys are Big Noms!\n\nCredits\n========\n- Nyaa sound effect: https://www.youtube.com/watch?v=XZ5_Wa-0Ams\n-Felix image found on RedBubble, with the background edited out: https://www.redbubble.com/i/poster/Felix-Ferris-Argyle-Re-Zero-Starting-Life-in-Another-World-by-muwumbe/37903716.LVTDI",
+ "ModVersion": 1,
+ "GameVersion": 2.043,
+ "Date": "12/02/22",
+ "Dependencies": [],
+ "AllowSteamAchievs": 1,
+ "Disabled": 1,
+ "Workshop": "2750844276"
+}

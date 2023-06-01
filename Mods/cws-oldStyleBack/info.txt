@@ -1,0 +1,11 @@
+{
+ "Name": "Old Style Backgrounds",
+ "ID": "cws-oldStyleBack",
+ "Author": "Camwoodstock & Tori",
+ "Description": "Replaces the pixelated backgrounds with backgrounds based off the older graphics. This version uses the old graphics directly when applicable.",
+ "ModVersion": 2.01,
+ "GameVersion": 2.048,
+ "Date": "16/06/2022",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2816892006"
+}

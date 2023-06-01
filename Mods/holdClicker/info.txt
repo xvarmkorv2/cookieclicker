@@ -1,0 +1,11 @@
+{
+ "Name": "Hold Clicker(Your hand saver)",
+ "ID": "HoldClicker",
+ "Author": "harry0805",
+ "Description": "Hold mouse to autoclick cookie. Saves you form going to the hospital by playing this game.",
+ "ModVersion": 2,
+ "GameVersion": 2.048,
+ "Date": "18/02/2023",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2934802583"
+}

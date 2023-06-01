@@ -1,0 +1,12 @@
+{
+ "Name": "Sort Synergy Tooltips",
+ "ID": "sort synergy tooltips",
+ "Author": "PurplePi",
+ "Description": "sorts the synergy section on building tooltips\nnote: does not affect the grandma synergies due to differences in how the game handles them",
+ "ModVersion": 1,
+ "GameVersion": 2.043,
+ "Date": "19/12/2021",
+ "Disabled": 1,
+ "AllowSteamAchievs": 1,
+ "Workshop": "2687503712"
+}

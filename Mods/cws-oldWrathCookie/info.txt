@@ -1,0 +1,11 @@
+{
+ "Name": "Elder Wrath Cookies",
+ "ID": "cws-oldWrathCookies",
+ "Author": "Camwoodstock & Tori",
+ "Description": "Instead of a glaze, your wrath cookies have a nice raspberry-esque swirl, just like grandmatriachs used to make.",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "17/06/2022",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2827885204"
+}

@@ -1,0 +1,11 @@
+{
+ "Name": "Borderless Cookie Achievements",
+ "ID": "cws-borderlessCookieAchievements",
+ "Author": "Camwoodstock & Tori",
+ "Description": "A mod that removes the borders around the various Cookies baked and Cookies per Second Achievements. Made with the Icon Crates option in mind, please toggle this if you haven't already! Compatible with Aligned Cookie Achievements, does not disable steam achievements.",
+ "ModVersion": 2,
+ "GameVersion": 2.048,
+ "Date": "10/08/2022",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2847082389"
+}

@@ -1,0 +1,11 @@
+{
+ "Name": "Wrinkler De-Googly-Eye Mod",
+ "ID": "cws-nogooglyeyesmod",
+ "Author": "Camwoodstock & Tori",
+ "Description": "Do you find the original wrinklers ugly cute and think they shouldn't have been googly eye'd for No Scary Stuff? Nothin' a little elbow grease and goo gone can't fix! (Don't worry, it's humane, as Wrinklers have surprising acidic tolerances!)",
+ "ModVersion": 3,
+ "GameVersion": 2.048,
+ "Date": "29/06/2022",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2685363832"
+}

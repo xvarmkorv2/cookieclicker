@@ -1,0 +1,11 @@
+{
+ "Name": "Better Gold Achievements",
+ "ID": "cws-betterGoldenAchievements",
+ "Author": "Camwoodstock & Tori",
+ "Description": "Makes the Golden Cookie-related and Golden Sugar Lump shadow achievements more in-line with other Golden Cookie achievements, changes the Shiny Wrinkler achievement icon, and makes Fading Luck/Early Bird more distinct.",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "01/07/2022",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2828887862"
+}

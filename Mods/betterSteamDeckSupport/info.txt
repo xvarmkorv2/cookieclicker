@@ -1,0 +1,13 @@
+{
+ "Name": "Better Steam Deck Support",
+ "ID": "betterSteamDeckSupport",
+ "Author": "boba",
+ "Description": "A mod that increases the size of many things on screen for better compatibility with the Steam Deck.",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "5/31/2022",
+ "Dependencies": [],
+ "Disabled": 0,
+ "AllowSteamAchievs": 1,
+ "Workshop": "2816006266"
+}

@@ -1,0 +1,12 @@
+{
+ "Name": "Custom Music Adder",
+ "ID": "music adder",
+ "Author": "Nathan Boehm",
+ "Description": "Adds a setting to add custom music tracks to the Jukebox.",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "04/06/2022",
+ "Dependencies": [],
+ "AllowSteamAchievs": 1,
+ "Workshop": "2817438180"
+}

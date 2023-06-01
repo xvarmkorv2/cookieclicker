@@ -1,0 +1,11 @@
+{
+ "Name": "Better Trio Achievements",
+ "ID": "cws-tripleIcons",
+ "Author": "Camwoodstock & Tori",
+ "Description": "All the achievement pairs that come in trios (Ascensions, Wrinklers, Deer, Elders) now have more distinct icons, based upon the old plain-buttergold-red pattern from older versions of the game. (Compatible with Elder Elder Icons! Place this below it.)",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "01/07/2022",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2829410682"
+}

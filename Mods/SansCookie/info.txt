@@ -1,0 +1,11 @@
+{
+ "Name": "Sans Cookie",
+ "ID": "SansCookie",
+ "Author": "Real_RUBB3R",
+ "Description": "Puts Sans' face onto the big cookie, and adds a custom click sound if you wish to remove the custom sound, simply open the \"main.JS\" file and delete all the lines that begin with \"Sounds\". The sound also replaceS the sound for when you click Krumblor, I couldn't find a way to fix this, the only thing I managed to do was make the sound simply not play at all. This mod also replaces the \"imperfectCookie\", you can find out what it is for yourself :)",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "9/19/2022",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2865374826"
+}

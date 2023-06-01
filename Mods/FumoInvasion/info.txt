@@ -1,0 +1,13 @@
+{
+ "Name": "Fumo Invasion",
+ "ID": "FumoInvasion",
+ "Author": "purebluez / mineman3 / gogy",
+ "Description": "Fumo Fumo Fumo Fumo",
+ "ModVersion": 1.3,
+ "GameVersion": 2.04,
+ "Date": "9/10/22",
+ "Dependencies": [],
+ "Disabled": 1,
+ "AllowSteamAchievs": 1,
+ "Workshop": "2861173025"
+}

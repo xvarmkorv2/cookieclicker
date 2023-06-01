@@ -1,0 +1,12 @@
+{
+ "Name": "Hat Kid Plush",
+ "ID": "Hat Kid Plush Mod",
+ "Author": "Combine",
+ "Description": "Big Cookie replaced with Hat Kid from A Hat in Time as a Plushy, Plushy is from The Yetee",
+ "ModVersion": 2,
+ "GameVersion": 2.048,
+ "Date": "5/01/2023",
+ "Dependencies": [],
+ "Disabled": 1,
+ "Workshop": "2912979785"
+}

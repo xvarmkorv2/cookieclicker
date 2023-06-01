@@ -1,0 +1,13 @@
+{
+ "Name": "Cookies Per Hour",
+ "ID": "cph",
+ "Author": "Globbo",
+ "Description": "Inspired by Claudz's Cookie Per Minute mod, this adds another counter above the cookie showing you how many cookies you produce in an hour of idling. Not as useful, but could come in handy late game.",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "12/28/2022",
+ "AllowSteamAchievs": 1,
+ "Dependencies": [],
+ "Disabled": 1,
+ "Workshop": "2908465306"
+}

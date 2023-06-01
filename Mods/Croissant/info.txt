@@ -1,0 +1,13 @@
+{
+ "Name": "Croissant Mod",
+ "ID": "Croissant Mod",
+ "Author": "Portaltree",
+ "Description": "A mod that changes wrinklers to tasty croissants",
+ "ModVersion": 2.3,
+ "GameVersion": 2.04,
+ "Date": "18/12/2021",
+ "Dependencies": [],
+ "Disabled": 1,
+ "AllowSteamAchievs": 1,
+ "Workshop": "2756698874"
+}

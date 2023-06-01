@@ -347,7 +347,7 @@ Mods.LoadMods = function (callback) {
 				modLoadCheck(Game.LoadMod, 'https://angelolz.dev/mods/ccrpc/main.js')
 			}
 			modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/SpicedCookies/dist/main.js')
-			//modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/InsugarTrading/dist/main.js')
+			modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/InsugarTrading/dist/main.js')
 		}
 		Promise.all(promises)
 			.then(() => {

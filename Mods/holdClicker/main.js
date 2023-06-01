@@ -18,11 +18,10 @@ Game.registerMod('HoldClicker', {
         // Menu
 
 		var UpdateMenu = Game.UpdateMenu.bind({});
-
-        Game.UpdateMenu = () => {
-            UpdateMenu();
-            if (Game.onMenu=='prefs') {
-                let listings = document.getElementsByClassName('listing');
+        if (CCSE){
+			if(!Game.customOptionsMenu) Game.customOptionsMenu = [];
+			Game.customOptionsMenu.push(function () {
+				let listings = document.getElementsByClassName('listing');
                 listings[listings.length - 1].innerHTML += `
                 <br>
                 <div class="sliderBox">
@@ -30,8 +29,23 @@ Game.registerMod('HoldClicker', {
                     <div style="float:right;" id="speedSliderValue">${this.config.speed}</div>
                     <input class="slider" id="speedSlider" style="clear:both;" type="range" min="1" max="30" step="1" value="${this.config.speed}" oninput="Game.mods.HoldClicker.config.speed = l('speedSlider').value; l('speedSliderValue').innerHTML = l('speedSlider').value"></input>
                 </div>`;
-            }
-        }
+			});
+		} else {
+			var menu = Game.UpdateMenu;
+			Game.UpdateMenu = function () {
+				menu();
+				if (Game.onMenu == 'prefs') {
+					let listings = document.getElementsByClassName('listing');
+                    listings[listings.length - 1].innerHTML += `
+                    <br>
+                    <div class="sliderBox">
+                        <div style="float:left;">Clicks per second</div>
+                        <div style="float:right;" id="speedSliderValue">${this.config.speed}</div>
+                        <input class="slider" id="speedSlider" style="clear:both;" type="range" min="1" max="30" step="1" value="${this.config.speed}" oninput="Game.mods.HoldClicker.config.speed = l('speedSlider').value; l('speedSliderValue').innerHTML = l('speedSlider').value"></input>
+                    </div>`;
+				}
+			}
+		}
 
     },
 

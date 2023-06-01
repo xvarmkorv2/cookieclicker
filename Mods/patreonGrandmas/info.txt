@@ -1,0 +1,11 @@
+{
+ "Name": "Patreon Grandmas",
+ "ID": "patreonGrandmas",
+ "Author": "OpenSauce",
+ "Description": "Re-enables the Patreon grandma names that are strangely absent from the Steam version of the game",
+ "ModVersion": 2,
+ "GameVersion": 2.048,
+ "Date": "25/02/2023",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2688010145"
+}

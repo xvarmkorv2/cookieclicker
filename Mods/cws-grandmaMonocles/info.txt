@@ -1,0 +1,11 @@
+{
+ "Name": "Grandma Monocles",
+ "ID": "cws-grandmonocles",
+ "Author": "Camwoodstock & Tori",
+ "Description": "Gives your Banker Grandmas some nice, fashionable monocles (or grandmonocles, as the case may be). Compatible with the Unique Grandma icons mod!",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "12/11/2022",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2900325886"
+}

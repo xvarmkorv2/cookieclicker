@@ -1,0 +1,13 @@
+{
+ "Name": "RTX Wrinkler",
+ "ID": "rtxon",
+ "Author": "SmileParadise",
+ "Description": "Changes the wrinklers with RTX3090.",
+ "ModVersion": 1.1,
+ "GameVersion": 2.04,
+ "Date": "28/06/2022",
+ "Dependencies": [],
+ "Disabled": 1,
+ "AllowSteamAchievs": 1,
+ "Workshop": "2828085063"
+}

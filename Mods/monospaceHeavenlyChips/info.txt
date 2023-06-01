@@ -1,0 +1,12 @@
+{
+ "Name": "Monospace Heavenly Chips",
+ "ID": "monospace heavenly chips",
+ "Author": "Repsej",
+ "Description": "Makes the heavenly chips ticker use a monospace font.",
+ "ModVersion": 1.01,
+ "GameVersion": 2.048,
+ "Date": "28/01/2023",
+ "Disabled": 0,
+ "AllowSteamAchievs": 1,
+ "Workshop": "2924746314"
+}

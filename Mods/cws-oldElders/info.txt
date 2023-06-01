@@ -1,0 +1,11 @@
+{
+ "Name": "Elder Elder Pact Icon",
+ "ID": "cws-oldElders",
+ "Author": "Camwoodstock & Tori",
+ "Description": "Do you miss the original Elder Pact icon? Us too. Restore it (and the achievements and upgrades that used its icon) to its original glory.",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "16/06/2022",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2821912029"
+}

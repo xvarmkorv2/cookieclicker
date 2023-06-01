@@ -1,0 +1,11 @@
+{
+ "Name": "Familiar Madeline",
+ "ID": "cws-oldMadeline",
+ "Author": "Camwoodstock & Tori",
+ "Description": "Makes the forgotten madeline achievement icon use the madeline from older versions of the game. A fairly low-key change, but proof Dashnet Forums--er, Farms never truly forgets. Happy 9th Birthday!",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "08/08/2022",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2846263089"
+}

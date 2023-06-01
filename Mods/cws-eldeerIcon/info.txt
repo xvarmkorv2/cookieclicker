@@ -1,0 +1,11 @@
+{
+ "Name": "Unique Eldeer Icon",
+ "ID": "cws-eldeerIcon",
+ "Author": "Camwoodstock & Tori",
+ "Description": "Changes the Eldeer achievement to have a more distinct icon.",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "26/07/2022",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2840901312"
+}

@@ -1,0 +1,11 @@
+{
+ "Name": "Elder Sugarmuck",
+ "ID": "cws-oldSugarmuck",
+ "Author": "Camwoodstock & Tori",
+ "Description": "A mod that gives Sugarmuck that old reddish outline it had in early versions of the game. Spooky! (Compatible with the Consistent Upgrade & Building Achievement Icons mod!)",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "26/11/2022",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2893787737"
+}

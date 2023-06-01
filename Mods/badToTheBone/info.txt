@@ -1,0 +1,13 @@
+{
+ "Name": "Bad to the Bone Sound Effect",
+ "ID": "bad bone",
+ "Author": "Owen \"Ohead\" Parker",
+ "Description": "Adds the option to make the golden cookie sound the riff from \"Bad to the Bone\"",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "6/20/2022",
+ "Dependencies": [],
+ "Disabled": 1,
+ "AllowSteamAchievs": 1,
+ "Workshop": "2823666619"
+}

@@ -1,0 +1,14 @@
+{
+ "Name": "Goro's here now",
+ "ID": "cws-goroManagers",
+ "Author": "Camwoodstock & Tori",
+ "Description": "A mod that officially adds brainrot to this game, because stealth gay stealth anarchocommunist icon Goro replaces your Kitten Wages icon. Finally, the game is complete.",
+ "ModVersion": 2,
+ "GameVersion": 2.048,
+ "Date": "16/06/2022",
+ "AllowSteamAchievs": 1,
+ "LanguagePacks": [
+  "goroDesc.js"
+ ],
+ "Workshop": "2817332131"
+}

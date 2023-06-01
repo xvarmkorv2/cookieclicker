@@ -1,0 +1,12 @@
+{
+ "Name": "Flybob Wrinklers",
+ "ID": "cws-nectarWrinklers",
+ "Author": "Camwoodstock & Tori",
+ "Description": "Some wrinklers have now come for your nectar. May the Gods above forgive you for your transgressions in this moment.",
+ "ModVersion": 2,
+ "GameVersion": 2.048,
+ "Date": "28/06/2022",
+ "Disabled": 1,
+ "AllowSteamAchievs": 1,
+ "Workshop": "2827626486"
+}

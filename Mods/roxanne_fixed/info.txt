@@ -1,0 +1,12 @@
+{
+ "Name": "Roxanne Mod fixed",
+ "ID": "roxy",
+ "Author": "CITRUS",
+ "Description": "This mod simply replaces the cookie with an image of Roxanne. Maybe I'll add something useful, we'll see. Also Steam Achievements fixed. If you have the original mod, uninstall it.",
+ "ModVersion": 2,
+ "GameVersion": 2.048,
+ "Date": "06/06/2022",
+ "AllowSteamAchievs": 1,
+ "Disabled": 1,
+ "Workshop": "2701984117"
+}

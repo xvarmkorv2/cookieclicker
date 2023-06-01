@@ -1,0 +1,13 @@
+{
+ "Name": "Every sound is earrape",
+ "ID": "earrapesound",
+ "Author": "DucDuyGaming",
+ "Description": "Turn all sound except music into earrape. For those who think life isn't loud enough",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "23/09/2022",
+ "Dependencies": [],
+ "Disabled": 1,
+ "AllowSteamAchievs": 1,
+ "Workshop": "2867019411"
+}

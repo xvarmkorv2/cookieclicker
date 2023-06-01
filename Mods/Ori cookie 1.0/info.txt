@@ -1,0 +1,11 @@
+{
+ "Name": "Ori cookie",
+ "ID": "ori",
+ "Author": "Vajko OwO",
+ "Description": "Changed perfect cookie with ori | Version 1.0",
+ "ModVersion": 1,
+ "GameVersion": 2.043,
+ "Date": "01/21/2022",
+ "AllowSteamAchievs": 1,
+ "Workshop": "2727033647"
+}

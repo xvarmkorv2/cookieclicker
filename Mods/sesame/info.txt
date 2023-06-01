@@ -1,0 +1,13 @@
+{
+ "Name": "Sesame",
+ "ID": "sesame",
+ "Author": "boba",
+ "Description": "Allows for easier modding dev by disabling Steam achievements and allowing the use of the debug console and reloading.",
+ "ModVersion": 1.01,
+ "GameVersion": 2.048,
+ "Date": "6/26/2022",
+ "Dependencies": [],
+ "Disabled": 1,
+ "AllowSteamAchievs": 0,
+ "Workshop": "2792709018"
+}

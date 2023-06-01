@@ -1,0 +1,15 @@
+{
+ "Name": "Pride Backgrounds",
+ "ID": "Pride Backgrounds",
+ "Author": "sighrelief",
+ "Description": "Adds various pride backgrounds to the BG selector heavenly upgrade.",
+ "ModVersion": 1,
+ "GameVersion": 2.048,
+ "Date": "06/13/2022",
+ "Dependencies": [
+  "CCSE"
+ ],
+ "Disabled": 1,
+ "AllowSteamAchievs": 1,
+ "Workshop": "2857528158"
+}

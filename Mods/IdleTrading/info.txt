@@ -1,0 +1,15 @@
+{
+ "Name": "Idle Trading",
+ "ID": "Idle Trading",
+ "Author": "klattmose",
+ "Description": "A helper tool for the Market minigame. Automate the buying and selling of goods at customizable prices.",
+ "ModVersion": 1.9,
+ "GameVersion": 2.048,
+ "Date": "1/09/2021",
+ "Dependencies": [
+  "CCSE"
+ ],
+ "Disabled": 1,
+ "AllowSteamAchievs": 1,
+ "Workshop": "2685515551"
+}

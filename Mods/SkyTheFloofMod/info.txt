@@ -1,0 +1,15 @@
+{
+ "Name": "Kawaii Cookie Clicker",
+ "ID": "skythefloof mod",
+ "Author": "SkyTheFloof",
+ "Description": "Replaces a handful of graphics with cuter ones.",
+ "ModVersion": 2,
+ "GameVersion": 2.048,
+ "Date": "25/01/2023",
+ "Disabled": 1,
+ "AllowSteamAchievs": 1,
+ "LanguagePacks": [
+  "lang.js"
+ ],
+ "Workshop": "2923301202"
+}

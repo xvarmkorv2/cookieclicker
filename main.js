@@ -17238,7 +17238,7 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 		Timer.reset();
 		
 		Game.loopT++;
-		setTimeout(Game.Loop, (1000 / Game.fps) - ((Game.lasttime - Game.time) / (Game.currentFps - Game.fps)));
+		setTimeout(Game.Loop, (1000 / Game.fps) - Math.max(((Game.lasttime - Game.time) / (Game.currentFps - Game.fps)),0));
 	}
 }
 

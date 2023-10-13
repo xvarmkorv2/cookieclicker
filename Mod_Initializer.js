@@ -341,7 +341,7 @@ Mods.LoadMods = function (callback) {
 		if (document.location.search.indexOf('cookistocker') != -1) {
 			modLoadCheck(Game.LoadMod, 'Mods/CookiStocker.js')
 		}
-		if (!Mods.ModData.CCSE.disabled) {
+		if (Mods.ModData.CCSE && !Mods.ModData.CCSE.disabled) {
 			Mods.ChangeCCSE();
 			if (document.location.search.indexOf('richpresence') != -1) {
 				modLoadCheck(Game.LoadMod, 'https://angelolz.dev/mods/ccrpc/main.js')

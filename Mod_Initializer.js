@@ -344,7 +344,7 @@ Mods.LoadMods = function (callback) {
 		if (Mods.ModData.CCSE && !Mods.ModData.CCSE.disabled) {
 			Mods.ChangeCCSE();
 			if (document.location.search.indexOf('richpresence') != -1) {
-				modLoadCheck(Game.LoadMod, 'https://angelolz.dev/mods/ccrpc/main.js')
+				modLoadCheck(Game.LoadMod, 'https://ccrpc.angelolz.one')
 			}
 			modLoadCheck(Game.LoadMod, 'https://staticvariablejames.github.io/SpicedCookies/dist/main.js')
 		}

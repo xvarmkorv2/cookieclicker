@@ -2774,6 +2774,7 @@ Game.Launch=function()
 			if (!App) {
 				ajax('https://api.allorigins.win/raw?url=https://orteil.dashnet.org/patreon/grab.php', Game.GrabDataResponse);
 				//ajax('https://cors.eu.org/https://orteil.dashnet.org/patreon/grab.php',Game.GrabDataResponse);
+				//ajax('https://corsproxy.io/https://orteil.dashnet.org/patreon/grab.php',Game.GrabDataResponse)
 				//ajax('patreon/grab.php',Game.GrabDataResponse);
 			} else App.grabData(function(res){
 				Game.heralds=res?(res.playersN||1):1;

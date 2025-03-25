@@ -15918,7 +15918,7 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 							if (i == 0 && fancy) rot -= Game.T * 0.1;
 							if (i % 50 == 0) rot += 7.2 / 2;
 							if (y > 0 && y < ctx.canvas.height){
-								ctx.rotate((rot / 360) * Math.PI * 2);
+								ctx.rotate((rot + missedRot / 360) * Math.PI * 2);
 								missedRot=0;
 								ctx.drawImage(pic, 0, 0, 32, 32, x, y, 32, 32);
 								//ctx.drawImage(pic,32*(i==spe),0,32,32,x,y,32,32);

@@ -16512,7 +16512,7 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 				Game.BigCookieSize+=Game.BigCookieSizeD;
 				Game.BigCookieSize = Math.max(0, Game.BigCookieSize);
 				Game.BigCookieRotTarget = Game.BigCookieRotTarget + 0.5*(Game.BigCookieRotTarget - Math.sin(Game.T))
-				Game.BigCookieRot = Game.BigCookieRotBase * Game.BigCookieRotTarget
+				Game.BigCookieRot = Game.BigCookieRotBase + Game.BigCookieRotTarget
 			}
 			else {
 				switch (Game.BigCookieState) {

@@ -1,0 +1,11 @@
+{
+	"Name": "CE",
+	"ID": "CEModLib",
+	"Author": "Gabe",
+	"Description": "This mod simplly extends CCSE. It's \"CE\"... CCSEE, Cookie CLicker Script(s) Extend(er/ed) Extender. Future me will add more to this description in the steam-workshop page, so just use that.",
+	"ModVersion": 1,
+	"GameVersion": 2.053,
+	"Date": "5/12/2025",
+	"Dependencies": ["CCSE"],
+	"Disabled": 1
+}

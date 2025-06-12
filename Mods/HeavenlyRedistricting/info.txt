@@ -1,0 +1,11 @@
+{
+	"Name": "Heavenly Redistricting",
+	"ID": "HeavenlyRedistricting",
+	"Author": "Gabe",
+	"Description": "So, as I was making Heavenly Archives, I realized heaven is slowly suffocating. Upgrades overlapping, not enough space for more upgrades, that sort of deal. As you can see here... and as you could probably see with what HA requires... I kinda needed to make some space up in heaven, meaning: Checking for if the player has MHUR or EMHU; Moving related upgrades; Also likely moving some vanilla upgrades (I don't know, I haven't gotten to that part *yet*); So, yeah... I'll try to keep this up to date, but if you add some heavenly upgrades, and your mod isn't deprecated, try to leave breathing room up in heaven, alright? (tl:dr I'm moving heavenly upgrades because there isn't enough space)",
+	"ModVersion": 1,
+	"GameVersion": 2.052,
+	"Date": "23/05/2025",
+	"Dependencies": ["CEModLib"],
+	"Disabled": 1
+}

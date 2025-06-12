@@ -1,0 +1,12 @@
+{
+	"Name": "Heavenly Archives",
+	"ID": "GabeDFPU",
+	"Author": "Gabe",
+	"Description": "Did you know quite a bit of the Dashnet Forums were archived? Did you know some threads/forums had ideas for Prestige (Heavenly) Upgrades? What if, those people's ideas from a DECADE (or so) ago, were made? All (*ahem*, most, not all), of them. With little to no (*ahem*, unless balance is required in major cases) changes made to them? Well, the answer will NOT (*ahem*, it will surprisingly) shock you (unbalanced (*ahem*, rather balanced) and very odd upgrades galore).",
+	"ModVersion": 3,
+	"GameVersion": 2.053,
+	"Date": "November 29th, 2024",
+	"Dependencies": ["CCSE","CEModLib","HeavenlyRedistricting"],
+	"AllowSteamAchievs": 1,
+	"Disabled": 1
+}

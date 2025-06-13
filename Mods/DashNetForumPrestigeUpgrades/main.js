@@ -1,4 +1,5 @@
-Game.registerMod("GabeDFPU",{//this string needs to match the ID provided in your info.txt
+setTimeout(() => {
+	Game.registerMod("GabeDFPU",{//this string needs to match the ID provided in your info.txt
 	init:function(){
 		
 		Game.Notify(`Heavenly Archives loaded!`,`Nearly <b>100+</b> archived heavenly upgrades! And rather unique!<q>Although... some balance has been done, it's not guaranteed to be "balanced"<br><small>(then again, 1:1 Lump:Golden ratio is "balanced")</small></q>`,[16,5]);
@@ -3669,3 +3670,4 @@ Game.registerMod("GabeDFPU",{//this string needs to match the ID provided in you
 	}
 	
 });
+}, 1500);

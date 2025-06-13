@@ -30,6 +30,7 @@ MoreHeavenlyUpgradesRemastered.launch = function() {
     const pointOnePercent = 0.001;
     const onePercent = 0.01;
 
+    
     //Map that contains building tier as keys which maps to an enum of [name, {Sugar Lump}staticReduce, {Sugar Lump}scalingReduce, {CPS}baseCps, {CPS}clickBuff, {Utility}goldenCookieSpawnRateAndDuration, {Utility}buffIntensity]
     const buildingTiers = {
         '1': ['Cursor', 'Sugar lump rubbers', 'Velvet gloves', 'Embrace Cursors', 'Cursors on your hands', 'Better Luck I', 'Intensified Luck I'],
@@ -141,6 +142,14 @@ MoreHeavenlyUpgradesRemastered.launch = function() {
 
     MoreHeavenlyUpgradesRemastered.init = function() {
         MoreHeavenlyUpgradesRemastered.isLoaded = 1;
+        const CheckForWatson = (dir) => dir["despacito AmeliaWatson"] !== undefined && !dir["despacito AmeliaWatson"].disabled
+        const WatsonIcons = 
+            (Game.mods["despacito AmeliaWatson"] !== undefined ? Game.mods["despacito AmeliaWatson"].dir + "/watsoniconfull.png" : 0)
+            || (App && CheckForWatson(App.mods) ? App.mods["despacito AmeliaWatson"].dir + "/watsoniconfull.png" : 0)
+            || (Mods && CheckForWatson(Mods.ModData) ? Mods.ModData["despacito AmeliaWatson"].dir + "/watsoniconfull.png" : 0)
+        if (WatsonIcons) {
+            buildingTiers[12] = ['Amelia Watson', 'Sugar lumps from the past', 'Time-altering process', 'Embrace Amelia Watsons','Amelia Watson on your hands', 'Better Luck XII', 'Intensified Luck XII']
+        }
 
         //New Game Plus Achievemens
         CCSE.NewAchievement(NGPAchievements[1], `You embarked on your second journey to unveil the enigmas of cookies.<br>Cookie production multiplier <b>+${NGPCpsBuffPercent}% permanently</b>.<br><u>Heavenly Upgrades are more expensive.</u>`, [18, 0]);
@@ -171,7 +180,7 @@ MoreHeavenlyUpgradesRemastered.launch = function() {
         CCSE.NewHeavenlyUpgrade(buildingTiers[9][3], `Each ${buildingTiers[9][0]} gains <b>+${baseCpsIncrease}%</b> base CpS per ${buildingTiers[9][0]}</b>.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** cpsUpgrade++), [5, 32], -1250, -500, [cpsSpecial[1]]);
         CCSE.NewHeavenlyUpgrade(buildingTiers[10][3], `Each ${buildingTiers[10][0]} gains <b>+${baseCpsIncrease}%</b> base CpS per ${buildingTiers[10][0]}</b>.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** cpsUpgrade++), [6, 32], -1400, -650, [cpsSpecial[1]]);
         CCSE.NewHeavenlyUpgrade(buildingTiers[11][3], `Each ${buildingTiers[11][0]} gains <b>+${baseCpsIncrease}%</b> base CpS per ${buildingTiers[11][0]}</b>.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** cpsUpgrade++), [7, 32], -1100, -550, [buildingTiers[9][3]]);
-        CCSE.NewHeavenlyUpgrade(buildingTiers[12][3], `Each ${buildingTiers[12][0]} gains <b>+${baseCpsIncrease}%</b> base CpS per ${buildingTiers[12][0]}</b>.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** cpsUpgrade++), [8, 32], -1300, -800, [buildingTiers[10][3]]);
+        CCSE.NewHeavenlyUpgrade(buildingTiers[12][3], `Each ${buildingTiers[12][0]} gains <b>+${baseCpsIncrease}%</b> base CpS per ${buildingTiers[12][0]}</b>.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** cpsUpgrade++), WatsonIcons ? [20, 0, watsonicons] : [8, 22], -1300, -800, [buildingTiers[10][3]]);
         CCSE.NewHeavenlyUpgrade(buildingTiers[13][3], `Each ${buildingTiers[13][0]} gains <b>+${baseCpsIncrease}%</b> base CpS per ${buildingTiers[13][0]}</b>.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** cpsUpgrade++), [13, 32], -900, -650, [buildingTiers[11][3]]);
         CCSE.NewHeavenlyUpgrade(buildingTiers[14][3], `Each ${buildingTiers[14][0]} gains <b>+${baseCpsIncrease}%</b> base CpS per ${buildingTiers[14][0]}</b>.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** cpsUpgrade++), [14, 32], -1100, -900, [buildingTiers[12][3]]);
         CCSE.NewHeavenlyUpgrade(buildingTiers[15][3], `Each ${buildingTiers[15][0]} gains <b>+${baseCpsIncrease}%</b> base CpS per ${buildingTiers[15][0]}</b>.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** cpsUpgrade++), [19, 32], -800, -750, [buildingTiers[13][3]]);
@@ -204,7 +213,7 @@ MoreHeavenlyUpgradesRemastered.launch = function() {
         CCSE.NewHeavenlyUpgrade(buildingTiers[11][4], `${buildingTiers[11][0]} levels boost clicks by <b>${boostClick}%</b>.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** cpsUpgrade++), [7, 29], -1575, -2000, [buildingTiers[10][4]]);
 
         // //CPS TIER 5
-        CCSE.NewHeavenlyUpgrade(buildingTiers[12][4], `${buildingTiers[12][0]} levels boost clicks by <b>${boostClick}%</b>.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** cpsUpgrade++), [8, 29], -1425, -1500, [cpsSpecial[4]]);     
+        CCSE.NewHeavenlyUpgrade(buildingTiers[12][4], `${buildingTiers[12][0]} levels boost clicks by <b>${boostClick}%</b>.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** cpsUpgrade++), WatsonIcons ? [20, 0, watsonicons] : [8, 29], -1425, -1500, [cpsSpecial[4]]);     
         CCSE.NewHeavenlyUpgrade(buildingTiers[13][4], `${buildingTiers[13][0]} levels boost clicks by <b>${boostClick}%</b>.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** cpsUpgrade++), [13, 29], -1325, -1525, [buildingTiers[12][4]]);
         CCSE.NewHeavenlyUpgrade(buildingTiers[14][4], `${buildingTiers[14][0]} levels boost clicks by <b>${boostClick}%</b>.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** cpsUpgrade++), [14, 29], -1225, -1575, [buildingTiers[13][4]]);
         CCSE.NewHeavenlyUpgrade(buildingTiers[15][4], `${buildingTiers[15][0]} levels boost clicks by <b>${boostClick}%</b>.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** cpsUpgrade++), [19, 29], -1175, -1650, [buildingTiers[14][4]]);
@@ -263,7 +272,7 @@ MoreHeavenlyUpgradesRemastered.launch = function() {
         
         CCSE.NewHeavenlyUpgrade(buildingTiers[11][1], `Sugar lumps mature <b>${11*staticBasereduce/minute} minutes</b> sooner.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** lumpUpgrade++), [7, 30], -750, -2500, [sugarLumpSpecial[3]]);
         CCSE.NewHeavenlyUpgrade(buildingTiers[11][2], `Sugar lumps mature <b>${11*scalingBaseReduce/second} seconds</b> sooner per ${buildingTiers[11][0]}.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** lumpUpgrade++), [7, 36], -650, -2500, [sugarLumpSpecial[3]]);
-        CCSE.NewHeavenlyUpgrade(buildingTiers[12][1], `Sugar lumps mature <b>${12*staticBasereduce/minute} minutes</b> sooner.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** lumpUpgrade++), [8, 30], -450, -2500, [sugarLumpSpecial[3]]);
+        CCSE.NewHeavenlyUpgrade(buildingTiers[12][1], `Sugar lumps mature <b>${12*staticBasereduce/minute} minutes</b> sooner.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** lumpUpgrade++), WatsonIcons ? [21, 0, watsonicons] : [8, 30], -450, -2500, [sugarLumpSpecial[3]]);
         CCSE.NewHeavenlyUpgrade(buildingTiers[12][2], `Sugar lumps mature <b>${12*scalingBaseReduce/second} seconds</b> sooner per ${buildingTiers[12][0]}.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** lumpUpgrade++), [8, 36], -350, -2500, [sugarLumpSpecial[3]]);
         CCSE.NewHeavenlyUpgrade(buildingTiers[13][1], `Sugar lumps mature <b>${13*staticBasereduce/minute} minutes</b> sooner.`, heavenlyUpgradeBase * (heavenlyUpgradePow ** lumpUpgrade++), [13, 30], -150, -2500, [sugarLumpSpecial[3]]);
         

@@ -64,7 +64,7 @@ var AmeliaWatson = {
 			const upgrades = ['Flux capacitors', 'Time paradox resolver', 'Quantum conundrum', 'Causality enforcer',
 				'Yestermorrow comparators', 'Far future enactment', 'Great loop hypothesis', 'Cookietopian moments of maybe',
 				'Second seconds', 'Additional clock hands', 'Nostalgia', 'Split seconds', 'Patience abolished',
-				'Relativistic parsec-skipping', 'Primeval glow', 'Fortune #012', 'D&eacute;j&agrave; vu']
+				'Relativistic parsec-skipping', 'Primeval glow', 'Fortune #012', 'Timeproof upholstery', 'Rectifying a mistake']
 
 			for (var i in upgrades) {
 				if (Game.Upgrades[upgrades[i]].icon.length != 3) shouldRebuild = true; break 
@@ -76,7 +76,7 @@ var AmeliaWatson = {
 			const achievements = ['Time warp', 'Alternate timeline', 'Rewriting history', 'Time duke',
 				'Forever and ever', 'Heat death', 'cookie clicker forever and forever a hundred years cookie clicker, all day long forever, forever a hundred times, over and over cookie clicker adventures dot com',
 				'Way back then', 'Invited to yesterday\'s party', 'Groundhog day', 'The years start coming',
-				'Caveman to cosmos', 'Back already?', 'Spacetime jigamaroo', 'Be kind, rewind', 'The long now']
+				'Caveman to cosmos', 'Back already?', 'Spacetime jigamaroo', 'Be kind, rewind', 'The long now', 'D&eacute;j&agrave; vu', 'But the future refused to change', 'I only meant to stay a while']
 
 			for (var i in achievements) {
 				if (Game.Achievements[achievements[i]].icon.length != 3) shouldRebuild = true; break 

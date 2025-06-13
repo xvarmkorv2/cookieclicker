@@ -1541,7 +1541,6 @@ Game.Launch=function()
 
 		Game.updateLog +=
 
-			'</div><div class="subsection update">'+
 			'<div class="title">07/05/2023 - often imitated, never duplicated</div>'+
 			'<div class="listing">&bull; added the final, 20th building</div>'+
 			'<div class="listing" style="font-size:80%;margin-left:20px;">-currently, no more buildings are planned beyond this one; there are still many more updates to come, but future patches will focus on adding minigames to the existing buildings along with other features!</div>'+
@@ -1552,26 +1551,22 @@ Game.Launch=function()
 			'<div class="listing">&bull; new heavenly upgrade that lets you trade presents with other players</div>'+
 			(App?'<div class="listing">&bull; removed Discord rich presence support (plugin currently broken)</div>':'')+
 			'<div class="listing">&bull; Cookie Clicker turns 10 years old this year. Thank you for clicking cookies with us!</div>'+
-
-			'</div><div class="subsection update small">' +
-			'<div class="title">08/08/2022 - the baker with all the gifts</div>' +
-			'<div class="listing">&bull; Cookie Clicker turns 9, celebrate and send other players presents with the new heavenly upgrade!</div>' +
-
-			'</div><div class="subsection update">' +
-			'<div class="title">31/05/2022 - a mind of its own</div>' +
-			'<div class="listing">&bull; added a new building</div>' +
-			'<div class="listing">&bull; added a new tier of upgrades and achievements</div>' +
-			'<div class="listing">&bull; multi-language support added to web version</div>' +
-			'<div class="listing">&bull; added a few new heavenly upgrades</div>' +
-			'<div class="listing">&bull; added the jukebox</div>' +
-			'<div class="listing">&bull; the 3 secret heavenly upgrades now rely on how many times the relevant digit is present in total, rather than at the end</div>' +
-			'<div class="listing">&bull; backgrounds overhauled; extra options for the background selector</div>' +
-			'<div class="listing">&bull; extra options for the golden cookie sound selector</div>' +
-			'<div class="listing">&bull; the bank minigame now tells you the value you previously bought a stock at</div>' +
-			'<div class="listing">&bull; the bank minigame flow is a little more exciting</div>' +
-			(App ? '<div class="listing">&bull; new option to disable your game activity showing up in Discord</div>' : '') +
-			(App ? '<div class="listing">&bull; launch errors now provide the option to restart without mods</div>' : '') +
-
+			
+			'</div><div class="subsection update">'+
+			'<div class="title">31/05/2022 - a mind of its own</div>'+
+			'<div class="listing">&bull; added a new building</div>'+
+			'<div class="listing">&bull; added a new tier of upgrades and achievements</div>'+
+			'<div class="listing">&bull; multi-language support added to web version</div>'+
+			'<div class="listing">&bull; added a few new heavenly upgrades</div>'+
+			'<div class="listing">&bull; added the jukebox</div>'+
+			'<div class="listing">&bull; the 3 secret heavenly upgrades now rely on how many times the relevant digit is present in total, rather than at the end</div>'+
+			'<div class="listing">&bull; backgrounds overhauled; extra options for the background selector</div>'+
+			'<div class="listing">&bull; extra options for the golden cookie sound selector</div>'+
+			'<div class="listing">&bull; the bank minigame now tells you the value you previously bought a stock at</div>'+
+			'<div class="listing">&bull; the bank minigame flow is a little more exciting</div>'+
+			(App?'<div class="listing">&bull; new option to disable your game activity showing up in Discord</div>':'')+
+			(App?'<div class="listing">&bull; launch errors now provide the option to restart without mods</div>':'')+
+			
 			(App ? ('</div><div class="subsection update small">' +
 				'<div class="title">18/12/2021 - work it</div>' +
 				'<div class="listing">&bull; added Steam Workshop support (lets you install mods and upload your own)</div>' +

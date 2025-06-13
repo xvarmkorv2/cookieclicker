@@ -7,7 +7,7 @@ HeavenlyRedistricting.GameVersion = '2.053';
 HeavenlyRedistricting.launch = function(){
 
 		//Ermmmm, really need to fix this:
-		if (CE == undefined) {
+		if (window.CE == undefined) {
 			Game.toReload = true;
 		}
 

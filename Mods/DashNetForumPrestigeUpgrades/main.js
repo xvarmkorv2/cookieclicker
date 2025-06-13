@@ -3644,7 +3644,6 @@ GabeDFPU.launch = function () {
 				MOD.loadModFunc();
 			}, 1000)
 		}
-	}
 	
 		GabeDFPU.save = function () {
 			// Create an object to store all necessary data

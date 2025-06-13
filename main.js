@@ -125,6 +125,7 @@ localStorageSet=function(key,str)
 
 var ajax=function(url,callback)
 {
+	if (Game.local) return false;
 	var httpRequest=new XMLHttpRequest();
 	if (!httpRequest){return false;}
 	httpRequest.onreadystatechange=function()
@@ -801,6 +802,7 @@ var Loader=function()//asset-loading system
 			if (!this.assetsLoading[assets[i]] && !this.assetsLoaded[assets[i]])
 			{
 				var img=new Image();
+				if (!Game.local) img.crossOrigin='anonymous';
 				if (assets[i].indexOf('/')!=-1) img.src=assets[i];
 				else img.src=this.domain+assets[i];
 				img.alt=assets[i];
@@ -814,6 +816,7 @@ var Loader=function()//asset-loading system
 	{
 		if (!this.assets[old]) this.Load([old]);
 		var img=new Image();
+		if (!Game.local) img.crossOrigin='anonymous';
 		if (newer.indexOf('/')!=-1)/*newer.indexOf('http')!=-1 || newer.indexOf('https')!=-1)*/ img.src=newer;
 		else img.src=this.domain+newer;
 		img.alt=newer;
@@ -891,7 +894,7 @@ var PlaySound=function(url,vol,pitchVar)
 	if (typeof Sounds[url]==='undefined')
 	{
 		//sound isn't loaded, cache it
-		Sounds[url]=new Audio(url);
+		Sounds[url]=new Audio(url.indexOf('snd/')==0?(Game.resPath+url):url);
 		Sounds[url].onloadeddata=(e)=>{PlaySound(url,vol,pitchVar);}
 		//Sounds[url].load();
 	}
@@ -1419,6 +1422,14 @@ Game.https=!App?((location.protocol!='https:')?false:true):true;
 Game.SaveTo='CookieClickerGame';
 if (Game.beta) Game.SaveTo='CookieClickerGameBeta';
 if (App && new URL(window.location.href).searchParams.get('modless')) Game.modless=1;
+Game.local=(!location.hostname || location.hostname==='localhost' || location.hostname==='127.0.0.1');
+if (App) Game.local=true;
+Game.resPath='';
+if (!App && !Game.local && window.location.href.indexOf('orteil.dashnet.org')!=-1)
+{
+	Game.resPath=('//'+location.host+location.pathname).replace('orteil.dashnet.org','cdn.dashnet.org');
+	if (Game.resPath.substr(-1)!='/') Game.resPath+='/';
+}
 window.onbeforeunload = function (event) {
 	if (typeof event == 'undefined') event = window.event;
 	if (event) event.returnValue = 'no'
@@ -1434,7 +1445,8 @@ Game.Launch=function()
 	
 	var css=document.createElement('style');
 	css.type='text/css';
-	css.innerHTML='body .icon,body .crate,body .usesIcon{background-image:url(img/icons.png?v='+Game.version+');}';
+	css.innerHTML='body .icon,body .crate,body .usesIcon{background-image:url('+Game.resPath+'img/icons.png?v='+Game.version+');}'+
+	'.product .icon,.product .icon.off,.tinyProductIcon{background-image:url('+Game.resPath+'img/buildings.png?v='+Game.version+');}';
 	document.head.appendChild(css);
 	
 
@@ -2099,7 +2111,7 @@ Game.Launch=function()
 	{
 		//l('offGameMessage').innerHTML='<div style="padding:64px 128px;"><div class="title">Loading...</div></div>';
 		Game.Loader=new Loader();
-		Game.Loader.domain='img/';
++		Game.Loader.domain=Game.resPath+'img/';
 		if (typeof PRELOAD!=='undefined') Game.Loader.loaded=PRELOAD(Game.Init);
 		else Game.Loader.loaded = Game.Init; 
 		Game.Loader.Load([
@@ -2253,7 +2265,7 @@ Game.Launch=function()
 		}
 		Game.clickStr=Game.touchEvents?'ontouchend':'onclick';
 		
-		l('versionNumber').innerHTML='v. '+Game.version+(!App?('<div id="httpsSwitch" style="cursor:pointer;display:inline-block;background:url(img/'+(Game.https?'lockOn':'lockOff')+'.png);width:16px;height:16px;position:relative;top:4px;left:0px;margin:0px -2px;"></div>'):'')+(Game.beta?' <span style="color:#ff0;">beta</span>':'');
+		l('versionNumber').innerHTML='v. '+Game.version+(!App?('<div id="httpsSwitch" style="cursor:pointer;display:inline-block;background:url('+Game.resPath+'img/'+(Game.https?'lockOn':'lockOff')+'.png);width:16px;height:16px;position:relative;top:4px;left:0px;margin:0px -2px;"></div>'):'')+(Game.beta?' <span style="color:#ff0;">beta</span>':'');
 		
 		if (!App)
 		{
@@ -2503,6 +2515,11 @@ Game.Launch=function()
 		Game.bakeryNameL=l('bakeryName');
 		Game.bakeryNameSet=function(what)
 		{
+			if (Game.bakeryName!=what && what=='harley')
++			{//added by request as thanks to the very nice person who kept my twitter handle safe when my account got hacked by crypto scammers
++				var rect=Game.bakeryNameL.getBounds();
++				Game.Popup('Horse complex!',(rect.left+rect.right)/2,(rect.top+rect.bottom)/2-48);
++			}
 			try
 			{
 				var exp=new RegExp('[^\'\\-_0-9 \\p{L}]','gu');
@@ -2847,7 +2864,7 @@ Game.Launch=function()
 				if (!App && Game.heralds==0) str+=loc("There are no heralds at the moment. Please consider <b style=\"color:#bc3aff;\">donating to our Patreon</b>!");
 				else
 				{
-					str+='<b style="color:#bc3aff;text-shadow:0px 1px 0px #6d0096;">'+loc("%1 herald",Game.heralds)+'</b> '+loc("selflessly inspiring a boost in production for everyone, resulting in %1.",'<br><b style="color:#cdaa89;text-shadow:0px 1px 0px #7c4532,0px 0px 6px #7c4532;"><div style="width:16px;height:16px;display:inline-block;vertical-align:middle;background:url(img/money.png);"></div>'+loc("+%1% cookies per second",Game.heralds)+'</b>');
+					str+='<b style="color:#bc3aff;text-shadow:0px 1px 0px #6d0096;">'+loc("%1 herald",Game.heralds)+'</b> '+loc("selflessly inspiring a boost in production for everyone, resulting in %1.",'<br><b style="color:#cdaa89;text-shadow:0px 1px 0px #7c4532,0px 0px 6px #7c4532;"><div style="width:16px;height:16px;display:inline-block;vertical-align:middle;background:url('+Game.resPath+'img/money.png);"></div>'+loc("+%1% cookies per second",Game.heralds)+'</b>');
 					str+='<div class="line"></div>';
 					if (Game.ascensionMode==1) str+=loc("You are in a <b>Born again</b> run, and are not currently benefiting from heralds.");
 					else if (Game.Has('Heralds')) str+=loc("You own the <b>Heralds</b> upgrade, and therefore benefit from the production boost.");
@@ -2856,7 +2873,7 @@ Game.Launch=function()
 			}
 			str+='<div class="line"></div><span style="font-size:90%;opacity:0.6;">'+(!App?loc("<b>Heralds</b> are people who have donated to our highest Patreon tier, and are limited to 100.<br>Each herald gives everyone +1% CpS.<br>Heralds benefit everyone playing the game, regardless of whether you donated."):loc("Every %1 current players on Steam generates <b>1 herald</b>, up to %2 heralds.<br>Each herald gives everyone +1% CpS.",[100,100]))+'</span><div class="line"></div>'+tinyIcon([21,29]);
 			
-			str+='<div style="width:31px;height:39px;background:url(img/heraldFlag.png);position:absolute;top:0px;left:8px;"></div><div style="width:31px;height:39px;background:url(img/heraldFlag.png);position:absolute;top:0px;right:8px;"></div>';
+			str+='<div style="width:31px;height:39px;background:url('+Game.resPath+'img/heraldFlag.png);position:absolute;top:0px;left:8px;"></div><div style="width:31px;height:39px;background:url('+Game.resPath+'img/heraldFlag.png);position:absolute;top:0px;right:8px;"></div>';
 			
 			return '<div style="padding:8px;width:300px;text-align:center;" class="prompt" id="tooltipHeralds"><h3>'+loc("Heralds")+'</h3><div class="block">'+str+'</div></div>';
 		},'this');
@@ -4902,7 +4919,7 @@ Game.Launch=function()
 				{
 					PlaySound('snd/tick.mp3');
 					Game.promptConfirmFunc=func;//bit dumb
-					Game.Prompt('<id SpendLump><div class="icon" style="background:url(img/icons.png?v='+Game.version+');float:left;margin-left:-8px;margin-top:-8px;background-position:'+(-29*48)+'px '+(-14*48)+'px;"></div><div style="margin:16px 8px;">'+loc("Do you want to spend %1 to %2?",['<b>'+loc("%1 sugar lump",LBeautify(n))+'</b>',str])+'</div>',[[loc("Yes"),'Game.lumps-='+n+';Game.promptConfirmFunc();Game.promptConfirmFunc=0;Game.recalculateGains=1;Game.ClosePrompt();'],loc("No")]);
+					Game.Prompt('<id SpendLump><div class="icon" style="background:url('+Game.resPath+'img/icons.png?v='+Game.version+');float:left;margin-left:-8px;margin-top:-8px;background-position:'+(-29*48)+'px '+(-14*48)+'px;"></div><div style="margin:16px 8px;">'+loc("Do you want to spend %1 to %2?",['<b>'+loc("%1 sugar lump",LBeautify(n))+'</b>',str])+'</div>',[[loc("Yes"),'Game.lumps-='+n+';Game.promptConfirmFunc();Game.promptConfirmFunc=0;Game.recalculateGains=1;Game.ClosePrompt();'],loc("No")]);
 					return false;
 				}
 				else
@@ -5647,15 +5664,15 @@ Game.Launch=function()
 					if (!this.spawned && me.force!='cookie storm drop' && Game.chimeType!=0 && Game.ascensionMode!=1) Game.playGoldenCookieChime();
 					
 					//set image
-					var bgPic='img/goldCookie.png';
+					var bgPic=Game.resPath+'img/goldCookie.png';
 					var picX=0;var picY=0;
 					
 					
 					if ((!me.forceObj || !me.forceObj.noWrath) && ((me.forceObj && me.forceObj.wrath) || (Game.elderWrath==1 && Math.random()<1/3) || (Game.elderWrath==2 && Math.random()<2/3) || (Game.elderWrath==3) || (Game.hasGod && Game.hasGod('scorn'))))
 					{
 						me.wrath=1;
-						if (Game.season=='halloween') bgPic='img/spookyCookie.png';
-						else bgPic='img/wrathCookie.png';
+						if (Game.season=='halloween') bgPic=Game.resPath+'img/spookyCookie.png';
+						else bgPic=Game.resPath+'img/wrathCookie.png';
 					}
 					else
 					{
@@ -5664,17 +5681,17 @@ Game.Launch=function()
 					
 					if (Game.season=='valentines')
 					{
-						bgPic='img/hearts.png';
+						bgPic=Game.resPath+'img/hearts.png';
 						picX=Math.floor(Math.random()*8);
 					}
 					else if (Game.season=='fools')
 					{
-						bgPic='img/contract.png';
-						if (me.wrath) bgPic='img/wrathContract.png';
+						bgPic=Game.resPath+'img/contract.png';
+						if (me.wrath) bgPic=Game.resPath+'img/wrathContract.png';
 					}
 					else if (Game.season=='easter')
 					{
-						bgPic='img/bunnies.png';
+						bgPic=Game.resPath+'img/bunnies.png';
 						picX=Math.floor(Math.random()*4);
 						picY=0;
 						if (me.wrath) picY=1;
@@ -6061,7 +6078,7 @@ Game.Launch=function()
 					//me.l.style.top=me.y+'px';
 					me.l.style.width='167px';
 					me.l.style.height='212px';
-					me.l.style.backgroundImage='url(img/frostedReindeer.png)';
+					me.l.style.backgroundImage='url('+Game.resPath+'img/frostedReindeer.png)';
 					me.l.style.opacity='0';
 					//me.l.style.transform='rotate('+(Math.random()*60-30)+'deg) scale('+(Math.random()*1+0.25)+')';
 					me.l.style.display='block';
@@ -7089,8 +7106,8 @@ Game.Launch=function()
 					{
 						var milk=Game.Milks[i];
 						milkStr+='<div '+Game.getTooltip(
-						'<div class="prompt" style="text-align:center;padding-bottom:6px;white-space:nowrap;margin:0px;padding-bottom:96px;" id="tooltipMilk"><h3 style="margin:6px 32px 0px 32px;">'+(loc("Rank %1",romanize(i+1))+' - '+milk.name)+'</h3><div style="opacity:0.75;font-size:9px;">('+(i==0?loc("starter milk"):loc("for %1 achievements",Beautify(i*25)))+')</div><div class="line"></div><div style="width:100%;height:96px;position:absolute;left:0px;bottom:0px;background:url(img/'+milk.pic+');"></div></div>'
-						,'top')+' style="background:url(img/icons.png?v='+Game.version+') '+(-milk.icon[0]*48)+'px '+(-milk.icon[1]*48)+'px;margin:2px 0px;" class="trophy"></div>';
+						'<div class="prompt" style="text-align:center;padding-bottom:6px;white-space:nowrap;margin:0px;padding-bottom:96px;" id="tooltipMilk"><h3 style="margin:6px 32px 0px 32px;">'+(loc("Rank %1",romanize(i+1))+' - '+milk.name)+'</h3><div style="opacity:0.75;font-size:9px;">('+(i==0?loc("starter milk"):loc("for %1 achievements",Beautify(i*25)))+')</div><div class="line"></div><div style="width:100%;height:96px;position:absolute;left:0px;bottom:0px;background:url('+Game.resPath+'img/'+milk.pic+');"></div></div>'
+						,'top')+' style="background:url('+Game.resPath+'img/icons.png?v='+Game.version+') '+(-milk.icon[0]*48)+'px '+(-milk.icon[1]*48)+'px;margin:2px 0px;" class="trophy"></div>';
 					}
 				}
 				milkStr+='<div style="clear:both;"></div>';
@@ -7102,8 +7119,8 @@ Game.Launch=function()
 					for (var i=0;i<=Game.santaLevel;i++)
 					{
 						santaStr+='<div '+Game.getTooltip(
-						'<div class="prompt" style="text-align:center;padding-bottom:6px;white-space:nowrap;margin:0px 32px;"><div style="width:96px;height:96px;margin:4px auto;background:url(img/santa.png) '+(-i*96)+'px 0px;filter:drop-shadow(0px 3px 2px #000);-webkit-filter:drop-shadow(0px 3px 2px #000);" id="tooltipSanta"></div><div class="line"></div><h3>'+Game.santaLevels[i]+'</h3></div>'
-						,'top')+' style="background:url(img/santa.png) '+(-i*48)+'px 0px;background-size:'+(frames*48)+'px 48px;" class="trophy"></div>';
+						'<div class="prompt" style="text-align:center;padding-bottom:6px;white-space:nowrap;margin:0px 32px;"><div style="width:96px;height:96px;margin:4px auto;background:url('+Game.resPath+'img/santa.png) '+(-i*96)+'px 0px;filter:drop-shadow(0px 3px 2px #000);-webkit-filter:drop-shadow(0px 3px 2px #000);" id="tooltipSanta"></div><div class="line"></div><h3>'+Game.santaLevels[i]+'</h3></div>'
+						,'top')+' style="background:url('+Game.resPath+'img/santa.png) '+(-i*48)+'px 0px;background-size:'+(frames*48)+'px 48px;" class="trophy"></div>';
 					}
 					santaStr+='<div style="clear:both;"></div>';
 				}
@@ -7119,8 +7136,8 @@ Game.Launch=function()
 							var level=Game.dragonLevels[mainLevels[i]];
 							dragonStr+='<div '+Game.getTooltip(
 							//'<div style="width:96px;height:96px;margin:4px auto;background:url(img/dragon.png?v='+Game.version+') '+(-level.pic*96)+'px 0px;"></div><div class="line"></div><div style="min-width:200px;text-align:center;margin-bottom:6px;">'+level.name+'</div>'
-							'<div class="prompt" style="text-align:center;padding-bottom:6px;white-space:nowrap;margin:0px 32px;" id="tooltipDragon"><div style="width:96px;height:96px;margin:4px auto;background:url(img/dragon.png?v='+Game.version+') '+(-level.pic*96)+'px 0px;filter:drop-shadow(0px 3px 2px #000);-webkit-filter:drop-shadow(0px 3px 2px #000);"></div><div class="line"></div><h3>'+level.name+'</h3></div>'
-							,'top')+' style="background:url(img/dragon.png?v='+Game.version+') '+(-level.pic*48)+'px 0px;background-size:'+(frames*48)+'px 48px;" class="trophy"></div>';
+							'<div class="prompt" style="text-align:center;padding-bottom:6px;white-space:nowrap;margin:0px 32px;" id="tooltipDragon"><div style="width:96px;height:96px;margin:4px auto;background:url('+Game.resPath+'img/dragon.png?v='+Game.version+') '+(-level.pic*96)+'px 0px;filter:drop-shadow(0px 3px 2px #000);-webkit-filter:drop-shadow(0px 3px 2px #000);"></div><div class="line"></div><h3>'+level.name+'</h3></div>'
+							,'top')+' style="background:url('+Game.resPath+'img/dragon.png?v='+Game.version+') '+(-level.pic*48)+'px 0px;background-size:'+(frames*48)+'px 48px;" class="trophy"></div>';
 						}
 					}
 					dragonStr+='<div style="clear:both;"></div>';
@@ -8461,9 +8478,9 @@ Game.Launch=function()
 				iconOff=[iconOff[0]*64,iconOff[1]*64];
 				
 				//me.l.className=classes;
-				//l('productIcon'+me.id).style.backgroundImage='url(img/'+icon+')';
+				//l('productIcon'+me.id).style.backgroundImage='url('+Game.resPath+'img/'+icon+')';
 				l('productIcon'+me.id).style.backgroundPosition='-'+icon[0]+'px -'+icon[1]+'px';
-				//l('productIconOff'+me.id).style.backgroundImage='url(img/'+iconOff+')';
+				//l('productIconOff'+me.id).style.backgroundImage='url('+Game.resPath+'img/'+iconOff+')';
 				l('productIconOff'+me.id).style.backgroundPosition='-'+iconOff[0]+'px -'+iconOff[1]+'px';
 				l('productName'+me.id).innerHTML=displayName;
 				if (name.length>12/Langs[locId].w && (Game.season=='fools' || !EN)) l('productName'+me.id).classList.add('longProductName'); else l('productName'+me.id).classList.remove('longProductName');
@@ -9294,7 +9311,7 @@ Game.Launch=function()
 			
 			Game.Loader.waitForLoad([img,imgAddons],function(){
 				//accessing pixel data not allowed locally; set img and imgAddons to base64-encoded image strings for testing
-				if (!App && (!location.hostname || location.hostname==='localhost' || location.hostname==='127.0.0.1'))
+				if (!App && (Game.local))
 				{
 					ctx.drawImage(Pic(img),0,0);
 				}
@@ -10669,7 +10686,7 @@ Game.Launch=function()
 		Game.NewUpgradeCookie({name:'Violet macarons',desc:'It\'s like spraying perfume into your mouth!',icon:[24,4],require:'Box of macarons',							power:3,price: 9999999999999999999});
 		
 		order=40000;
-		new Game.Upgrade('Magic shenanigans',loc("Cookie production <b>multiplied by 1,000</b>.")+'<q>It\'s magic. I ain\'t gotta explain sh<div style="display:inline-block;background:url(img/money.png);width:16px;height:16px;position:relative;top:4px;left:0px;margin:0px -2px;"></div>t.</q>',7,[17,5]);//debug purposes only
+		new Game.Upgrade('Magic shenanigans',loc("Cookie production <b>multiplied by 1,000</b>.")+'<q>It\'s magic. I ain\'t gotta explain sh<div style="display:inline-block;background:url('+Game.resPath+'img/money.png);width:16px;height:16px;position:relative;top:4px;left:0px;margin:0px -2px;"></div>t.</q>',7,[17,5]);//debug purposes only
 		Game.last.pool='debug';
 		
 		
@@ -12350,7 +12367,7 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 					(out.message?(
 						'<div class="line"></div>'+
 						'<div>'+loc("There's a note too!")+'</div>'+
-						'<textarea id="giftMessage" spellcheck="false" style="color:#000;width:100%;height:64px;font-size:11px;font-weight:bold;padding:8px 16px;box-sizing:border-box;margin:0px 3px;text-align:center;background:url(img/messageBG.png);background-position:center -50px;box-shadow:0px 0px 16px rgba(98,92,72,1) inset;text-shadow:0px 0px 2px rgba(98,92,72,1);overflow:hidden;" readonly></textarea>'
+						'<textarea id="giftMessage" spellcheck="false" style="color:#000;width:100%;height:64px;font-size:11px;font-weight:bold;padding:8px 16px;box-sizing:border-box;margin:0px 3px;text-align:center;background:url('+Game.resPath+'img/messageBG.png);background-position:center -50px;box-shadow:0px 0px 16px rgba(98,92,72,1) inset;text-shadow:0px 0px 2px rgba(98,92,72,1);overflow:hidden;" readonly></textarea>'
 					):'')+
 					'<div class="line"></div>'+
 					'<div>'+loc("How nice!")+'</div>'+
@@ -12376,7 +12393,7 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 						'<div><div style="display:inline-block;vertical-align:middle;width:55%;margin-right:8px;">'+loc("You may put between %1 and %2 cookies in the gift box.",[1,1000])+'</div><div style="display:inline-block;vertical-align:middle;width:38%;">'+'<div class="hasTinyCookie" style="display:inline-block;font-weight:bold;">'+loc("Cookies")+'</div><input type="text" style="text-align:center;width:100%;font-weight:bold;" id="giftAmount" value="'+(1+Math.floor(Math.random()*999))+'"/></div></div>'+
 						'<div class="line"></div>'+
 							'<div>'+loc("You can leave a note. Don't be rude!<br>Maximum %1 lines and %2 characters.",[4,100])+'</div>'+
-							'<textarea id="giftMessage" maxlength="100" spellcheck="false" style="color:#000;width:100%;height:64px;font-size:11px;font-weight:bold;padding:8px 16px;box-sizing:border-box;margin:0px 3px;text-align:center;background:url(img/messageBG.png);background-position:center -50px;box-shadow:0px 0px 16px rgba(98,92,72,1) inset;text-shadow:0px 0px 2px rgba(98,92,72,1);overflow:hidden;"></textarea>'+
+							'<textarea id="giftMessage" maxlength="100" spellcheck="false" style="color:#000;width:100%;height:64px;font-size:11px;font-weight:bold;padding:8px 16px;box-sizing:border-box;margin:0px 3px;text-align:center;background:url('+Game.resPath+'img/messageBG.png);background-position:center -50px;box-shadow:0px 0px 16px rgba(98,92,72,1) inset;text-shadow:0px 0px 2px rgba(98,92,72,1);overflow:hidden;"></textarea>'+
 						'<div class="line"></div>'+
 						'<div class="optionBox" style="margin:-4px 0px;clear:both;overflow:hidden;">'+
 							'<div style="'/*float:left;width:49%;*/+'">'+
@@ -13375,7 +13392,7 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 		Game.BankAchievement('Are you gonna eat all that?');
 		Game.BankAchievement('We\'re gonna need a bigger bakery');
 		Game.BankAchievement('In the mouth of madness','A cookie is just what we tell each other it is.');
-		Game.BankAchievement('Brought to you by the letter <div style="display:inline-block;background:url(img/money.png);width:16px;height:16px;"></div>');
+		Game.BankAchievement('Brought to you by the letter <div style="display:inline-block;background:url('+Game.resPath+'img/money.png);width:16px;height:16px;"></div>');
 		
 		
 		Game.CpsAchievement('A world filled with cookies');
@@ -13998,7 +14015,7 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 				},100);
 			}
 			var x=Game.T;
-			return this.desc+'<q>'+loc("Everyone's here.")+'<div id="parade" style="position:absolute;left:-11px;right:-11px;height:32px;background:url(img/parade.png) -'+x+'px '+(Game.T%20<10?0:32)+'px;"></div><div style="margin-bottom:32px;"></div>'+loc("Won't you have some cookies too?")+'</q>';
+			return this.desc+'<q>'+loc("Everyone's here.")+'<div id="parade" style="position:absolute;left:-11px;right:-11px;height:32px;background:url('+Game.resPath+'img/parade.png) -'+x+'px '+(Game.T%20<10?0:32)+'px;"></div><div style="margin-bottom:32px;"></div>'+loc("Won't you have some cookies too?")+'</q>';
 		};
 		
 		order=1000;new Game.Achievement('What\'s not clicking',loc("Make <b>%1</b> from clicking.",loc("%1 cookie",LBeautify(1e31))),[11,36]);
@@ -15265,7 +15282,7 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 				else if (Game.specialTab=='dragon') {pic='dragon.png?v='+Game.version;frame=Game.dragonLevels[Game.dragonLevel].pic;}
 				else {pic='dragon.png?v='+Game.version;frame=4;}
 				
-				var str='<div id="specialPic" '+Game.clickStr+'="Game.ClickSpecialPic();" style="'+((Game.specialTab=='dragon' && Game.dragonLevel>=4 && Game.Has('Pet the dragon'))?'cursor:pointer;':'')+'position:absolute;left:-16px;top:-64px;width:96px;height:96px;background:url(img/'+pic+');background-position:'+(-frame*96)+'px 0px;filter:drop-shadow(0px 3px 2px #000);-webkit-filter:drop-shadow(0px 3px 2px #000);"></div>';
+				var str='<div id="specialPic" '+Game.clickStr+'="Game.ClickSpecialPic();" style="'+((Game.specialTab=='dragon' && Game.dragonLevel>=4 && Game.Has('Pet the dragon'))?'cursor:pointer;':'')+'position:absolute;left:-16px;top:-64px;width:96px;height:96px;background:url('+Game.resPath+'img/'+pic+');background-position:'+(-frame*96)+'px 0px;filter:drop-shadow(0px 3px 2px #000);-webkit-filter:drop-shadow(0px 3px 2px #000);"></div>';
 				str+='<div class="close" onclick="PlaySound(\'snd/press.mp3\');Game.ToggleSpecialMenu(0);">x</div>';
 				
 				if (Game.specialTab=='santa')
@@ -15643,7 +15660,7 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 				{
 					if (false && Game.bgType!=0 && Game.ascensionMode!=1)
 					{
-						//l('backgroundCanvas').style.background='url(img/shadedBordersSoft.png) 0px 0px,url(img/bgWheat.jpg) 50% 50%';
+						//l('backgroundCanvas').style.background='url('+Game.resPath+'img/shadedBordersSoft.png) 0px 0px,url('+Game.resPath+'img/bgWheat.jpg) 50% 50%';
 						//l('backgroundCanvas').style.backgroundSize='100% 100%,cover';
 					}
 					else

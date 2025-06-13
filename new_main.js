@@ -125,7 +125,7 @@ localStorageSet=function(key,str)
 
 var ajax=function(url,callback)
 {
-	if (!location.hostname || location.hostname==='localhost' || location.hostname==='127.0.0.1') return false;
+	if (Game.local) return false;
 	var httpRequest=new XMLHttpRequest();
 	if (!httpRequest){return false;}
 	httpRequest.onreadystatechange=function()
@@ -805,6 +805,7 @@ var Loader=function()//asset-loading system
 			if (this.assetsLoading.indexOf(assets[i])==-1 && this.assetsLoaded.indexOf(assets[i])==-1)
 			{
 				var img=new Image();
+				if (!Game.local) img.crossOrigin='anonymous';
 				img.alt=assets[i];
 				img.onload=bind(this,this.onLoad);
 				this.assets[assets[i]]=img;
@@ -818,6 +819,7 @@ var Loader=function()//asset-loading system
 	{
 		if (!this.assets[old]) this.Load([old]);
 		var img=new Image();
+		if (!Game.local) img.crossOrigin='anonymous';
 		if (newer.indexOf('/')!=-1)/*newer.indexOf('http')!=-1 || newer.indexOf('https')!=-1)*/ img.src=newer;
 		else img.src=this.domain+newer;
 		img.alt=newer;
@@ -897,7 +899,7 @@ var PlaySound=function(url,vol,pitchVar)
 	if (typeof Sounds[url]==='undefined')
 	{
 		//sound isn't loaded, cache it
-		Sounds[url]=new Audio(url);
+		Sounds[url]=new Audio(url.indexOf('snd/')==0?(Game.resPath+url):url);
 		Sounds[url].onloadeddata=function(e){PlaySound(url,vol,pitchVar);}
 		//Sounds[url].load();
 	}
@@ -1234,6 +1236,15 @@ Game.https=!App?((location.protocol!='https:')?false:true):true;
 Game.SaveTo='CookieClickerGame';
 if (Game.beta) Game.SaveTo='CookieClickerGameBeta';
 if (App && new URL(window.location.href).searchParams.get('modless')) Game.modless=1;
+Game.local=(!location.hostname || location.hostname==='localhost' || location.hostname==='127.0.0.1');
+if (App) Game.local=true;
+Game.resPath='';
+if (!App && !Game.local && window.location.href.indexOf('orteil.dashnet.org')!=-1)
+{
+	Game.resPath=('//'+location.host+location.pathname).replace('orteil.dashnet.org','cdn.dashnet.org');
+	if (Game.resPath.substr(-1)!='/') Game.resPath+='/';
+}
+
 
 Game.Launch=function()
 {
@@ -1243,10 +1254,10 @@ Game.Launch=function()
 	//if (Game.mobile) Game.touchEvents=1;
 	//if ('ontouchstart' in document.documentElement) Game.touchEvents=1;
 	
-	
 	var css=document.createElement('style');
 	css.type='text/css';
-	css.innerHTML='body .icon,body .crate,body .usesIcon{background-image:url(img/icons.png?v='+Game.version+');}';
+	css.innerHTML='body .icon,body .crate,body .usesIcon{background-image:url('+Game.resPath+'img/icons.png?v='+Game.version+');}'+
+	'.product .icon,.product .icon.off,.tinyProductIcon{background-image:url('+Game.resPath+'img/buildings.png?v='+Game.version+');}';
 	document.head.appendChild(css);
 	
 	//this is so shimmers can still appear even if you lose connection after the game is loaded
@@ -1255,7 +1266,7 @@ Game.Launch=function()
 	for (var i=0;i<preloadImages.length;i++)
 	{
 		var img=document.createElement('img');
-		img.src=preloadImages[i];
+		img.src=Game.resPath+preloadImages[i];
 		preloadImagesL.appendChild(img);
 	}
 	
@@ -1342,26 +1353,17 @@ Game.Launch=function()
 	
 	Game.updateLog+=
 	
-	'</div><div class="subsection update small">'+
-	'<div class="title">22/03/2023 - beta patch</div>'+
-	'<div class="listing">&bull; buffed new dragon aura</div>'+
-	'<div class="listing">&bull; expanded the final building\'s customizer</div>'+
-	'<div class="listing">&bull; touched up old Santa sprites</div>'+
-	'<div class="listing">&bull; added some cursor upgrades and achievs</div>'+
-	
 	'</div><div class="subsection update">'+
-	'<div class="title">08/03/2023 - often imitated, never duplicated</div>'+
+	'<div class="title">07/05/2023 - often imitated, never duplicated</div>'+
 	'<div class="listing">&bull; added the final, 20th building</div>'+
 	'<div class="listing" style="font-size:80%;margin-left:20px;">-currently, no more buildings are planned beyond this one; there are still many more updates to come, but future patches will focus on adding minigames to the existing buildings along with other features!</div>'+
 	'<div class="listing">&bull; added another tier of upgrades and achievements</div>'+
 	'<div class="listing">&bull; updated flavored milk icons</div>'+
 	'<div class="listing">&bull; added visual cue for shimmering veil</div>'+
+	'<div class="listing">&bull; touched up old Santa sprites</div>'+
+	'<div class="listing">&bull; new heavenly upgrade that lets you trade presents with other players</div>'+
 	(App?'<div class="listing">&bull; removed Discord rich presence support (plugin currently broken)</div>':'')+
 	'<div class="listing">&bull; Cookie Clicker turns 10 years old this year. Thank you for clicking cookies with us!</div>'+
-	
-	'</div><div class="subsection update small">'+
-	'<div class="title">08/08/2022 - the baker with all the gifts</div>'+
-	'<div class="listing">&bull; Cookie Clicker turns 9, celebrate and send other players presents with the new heavenly upgrade!</div>'+
 	
 	'</div><div class="subsection update">'+
 	'<div class="title">31/05/2022 - a mind of its own</div>'+
@@ -1916,7 +1918,7 @@ Game.Launch=function()
 	{
 		//l('offGameMessage').innerHTML='<div style="padding:64px 128px;"><div class="title">Loading...</div></div>';
 		Game.Loader=new Loader();
-		Game.Loader.domain='img/';
+		Game.Loader.domain=Game.resPath+'img/';
 		if (typeof PRELOAD!=='undefined') Game.Loader.loaded=PRELOAD(Game.Init);
 		else Game.Loader.loaded=callback;
 		Game.Loader.Load(['filler.png']);
@@ -2233,6 +2235,12 @@ Game.Launch=function()
 		Game.bakeryNameL=l('bakeryName');
 		Game.bakeryNameSet=function(what)
 		{
+			if (Game.bakeryName!=what && what=='harley')
+			{//added by request as thanks to the very nice person who kept my twitter handle safe when my account got hacked by crypto scammers
+				var rect=Game.bakeryNameL.getBounds();
+				Game.Popup('Horse complex!',(rect.left+rect.right)/2,(rect.top+rect.bottom)/2-48);
+			}
+			
 			try
 			{
 				var exp=new RegExp('[^\'\\-_0-9 \\p{L}]','gu');
@@ -4573,7 +4581,7 @@ Game.Launch=function()
 				{
 					PlaySound('snd/tick.mp3');
 					Game.promptConfirmFunc=func;//bit dumb
-					Game.Prompt('<id SpendLump><div class="icon" style="background:url(img/icons.png?v='+Game.version+');float:left;margin-left:-8px;margin-top:-8px;background-position:'+(-29*48)+'px '+(-14*48)+'px;"></div><div style="margin:16px 8px;">'+loc("Do you want to spend %1 to %2?",['<b>'+loc("%1 sugar lump",LBeautify(n))+'</b>',str])+'</div>',[[loc("Yes"),'Game.lumps-='+n+';Game.promptConfirmFunc();Game.promptConfirmFunc=0;Game.recalculateGains=1;Game.ClosePrompt();'],loc("No")]);
+					Game.Prompt('<id SpendLump><div class="icon" style="background:url('+Game.resPath+'img/icons.png?v='+Game.version+');float:left;margin-left:-8px;margin-top:-8px;background-position:'+(-29*48)+'px '+(-14*48)+'px;"></div><div style="margin:16px 8px;">'+loc("Do you want to spend %1 to %2?",['<b>'+loc("%1 sugar lump",LBeautify(n))+'</b>',str])+'</div>',[[loc("Yes"),'Game.lumps-='+n+';Game.promptConfirmFunc();Game.promptConfirmFunc=0;Game.recalculateGains=1;Game.ClosePrompt();'],loc("No")]);
 					return false;
 				}
 				else
@@ -5314,15 +5322,15 @@ Game.Launch=function()
 					if (!this.spawned && me.force!='cookie storm drop' && Game.chimeType!=0 && Game.ascensionMode!=1) Game.playGoldenCookieChime();
 					
 					//set image
-					var bgPic='img/goldCookie.png';
+					var bgPic=Game.resPath+'img/goldCookie.png';
 					var picX=0;var picY=0;
 					
 					
 					if ((!me.forceObj || !me.forceObj.noWrath) && ((me.forceObj && me.forceObj.wrath) || (Game.elderWrath==1 && Math.random()<1/3) || (Game.elderWrath==2 && Math.random()<2/3) || (Game.elderWrath==3) || (Game.hasGod && Game.hasGod('scorn'))))
 					{
 						me.wrath=1;
-						if (Game.season=='halloween') bgPic='img/spookyCookie.png';
-						else bgPic='img/wrathCookie.png';
+						if (Game.season=='halloween') bgPic=Game.resPath+'img/spookyCookie.png';
+						else bgPic=Game.resPath+'img/wrathCookie.png';
 					}
 					else
 					{
@@ -5331,17 +5339,17 @@ Game.Launch=function()
 					
 					if (Game.season=='valentines')
 					{
-						bgPic='img/hearts.png';
+						bgPic=Game.resPath+'img/hearts.png';
 						picX=Math.floor(Math.random()*8);
 					}
 					else if (Game.season=='fools')
 					{
-						bgPic='img/contract.png';
-						if (me.wrath) bgPic='img/wrathContract.png';
+						bgPic=Game.resPath+'img/contract.png';
+						if (me.wrath) bgPic=Game.resPath+'img/wrathContract.png';
 					}
 					else if (Game.season=='easter')
 					{
-						bgPic='img/bunnies.png';
+						bgPic=Game.resPath+'img/bunnies.png';
 						picX=Math.floor(Math.random()*4);
 						picY=0;
 						if (me.wrath) picY=1;
@@ -5748,7 +5756,7 @@ Game.Launch=function()
 					//me.l.style.top=me.y+'px';
 					me.l.style.width='167px';
 					me.l.style.height='212px';
-					me.l.style.backgroundImage='url(img/frostedReindeer.png)';
+					me.l.style.backgroundImage='url('+Game.resPath+'img/frostedReindeer.png)';
 					me.l.style.opacity='0';
 					//me.l.style.transform='rotate('+(Math.random()*60-30)+'deg) scale('+(Math.random()*1+0.25)+')';
 					me.l.style.display='block';
@@ -6780,8 +6788,8 @@ Game.Launch=function()
 					{
 						var milk=Game.Milks[i];
 						milkStr+='<div '+Game.getTooltip(
-						'<div class="prompt" style="text-align:center;padding-bottom:6px;white-space:nowrap;margin:0px;padding-bottom:96px;" id="tooltipMilk"><h3 style="margin:6px 32px 0px 32px;">'+(loc("Rank %1",romanize(i+1))+' - '+milk.name)+'</h3><div style="opacity:0.75;font-size:9px;">('+(i==0?loc("starter milk"):loc("for %1 achievements",Beautify(i*25)))+')</div><div class="line"></div><div style="width:100%;height:96px;position:absolute;left:0px;bottom:0px;background:url(img/'+milk.pic+');"></div></div>'
-						,'top')+' style="background:url(img/icons.png?v='+Game.version+') '+(-milk.icon[0]*48)+'px '+(-milk.icon[1]*48)+'px;margin:2px 0px;" class="trophy"></div>';
+						'<div class="prompt" style="text-align:center;padding-bottom:6px;white-space:nowrap;margin:0px;padding-bottom:96px;" id="tooltipMilk"><h3 style="margin:6px 32px 0px 32px;">'+(loc("Rank %1",romanize(i+1))+' - '+milk.name)+'</h3><div style="opacity:0.75;font-size:9px;">('+(i==0?loc("starter milk"):loc("for %1 achievements",Beautify(i*25)))+')</div><div class="line"></div><div style="width:100%;height:96px;position:absolute;left:0px;bottom:0px;background:url('+Game.resPath+'img/'+milk.pic+');"></div></div>'
+						,'top')+' style="background:url('+Game.resPath+'img/icons.png?v='+Game.version+') '+(-milk.icon[0]*48)+'px '+(-milk.icon[1]*48)+'px;margin:2px 0px;" class="trophy"></div>';
 					}
 				}
 				milkStr+='<div style="clear:both;"></div>';
@@ -6793,8 +6801,8 @@ Game.Launch=function()
 					for (var i=0;i<=Game.santaLevel;i++)
 					{
 						santaStr+='<div '+Game.getTooltip(
-						'<div class="prompt" style="text-align:center;padding-bottom:6px;white-space:nowrap;margin:0px 32px;"><div style="width:96px;height:96px;margin:4px auto;background:url(img/santa.png?v='+Game.version+') '+(-i*96)+'px 0px;filter:drop-shadow(0px 3px 2px #000);-webkit-filter:drop-shadow(0px 3px 2px #000);" id="tooltipSanta"></div><div class="line"></div><h3>'+Game.santaLevels[i]+'</h3></div>'
-						,'top')+' style="background:url(img/santa.png?v='+Game.version+') '+(-i*48)+'px 0px;background-size:'+(frames*48)+'px 48px;" class="trophy"></div>';
+						'<div class="prompt" style="text-align:center;padding-bottom:6px;white-space:nowrap;margin:0px 32px;"><div style="width:96px;height:96px;margin:4px auto;background:url('+Game.resPath+'img/santa.png?v='+Game.version+') '+(-i*96)+'px 0px;filter:drop-shadow(0px 3px 2px #000);-webkit-filter:drop-shadow(0px 3px 2px #000);" id="tooltipSanta"></div><div class="line"></div><h3>'+Game.santaLevels[i]+'</h3></div>'
+						,'top')+' style="background:url('+Game.resPath+'img/santa.png?v='+Game.version+') '+(-i*48)+'px 0px;background-size:'+(frames*48)+'px 48px;" class="trophy"></div>';
 					}
 					santaStr+='<div style="clear:both;"></div>';
 				}
@@ -6809,9 +6817,9 @@ Game.Launch=function()
 						{
 							var level=Game.dragonLevels[mainLevels[i]];
 							dragonStr+='<div '+Game.getTooltip(
-							//'<div style="width:96px;height:96px;margin:4px auto;background:url(img/dragon.png?v='+Game.version+') '+(-level.pic*96)+'px 0px;"></div><div class="line"></div><div style="min-width:200px;text-align:center;margin-bottom:6px;">'+level.name+'</div>'
-							'<div class="prompt" style="text-align:center;padding-bottom:6px;white-space:nowrap;margin:0px 32px;" id="tooltipDragon"><div style="width:96px;height:96px;margin:4px auto;background:url(img/dragon.png?v='+Game.version+') '+(-level.pic*96)+'px 0px;filter:drop-shadow(0px 3px 2px #000);-webkit-filter:drop-shadow(0px 3px 2px #000);"></div><div class="line"></div><h3>'+level.name+'</h3></div>'
-							,'top')+' style="background:url(img/dragon.png?v='+Game.version+') '+(-level.pic*48)+'px 0px;background-size:'+(frames*48)+'px 48px;" class="trophy"></div>';
+							//'<div style="width:96px;height:96px;margin:4px auto;background:url('+Game.resPath+'img/dragon.png?v='+Game.version+') '+(-level.pic*96)+'px 0px;"></div><div class="line"></div><div style="min-width:200px;text-align:center;margin-bottom:6px;">'+level.name+'</div>'
+							'<div class="prompt" style="text-align:center;padding-bottom:6px;white-space:nowrap;margin:0px 32px;" id="tooltipDragon"><div style="width:96px;height:96px;margin:4px auto;background:url('+Game.resPath+'img/dragon.png?v='+Game.version+') '+(-level.pic*96)+'px 0px;filter:drop-shadow(0px 3px 2px #000);-webkit-filter:drop-shadow(0px 3px 2px #000);"></div><div class="line"></div><h3>'+level.name+'</h3></div>'
+							,'top')+' style="background:url('+Game.resPath+'img/dragon.png?v='+Game.version+') '+(-level.pic*48)+'px 0px;background-size:'+(frames*48)+'px 48px;" class="trophy"></div>';
 						}
 					}
 					dragonStr+='<div style="clear:both;"></div>';
@@ -8165,9 +8173,9 @@ Game.Launch=function()
 				iconOff=[iconOff[0]*64,iconOff[1]*64];
 				
 				//me.l.className=classes;
-				//l('productIcon'+me.id).style.backgroundImage='url(img/'+icon+')';
+				//l('productIcon'+me.id).style.backgroundImage='url('+Game.resPath+'img/'+icon+')';
 				l('productIcon'+me.id).style.backgroundPosition='-'+icon[0]+'px -'+icon[1]+'px';
-				//l('productIconOff'+me.id).style.backgroundImage='url(img/'+iconOff+')';
+				//l('productIconOff'+me.id).style.backgroundImage='url('+Game.resPath+'img/'+iconOff+')';
 				l('productIconOff'+me.id).style.backgroundPosition='-'+iconOff[0]+'px -'+iconOff[1]+'px';
 				l('productName'+me.id).innerHTML=displayName;
 				if (name.length>12/Langs[locId].w && (Game.season=='fools' || !EN)) l('productName'+me.id).classList.add('longProductName'); else l('productName'+me.id).classList.remove('longProductName');
@@ -9002,7 +9010,7 @@ Game.Launch=function()
 			
 			Game.Loader.waitForLoad([img,imgAddons],function(){
 				//accessing pixel data not allowed locally; set img and imgAddons to base64-encoded image strings for testing
-				if (!App && (!location.hostname || location.hostname==='localhost' || location.hostname==='127.0.0.1'))
+				if (!App && (Game.local))
 				{
 					ctx.drawImage(Pic(img),0,0);
 				}
@@ -12047,7 +12055,7 @@ Game.Launch=function()
 					(out.message?(
 						'<div class="line"></div>'+
 						'<div>'+loc("There's a note too!")+'</div>'+
-						'<textarea id="giftMessage" spellcheck="false" style="color:#000;width:100%;height:64px;font-size:11px;font-weight:bold;padding:8px 16px;box-sizing:border-box;margin:0px 3px;text-align:center;background:url(img/messageBG.png);background-position:center -50px;box-shadow:0px 0px 16px rgba(98,92,72,1) inset;text-shadow:0px 0px 2px rgba(98,92,72,1);overflow:hidden;" readonly></textarea>'
+						'<textarea id="giftMessage" spellcheck="false" style="color:#000;width:100%;height:64px;font-size:11px;font-weight:bold;padding:8px 16px;box-sizing:border-box;margin:0px 3px;text-align:center;background:url('+Game.resPath+'img/messageBG.png);background-position:center -50px;box-shadow:0px 0px 16px rgba(98,92,72,1) inset;text-shadow:0px 0px 2px rgba(98,92,72,1);overflow:hidden;" readonly></textarea>'
 					):'')+
 					'<div class="line"></div>'+
 					'<div>'+loc("How nice!")+'</div>'+
@@ -12073,7 +12081,7 @@ Game.Launch=function()
 						'<div><div style="display:inline-block;vertical-align:middle;width:55%;margin-right:8px;">'+loc("You may put between %1 and %2 cookies in the gift box.",[1,1000])+'</div><div style="display:inline-block;vertical-align:middle;width:38%;">'+'<div class="hasTinyCookie" style="display:inline-block;font-weight:bold;">'+loc("Cookies")+'</div><input type="text" style="text-align:center;width:100%;font-weight:bold;" id="giftAmount" value="'+(1+Math.floor(Math.random()*999))+'"/></div></div>'+
 						'<div class="line"></div>'+
 							'<div>'+loc("You can leave a note. Don't be rude!<br>Maximum %1 lines and %2 characters.",[4,100])+'</div>'+
-							'<textarea id="giftMessage" maxlength="100" spellcheck="false" style="color:#000;width:100%;height:64px;font-size:11px;font-weight:bold;padding:8px 16px;box-sizing:border-box;margin:0px 3px;text-align:center;background:url(img/messageBG.png);background-position:center -50px;box-shadow:0px 0px 16px rgba(98,92,72,1) inset;text-shadow:0px 0px 2px rgba(98,92,72,1);overflow:hidden;"></textarea>'+
+							'<textarea id="giftMessage" maxlength="100" spellcheck="false" style="color:#000;width:100%;height:64px;font-size:11px;font-weight:bold;padding:8px 16px;box-sizing:border-box;margin:0px 3px;text-align:center;background:url('+Game.resPath+'img/messageBG.png);background-position:center -50px;box-shadow:0px 0px 16px rgba(98,92,72,1) inset;text-shadow:0px 0px 2px rgba(98,92,72,1);overflow:hidden;"></textarea>'+
 						'<div class="line"></div>'+
 						'<div class="optionBox" style="margin:-4px 0px;clear:both;overflow:hidden;">'+
 							'<div style="'/*float:left;width:49%;*/+'">'+
@@ -13713,7 +13721,7 @@ Game.Launch=function()
 				},100);
 			}
 			var x=Game.T;
-			return this.desc+'<q>'+loc("Everyone's here.")+'<div id="parade" style="position:absolute;left:-11px;right:-11px;height:32px;background:url(img/parade.png) -'+x+'px '+(Game.T%20<10?0:32)+'px;"></div><div style="margin-bottom:32px;"></div>'+loc("Won't you have some cookies too?")+'</q>';
+			return this.desc+'<q>'+loc("Everyone's here.")+'<div id="parade" style="position:absolute;left:-11px;right:-11px;height:32px;background:url('+Game.resPath+'img/parade.png) -'+x+'px '+(Game.T%20<10?0:32)+'px;"></div><div style="margin-bottom:32px;"></div>'+loc("Won't you have some cookies too?")+'</q>';
 		};
 		
 		order=1000;new Game.Achievement('What\'s not clicking',loc("Make <b>%1</b> from clicking.",loc("%1 cookie",LBeautify(1e31))),[11,36]);
@@ -14976,7 +14984,7 @@ Game.Launch=function()
 				else if (Game.specialTab=='dragon') {pic='dragon.png?v='+Game.version;frame=Game.dragonLevels[Game.dragonLevel].pic;}
 				else {pic='dragon.png?v='+Game.version;frame=4;}
 				
-				var str='<div id="specialPic" '+Game.clickStr+'="Game.ClickSpecialPic();" style="'+((Game.specialTab=='dragon' && Game.dragonLevel>=4 && Game.Has('Pet the dragon'))?'cursor:pointer;':'')+'position:absolute;left:-16px;top:-64px;width:96px;height:96px;background:url(img/'+pic+');background-position:'+(-frame*96)+'px 0px;filter:drop-shadow(0px 3px 2px #000);-webkit-filter:drop-shadow(0px 3px 2px #000);"></div>';
+				var str='<div id="specialPic" '+Game.clickStr+'="Game.ClickSpecialPic();" style="'+((Game.specialTab=='dragon' && Game.dragonLevel>=4 && Game.Has('Pet the dragon'))?'cursor:pointer;':'')+'position:absolute;left:-16px;top:-64px;width:96px;height:96px;background:url('+Game.resPath+'img/'+pic+');background-position:'+(-frame*96)+'px 0px;filter:drop-shadow(0px 3px 2px #000);-webkit-filter:drop-shadow(0px 3px 2px #000);"></div>';
 				str+='<div class="close" onclick="PlaySound(\'snd/press.mp3\');Game.ToggleSpecialMenu(0);">x</div>';
 				
 				if (Game.specialTab=='santa')
@@ -15247,7 +15255,7 @@ Game.Launch=function()
 				{
 					if (false && Game.bgType!=0 && Game.ascensionMode!=1)
 					{
-						//l('backgroundCanvas').style.background='url(img/shadedBordersSoft.png) 0px 0px,url(img/bgWheat.jpg) 50% 50%';
+						//l('backgroundCanvas').style.background='url('+Game.resPath+'img/shadedBordersSoft.png) 0px 0px,url('+Game.resPath+'img/bgWheat.jpg) 50% 50%';
 						//l('backgroundCanvas').style.backgroundSize='100% 100%,cover';
 					}
 					else
@@ -16634,7 +16642,7 @@ Game.Launch=function()
 		if (App && App.logic) App.logic(Game.T);
 		
 		//every hour: get server data (ie. update notification, patreon, steam etc)
-		if (Game.T%(Game.fps*60*60)==0 && Game.T>Game.fps*10/* && Game.prefs.autoupdate*/) {Game.CheckUpdates();Game.GrabData();}
+		if (Game.T%(Game.fps*60*60)==0 && Game.T>Game.fps*10/* && Game.prefs.autoupdate*/) {Game.CheckUpdates();/*Game.GrabData();*/}
 		
 		Game.T++;
 	}

@@ -1,0 +1,15 @@
+{
+ "Name": "Even More Heavenly Upgrades",
+ "ID": "EMHU",
+ "Author": "pause",
+ "Description": "This is an updated fork of 'More heavenly upgrades'. It is made to be compatible with MHU Remastered and the newest version of the game. You will need CCSE for this to work",
+ "ModVersion": 2.8,
+ "GameVersion": 2.053,
+ "Date": "28/01/2022",
+ "Dependencies": [
+  "CCSE"
+ ],
+ "Disabled": 1,
+ "AllowSteamAchievs": 1,
+ "Workshop": "3075787967"
+}

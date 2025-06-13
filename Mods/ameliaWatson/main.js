@@ -109,6 +109,8 @@ var AmeliaWatson = {
 			Game.Upgrades['Nostalgia'].icon = [18, 0, watsonicons];
 			Game.Upgrades['Split seconds'].icon = [20, 0, watsonicons];
 			Game.Upgrades['Patience abolished'].icon = [21, 0, watsonicons];
+			Game.Upgrades['Timeproof upholstery'].icon = [24, 0, watsonicons];
+			Game.Upgrades['Rectifying a mistake'].icon = [23, 0, watsonicons];
 
 			// Synergy
 			Game.Upgrades['Relativistic parsec-skipping'].icon = [10, 0, watsonicons];
@@ -133,6 +135,8 @@ var AmeliaWatson = {
 			Game.Achievements['The years start coming'].icon = [18, 0, watsonicons];
 			Game.Achievements['Caveman to cosmos'].icon = [20, 0, watsonicons];
 			Game.Achievements['Back already?'].icon = [21, 0, watsonicons];
+			Game.Achievements['But the future refused to change'].icon = [24, 0, watsonicons];
+			Game.Achievements['I only meant to stay a while'].icon = [23, 0, watsonicons];
 
 			// Statue
 			Game.Achievements['Spacetime jigamaroo'].icon = [12, 0, watsonicons];

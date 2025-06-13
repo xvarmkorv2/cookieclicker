@@ -54,6 +54,7 @@ MoreHeavenlyUpgradesRemastered.launch = function() {
         '19': ['Cortex baker', 'Sugar lumps beyond imagination', 'Super Brainz', 'Embrace Cortex bakers', 'Cortex bakers on your hands', 'Better Luck XIX', 'Intensified Luck XIX'],
         '20': ['You', 'Sugar lump yourself', 'I', 'Embrace Yourselves', 'You on your hands', 'Better Luck XX', 'Intensified Luck XX']
     };
+    const buildingConvertor = (building) => {if (building == 'Amelia Watson') {return 'Time machine'} else {return building}}
 
     //Sugar lumps
     const scalingBaseReduce = 250;
@@ -230,7 +231,7 @@ MoreHeavenlyUpgradesRemastered.launch = function() {
 
         //Building Cps calculation
         for (let i = 1; i <= Object.keys(buildingTiers).length; i++) {
-            Game.customBuildings[buildingTiers[i][0]].cpsMult.push(function () {
+            Game.customBuildings[buildingConvertor(buildingTiers[i][0])].cpsMult.push(function () {
                 let cpsMultiplier = 1;
                 if(buildingTiers[i][3] && Game.Has(buildingTiers[i][3])) cpsMultiplier *= 1 + toPercent(Game.Objects[buildingTiers[i][0]].amount);
                 return cpsMultiplier;
@@ -612,7 +613,7 @@ MoreHeavenlyUpgradesRemastered.launch = function() {
     Game.registerHook('cookiesPerClick', function (cpc) {
         let cpcMultiplier = 1;
         for (let i = 1; i <= Object.keys(buildingTiers).length; i++) {
-            if(buildingTiers[i][4] && Game.Has(buildingTiers[i][4])) cpcMultiplier *= 1 + toPercent(Game.Objects[buildingTiers[i][0]].level);
+            if(buildingTiers[i][4] && Game.Has(buildingTiers[i][4])) cpcMultiplier *= 1 + toPercent(Game.Objects[buildingConvertor(buildingTiers[i][0])].level);
         }
         if (Game.Has(utilitySpecial[7]) && Math.random() < onePercent) cpcMultiplier *= 1_000;
         return cpc * cpcMultiplier;

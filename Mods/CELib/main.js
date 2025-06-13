@@ -6,6 +6,8 @@ CEModLib.GameVersion = '2.053';
 
 
 CEModLib.launch = function(){
+	CE = this; //not using a var or let makes this GLOBAL (very good)
+		
 	CEModLib.init = function(){
 		//TODO: FIGURE OUT WHY THE HELL THIS DOESN'T ALWAYS LOAD / INIT...
 		//perhaps CCSE's fault? (Likely mine)
@@ -13,7 +15,7 @@ CEModLib.launch = function(){
 		//man
 		function CE_Init() {
 		console.log("OH HEY THE MOD ACTUALLY LOADED... I think...")
-		CE = this; //not using a var or let makes this GLOBAL (very good)
+		//CE = this; //not using a var or let makes this GLOBAL (very good)
 		
 		CE.eternalSeed = Game.seed;
 

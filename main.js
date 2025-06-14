@@ -8038,7 +8038,7 @@ Game.Launch=function()
 				if (this.id>=16) this.basePrice*=10;
 				if (this.id>=17) this.basePrice*=10;
 				if (this.id>=18) this.basePrice*=10;
-				if (this.id>=19) this.basePrice*=10;
+				if (this.id>=19) this.basePrice*=20;
 				this.price=this.basePrice;
 				this.bulkPrice=this.price;
 			}

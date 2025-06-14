@@ -291,7 +291,7 @@ IdleTrading.launch = function(){
 						}
 				}
 				if(IdleTrading.config.autoSell && conf.sellThresh != -1){
-					if((stockList.goods[i].stock > 0) // only if the stock is present
+					if((good.stock > 0) // only if the stock is present
 						&&
 						(
 							(conf.lastMode == 1) && ((good.mode != 3) && (good.mode != 5)) || // slow rise stopped
@@ -299,7 +299,7 @@ IdleTrading.launch = function(){
 							(conf.lastMode == 5) && ((good.mode != 1) && (good.mode != 3)) // chaotic stopped
 						) &&
 						(price >= conf.sellThresh) &&
-                        (stockList.goods[i].currentPrice > conf.priceBought)) {
+                        (good.currentPrice > conf.priceBought)) {
 							M.sellGood(iG, 10000)
 							IdleTrading.sessionSales++;
                             if (stockerTransactionNotifications) Game.Notify('Selling ' + good.name, 'At a profit of ' + Math.floor(good.val - conf.priceBought) + '$ per unit (total ' + Math.floor(good.val - conf.priceBought) * conf.stock + '$ profit), and is ' + IdleTrading.modeDecoder[good.mode] + ' now.', IdleTrading.goodIcons[i], IdleTrading.config.stockerFastNotifications);

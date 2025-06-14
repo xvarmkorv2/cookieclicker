@@ -240,25 +240,53 @@ IdleTrading.launch = function(){
         }
 	}
 
+	const stockerTimeBeautifier = function stockerTimeBeautifier(duration) {
+		var milliseconds = Math.floor((duration % 1000) / 100),
+			//seconds = Math.floor((duration / 1000) % 60),
+			minutes = Math.floor((duration / (1000 * 60)) % 60),
+			hours = Math.floor((duration / (1000 * 60 * 60))); //% 24),
+		//days = Math.floor((duration / (1000 * 60 * 60 * 24)));
+
+		if (hours > 0) {
+			if (hours == 1) {
+				hours = hours + ' hour'
+			} else hours = hours + ' hours'
+		} else hours = -1;
+
+		if (minutes >= 1) {
+			minutes = (minutes == 1) ? minutes + ' minute' : minutes + ' minutes';
+		} else minutes = -1;
+
+		if ((hours != -1) && (minutes != -1)) {
+			return hours + ' and ' + minutes;
+		} else if ((hours == -1) && (minutes != -1)) {
+			return minutes;
+		} else if ((hours != -1) && (minutes == -1)) {
+			return hours;
+		} else if ((hours == -1) && (minutes == -1)) {
+			return 'not that long actually';
+		}
+	}
+
 	IdleTrading.stockerReport = function () {
         if (Game.timedout) return
         var stockerUptime = new Date() - IdleTrading.sessionStart;
         if ((IdleTrading.sessionPurchases + IdleTrading.sessionSales) == 0) {
             Game.Notify(
                 'Idle Trading report',
-                'This session has been running for '/* + stockerTimeBeautifier(stockerUptime)*/ +
+                'This session has been running for ' + stockerTimeBeautifier(stockerUptime) +
                 ', but no good investment opportunities were detected! Luck is not on our side, yet.', [26, 7], IdleTrading.config.stockerFastNotifications
             );
         } else {
             Game.Notify(
                 'Idle Trading report',
-                'This session has been running for '/* + stockerTimeBeautifier(stockerUptime)*/ +
+                'This session has been running for ' + stockerTimeBeautifier(stockerUptime) +
             	', and has made ' + IdleTrading.sessionProfits.toFixed(0) +
                 '$ in ' + IdleTrading.sessionPurchases + ' purchases and ' + IdleTrading.sessionSales + ' sales.', [26, 7], IdleTrading.config.stockerFastNotifications
             );
         }
     }
-	
+
 	IdleTrading.Logic = function(){
 		var M = Game.Objects['Bank'].minigame;
 		for(var iG = 0; iG < M.goodsById.length; iG++){

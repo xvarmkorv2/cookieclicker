@@ -70,7 +70,9 @@ IdleTrading.launch = function(){
 		
 		IdleTrading.ReplaceGameMenu();
 		CCSE.MinigameReplacer(IdleTrading.ReplaceNativeMarket, "Bank");
-		
+		if(!Game.customMinigame['Bank'].tick) Game.customMinigame['Bank'].tick = [];
+		Game.customMinigame['Bank'].tick.push(IdleTrading.Logic);
+        
 		
 		//***********************************
 		//    Post-Load Hooks 
@@ -232,9 +234,7 @@ IdleTrading.launch = function(){
 	//***********************************
 	
 	IdleTrading.ReplaceNativeMarket = function() {
-		if(!Game.customMinigame['Bank'].tick) Game.customMinigame['Bank'].tick = [];
-		Game.customMinigame['Bank'].tick.push(IdleTrading.Logic);
-        IdleTrading.startingProfits = Game.Objects['Bank'].minigame.profit;
+		IdleTrading.startingProfits = Game.Objects['Bank'].minigame.profit;
 		if (IdleTrading.config.stockerActivityReport) {
         	var stockerReportInterval = setInterval(IdleTrading.stockerReport, IdleTrading.config.activityReportFrequency);
         }

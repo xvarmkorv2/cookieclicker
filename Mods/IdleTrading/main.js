@@ -270,7 +270,7 @@ IdleTrading.launch = function(){
                     console.log(good.name + ' has changed the mode from [' + IdleTrading.modeDecoder[conf.lastMode] + '] to [' + IdleTrading.modeDecoder[good.mode] + ']');
     			}
 
-				if (lmd != 5 && md == 5) { // ignore unstable stocks
+				if (good.mode != 5 && conf.lastMode == 5) { // ignore unstable stocks
                     if (IdleTrading.config.stockerTransactionNotifications) Game.Notify(good.name + ' went unstable', 'Ignoring the stock for a time', [1, 33], IdleTrading.stockerFastNotifications);
                 }
 

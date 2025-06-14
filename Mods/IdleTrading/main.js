@@ -55,7 +55,7 @@ IdleTrading.launch = function(){
 				sellThresh: -1,
 				minPrice: 99999,
 				maxPrice:-99999,
-				lastMode = -1,
+				lastMode: -1,
 				priceBought: 0,
 				stock: 0
 			});

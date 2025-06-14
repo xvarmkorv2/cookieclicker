@@ -285,11 +285,12 @@ IdleTrading.launch = function(){
 						(conf.lastMode == 5) && ((good.mode != 2) && (good.mode != 4)) // chaotic stopped
 						) &&
 						price <= conf.buyThresh) {
-							conf.priceBought = good.val;
-							M.buyGood(iG, 10000);
-							IdleTrading.sessionPurchases++;
-                            if (IdleTrading.config.stockerTransactionNotifications) Game.Notify('Buying ' + good.name, 'The price has stopped ' + IdleTrading.modeDecoder[conf.lastMode] + ' at ' + Math.floor(conf.priceBought) + '$ per unit, and is ' + IdleTrading.modeDecoder[good.mode] + ' now.', IdleTrading.goodIcons[i], IdleTrading.config.stockerFastNotifications);
-                        	if (IdleTrading.config.stockerConsoleAnnouncements) console.log('=====$$$== Buying ' + good.name);
+							if (M.buyGood(iG, 10000)) {
+								conf.priceBought = good.val;
+								IdleTrading.sessionPurchases++;
+								if (IdleTrading.config.stockerTransactionNotifications) Game.Notify('Buying ' + good.name, 'The price has stopped ' + IdleTrading.modeDecoder[conf.lastMode] + ' at ' + Math.floor(conf.priceBought) + '$ per unit, and is ' + IdleTrading.modeDecoder[good.mode] + ' now.', IdleTrading.goodIcons[i], IdleTrading.config.stockerFastNotifications);
+								if (IdleTrading.config.stockerConsoleAnnouncements) console.log('=====$$$== Buying ' + good.name);
+							}
 						}
 				}
 				if(IdleTrading.config.autoSell && conf.sellThresh != -1){
@@ -302,10 +303,12 @@ IdleTrading.launch = function(){
 						) &&
 						(price >= conf.sellThresh) &&
                         (good.currentPrice > conf.priceBought)) {
-							M.sellGood(iG, 10000)
-							IdleTrading.sessionSales++;
-                            if (IdleTrading.config.stockerTransactionNotifications) Game.Notify('Selling ' + good.name, 'At a profit of ' + Math.floor(good.val - conf.priceBought) + '$ per unit (total ' + Math.floor(good.val - conf.priceBought) * conf.stock + '$ profit), and is ' + IdleTrading.modeDecoder[good.mode] + ' now.', IdleTrading.goodIcons[i], IdleTrading.config.stockerFastNotifications);
-                            if (IdleTrading.config.stockerConsoleAnnouncements) ('=====$$$== Selling ' + good.name + ' at a profit of ' + (good.val - conf.priceBought).toFixed(2));
+							if (M.sellGood(iG, 10000)) {
+								IdleTrading.sessionSales++;
+                            	if (IdleTrading.config.stockerTransactionNotifications) Game.Notify('Selling ' + good.name, 'At a profit of ' + Math.floor(good.val - conf.priceBought) + '$ per unit (total ' + Math.floor(good.val - conf.priceBought) * conf.stock + '$ profit), and is ' + IdleTrading.modeDecoder[good.mode] + ' now.', IdleTrading.goodIcons[i], IdleTrading.config.stockerFastNotifications);
+                            	if (IdleTrading.config.stockerConsoleAnnouncements) ('=====$$$== Selling ' + good.name + ' at a profit of ' + (good.val - conf.priceBought).toFixed(2));
+							}
+							
 						};
 				}
 			}

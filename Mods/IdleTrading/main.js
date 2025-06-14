@@ -111,7 +111,8 @@ IdleTrading.launch = function(){
 						(typeof InsugarTrading == 'undefined' ? '' : m.ActionButton("IdleTrading.importInsugarTrading(); Game.UpdateMenu();", 'Import from Insugar Trading')) + 
 						'</div>' + 
 						'<div class="listing">' + m.ToggleButton(IdleTrading.config, 'autoBuy', 'IdleTrading_autoBuyButton', 'AutoBuy ON', 'AutoBuy OFF', "IdleTrading.Toggle") +
-												  m.ToggleButton(IdleTrading.config, 'autoSell', 'IdleTrading_autoSellButton', 'AutoSell ON', 'AutoSell OFF', "IdleTrading.Toggle") + '</div>';
+												  m.ToggleButton(IdleTrading.config, 'autoSell', 'IdleTrading_autoSellButton', 'AutoSell ON', 'AutoSell OFF', "IdleTrading.Toggle")+
+												  m.ToggleButton(IdleTrading.config, 'transactionNotifications', 'IdleTrading_transactionNotificationsButton', 'Transaction Notifications ON', 'Transaction Notifications OFF', "IdleTrading.Toggle") + '</div>';
 			
 			str += m.Header('Goods');
 			

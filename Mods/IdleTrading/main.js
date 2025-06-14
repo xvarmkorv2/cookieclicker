@@ -3,7 +3,7 @@
 if(IdleTrading === undefined) var IdleTrading = {};
 IdleTrading.name = 'Idle Trading';
 IdleTrading.version = '1.10';
-IdleTrading.GameVersion = '2.048';
+IdleTrading.GameVersion = '2.053';
 
 IdleTrading.sessionStart = new Date()
 IdleTrading.sessionProfits = 0

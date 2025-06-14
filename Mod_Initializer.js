@@ -284,7 +284,7 @@ Mods.GetMods = function(callback){
 				callback(mods)
 			});
 	})
-	setTimeout(() => { if (ajaxFailed) { callback() } }, 2500)
+	setTimeout(() => { if (ajaxFailed) { callback([]) } }, 2500)
 	
 }
 

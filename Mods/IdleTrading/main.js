@@ -111,8 +111,10 @@ IdleTrading.launch = function(){
 						'</div>' + 
 						'<div class="listing">' + m.ToggleButton(IdleTrading.config, 'autoBuy', 'IdleTrading_autoBuyButton', 'AutoBuy ON', 'AutoBuy OFF', "IdleTrading.Toggle") +
 												  m.ToggleButton(IdleTrading.config, 'autoSell', 'IdleTrading_autoSellButton', 'AutoSell ON', 'AutoSell OFF', "IdleTrading.Toggle") +
+						'</div>' +
 						'<div class="listing">' + m.ToggleButton(IdleTrading.config, 'transactionNotifications', 'IdleTrading_transactionNotificationsButton', 'Transaction Notifications ON', 'Transaction Notifications OFF', "IdleTrading.Toggle") +
 												  m.ToggleButton(IdleTrading.config, 'fastNotifications', 'IdleTrading_fastNotificationsButton', 'Fast Notifications ON', 'Fast Notifications OFF', "IdleTrading.Toggle") +
+						'</div>' +
 						'<div class="listing">' + m.ToggleButton(IdleTrading.config, 'consoleAnnouncements', 'IdleTrading_consoleAnnouncementsButton', 'Console Announcements ON', 'Console Announcements OFF', "IdleTrading.Toggle") +
 												  m.ToggleButton(IdleTrading.config, 'activityReport', 'IdleTrading_activityReportButton', 'Activity Report ON', 'Activity Report OFF', "IdleTrading.Toggle")+ '</div>';
 			

@@ -27,7 +27,10 @@ IdleTrading.goodIcons = [
     [20, 33],
     [32, 33],
     [33, 33],
-    [34, 33]
+    [34, 33],
+    [35, 33],
+    [36, 33],
+    [38, 33]
 ];
 
 IdleTrading.launch = function(){

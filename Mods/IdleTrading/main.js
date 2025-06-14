@@ -44,8 +44,7 @@ IdleTrading.launch = function(){
 			fastNotifications: 0,
 			consoleAnnouncements: 0,
 			activityReport: 0,
-			stockerActivityReport: 0,
-			stockerActivityReportFrequency: 1000 * 60 * 60
+			activityReportFrequency: 1000 * 60 * 60
 		};
 		
 		for(var iG = 2; iG < Game.ObjectsN; iG++){
@@ -111,8 +110,11 @@ IdleTrading.launch = function(){
 						(typeof InsugarTrading == 'undefined' ? '' : m.ActionButton("IdleTrading.importInsugarTrading(); Game.UpdateMenu();", 'Import from Insugar Trading')) + 
 						'</div>' + 
 						'<div class="listing">' + m.ToggleButton(IdleTrading.config, 'autoBuy', 'IdleTrading_autoBuyButton', 'AutoBuy ON', 'AutoBuy OFF', "IdleTrading.Toggle") +
-												  m.ToggleButton(IdleTrading.config, 'autoSell', 'IdleTrading_autoSellButton', 'AutoSell ON', 'AutoSell OFF', "IdleTrading.Toggle")+
-												  m.ToggleButton(IdleTrading.config, 'transactionNotifications', 'IdleTrading_transactionNotificationsButton', 'Transaction Notifications ON', 'Transaction Notifications OFF', "IdleTrading.Toggle") + '</div>';
+												  m.ToggleButton(IdleTrading.config, 'autoSell', 'IdleTrading_autoSellButton', 'AutoSell ON', 'AutoSell OFF', "IdleTrading.Toggle") +
+						'<div class="listing">' + m.ToggleButton(IdleTrading.config, 'transactionNotifications', 'IdleTrading_transactionNotificationsButton', 'Transaction Notifications ON', 'Transaction Notifications OFF', "IdleTrading.Toggle") +
+												  m.ToggleButton(IdleTrading.config, 'fastNotifications', 'IdleTrading_fastNotificationsButton', 'Fast Notifications ON', 'Fast Notifications OFF', "IdleTrading.Toggle") +
+						'<div class="listing">' + m.ToggleButton(IdleTrading.config, 'consoleAnnouncements', 'IdleTrading_consoleAnnouncementsButton', 'Console Announcements ON', 'Console Announcements OFF', "IdleTrading.Toggle") +
+												  m.ToggleButton(IdleTrading.config, 'activityReport', 'IdleTrading_activityReportButton', 'Activity Report ON', 'Activity Report OFF', "IdleTrading.Toggle")+ '</div>';
 			
 			str += m.Header('Goods');
 			
@@ -232,7 +234,7 @@ IdleTrading.launch = function(){
 		Game.customMinigame['Bank'].tick.push(IdleTrading.Logic);
         IdleTrading.startingProfits = Game.Objects['Bank'].minigame.profit;
 		if (IdleTrading.config.stockerActivityReport) {
-        	var stockerReportInterval = setInterval(IdleTrading.stockerReport, IdleTrading.config.stockerActivityReportFrequency);
+        	var stockerReportInterval = setInterval(IdleTrading.stockerReport, IdleTrading.config.activityReportFrequency);
         }
 	}
 

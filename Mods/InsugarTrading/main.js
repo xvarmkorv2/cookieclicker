@@ -547,7 +547,7 @@ InsugarTrading.init = function() {
      * these statements should be outside of the MinigameReplacer function above.
      */
     if(!Game.customMinigame['Bank'].tick) Game.customMinigame['Bank'].tick = [];
-    Game.customMinigame['Bank'].tick.push(InsugarTrading.customTickCollectData);
+    //Game.customMinigame['Bank'].tick.push(InsugarTrading.customTickCollectData);
     Game.customMinigame['Bank'].tick.push(InsugarTrading.customTickDisplayData);
 
     if(!Game.customMinigame['Bank'].buyGood) Game.customMinigame['Bank'].buyGood = [];

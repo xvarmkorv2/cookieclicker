@@ -185,6 +185,9 @@ IdleTrading.launch = function(){
 			l(button).innerHTML = on;
 			IdleTrading.config[prefName] = 1;
 		}
+		if (prefName == "activityReport" && IdleTrading.config.activityReport) {
+        	settimeout(IdleTrading.stockerReport, IdleTrading.config.activityReportFrequency);
+        }
 		l(button).className = 'smallFancyButton prefButton option' + ((IdleTrading.config[prefName] ^ invert) ? '' : ' off');
 	}
 	
@@ -235,8 +238,8 @@ IdleTrading.launch = function(){
 	
 	IdleTrading.ReplaceNativeMarket = function() {
 		IdleTrading.startingProfits = Game.Objects['Bank'].minigame.profit;
-		if (IdleTrading.config.stockerActivityReport) {
-        	var stockerReportInterval = setInterval(IdleTrading.stockerReport, IdleTrading.config.activityReportFrequency);
+		if (IdleTrading.config.activityReport) {
+        	settimeout(IdleTrading.stockerReport, IdleTrading.config.activityReportFrequency);
         }
 	}
 
@@ -266,6 +269,9 @@ IdleTrading.launch = function(){
 		} else if ((hours == -1) && (minutes == -1)) {
 			return 'not that long actually';
 		}
+		if (IdleTrading.config.activityReport) {
+        	settimeout(IdleTrading.stockerReport, IdleTrading.config.activityReportFrequency);
+        }
 	}
 
 	IdleTrading.stockerReport = function () {
@@ -303,7 +309,7 @@ IdleTrading.launch = function(){
     			}
 
 				if (good.mode != 5 && conf.lastMode == 5) { // ignore unstable stocks
-                    if (IdleTrading.config.transactionNotifications) Game.Notify(good.name + ' went unstable', 'Ignoring the stock for a time', [1, 33], IdleTrading.stockerFastNotifications);
+                    if (IdleTrading.config.transactionNotifications) Game.Notify(good.name + ' went unstable', 'Ignoring the stock for a time', [1, 33], IdleTrading.config.fastNotifications);
                 }
 
 				if(IdleTrading.config.autoBuy && conf.buyThresh != -1){
@@ -316,7 +322,7 @@ IdleTrading.launch = function(){
 							if (M.buyGood(iG, 10000)) {
 								conf.priceBought = good.val;
 								IdleTrading.sessionPurchases++;
-								if (IdleTrading.config.transactionNotifications) Game.Notify('Buying ' + good.name, 'The price has stopped ' + IdleTrading.modeDecoder[conf.lastMode] + ' at ' + Math.floor(conf.priceBought) + '$ per unit, and is ' + IdleTrading.modeDecoder[good.mode] + ' now.', IdleTrading.goodIcons[i], IdleTrading.config.stockerFastNotifications);
+								if (IdleTrading.config.transactionNotifications) Game.Notify('Buying ' + good.name, 'The price has stopped ' + IdleTrading.modeDecoder[conf.lastMode] + ' at ' + Math.floor(conf.priceBought) + '$ per unit, and is ' + IdleTrading.modeDecoder[good.mode] + ' now.', IdleTrading.goodIcons[i], IdleTrading.config.fastNotifications);
 								if (IdleTrading.config.consoleAnnouncements) console.log('=====$$$== Buying ' + good.name);
 							}
 						}
@@ -333,7 +339,7 @@ IdleTrading.launch = function(){
                         (good.currentPrice > conf.priceBought)) {
 							if (M.sellGood(iG, 10000)) {
 								IdleTrading.sessionSales++;
-                            	if (IdleTrading.config.transactionNotifications) Game.Notify('Selling ' + good.name, 'At a profit of ' + Math.floor(good.val - conf.priceBought) + '$ per unit (total ' + Math.floor(good.val - conf.priceBought) * conf.stock + '$ profit), and is ' + IdleTrading.modeDecoder[good.mode] + ' now.', IdleTrading.goodIcons[i], IdleTrading.config.stockerFastNotifications);
+                            	if (IdleTrading.config.transactionNotifications) Game.Notify('Selling ' + good.name, 'At a profit of ' + Math.floor(good.val - conf.priceBought) + '$ per unit (total ' + Math.floor(good.val - conf.priceBought) * conf.stock + '$ profit), and is ' + IdleTrading.modeDecoder[good.mode] + ' now.', IdleTrading.goodIcons[i], IdleTrading.config.fastNotifications);
                             	if (IdleTrading.config.consoleAnnouncements) ('=====$$$== Selling ' + good.name + ' at a profit of ' + (good.val - conf.priceBought).toFixed(2));
 							}
 							

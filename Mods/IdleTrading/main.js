@@ -340,6 +340,7 @@ IdleTrading.launch = function(){
 						(price >= conf.sellThresh) &&
                         (good.val > conf.priceBought)) {
 							if (M.sellGood(iG, 10000)) {
+								conf.priceBought = -1;
 								IdleTrading.sessionSales++;
                             	if (IdleTrading.config.transactionNotifications) Game.Notify('Selling ' + good.name, 'At a profit of ' + Math.floor(good.val - conf.priceBought) + '$ per unit (total ' + Math.floor(good.val - conf.priceBought) * conf.stock + '$ profit), and is ' + IdleTrading.modeDecoder[good.mode] + ' now.', IdleTrading.goodIcons[i], IdleTrading.config.fastNotifications);
                             	if (IdleTrading.config.consoleAnnouncements) ('=====$$$== Selling ' + good.name + ' at a profit of ' + (good.val - conf.priceBought).toFixed(2));

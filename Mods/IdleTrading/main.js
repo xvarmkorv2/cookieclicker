@@ -319,7 +319,7 @@ IdleTrading.launch = function(){
 						(conf.lastMode == 4) && ((good.mode != 2) && (good.mode != 5)) || // fast fall stopped
 						(conf.lastMode == 5) && ((good.mode != 2) && (good.mode != 4)) // chaotic stopped
 						) &&
-						price <= conf.buyThresh) {
+						price - conf.buyThresh * 0.1 <= conf.buyThresh) {
 							if (M.buyGood(iG, 10000)) {
 								conf.priceBought = price;
 								IdleTrading.sessionPurchases++;
@@ -334,7 +334,7 @@ IdleTrading.launch = function(){
 							(conf.lastMode == 3) && ((good.mode != 1) && (good.mode != 5)) || // fast rise stopped
 							(conf.lastMode == 5) && ((good.mode != 1) && (good.mode != 3)) // chaotic stopped
 						) &&
-						(price >= conf.sellThresh) &&
+						(price + conf.buyThresh * 0.1 >= conf.sellThresh) &&
                         (price > conf.priceBought)) {
 							if (M.sellGood(iG, 10000)) {
 								conf.priceBought = -1;

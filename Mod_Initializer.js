@@ -313,7 +313,7 @@ Mods.LoadMods = function (callback) {
 		let promises = [];
 		const modLoadCheck = (func, path) => {
 			promises.push(new Promise((resolve, reject) => {
-				func(path, resolve, () => { console.log(`Failed to load mod language file:`, file); resolve(); });
+				func(path, resolve, () => { console.log(`Failed to load mod file:`, file); resolve(); });
 			}));
 		}
 

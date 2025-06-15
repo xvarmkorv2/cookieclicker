@@ -341,7 +341,6 @@ IdleTrading.launch = function(){
                             	if (IdleTrading.config.transactionNotifications) Game.Notify('Selling ' + good.name.replace('%1',Game.bakeryName), 'At a profit of ' + Math.floor(good.val - conf.priceBought) + '$ per unit (total ' + Math.floor(good.val - conf.priceBought) * conf.stock + '$ profit), and is ' + IdleTrading.modeDecoder[good.mode] + ' now.', good.icon, IdleTrading.config.fastNotifications);
                             	if (IdleTrading.config.consoleAnnouncements) ('=====$$$== Selling ' + good.name.replace('%1',Game.bakeryName) + ' at a profit of ' + (good.val - conf.priceBought).toFixed(2));
 							}
-							
 						};
 				}
 			}

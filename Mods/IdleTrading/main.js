@@ -321,7 +321,7 @@ IdleTrading.launch = function(){
 						) &&
 						price <= conf.buyThresh) {
 							if (M.buyGood(iG, 10000)) {
-								conf.priceBought = good.val;
+								conf.priceBought = price;
 								IdleTrading.sessionPurchases++;
 								if (IdleTrading.config.transactionNotifications) Game.Notify('Buying ' + good.name, 'The price has stopped ' + IdleTrading.modeDecoder[conf.lastMode] + ' at ' + Math.floor(conf.priceBought) + '$ per unit, and is ' + IdleTrading.modeDecoder[good.mode] + ' now.', IdleTrading.goodIcons[i], IdleTrading.config.fastNotifications);
 								if (IdleTrading.config.consoleAnnouncements) console.log('=====$$$== Buying ' + good.name);
@@ -335,7 +335,7 @@ IdleTrading.launch = function(){
 							(conf.lastMode == 5) && ((good.mode != 1) && (good.mode != 3)) // chaotic stopped
 						) &&
 						(price >= conf.sellThresh) &&
-                        (good.val > conf.priceBought)) {
+                        (price > conf.priceBought)) {
 							if (M.sellGood(iG, 10000)) {
 								conf.priceBought = -1;
 								IdleTrading.sessionSales++;

@@ -281,14 +281,14 @@ IdleTrading.launch = function(){
             Game.Notify(
                 'Idle Trading report',
                 'This session has been running for ' + stockerTimeBeautifier(stockerUptime) +
-                ', but no good investment opportunities were detected! Luck is not on our side, yet.', [26, 7], IdleTrading.config.stockerFastNotifications
+                ', but no good investment opportunities were detected! Luck is not on our side, yet.', [26, 7], IdleTrading.config.fastNotifications
             );
         } else {
             Game.Notify(
                 'Idle Trading report',
                 'This session has been running for ' + stockerTimeBeautifier(stockerUptime) +
             	', and has made ' + IdleTrading.sessionProfits.toFixed(0) +
-                '$ in ' + IdleTrading.sessionPurchases + ' purchases and ' + IdleTrading.sessionSales + ' sales.', [26, 7], IdleTrading.config.stockerFastNotifications
+                '$ in ' + IdleTrading.sessionPurchases + ' purchases and ' + IdleTrading.sessionSales + ' sales.', [26, 7], IdleTrading.config.fastNotifications
             );
         }
     }

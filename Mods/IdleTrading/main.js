@@ -240,7 +240,7 @@ IdleTrading.launch = function(){
 	IdleTrading.ReplaceNativeMarket = function() {
 		IdleTrading.startingProfits = Game.Objects['Bank'].minigame.profit;
 		if (IdleTrading.config.activityReport) {
-        	settimeout(IdleTrading.stockerReport, IdleTrading.config.activityReportFrequency);
+        	setTimeout(IdleTrading.stockerReport, IdleTrading.config.activityReportFrequency);
         }
 	}
 
@@ -270,9 +270,6 @@ IdleTrading.launch = function(){
 		} else if ((hours == -1) && (minutes == -1)) {
 			return 'not that long actually';
 		}
-		if (IdleTrading.config.activityReport) {
-        	settimeout(IdleTrading.stockerReport, IdleTrading.config.activityReportFrequency);
-        }
 	}
 
 	IdleTrading.stockerReport = function () {
@@ -293,7 +290,7 @@ IdleTrading.launch = function(){
             );
         }
 		if (IdleTrading.config.activityReport) {
-        	settimeout(IdleTrading.stockerReport, IdleTrading.config.activityReportFrequency);
+        	setTimeout(IdleTrading.stockerReport, IdleTrading.config.activityReportFrequency);
         }
     }
 

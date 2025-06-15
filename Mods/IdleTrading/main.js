@@ -332,9 +332,7 @@ IdleTrading.launch = function(){
 						}
 				}
 				if(IdleTrading.config.autoSell && conf.sellThresh != -1){
-					if((good.stock > 0) // only if the stock is present
-						&&
-						(
+					if((
 							(conf.lastMode == 1) && ((good.mode != 3) && (good.mode != 5)) || // slow rise stopped
 							(conf.lastMode == 3) && ((good.mode != 1) && (good.mode != 5)) || // fast rise stopped
 							(conf.lastMode == 5) && ((good.mode != 1) && (good.mode != 3)) // chaotic stopped

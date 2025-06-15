@@ -17171,13 +17171,7 @@ new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with o
 		Timer.say('LOGIC');
 		//update game logic !
 		Game.catchupLogic = 0; 
-		try {
-			Game.Logic();
-		} catch (error) {
-			alert(error);
-			setTimeout(Game.Loop, 12000 / Game.fps);
-			return
-		}
+		Game.Logic();
 		Timer.track('end of main logic', true);
 		Game.catchupLogic=1;
 		

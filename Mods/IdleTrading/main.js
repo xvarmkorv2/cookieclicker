@@ -338,7 +338,7 @@ IdleTrading.launch = function(){
 							(conf.lastMode == 5) && ((good.mode != 1) && (good.mode != 3)) // chaotic stopped
 						) &&
 						(price >= conf.sellThresh) &&
-                        (good.currentPrice > conf.priceBought)) {
+                        (good.val > conf.priceBought)) {
 							if (M.sellGood(iG, 10000)) {
 								IdleTrading.sessionSales++;
                             	if (IdleTrading.config.transactionNotifications) Game.Notify('Selling ' + good.name, 'At a profit of ' + Math.floor(good.val - conf.priceBought) + '$ per unit (total ' + Math.floor(good.val - conf.priceBought) * conf.stock + '$ profit), and is ' + IdleTrading.modeDecoder[good.mode] + ' now.', IdleTrading.goodIcons[i], IdleTrading.config.fastNotifications);

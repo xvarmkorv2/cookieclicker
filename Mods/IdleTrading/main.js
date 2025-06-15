@@ -44,7 +44,8 @@ IdleTrading.launch = function(){
 			fastNotifications: 0,
 			consoleAnnouncements: 0,
 			activityReport: 0,
-			activityReportFrequency: 1000 * 60 * 60
+			activityReportFrequency: 1000 * 60 * 60,
+			verboseNotifications: 0
 		};
 		
 		for(var iG = 2; iG < Game.ObjectsN; iG++){
@@ -309,7 +310,7 @@ IdleTrading.launch = function(){
     			}
 
 				if (good.mode != 5 && conf.lastMode == 5) { // ignore unstable stocks
-                    if (IdleTrading.config.transactionNotifications) Game.Notify(good.name + ' went unstable', 'Ignoring the stock for a time', [1, 33], IdleTrading.config.fastNotifications);
+                    if (IdleTrading.config.transactionNotifications && IdleTrading.config.verboseNotifications) Game.Notify(good.name + ' went unstable', 'Ignoring the stock for a time', [1, 33], IdleTrading.config.fastNotifications);
                 }
 
 				if(IdleTrading.config.autoBuy && conf.buyThresh != -1){

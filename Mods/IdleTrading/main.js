@@ -292,6 +292,9 @@ IdleTrading.launch = function(){
                 '$ in ' + IdleTrading.sessionPurchases + ' purchases and ' + IdleTrading.sessionSales + ' sales.', [26, 7], IdleTrading.config.fastNotifications
             );
         }
+		if (IdleTrading.config.activityReport) {
+        	settimeout(IdleTrading.stockerReport, IdleTrading.config.activityReportFrequency);
+        }
     }
 
 	IdleTrading.Logic = function(){

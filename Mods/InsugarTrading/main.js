@@ -4,7 +4,7 @@ let InsugarTrading = {};
 if(typeof CCSE == 'undefined') Game.LoadMod('https://klattmose.github.io/CookieClicker/CCSE.js');
 
 InsugarTrading.name = "Insugar Trading";
-InsugarTrading.version = "1.3.6"; // Semantic versioning
+InsugarTrading.version = "1.3.7"; // Semantic versioning
 InsugarTrading.GameVersion = "2.048";
 InsugarTrading.CCSEVersion = "2.033";
 
@@ -25,7 +25,7 @@ InsugarTrading.data = [null];
 InsugarTrading.datasetUrl = function(bankLevel) {
     return CCSE.GetModPath(InsugarTrading.name) + '/data/lvl' + bankLevel + '.js';
 }
-InsugarTrading.highestAvailableDatasetLevel = 50;
+InsugarTrading.highestAvailableDatasetLevel = 60;
 
 /* Downloads a dataset from the github website.
  *

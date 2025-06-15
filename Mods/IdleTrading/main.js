@@ -187,7 +187,7 @@ IdleTrading.launch = function(){
 			IdleTrading.config[prefName] = 1;
 		}
 		if (prefName == "activityReport" && IdleTrading.config.activityReport) {
-        	settimeout(IdleTrading.stockerReport, IdleTrading.config.activityReportFrequency);
+        	setTimeout(IdleTrading.stockerReport, IdleTrading.config.activityReportFrequency);
         }
 		l(button).className = 'smallFancyButton prefButton option' + ((IdleTrading.config[prefName] ^ invert) ? '' : ' off');
 	}

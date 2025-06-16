@@ -116,23 +116,43 @@ Mods.CreateTempFunctions = function () {
 }
 
 Mods.ChangeCCSE = function () {
-	if (!window.CCSE) window.CCSE = {};
-	if (!CCSE.MenuHelper) CCSE.MenuHelper = {};
-	CCSE.GetModPath = (modName) => Mods.ModData[modName].dir;
+	const oldregisterMod = Game.registerMod
+	Game.registerMod = (id,mod) => {
+		if(id === "CCSE") {
+			if(!CCSE.postLoadHooks) CCSE.postLoadHooks=[];
 
-	CCSE.GetModFolder = (modName) => Mods.ModData[modName].path;
+			CCSE.GetModPath = (modName) => Mods.ModData[modName].dir;
 
-	CCSE.MenuHelper.AutoVersion = (mod) => {
-		let func = function () {
-			let modInfo = Mods.ModData[mod.id].info;
-			Game.customStatsMenu.push(function () {
-				CCSE.AppendStatsVersionNumber(modInfo.Name, modInfo.ModVersion);
-			});
+			CCSE.GetModFolder = (modName) => Mods.ModData[modName].path;
+
+			CCSE.MenuHelper.AutoVersion = (mod) => {
+				let func = function () {
+					let modInfo = Mods.ModData[mod.id].info;
+					Game.customStatsMenu.push(function () {
+						CCSE.AppendStatsVersionNumber(modInfo.Name, modInfo.ModVersion);
+					});
+				}
+
+				if (CCSE.isLoaded) func();
+				else CCSE.postLoadHooks.push(func);
+			}
+
+			CCSE.postLoadHooks.push(()=> {
+				Game.loadModData = CCSE.GameLoadModData;
+				CCSE.LaunchOtherMods();
+				if(CCSE.gameHasLoadedSave) Game.loadModData();
+			})
+			
+			CCSE.LaunchOtherMods = Game.launchMods;
+			Game.launchMods = CCSE.init;
+			
+			CCSE.GameLoadModData = Game.loadModData;
+			Game.loadModData = function(){CCSE.gameHasLoadedSave=1;}
+			Game.registerMod = oldregisterMod
 		}
-
-		if (CCSE.isLoaded) func();
-		else CCSE.postLoadHooks.push(func);
+		oldregisterMod(id,mod) 
 	}
+	
 	confirm = function(){return true}
 }
 Mods.modsPopup = function () {

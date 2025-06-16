@@ -12244,7 +12244,7 @@ Game.Launch=function()
 		order=10050;
 		Game.NewUpgradeCookie({name:'Deep-fried cookie dough',desc:'They\'ll fry anything these days. Drizzled in hot chocolate syrup, just like in state fairs. Spikes up your blood sugar AND your cholesterol!',icon:[23,35],require:'Box of maybe cookies',power:						5,price: Math.pow(10,47)});
 		
-new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with other players through buttons in the top-right of the %1 menu.",loc("Options"))+'<q>Of course, you could\'ve done this all along, but what kind of maniac sends presents without wrapping them first?</q>',999999,[16,9]);Game.last.pool='prestige';Game.last.parents=['Heralds'];
+		new Game.Upgrade('Wrapping paper',loc("You may now send and receive gifts with other players through buttons in the top-right of the %1 menu.",loc("Options"))+'<q>Of course, you could\'ve done this all along, but what kind of maniac sends presents without wrapping them first?</q>',999999,[16,9]);Game.last.pool='prestige';Game.last.parents=['Heralds'];
 		
 		Game.giftBoxDesigns=[
 			[34,6],[16,9],[34,3],[34,4],[34,5],[34,7],[34,8],[34,9],[34,10],[34,11],[34,12],

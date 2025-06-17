@@ -429,7 +429,7 @@ CEModLib.launch = function(){
 		// INJECTIONS
 
 		if (!Game.customWrinklerSuck) {
-			Game.customWrinklerSuck = []
+			Game.customWrinklerSuck = [(toSuck)=>{return toSuck}]
 
 		CCSE.ReplaceCodeIntoFunction('Game.UpdateWrinklers', 'var toSuck=1.1', `
 			// Game.UpdateWrinklers injection point 1 from CE
@@ -437,11 +437,11 @@ CEModLib.launch = function(){
 		}
 
 		if (!Game.customWrinklerSucked) {
-			Game.customWrinklerSucked = [(me,toSuck)=>{return toSuck}]
+			Game.customWrinklerSucked = [(me,toSuck)=>{return me.sucked*toSuck}]
 
 		CCSE.ReplaceCodeIntoFunction('Game.UpdateWrinklers', 'me.sucked*=toSuck;', `
 			// Game.UpdateWrinklers injection point 2 from CE
-			for(var i in Game.customWrinklerSucked) me.sucked = Game.customWrinklerSuck[i](me,toSuck);`, 1);
+			for(var i in Game.customWrinklerSucked) me.sucked = Game.customWrinklerSucked[i](me,toSuck);`, 1);
 		}
 
 		if (!Game.customShimmerTypes['reindeer'].customReindeerPopMoni) {

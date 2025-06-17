@@ -429,7 +429,7 @@ CEModLib.launch = function(){
 		// INJECTIONS
 
 		if (!Game.customWrinklerSuck) {
-			Game.customWrinklerSuck = [(toSuck)=>{return toSuck}]
+			Game.customWrinklerSuck = []
 
 		CCSE.ReplaceCodeIntoFunction('Game.UpdateWrinklers', 'var toSuck=1.1', `
 			// Game.UpdateWrinklers injection point 1 from CE
@@ -437,7 +437,7 @@ CEModLib.launch = function(){
 		}
 
 		if (!Game.customWrinklerSucked) {
-			Game.customWrinklerSucked = [(me,toSuck)=>{return me.sucked*toSuck}]
+			Game.customWrinklerSucked = []
 
 		CCSE.ReplaceCodeIntoFunction('Game.UpdateWrinklers', 'me.sucked*=toSuck;', `
 			// Game.UpdateWrinklers injection point 2 from CE

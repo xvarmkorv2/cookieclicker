@@ -437,7 +437,7 @@ CEModLib.launch = function(){
 		}
 
 		if (!Game.customWrinklerSucked) {
-			Game.customWrinklerSucked = []
+			Game.customWrinklerSucked = [(me,toSuck)=>{return toSuck}]
 
 		CCSE.ReplaceCodeIntoFunction('Game.UpdateWrinklers', 'me.sucked*=toSuck;', `
 			// Game.UpdateWrinklers injection point 2 from CE

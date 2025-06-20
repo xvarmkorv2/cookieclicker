@@ -38,7 +38,9 @@ Mods.onImportSave = (out, save) => {
 	if (!data.modMeta) return false
 	let Continue = false;
 	for (var i = 0; i < data.modMeta.length; i++) {
-		if (data.modMeta[i] !== Mods.ModList[i]) {
+		let disabled = data.modMeta[i].startsWith('*')
+		let rawid = data.modMeta[i].substring(disabled ? 1 : 0, data.modMeta[i].length)
+		if (rawid !== Mods.ModList[i] || disabled !== Mods.ModData[Mods.ModList[i]].disabled) {
 			Continue = true; break
 		}
 	}

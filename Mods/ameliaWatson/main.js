@@ -67,8 +67,8 @@ var AmeliaWatson = {
 				'Relativistic parsec-skipping', 'Primeval glow', 'Fortune #012', 'Timeproof upholstery', 'Rectifying a mistake']
 
 			for (var i in upgrades) {
-				if (Game.Upgrades[upgrades[i]].icon.length != 3) shouldRebuild = true; break 
-				if (Game.Upgrades[upgrades[i]].icon[2] != watsonicons) shouldRebuild = true; break 
+				if (Game.Upgrades[upgrades[i]].icon.length != 3) {shouldRebuild = true; break }
+				if (Game.Upgrades[upgrades[i]].icon[2] != watsonicons) {shouldRebuild = true; break }
 			}
 		}
 
@@ -79,8 +79,8 @@ var AmeliaWatson = {
 				'Caveman to cosmos', 'Back already?', 'Spacetime jigamaroo', 'Be kind, rewind', 'The long now', 'D&eacute;j&agrave; vu', 'But the future refused to change', 'I only meant to stay a while']
 
 			for (var i in achievements) {
-				if (Game.Achievements[achievements[i]].icon.length != 3) shouldRebuild = true; break 
-				if (Game.Achievements[achievements[i]].icon[2] != watsonicons) shouldRebuild = true; break 
+				if (Game.Achievements[achievements[i]].icon.length != 3) {shouldRebuild = true; break }
+				if (Game.Achievements[achievements[i]].icon[2] != watsonicons) {shouldRebuild = true; break }
 			}
 		}
 

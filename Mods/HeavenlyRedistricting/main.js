@@ -114,11 +114,11 @@ HeavenlyRedistricting.launch = function(){
 };
 
 if (!HeavenlyRedistricting.isLoaded) {
-    if (CCSE && CCSE.isLoaded) {
+    if (CEModLib && CEModLib.isInitialized) {
         HeavenlyRedistricting.launch();
     } else {
-        if (!CCSE) var CCSE = {};
-        if (!CCSE.postLoadHooks) CCSE.postLoadHooks = [];
-        CCSE.postLoadHooks.push(HeavenlyRedistricting.launch);
+        if (!CEModLib) var CEModLib = {};
+        if (!CEModLib.postLoadHooks) CEModLib.postLoadHooks = [];
+        CEModLib.postLoadHooks.push(HeavenlyRedistricting.launch);
     }
 }

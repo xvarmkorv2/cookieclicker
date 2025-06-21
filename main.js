@@ -8396,7 +8396,7 @@ Game.Launch=function()
 				(me.totalCookies>0?(
 					'<div class="line"></div>'+
 					(me.amount>0?'<div class="descriptionBlock">'+loc("each %1 produces <b>%2</b> per second",[me.single,loc("%1 cookie",LBeautify((me.storedTotalModCps/me.amount)*Game.globalCpsMult,1))])+'</div>':'')+
-					'<div class="descriptionBlock">'+loc("%1 producing <b>%2</b> per second",[loc("%1 "+me.bsingle,LBeautify(me.amount)),loc("%1 cookie",LBeautify(me.storedTotalModCps,1))])+' ('+loc("<b>%1%</b> of total CpS",Beautify(Game.cookiesPsRaw>0?((me.amount>0?((me.storedTotalModCps*Game.globalCpsMult)/Game.cookiesPs):0)*100):0,1))+')</div>'+
+					'<div class="descriptionBlock">'+loc("%1 producing <b>%2</b> per second",[loc("%1 "+me.bsingle,LBeautify(me.amount)),loc("%1 cookie",LBeautify(me.storedTotalModCps*Game.globalCpsMult,1))])+' ('+loc("<b>%1%</b> of total CpS",Beautify(Game.cookiesPs>0?((me.amount>0?((me.storedTotalModCps*Game.globalCpsMult)/Game.cookiesPs):0)*100):0,1))+')</div>'+
 					(synergiesStr?('<div class="descriptionBlock">'+synergiesStr+'</div>'):'')+
 					(EN?'<div class="descriptionBlock"><b>'+Beautify(me.totalCookies)+'</b> '+(Math.floor(me.totalCookies)==1?'cookie':'cookies')+' '+me.actionName+' so far</div>':'<div class="descriptionBlock">'+loc("<b>%1</b> produced so far",loc("%1 cookie",LBeautify(me.totalCookies)))+'</div>')
 				):'')+
@@ -16682,7 +16682,7 @@ Game.Launch=function()
 			for (var i in Game.Objects)
 			{
 				var me=Game.Objects[i];
-				me.totalCookies+=(me.storedTotalCps*Game.globalCpsMult)/Game.fps;
+				me.totalCookies+=(me.storedTotalModCps*Game.globalCpsMult)/Game.fps;
 			}
 			if (Game.prefs.particles && Game.cookies && Game.T%Math.ceil(Game.fps/Math.min(10,Game.cookiesPs))==0) Game.particleAdd();//cookie shower
 			

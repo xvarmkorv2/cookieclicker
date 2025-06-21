@@ -5399,6 +5399,7 @@ Game.Launch=function()
 				if (Game.ascensionMode!=1) me.storedCps*=(1+me.level*0.01)*buildMult;
 				if (me.id==1 && Game.Has('Milkhelp&reg; lactose intolerance relief tablets')) me.storedCps*=1+0.05*Game.milkProgress*milkMult;//this used to be "me.storedCps*=1+0.1*Math.pow(catMult-1,0.5)" which was. hmm
 				me.storedTotalCps=me.amount*me.storedCps;
+				me.storedTotalModCps=Game.runModHookOnValue('cps',me.storedTotalCps);
 				Game.cookiesPs+=me.storedTotalCps;
 				Game.cookiesPsByType[me.name]=me.storedTotalCps;
 			}
@@ -8393,8 +8394,8 @@ Game.Launch=function()
 				'<div class="line"></div><div class="description"><q>'+desc+'</q></div>'+
 				(me.totalCookies>0?(
 					'<div class="line"></div>'+
-					(me.amount>0?'<div class="descriptionBlock">'+loc("each %1 produces <b>%2</b> per second",[me.single,loc("%1 cookie",LBeautify((me.storedTotalCps/me.amount)*Game.globalCpsMult,1))])+'</div>':'')+
-					'<div class="descriptionBlock">'+loc("%1 producing <b>%2</b> per second",[loc("%1 "+me.bsingle,LBeautify(me.amount)),loc("%1 cookie",LBeautify(me.storedTotalCps*Game.globalCpsMult,1))])+' ('+loc("<b>%1%</b> of total CpS",Beautify(Game.cookiesPsRaw>0?((me.amount>0?(me.storedTotalCps/Game.buildingCps):0)*100):0,1))+')</div>'+
+					(me.amount>0?'<div class="descriptionBlock">'+loc("each %1 produces <b>%2</b> per second",[me.single,loc("%1 cookie",LBeautify((me.storedTotalModCps/me.amount)*Game.globalCpsMult,1))])+'</div>':'')+
+					'<div class="descriptionBlock">'+loc("%1 producing <b>%2</b> per second",[loc("%1 "+me.bsingle,LBeautify(me.amount)),loc("%1 cookie",LBeautify(me.storedTotalModCps,1))])+' ('+loc("<b>%1%</b> of total CpS",Beautify(Game.cookiesPsRaw>0?((me.amount>0?(me.storedTotalModCps/Game.cookiesPs):0)*100):0,1))+')</div>'+
 					(synergiesStr?('<div class="descriptionBlock">'+synergiesStr+'</div>'):'')+
 					(EN?'<div class="descriptionBlock"><b>'+Beautify(me.totalCookies)+'</b> '+(Math.floor(me.totalCookies)==1?'cookie':'cookies')+' '+me.actionName+' so far</div>':'<div class="descriptionBlock">'+loc("<b>%1</b> produced so far",loc("%1 cookie",LBeautify(me.totalCookies)))+'</div>')
 				):'')+

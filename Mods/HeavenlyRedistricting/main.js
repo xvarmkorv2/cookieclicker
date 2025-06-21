@@ -21,6 +21,29 @@ HeavenlyRedistricting.launch = function(){
 		and it's just for HA really
 		*/
 
+		//Seasons
+		CE.GroupMoveUpgrade("Keepsakes","Season switcher",-250,100);
+		CE.MoveUpgrade("Season switcher",-250,100);
+
+		//Wrinklers and lumps and whatnot
+		CE.GroupMoveUpgrade("Sugar crystal cookies","Starter kitchen",-250,-150);
+		CE.MoveUpgrade("Box of not cookies",-250,-150);
+		CE.MoveUpgrade("Box of maybe cookies",-250,-150);
+		CE.MoveUpgrade("Box of pastries",-250,-150);
+		CE.MoveUpgrade("Starter kitchen",-250,-150);
+		CE.MoveUpgrade("Sugar craving",-250,-150);
+		CE.MoveUpgrade("Sugar aging process",-250,-150);
+		CE.MoveUpgrade("Sucralosia Inutilis",-250,-150);
+		CE.MoveUpgrade("Diabetica Daemonicus",-250,-150);
+		CE.MoveUpgrade("Eye of the wrinkler",-250,-150);
+
+		//now just gotta move my Heavenly Archive upgrades all around... A
+
+		setTimeout(() => {
+			HeavenlyRedistricting.handleModUpgrades()
+		}, 1000);
+	}
+	HeavenlyRedistricting.handleModUpgrades = function(){
 		if (Game.mods["More Heavenly Upgrades Remastered"]) {
 			//Flower
 			CE.GroupMoveUpgrade("Abandon the old gods","Flora",-500,-650);
@@ -83,24 +106,6 @@ HeavenlyRedistricting.launch = function(){
 			//wow that's all?
 			//...
 		}
-		
-		//Seasons
-		CE.GroupMoveUpgrade("Keepsakes","Season switcher",-250,100);
-		CE.MoveUpgrade("Season switcher",-250,100);
-
-		//Wrinklers and lumps and whatnot
-		CE.GroupMoveUpgrade("Sugar crystal cookies","Starter kitchen",-250,-150);
-		CE.MoveUpgrade("Box of not cookies",-250,-150);
-		CE.MoveUpgrade("Box of maybe cookies",-250,-150);
-		CE.MoveUpgrade("Box of pastries",-250,-150);
-		CE.MoveUpgrade("Starter kitchen",-250,-150);
-		CE.MoveUpgrade("Sugar craving",-250,-150);
-		CE.MoveUpgrade("Sugar aging process",-250,-150);
-		CE.MoveUpgrade("Sucralosia Inutilis",-250,-150);
-		CE.MoveUpgrade("Diabetica Daemonicus",-250,-150);
-		CE.MoveUpgrade("Eye of the wrinkler",-250,-150);
-
-		//now just gotta move my Heavenly Archive upgrades all around... A
 	}
 	HeavenlyRedistricting.save = function(){
 		//use this to store persistent data associated with your mod

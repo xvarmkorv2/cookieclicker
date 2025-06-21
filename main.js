@@ -8047,6 +8047,7 @@ Game.Launch=function()
 			this.totalCookies=0;
 			this.storedCps=0;
 			this.storedTotalCps=0;
+			this.storedTotalModCps=0;
 			this.icon=icon;
 			this.iconColumn=iconColumn;
 			this.art=art;
@@ -8332,7 +8333,7 @@ Game.Launch=function()
 							{
 								var other=Game.Upgrades[Game.GrandmaSynergies[i]].buildingTie;
 								var mult=me.amount*0.01*(1/(other.id-1));
-								var boost=(other.storedTotalCps*Game.globalCpsMult)-(other.storedTotalCps*Game.globalCpsMult)/(1+mult);
+								var boost=(other.storedTotalModCps*Game.globalCpsMult)-(other.storedTotalModCps*Game.globalCpsMult)/(1+mult);
 								synergyBoost+=boost;
 								if (!synergiesWith[other.plural]) synergiesWith[other.plural]=0;
 								synergiesWith[other.plural]+=mult;
@@ -8345,7 +8346,7 @@ Game.Launch=function()
 						var boost=(me.amount*0.05*other.amount)*Game.globalCpsMult;
 						synergyBoost+=boost;
 						if (!synergiesWith[other.plural]) synergiesWith[other.plural]=0;
-						synergiesWith[other.plural]+=boost/(other.storedTotalCps*Game.globalCpsMult);
+						synergiesWith[other.plural]+=boost/(other.storedTotalModCps*Game.globalCpsMult);
 					}
 					
 					for (var i in me.synergies)
@@ -8356,7 +8357,7 @@ Game.Launch=function()
 							var weight=0.05;
 							var other=it.buildingTie1;
 							if (me==it.buildingTie1) {weight=0.001;other=it.buildingTie2;}
-							var boost=(other.storedTotalCps*Game.globalCpsMult)-(other.storedTotalCps*Game.globalCpsMult)/(1+me.amount*weight);
+							var boost=(other.storedTotalModCps*Game.globalCpsMult)-(other.storedTotalModCps*Game.globalCpsMult)/(1+me.amount*weight);
 							synergyBoost+=boost;
 							if (!synergiesWith[other.plural]) synergiesWith[other.plural]=0;
 							synergiesWith[other.plural]+=me.amount*weight;
@@ -8381,7 +8382,7 @@ Game.Launch=function()
 					ariaText+=(canBuy?'Can buy 1 for':'Cannot afford the')+' '+Beautify(Math.round(price))+' cookies. ';
 					if (!me.locked && me.totalCookies>0)
 					{
-						ariaText+='Each '+me.single+' produces '+Beautify((me.storedTotalCps/me.amount)*Game.globalCpsMult,1)+' cookies per second. ';
+						ariaText+='Each '+me.single+' produces '+Beautify((me.storedTotalModCps/me.amount)*Game.globalCpsMult,1)+' cookies per second. ';
 						ariaText+=Beautify(me.totalCookies)+' cookies '+me.actionName+' so far. ';
 					}
 					if (!me.locked) ariaText+=desc;
@@ -8395,7 +8396,7 @@ Game.Launch=function()
 				(me.totalCookies>0?(
 					'<div class="line"></div>'+
 					(me.amount>0?'<div class="descriptionBlock">'+loc("each %1 produces <b>%2</b> per second",[me.single,loc("%1 cookie",LBeautify((me.storedTotalModCps/me.amount)*Game.globalCpsMult,1))])+'</div>':'')+
-					'<div class="descriptionBlock">'+loc("%1 producing <b>%2</b> per second",[loc("%1 "+me.bsingle,LBeautify(me.amount)),loc("%1 cookie",LBeautify(me.storedTotalModCps,1))])+' ('+loc("<b>%1%</b> of total CpS",Beautify(Game.cookiesPsRaw>0?((me.amount>0?(me.storedTotalModCps/Game.cookiesPs):0)*100):0,1))+')</div>'+
+					'<div class="descriptionBlock">'+loc("%1 producing <b>%2</b> per second",[loc("%1 "+me.bsingle,LBeautify(me.amount)),loc("%1 cookie",LBeautify(me.storedTotalModCps,1))])+' ('+loc("<b>%1%</b> of total CpS",Beautify(Game.cookiesPsRaw>0?((me.amount>0?((me.storedTotalModCps*Game.globalCpsMult)/Game.cookiesPs):0)*100):0,1))+')</div>'+
 					(synergiesStr?('<div class="descriptionBlock">'+synergiesStr+'</div>'):'')+
 					(EN?'<div class="descriptionBlock"><b>'+Beautify(me.totalCookies)+'</b> '+(Math.floor(me.totalCookies)==1?'cookie':'cookies')+' '+me.actionName+' so far</div>':'<div class="descriptionBlock">'+loc("<b>%1</b> produced so far",loc("%1 cookie",LBeautify(me.totalCookies)))+'</div>')
 				):'')+

@@ -111,7 +111,7 @@ var AmeliaWatson = {
 			Game.Upgrades['Patience abolished'].icon = [21, 0, watsonicons];
 			Game.Upgrades['Timeproof upholstery'].icon = [24, 0, watsonicons];
 			Game.Upgrades['Rectifying a mistake'].icon = [23, 0, watsonicons];
-			Game.Upgrades['Unshackled time machines'].icon = [23, 0, watsonicons];
+			Game.Upgrades['Unshackled time machines'].icon = [25, 0, watsonicons];
 
 			// Synergy
 			Game.Upgrades['Relativistic parsec-skipping'].icon = [10, 0, watsonicons];

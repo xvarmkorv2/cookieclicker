@@ -8370,7 +8370,7 @@ Game.Launch=function()
 							if (synergiesStr!='') synergiesStr+=', ';
 							synergiesStr+='<span style="color:#fff;font-weight:bold;font-size:80%;background:#000;box-shadow:0px 0px 0px 1px rgba(255,255,255,0.2);border-radius:3px;padding:0px 2px;display:inline-block;">'+i+' +'+Beautify(synergiesWith[i]*100,1)+'%</span>';
 						}
-						synergiesStr=loc("...also boosting some other buildings:")+' '+synergiesStr+' - '+loc("all combined, these boosts account for <b>%1</b> per second (<b>%2%</b> of total CpS)",[loc("%1 cookie",LBeautify(synergyBoost,1)),Beautify((synergyBoost/(Game.buildingCps*Game.globalCpsMult))*100,1)]);
+						synergiesStr=loc("...also boosting some other buildings:")+' '+synergiesStr+' - '+loc("all combined, these boosts account for <b>%1</b> per second (<b>%2%</b> of total CpS)",[loc("%1 cookie",LBeautify(synergyBoost,1)),Beautify((synergyBoost/cookiesPs)*100,1)]);
 					}
 				}
 				

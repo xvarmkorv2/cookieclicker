@@ -742,122 +742,109 @@ CEModLib.launch = function(){
 		CE.PantheonInjected = false;
 		CE.CanPantheonInject = false;
 		CE.PantheonInjectFunc = []; //add functions to run in here when CE injects into the pantheon.
-		if (Game.Objects["Temple"].level >= 1) {
-			CE.CanPantheonInject = true;
-			Game.Objects["Temple"].level -= 1; //I have to have the minigame exist!!!
-			Game.Objects["Temple"].levelUp(true); //sowwy
-		}
-
-		var PantheonCheck = setInterval(function(){
-		if (Game.Objects["Temple"].minigameLoaded == false) return;
-		clearInterval(PantheonCheck);
-		CE.PantheonInjected = true;
-
-		CCSE.ReplaceCodeIntoFunction("Game.hasGod",`var god=M.gods[what];`,`
-			// Game.hasGod injection point 1 by CE;
-			if (typeof M === "undefined") var M = Game.Objects["Temple"].minigame //ensure it is loaded/available; (does mess with globals)
-			//console.log(M,what)`,-1);
-		CCSE.ReplaceCodeIntoFunction("Game.hasGod",`for (var i=0;i<3;i++)`,`
-			// Game.hasGod injection point 2 by CE;
-			if (!Game.slots || Game.slots.length === 0) Game.slots = [[-1,0],[-1,1],[-1,2]];
-			var i = 0;
-			for (var i=0;i<(Game.slots.length*1000);i++)`,0);
-		CCSE.ReplaceCodeIntoFunction("Game.hasGod",`if (M.slot[i]==god.id)`,`if (M.slot[i/1000]==god.id)`,0);
-		//we use the *1000 and all of that, so that decimals such as 2.1 or 2.111 are actually treated as slots, and are picked up;
-		//due to i++ iterating only through whole numbers (0,1,2,3,etc.);
-		//we then /1000 to actually get the decimal and to ensure the first three slots (0,1,2) aren't in the high thousands or hundreds (0,1000,2000);
-		//also, a slot of 2.1 or 2.111 are treated as a slot of 2 for slot name, gem icon, and mechanical calculations. (eg. 2.1 is 2, therefore two jade slots)
-		//I made this all for HA (just for a duplicate jade slot, and double slots); One heavenly upgrade resulted in all of this
-		CCSE.ReplaceCodeIntoFunction("Game.hasGod",`if (Game.hasAura('Supreme Intellect')) return Math.max(1,i/100);`,`
-			// Game.hasGod injection point 3 & 4 by CE;
-			if (Game.hasAura('Supreme Intellect')) return Math.max(1,Math.round(i/1000));`,0);
-		CCSE.ReplaceCodeIntoFunction("Game.hasGod",`else return (i+1);`,`else return Math.round((i/1000)+1);`,0);
-		CCSE.ReplaceCodeIntoFunction(`Game.Objects["Temple"].minigame.slotTooltip`,`return function(){`,`
-			// M.slotTooltip injection point 1 by CE;
-			var id2 = Math.round(id);
-			if (typeof M === "undefined") var M = Game.Objects["Temple"].minigame //ensure it is loaded/available; (does mess with globals)`,-1)
-
-		CCSE.ReplaceCodeIntoFunction(`Game.Objects["Temple"].minigame.slotTooltip`,`'<div class="name templeEffect" style="margin-bottom:12px;"><div class="usesIcon shadowFilter templeGem templeGem'+(parseInt(id)+1)+'"></div>'+loc(M.slotNames[id]+" slot")+'</div>'+`,`'<div class="name templeEffect" style="margin-bottom:12px;"><div class="usesIcon shadowFilter templeGem templeGem'+(parseInt(id)+1)+'"></div>'+loc(M.slotNames[Math.round(id)]+" slot")+'</div>'+`,0)
-
-		CCSE.ReplaceCodeIntoFunction(`Game.Objects["Temple"].minigame.slotTooltip`,`var slot=me.slot;`,`slot=Math.round(slot); //sorry for CE doing this just to get duplicate slots working (visually & mechanically)`,1)
-
-		CCSE.ReplaceCodeIntoFunction(`Game.Objects["Temple"].minigame.slotTooltip`,`('<div class="name templeEffect"><div class="usesIcon shadowFilter templeGem templeGem'+(parseInt(id)+1)+'"></div>'+loc(M.slotNames[id]+" slot")+' ('+loc("empty")+')</div><div class="line"></div><div class="description">'+`,`('<div class="name templeEffect"><div class="usesIcon shadowFilter templeGem templeGem'+(parseInt(id)+1)+'"></div>'+loc(M.slotNames[Math.round(id)]+" slot")+' ('+loc("empty")+')</div><div class="line"></div><div class="description">'+`,0)
-
-		if (!Game.customPantheonSwapT) {
-		Game.customPantheonSwapT = [];
 		
-		CCSE.ReplaceCodeIntoFunction(`Game.Objects["Temple"].minigame.logic`,`var t=1000*60*60;`,`
-		// M.logic injection point 1 by CE;
-		if (typeof M === "undefined") var M = Game.Objects["Temple"].minigame //ensure it is loaded/available; (does mess with globals)`,-1);
-		CCSE.ReplaceCodeIntoFunction(`Game.Objects["Temple"].minigame.logic`,`var t2=M.swapT+t-Date.now();`,`
-		// M.logic injection point 2 by CE;
-		for (let i in Game.customPantheonSwapT) t = Game.customPantheonSwapT[i](t,M.swapT)`,-1);
+		CCSE.MinigameReplacer(function(){
+			if (CE.PantheonInjected) return;
+			CE.PantheonInjected = true;
 
-		CCSE.ReplaceCodeIntoFunction(`Game.Objects["Temple"].minigame.draw`,`if (M.dragging)`,`
-		// M.logic injection point 1 by CE;
-		if (typeof M === "undefined") var M = Game.Objects["Temple"].minigame //ensure it is loaded/available; (does mess with globals)`,-1);
-		CCSE.ReplaceCodeIntoFunction(`Game.Objects["Temple"].minigame.draw`,`var t2=M.swapT+t-Date.now();`,`
-		// M.draw injection point 2 by CE;
-		for (let i in Game.customPantheonSwapT) t = Game.customPantheonSwapT[i](t,M.swapT)`,-1);
-		
-		}
+			CCSE.ReplaceCodeIntoFunction("Game.hasGod",`var god=M.gods[what];`,`
+				// Game.hasGod injection point 1 by CE;
+				if (typeof M === "undefined") var M = Game.Objects["Temple"].minigame //ensure it is loaded/available; (does mess with globals)
+				//console.log(M,what)`,-1);
+			CCSE.ReplaceCodeIntoFunction("Game.hasGod",`for (var i=0;i<3;i++)`,`
+				// Game.hasGod injection point 2 by CE;
+				if (!Game.slots || Game.slots.length === 0) Game.slots = [[-1,0],[-1,1],[-1,2]];
+				var i = 0;
+				for (var i=0;i<(Game.slots.length*1000);i++)`,0);
+			CCSE.ReplaceCodeIntoFunction("Game.hasGod",`if (M.slot[i]==god.id)`,`if (M.slot[i/1000]==god.id)`,0);
+			//we use the *1000 and all of that, so that decimals such as 2.1 or 2.111 are actually treated as slots, and are picked up;
+			//due to i++ iterating only through whole numbers (0,1,2,3,etc.);
+			//we then /1000 to actually get the decimal and to ensure the first three slots (0,1,2) aren't in the high thousands or hundreds (0,1000,2000);
+			//also, a slot of 2.1 or 2.111 are treated as a slot of 2 for slot name, gem icon, and mechanical calculations. (eg. 2.1 is 2, therefore two jade slots)
+			//I made this all for HA (just for a duplicate jade slot, and double slots); One heavenly upgrade resulted in all of this
+			CCSE.ReplaceCodeIntoFunction("Game.hasGod",`if (Game.hasAura('Supreme Intellect')) return Math.max(1,i/100);`,`
+				// Game.hasGod injection point 3 & 4 by CE;
+				if (Game.hasAura('Supreme Intellect')) return Math.max(1,Math.round(i/1000));`,0);
+			CCSE.ReplaceCodeIntoFunction("Game.hasGod",`else return (i+1);`,`else return Math.round((i/1000)+1);`,0);
+			CCSE.ReplaceCodeIntoFunction(`Game.Objects["Temple"].minigame.slotTooltip`,`return function(){`,`
+				// M.slotTooltip injection point 1 by CE;
+				var id2 = Math.round(id);
+				if (typeof M === "undefined") var M = Game.Objects["Temple"].minigame //ensure it is loaded/available; (does mess with globals)`,-1)
 
-		//I am sorry Klattmose!
-		CCSE.ReplaceCodeIntoFunction(`CCSE.RedrawGods`,`str += '<div class="ready templeGod templeGod' + (i % 4) + ' templeSlot titleFont" id="templeSlot' + i + '" ' + Game.getDynamicTooltip('Game.ObjectsById[' + M.parent.id + '].minigame.slotTooltip(' + i + ')', 'this') + '><div class="usesIcon shadowFilter templeGem templeGem' + (parseInt(i) + 1) + '"></div></div>';`,`
-			//CCSE.RedrawGods injection point 1 by CE; this feels weird to do!
-			str += '<div class="ready templeGod templeGod' + (i) + ' templeSlot titleFont" id="templeSlot' + i + '" ' + Game.getDynamicTooltip('Game.ObjectsById[' + M.parent.id + '].minigame.slotTooltip(' + i + ')', 'this') + '><div class="usesIcon shadowFilter templeGem templeGem' + (Math.round(i) + 1) + '"></div></div>';`,0);
+			CCSE.ReplaceCodeIntoFunction(`Game.Objects["Temple"].minigame.slotTooltip`,`'<div class="name templeEffect" style="margin-bottom:12px;"><div class="usesIcon shadowFilter templeGem templeGem'+(parseInt(id)+1)+'"></div>'+loc(M.slotNames[id]+" slot")+'</div>'+`,`'<div class="name templeEffect" style="margin-bottom:12px;"><div class="usesIcon shadowFilter templeGem templeGem'+(parseInt(id)+1)+'"></div>'+loc(M.slotNames[Math.round(id)]+" slot")+'</div>'+`,0)
 
-		CCSE.ReplaceCodeIntoFunction(`CCSE.RedrawGods`,`str += '<div class="ready templeGod templeGod' + (me.id % 4) + ' titleFont" id="templeGod' + me.id + '" ' + Game.getDynamicTooltip('Game.ObjectsById[' + M.parent.id + '].minigame.godTooltip(' + me.id + ')', 'this') + '><div class="usesIcon shadowFilter templeIcon" style="' + (icon[2]?'background-image:url('+icon[2]+');':'') + 'background-position:' + (-icon[0] * 48) + 'px ' + (-icon[1] * 48) + 'px;"></div><div class="templeSlotDrag" id="templeGodDrag' + me.id + '"></div></div>';`,`
-			//CCSE.RedrawGods injection point 2 by CE; kinda hoping these changes work for more temple slots!!!
-			str += '<div class="ready templeGod templeGod' + (me.id) + ' titleFont" id="templeGod' + me.id + '" ' + Game.getDynamicTooltip('Game.ObjectsById[' + M.parent.id + '].minigame.godTooltip(' + me.id + ')', 'this') + '><div class="usesIcon shadowFilter templeIcon" style="' + (icon[2]?'background-image:url('+icon[2]+');':'') + 'background-position:' + (-icon[0] * 48) + 'px ' + (-icon[1] * 48) + 'px;"></div><div class="templeSlotDrag" id="templeGodDrag' + me.id + '"></div></div>';`,0);
+			CCSE.ReplaceCodeIntoFunction(`Game.Objects["Temple"].minigame.slotTooltip`,`var slot=me.slot;`,`slot=Math.round(slot); //sorry for CE doing this just to get duplicate slots working (visually & mechanically)`,1)
 
-		if (!Game.slots || Game.slots.length === 0) Game.slots = [[-1,0],[-1,1],[-1,2]];
-		Game.registerHook('check',()=>{
-			for (let i in Game.Objects["Temple"].minigame.slot) {
-				if (!Game.slots[i] || Game.slots[i][0] !== Game.Objects["Temple"].minigame.slot[i] || Game.slots[i][1] !== i) {
-					Game.slots[i] = [Game.Objects["Temple"].minigame.slot[i],i]
-				}
+			CCSE.ReplaceCodeIntoFunction(`Game.Objects["Temple"].minigame.slotTooltip`,`('<div class="name templeEffect"><div class="usesIcon shadowFilter templeGem templeGem'+(parseInt(id)+1)+'"></div>'+loc(M.slotNames[id]+" slot")+' ('+loc("empty")+')</div><div class="line"></div><div class="description">'+`,`('<div class="name templeEffect"><div class="usesIcon shadowFilter templeGem templeGem'+(parseInt(id)+1)+'"></div>'+loc(M.slotNames[Math.round(id)]+" slot")+' ('+loc("empty")+')</div><div class="line"></div><div class="description">'+`,0)
+
+			if (!Game.customPantheonSwapT) {
+			Game.customPantheonSwapT = [];
+			
+			CCSE.ReplaceCodeIntoFunction(`Game.Objects["Temple"].minigame.logic`,`var t=1000*60*60;`,`
+			// M.logic injection point 1 by CE;
+			if (typeof M === "undefined") var M = Game.Objects["Temple"].minigame //ensure it is loaded/available; (does mess with globals)`,-1);
+			CCSE.ReplaceCodeIntoFunction(`Game.Objects["Temple"].minigame.logic`,`var t2=M.swapT+t-Date.now();`,`
+			// M.logic injection point 2 by CE;
+			for (let i in Game.customPantheonSwapT) t = Game.customPantheonSwapT[i](t,M.swapT)`,-1);
+
+			CCSE.ReplaceCodeIntoFunction(`Game.Objects["Temple"].minigame.draw`,`if (M.dragging)`,`
+			// M.logic injection point 1 by CE;
+			if (typeof M === "undefined") var M = Game.Objects["Temple"].minigame //ensure it is loaded/available; (does mess with globals)`,-1);
+			CCSE.ReplaceCodeIntoFunction(`Game.Objects["Temple"].minigame.draw`,`var t2=M.swapT+t-Date.now();`,`
+			// M.draw injection point 2 by CE;
+			for (let i in Game.customPantheonSwapT) t = Game.customPantheonSwapT[i](t,M.swapT)`,-1);
+			
 			}
-		})
 
-		for (let i in CE.PantheonInjectFunc) CE.PantheonInjectFunc[i](); //Run the functions!
-		},100)
+			//I am sorry Klattmose!
+			CCSE.ReplaceCodeIntoFunction(`CCSE.RedrawGods`,`str += '<div class="ready templeGod templeGod' + (i % 4) + ' templeSlot titleFont" id="templeSlot' + i + '" ' + Game.getDynamicTooltip('Game.ObjectsById[' + M.parent.id + '].minigame.slotTooltip(' + i + ')', 'this') + '><div class="usesIcon shadowFilter templeGem templeGem' + (parseInt(i) + 1) + '"></div></div>';`,`
+				//CCSE.RedrawGods injection point 1 by CE; this feels weird to do!
+				str += '<div class="ready templeGod templeGod' + (i) + ' templeSlot titleFont" id="templeSlot' + i + '" ' + Game.getDynamicTooltip('Game.ObjectsById[' + M.parent.id + '].minigame.slotTooltip(' + i + ')', 'this') + '><div class="usesIcon shadowFilter templeGem templeGem' + (Math.round(i) + 1) + '"></div></div>';`,0);
+
+			CCSE.ReplaceCodeIntoFunction(`CCSE.RedrawGods`,`str += '<div class="ready templeGod templeGod' + (me.id % 4) + ' titleFont" id="templeGod' + me.id + '" ' + Game.getDynamicTooltip('Game.ObjectsById[' + M.parent.id + '].minigame.godTooltip(' + me.id + ')', 'this') + '><div class="usesIcon shadowFilter templeIcon" style="' + (icon[2]?'background-image:url('+icon[2]+');':'') + 'background-position:' + (-icon[0] * 48) + 'px ' + (-icon[1] * 48) + 'px;"></div><div class="templeSlotDrag" id="templeGodDrag' + me.id + '"></div></div>';`,`
+				//CCSE.RedrawGods injection point 2 by CE; kinda hoping these changes work for more temple slots!!!
+				str += '<div class="ready templeGod templeGod' + (me.id) + ' titleFont" id="templeGod' + me.id + '" ' + Game.getDynamicTooltip('Game.ObjectsById[' + M.parent.id + '].minigame.godTooltip(' + me.id + ')', 'this') + '><div class="usesIcon shadowFilter templeIcon" style="' + (icon[2]?'background-image:url('+icon[2]+');':'') + 'background-position:' + (-icon[0] * 48) + 'px ' + (-icon[1] * 48) + 'px;"></div><div class="templeSlotDrag" id="templeGodDrag' + me.id + '"></div></div>';`,0);
+
+			if (!Game.slots || Game.slots.length === 0) Game.slots = [[-1,0],[-1,1],[-1,2]];
+			Game.registerHook('check',()=>{
+				for (let i in Game.Objects["Temple"].minigame.slot) {
+					if (!Game.slots[i] || Game.slots[i][0] !== Game.Objects["Temple"].minigame.slot[i] || Game.slots[i][1] !== i) {
+						Game.slots[i] = [Game.Objects["Temple"].minigame.slot[i],i]
+					}
+				}
+			})
+
+			for (let i in CE.PantheonInjectFunc) CE.PantheonInjectFunc[i](); //Run the functions!
+		}, "Temple")
 
 		CE.GrimoireInjected = false;
 		CE.CanGrimoireInject = false;
 		CE.GrimoireInjectFunc = []; //add functions to run in here when CE injects into the grimoire.
 
-		if (Game.Objects["Wizard tower"].level >= 1) {
-			CE.CanGrimoireInject = true;
-			Game.Objects["Wizard tower"].level -= 1; //I have to have the minigame exist!!!
-			Game.Objects["Wizard tower"].levelUp(true); //sowwy
-		}
-
-		var GrimoireCheck = setInterval(()=>{
-			if (Game.Objects["Wizard tower"].minigameLoaded == false) return;
-			clearInterval(GrimoireCheck);
+		CCSE.MinigameReplacer(()=>{
+			if (CE.GrimoireInjected) {return;}
 			CE.GrimoireInjected = true;
 
 			if (!Game.customFailChance) {
-			Game.customFailChance = [];
-			
-			CCSE.ReplaceCodeIntoFunction(`Game.Objects["Wizard tower"].minigame.getFailChance`,`if (spell.failFunc) failChance=spell.failFunc(failChance);`,`
-			// M.getFailChance injection point 1 by CE;
-			for (let i in Game.customFailChance) failChance=Game.customFailChance[i](failChance,spell);
-			`,-1);
-			}
+				Game.customFailChance = [];
+				
+				CCSE.ReplaceCodeIntoFunction(`Game.Objects["Wizard tower"].minigame.getFailChance`,`if (spell.failFunc) failChance=spell.failFunc(failChance);`,`
+				// M.getFailChance injection point 1 by CE;
+				for (let i in Game.customFailChance) failChance=Game.customFailChance[i](failChance,spell);
+				`,-1);
+				}
 
 			if (!Game.customSpellCostMod) {
-			Game.customSpellCostMod = [];
-			
-			CCSE.ReplaceCodeIntoFunction(`Game.Objects["Wizard tower"].minigame.getSpellCost`,`var out=spell.costMin;`,`
-			// M.getSpellCost injection point 1 by CE;
-			if (typeof M === "undefined") var M = Game.Objects["Wizard tower"].minigame //ensure it is loaded/available; (does mess with globals)
-			`,-1);
-			CCSE.ReplaceCodeIntoFunction(`Game.Objects["Wizard tower"].minigame.getSpellCost`,`return Math.floor(out);`,`
-			// M.getSpellCost injection point 2 by CE;
-			for (let i in Game.customSpellCostMod) out=Game.customSpellCostMod[i](out,spell);
-			`,-1);
+				Game.customSpellCostMod = [];
+				
+				CCSE.ReplaceCodeIntoFunction(`Game.Objects["Wizard tower"].minigame.getSpellCost`,`var out=spell.costMin;`,`
+				// M.getSpellCost injection point 1 by CE;
+				if (typeof M === "undefined") var M = Game.Objects["Wizard tower"].minigame //ensure it is loaded/available; (does mess with globals)
+				`,-1);
+				CCSE.ReplaceCodeIntoFunction(`Game.Objects["Wizard tower"].minigame.getSpellCost`,`return Math.floor(out);`,`
+				// M.getSpellCost injection point 2 by CE;
+				for (let i in Game.customSpellCostMod) out=Game.customSpellCostMod[i](out,spell);
+				`,-1);
 			}
 
 			if (!Game.customMagicPS) {
@@ -875,7 +862,8 @@ CEModLib.launch = function(){
 			}
 
 			for (let i in CE.GrimoireInjectFunc) CE.GrimoireInjectFunc[i]();
-		})
+		}, "Wizard tower")
+		
 
 
 		// CCSE.ReplaceCodeIntoFunction(`CCSE.NewBuilding`,'Game.BuildStore();',`//Game.BuildStore();`,0);

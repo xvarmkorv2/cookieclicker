@@ -6,11 +6,6 @@ HeavenlyRedistricting.GameVersion = '2.053';
 
 HeavenlyRedistricting.launch = function(){
 
-		//Ermmmm, really need to fix this:
-		if (window.CE == undefined) {
-			Game.toReload = true;
-		}
-
 	HeavenlyRedistricting.init = function(){
 		/*
 		Why are you looking here?
@@ -21,91 +16,91 @@ HeavenlyRedistricting.launch = function(){
 		and it's just for HA really
 		*/
 
-		//Seasons
-		CE.GroupMoveUpgrade("Keepsakes","Season switcher",-250,100);
-		CE.MoveUpgrade("Season switcher",-250,100);
+		setTimeout(function(){ //put in a setTimeout due to MHUR disrespecting my upgrade movement... I swear if it only actually can apply while on Ascend I'll lose it.
+			if (Game.mods["More Heavenly Upgrades Remastered"]) {
+				//Flower
+				CE.GroupMoveUpgrade("Abandon the old gods","Flora",-500,-650);
+				CE.GroupMoveUpgrade("Hades","Flora",-500,-650);
+				CE.GroupMoveUpgrade("Xipe Totec","Flora",-500,-650);
+				CE.MoveUpgrade("Flora",-500,-650);
 
-		//Wrinklers and lumps and whatnot
-		CE.GroupMoveUpgrade("Sugar crystal cookies","Starter kitchen",-250,-150);
-		CE.MoveUpgrade("Box of not cookies",-250,-150);
-		CE.MoveUpgrade("Box of maybe cookies",-250,-150);
-		CE.MoveUpgrade("Box of pastries",-250,-150);
-		CE.MoveUpgrade("Starter kitchen",-250,-150);
-		CE.MoveUpgrade("Sugar craving",-250,-150);
-		CE.MoveUpgrade("Sugar aging process",-250,-150);
-		CE.MoveUpgrade("Sucralosia Inutilis",-250,-150);
-		CE.MoveUpgrade("Diabetica Daemonicus",-250,-150);
-		CE.MoveUpgrade("Eye of the wrinkler",-250,-150);
+				//Tower
+				CE.GroupMoveUpgrade("Faster and lumpier clicking process","Sugar lump farming 101",-250,-800);
+				CE.MoveUpgrade("Sugar lump farming 101",-250,-800)
 
-		//now just gotta move my Heavenly Archive upgrades all around... A
+				//Horseshoe
+				CE.GroupMoveUpgrade("Lucky Deal","Redefine Luck",235,-220);
+				CE.MoveUpgrade("Redefine Luck",235,-220);
+				CE.MoveUpgrade("Unintended Results",235,-220);
+				CE.MoveUpgrade("Lucky's Lucky Charm",235,-220);
+				CE.MoveUpgrade("Non-lazy Wizards",235,-220);
+				CE.MoveUpgrade("Is this considered lucky?",235,-220);
+				CE.MoveUpgrade("It's raining sugar lumps... sometimes",235,-220); //you know, I'd say how much I hate these upgrades, but the angelic choir, sitting here, seeing such simplicity... it doesn't fully negate the sheer amuont of bloat, odd capitalization, and lack of flavour (combined with names appearing to be as if they could be flavour texts)... but it does something.
 
-		setTimeout(() => {
-			HeavenlyRedistricting.handleModUpgrades()
-		}, 1000);
-	}
-	HeavenlyRedistricting.handleModUpgrades = function(){
-		if (Game.mods["More Heavenly Upgrades Remastered"]) {
-			//Flower
-			CE.GroupMoveUpgrade("Abandon the old gods","Flora",-500,-650);
-			CE.GroupMoveUpgrade("Hades","Flora",-500,-650);
-			CE.GroupMoveUpgrade("Xipe Totec","Flora",-500,-650);
-			CE.MoveUpgrade("Flora",-500,-650);
+			}
 
-			//Tower
-			CE.GroupMoveUpgrade("Faster and lumpier clicking process","Sugar lump farming 101",-250,-800);
-			CE.MoveUpgrade("Sugar lump farming 101",-250,-800)
+			
+			if (Game.mods["Even More Heavenly Upgrades"]) {
+				//Starter packs
+				CE.GroupMoveUpgrade("Endgame 1K pack","Starter kitchen",-850,-150);
+				
+				//Seasons
+				CE.MoveUpgrade("Silly Wabbit",-350,100);
+				CE.MoveUpgrade("Horror Story",-350,85);
+				CE.MoveUpgrade("Lover's Delight",-350,85);
+				CE.MoveUpgrade("Santa's Heavenly Legacy",-350,85);
+				CE.MoveUpgrade("Rudolph's Recipe",-350,85);
+				CE.SetPos("Rudolph's Recipe",-733,-241);
 
-			//Horseshoe
-			CE.GroupMoveUpgrade("Lucky Deal","Redefine Luck",235,-220);
-			CE.MoveUpgrade("Redefine Luck",235,-220);
-			CE.MoveUpgrade("Unintended Results",235,-220);
-			CE.MoveUpgrade("Lucky's Lucky Charm",235,-220);
-			CE.MoveUpgrade("Non-lazy Wizards",235,-220);
-			CE.MoveUpgrade("Is this considered lucky?",235,-220);
-			CE.MoveUpgrade("It's raining sugar lumps... sometimes",235,-220); //you know, I'd say how much I hate these upgrades, but the angelic choir, sitting here, seeing such simplicity... it doesn't fully negate the sheer amuont of bloat, odd capitalization, and lack of flavour (combined with names appearing to be as if they could be flavour texts)... but it does something.
+				//Divine
+				CE.GroupMoveUpgrade("Magical Lumps V","Divine savings",-165,285);
+				CE.GroupMoveUpgrade("Krumblor, The one and only","Divine savings",-165,285);
+				CE.GroupMoveUpgrade("Divine lumps","Divine gains",-165,285); //whole lotta divine here.
+				CE.MoveUpgrade("Divine gains",-165,285);
+				CE.MoveUpgrade("Divine savings",-165,285);
+							// Game.UpgradesById[879].posX = Game.Upgrades["Divine lumps"].posX;
+							// Game.UpgradesById[879].posY = Game.Upgrades["Divine lumps"].posY;
+							// Game.UpgradesById[878].posX = Game.Upgrades["Divine unascended gains"].posX;
+							// Game.UpgradesById[878].posY = Game.Upgrades["Divine unascended gains"].posY;
+							// Game.UpgradesById[877].posX = Game.Upgrades["Divine buildings"].posX;
+							// Game.UpgradesById[877].posY = Game.Upgrades["Divine buildings"].posY;
+							// Game.UpgradesById[876].posX = Game.Upgrades["Divine gains"].posX;
+							// Game.UpgradesById[876].posY = Game.Upgrades["Divine gains"].posY;
+							// Game.UpgradesById[875].posX = Game.Upgrades["Divine savings"].posX;
+							// Game.UpgradesById[875].posY = Game.Upgrades["Divine savings"].posY;
+				//*sigh* ^
 
-		}
+				//we cannot always assume that those upgrade IDs are the right ones, commented it out.
+			}
 
-		
-		if (Game.mods["Even More Heavenly Upgrades"]) {
-			//Starter packs
-			CE.GroupMoveUpgrade("Endgame 1K pack","Starter kitchen",-850,-150);
+			if (Game.mods["GabeInfiniteCookieClicker"]){ //why didn't I just make it the actual name?
+				CE.MoveUpgrade("Lumpification",-250,-150);
+				CE.MoveUpgrade("Endless box of upgrades",-250,-150);
+				CE.MoveUpgrade('"egg"?',-250,100);
+				CE.MoveUpgrade("Infini-search",-250,-150);
+				//wow that's all?
+				//...
+			}
 			
 			//Seasons
-			CE.MoveUpgrade("Silly Wabbit",-350,100);
-			CE.MoveUpgrade("Horror Story",-350,85);
-			CE.MoveUpgrade("Lover's Delight",-350,85);
-			CE.MoveUpgrade("Santa's Heavenly Legacy",-350,85);
-			CE.MoveUpgrade("Rudolph's Recipe",-350,85);
-			CE.SetPos("Rudolph's Recipe",-733,-241);
+			CE.GroupMoveUpgrade("Keepsakes","Season switcher",-250,100);
+			CE.MoveUpgrade("Season switcher",-250,100);
 
-			//Divine
-			CE.GroupMoveUpgrade("Magical Lumps V","Divine savings",-165,285);
-			CE.GroupMoveUpgrade("Krumblor, The one and only","Divine savings",-165,285);
-			CE.GroupMoveUpgrade("Divine lumps","Divine gains",-165,285); //whole lotta divine here.
-			CE.MoveUpgrade("Divine gains",-165,285);
-			CE.MoveUpgrade("Divine savings",-165,285);
-			Game.UpgradesById[879].posX = Game.Upgrades["Divine lumps"].posX;
-			Game.UpgradesById[879].posY = Game.Upgrades["Divine lumps"].posY;
-			Game.UpgradesById[878].posX = Game.Upgrades["Divine unascended gains"].posX;
-			Game.UpgradesById[878].posY = Game.Upgrades["Divine unascended gains"].posY;
-			Game.UpgradesById[877].posX = Game.Upgrades["Divine buildings"].posX;
-			Game.UpgradesById[877].posY = Game.Upgrades["Divine buildings"].posY;
-			Game.UpgradesById[876].posX = Game.Upgrades["Divine gains"].posX;
-			Game.UpgradesById[876].posY = Game.Upgrades["Divine gains"].posY;
-			Game.UpgradesById[875].posX = Game.Upgrades["Divine savings"].posX;
-			Game.UpgradesById[875].posY = Game.Upgrades["Divine savings"].posY;
-			//*sigh* ^
-		}
+			//Wrinklers and lumps and whatnot
+			CE.GroupMoveUpgrade("Sugar crystal cookies","Starter kitchen",-250,-150);
+			CE.MoveUpgrade("Box of not cookies",-250,-150);
+			CE.MoveUpgrade("Box of maybe cookies",-250,-150);
+			CE.MoveUpgrade("Box of pastries",-250,-150);
+			CE.MoveUpgrade("Starter kitchen",-250,-150);
+			CE.MoveUpgrade("Sugar craving",-250,-150);
+			CE.MoveUpgrade("Sugar aging process",-250,-150);
+			CE.MoveUpgrade("Sucralosia Inutilis",-250,-150);
+			CE.MoveUpgrade("Diabetica Daemonicus",-250,-150);
+			CE.MoveUpgrade("Eye of the wrinkler",-250,-150);
 
-		if (Game.mods["GabeInfiniteCookieClicker"]){ //why didn't I just make it the actual name?
-			CE.MoveUpgrade("Lumpification",-250,-150);
-			CE.MoveUpgrade("Endless box of upgrades",-250,-150);
-			CE.MoveUpgrade('"egg"?',-250,100);
-			CE.MoveUpgrade("Infini-search",-250,-150);
-			//wow that's all?
-			//...
-		}
+			//now just gotta move my Heavenly Archive upgrades all around... A
+		},5000)
+
 	}
 	HeavenlyRedistricting.save = function(){
 		//use this to store persistent data associated with your mod

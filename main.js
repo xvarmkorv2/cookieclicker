@@ -17263,11 +17263,13 @@ window.onload=function()
 {
 	if (!Game.ready)
 	{
+		var oldoffGameMessage = l('offGameMessage').innerHTML
 		var loadLangAndLaunch=function(lang)
 		{
 			localStorageSet('CookieClickerLang',lang);
 			
 			//LoadLang('../Cookie Clicker Localization/EN.js',function(lang){return function(){
+			l('offGameMessage').innerHTML = oldoffGameMessage
 			LoadLang('loc/EN.js?v='+Game.version,function(lang){return function(){
 				locStringsFallback=Object.assign(locStringsFallback,locStrings);
 				var doStuff = function(){

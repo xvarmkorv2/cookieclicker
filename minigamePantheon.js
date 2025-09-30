@@ -1,4 +1,4 @@
-﻿var M={};
+var M={};
 M.parent=Game.Objects['Temple'];
 M.parent.minigame=M;
 M.launch=function()
@@ -451,7 +451,7 @@ M.launch=function()
 			var bit=spl[i++].split('/')||[];
 			for (var ii in M.slot)
 			{
-				if (parseFloat(bit[ii])!=-1)
+				if (parseFloat(bit[ii]) && parseFloat(bit[ii])!=-1)
 				{
 					var god=M.godsById[parseFloat(bit[ii])];
 					M.slotGod(god,ii);

@@ -7,5 +7,6 @@
 	"GameVersion": 2.052,
 	"Date": "23/05/2025",
 	"Dependencies": ["CEModLib"],
+	"AllowSteamAchievs": 1,
 	"Disabled": 1
 }

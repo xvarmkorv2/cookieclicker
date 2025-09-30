@@ -123,7 +123,7 @@ localStorageSet=function(key,str)
 }
 
 
-var ajax=function(url,callback)
+var ajax=function(url,callback,error)
 {
 	if (Game.local) return false;
 	var httpRequest=new XMLHttpRequest();
@@ -131,9 +131,14 @@ var ajax=function(url,callback)
 	httpRequest.onreadystatechange=function()
 	{
 		try{
-			if (httpRequest.readyState===XMLHttpRequest.DONE && httpRequest.status===200)
+			if (httpRequest.readyState===XMLHttpRequest.DONE)
 			{
-				callback(httpRequest.responseText);
+				if (httpRequest.status == 200) {
+					callback(httpRequest.responseText);
+				} else {
+					error()
+				}
+				
 			}
 		}catch(e){}
 	}
@@ -2784,10 +2789,15 @@ Game.Launch=function()
 		{
 			
 			if (!App) {
-				ajax('https://api.allorigins.win/raw?url=https://orteil.dashnet.org/patreon/grab.php', Game.GrabDataResponse);
-				//ajax('https://cors.eu.org/https://orteil.dashnet.org/patreon/grab.php',Game.GrabDataResponse);
-				//ajax('https://corsproxy.io/https://orteil.dashnet.org/patreon/grab.php',Game.GrabDataResponse)
-				//ajax('patreon/grab.php',Game.GrabDataResponse);
+				ajax('https://cors.eu.org/https://orteil.dashnet.org/patreon/grab.php',Game.GrabDataResponse, 
+					function() {
+						ajax('https://corsproxy.io/https://orteil.dashnet.org/patreon/grab.php',Game.GrabDataResponse, 
+							function() {
+								ajax('https://api.allorigins.win/raw?url=https://orteil.dashnet.org/patreon/grab.php', Game.GrabDataResponse);
+							}
+						);
+					}
+				);
 			} else App.grabData(function(res){
 				Game.heralds=res?(res.playersN||1):1;
 				Game.heralds=Math.max(0,Math.min(100,Math.ceil(Game.heralds/100*100)/100));

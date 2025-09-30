@@ -66,10 +66,8 @@ Mods.registerMod = function (mod) {
 	}
 }
 
-Mods.LoadModInfo = function(folder, callback){
-	let ajaxFailed = true;
+Mods.LoadModInfo = function(folder, callback, error){
 	ajax(folder + '/info.txt', (info) => {
-		ajaxFailed = false;
 		info = JSON.parse(info)
 		info.dir = folder
 		info.ID = info.ID.replace(/\W+/g, ' ');
@@ -82,8 +80,7 @@ Mods.LoadModInfo = function(folder, callback){
 			workshop: info.Workshop || false
 		}
 		callback(Mods.ModData[info.ID])
-	})
-	setTimeout(() => { if (ajaxFailed) { callback() } }, 2500)
+	}, () => { if (error) { error() } })
 }
 Mods.LoadFolder = function (folder, callback) {
 	Mods.LoadModInfo(folder, (info) =>{
@@ -105,7 +102,7 @@ Mods.LoadFolder = function (folder, callback) {
 					if (callback) { callback(); }
 				});
 		} else callback()
-	})
+	}, () => { console.log(`Failed to load mod info:`, path); })
 }
 
 Mods.CreateTempFunctions = function () {
@@ -288,9 +285,7 @@ Mods.getSave = (callback) => {
 };
 
 Mods.GetMods = function(callback){
-	let ajaxFailed = true;
 	ajax('Mods/mods.json', (info) => {
-		ajaxFailed = false;
 		info = JSON.parse(info)
 		let mods = []
 		let promises = [];
@@ -304,7 +299,7 @@ Mods.GetMods = function(callback){
 		Promise.all(promises)
 			.then(() => {
 				callback(mods)
-			});
+			}, () => { console.log(`Failed to load mod metadata`, file); resolve(); });
 	})
 }
 

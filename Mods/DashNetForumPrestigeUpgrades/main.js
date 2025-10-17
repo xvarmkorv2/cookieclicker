@@ -4290,9 +4290,9 @@ GabeDFPU.launch = function () {
 			Game.mods["GabeDFPU"].jadeSlotted = saveData.addAltarJade || -1;
 		}
 		// Ensure the calculation is done only once
-		MOD.NightGamingChecked = false;
-		if (!MOD.NightGamingChecked) {
-			MOD.NightGamingChecked = true;
+		GabeDFPU.NightGamingChecked = false;
+		if (!GabeDFPU.NightGamingChecked) {
+			GabeDFPU.NightGamingChecked = true;
 	
 			// Retrieve the last offline time
 			const now = Date.now() / 1000; // Current time in seconds

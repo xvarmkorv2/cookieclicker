@@ -3395,58 +3395,7 @@ GabeDFPU.launch = function () {
 				//MHUR doesn't make these global, so we *do* have to do this... :(`,0)
 		}
 
-		// Ensure the calculation is done only once
-		MOD.NightGamingChecked = false;
-		if (!MOD.NightGamingChecked) {
-			MOD.NightGamingChecked = true;
-	
-			// Retrieve the last offline time
-			const now = Date.now() / 1000; // Current time in seconds
-			const lastOffline = Game.lastDate / 1000; // Last save time in seconds
-			const offlineTime = Math.max(0, now - lastOffline); // Offline duration in seconds
-	
-			if (offlineTime > 0) {
-				// Use raw CPS (cookies per second without multipliers)
-				const rawCps = Game.cookiesPsRaw
-	
-				// Check upgrades and calculate bonuses
-				let bonusCookies = 0;
-				var percent = 0;
-
-				if (Game.Has("Night gaming")) percent += 20;
-				if (Game.Has("Night gaming deluxe")) percent += 30;
-				if (Game.Has("Perfect idling 2")) percent += 50;
-				if (Game.Has("Deep sleep production")) percent += 75;
-				if (Game.Has("Lucid baking")) percent += 100;
-				if (Game.Has("Passive perfection")) percent += 110;
-				if (Game.Has("Retirement plan")) percent += 115;
-
-				bonusCookies += (offlineTime * rawCps * (percent/100))
-	
-				// Apply the bonus and notify the player
-				if (bonusCookies > 0) {
-					Game.Earn(bonusCookies);
-					Game.Notify(
-						'Night Gaming Bonus',
-						`You earned an extra <b>${Beautify(bonusCookies)}</b> cookies while you were away.`,
-						[5,0,Game.mods["GabeDFPU"].custIcons]
-					);
-				}
-
-				//It's 12:41 AM, offline magic
-				if (Game.Has("Magical angles") && Game.Objects["Wizard tower"].minigameLoaded){
-					const mps = Game.Objects["Wizard tower"].minigame.magicPS
-					var percent = 5;
-
-					var bonusMagic = (offlineTime*mps*(percent/100))
-
-					if (bonusMagic > 0) {
-						Game.Objects["Wizard tower"].minigame.magic += bonusMagic
-						Game.Notify("Magic angels",`You earned <b>${bonusMagic}</b> magic while you were away.`)
-					}
-				}
-			}
-		}
+		
 
 		MOD.loadAltarSlots();
 
@@ -4339,6 +4288,58 @@ GabeDFPU.launch = function () {
 			Game.mods["GabeDFPU"].allSlot["diamond"] = saveData.ankhSlotDiamond || -1;
 			Game.mods["GabeDFPU"].allSlot["jade2"] = saveData.ankhSlotJade2 || -1;
 			Game.mods["GabeDFPU"].jadeSlotted = saveData.addAltarJade || -1;
+		}
+		// Ensure the calculation is done only once
+		MOD.NightGamingChecked = false;
+		if (!MOD.NightGamingChecked) {
+			MOD.NightGamingChecked = true;
+	
+			// Retrieve the last offline time
+			const now = Date.now() / 1000; // Current time in seconds
+			const lastOffline = Game.lastDate / 1000; // Last save time in seconds
+			const offlineTime = Math.max(0, now - lastOffline); // Offline duration in seconds
+	
+			if (offlineTime > 0) {
+				// Use raw CPS (cookies per second without multipliers)
+				const rawCps = Game.cookiesPsRaw
+	
+				// Check upgrades and calculate bonuses
+				let bonusCookies = 0;
+				var percent = 0;
+
+				if (Game.Has("Night gaming")) percent += 20;
+				if (Game.Has("Night gaming deluxe")) percent += 30;
+				if (Game.Has("Perfect idling 2")) percent += 50;
+				if (Game.Has("Deep sleep production")) percent += 75;
+				if (Game.Has("Lucid baking")) percent += 100;
+				if (Game.Has("Passive perfection")) percent += 110;
+				if (Game.Has("Retirement plan")) percent += 115;
+
+				bonusCookies += (offlineTime * rawCps * (percent/100))
+	
+				// Apply the bonus and notify the player
+				if (bonusCookies > 0) {
+					Game.Earn(bonusCookies);
+					Game.Notify(
+						'Night Gaming Bonus',
+						`You earned an extra <b>${Beautify(bonusCookies)}</b> cookies while you were away.`,
+						[5,0,Game.mods["GabeDFPU"].custIcons]
+					);
+				}
+
+				//It's 12:41 AM, offline magic
+				if (Game.Has("Magical angles") && Game.Objects["Wizard tower"].minigameLoaded){
+					const mps = Game.Objects["Wizard tower"].minigame.magicPS
+					var percent = 5;
+
+					var bonusMagic = (offlineTime*mps*(percent/100))
+
+					if (bonusMagic > 0) {
+						Game.Objects["Wizard tower"].minigame.magic += bonusMagic
+						Game.Notify("Magic angels",`You earned <b>${bonusMagic}</b> magic while you were away.`)
+					}
+				}
+			}
 		}
 	}
 

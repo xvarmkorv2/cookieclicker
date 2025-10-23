@@ -233,7 +233,7 @@ MoreHeavenlyUpgradesRemastered.launch = function() {
         for (let i = 1; i <= Object.keys(buildingTiers).length; i++) {
             Game.customBuildings[buildingConvertor(buildingTiers[i][0])].cpsMult.push(function () {
                 let cpsMultiplier = 1;
-                if(buildingTiers[i][3] && Game.Has(buildingTiers[i][3])) cpsMultiplier *= 1 + toPercent(Game.Objects[buildingTiers[i][0]].amount);
+                if(buildingTiers[i][3] && Game.Has(buildingTiers[i][3])) cpsMultiplier *= 1 + toPercent(Game.Objects[buildingConvertor(buildingTiers[i][0])].amount);
                 return cpsMultiplier;
             });
         }

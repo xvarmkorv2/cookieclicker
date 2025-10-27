@@ -1255,10 +1255,6 @@ var Game={};
 	}
 	Game.launchMods=function()
 	{
-		if (Game.brokenMods.length>0)
-		{
-			Game.Notify('<span class="warning">'+loc("Some mods couldn't be loaded:")+'</span>','['+Game.brokenMods.join(', ')+']',[32,17]);
-		}
 		for (var i=0;i<Game.sortedMods.length;i++)
 		{
 			var mod=Game.sortedMods[i];
@@ -1269,10 +1265,15 @@ var Game={};
                     mod.init();
     				mod.init=0;
                 } catch(err) {
+                    Game.brokenMods.push(mod.id);
                     console.warn(err);
                 }
 				//if (mod.load && Game.modSaveData[mod.id]) mod.load(Game.modSaveData[mod.id]);
 			}
+		}
+		if (Game.brokenMods.length>0)
+		{
+			Game.Notify('<span class="warning">'+loc("Some mods couldn't be loaded:")+'</span>','['+Game.brokenMods.join(', ')+']',[32,17]);
 		}
 		if (!App && Game.sortedMods.length>0) Game.Win('Third-party');
 	}

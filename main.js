@@ -1,4 +1,4 @@
-﻿/*
+/*
 All this code is copyright Orteil, 2013-2024.
 	-with some help, advice and fixes by Nicholas Laux, Debugbro, Opti, the folks at Playsaurus, and lots of people on reddit, Discord, and the DashNet forums
 	-also includes a bunch of snippets found on stackoverflow.com and others
@@ -1265,8 +1265,12 @@ var Game={};
 			if (mod.init)
 			{
 				console.log('===initializing mod',mod.id);
-				mod.init();
-				mod.init=0;
+				try{
+                    mod.init();
+    				mod.init=0;
+                } catch(err) {
+                    console.warn(err);
+                }
 				//if (mod.load && Game.modSaveData[mod.id]) mod.load(Game.modSaveData[mod.id]);
 			}
 		}

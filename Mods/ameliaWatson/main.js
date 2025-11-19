@@ -11,8 +11,7 @@ var AmeliaWatson = {
 		Game.Loader.Replace('timemachineBackground.png', this.dir + "/kroniiBG.png");
 		Game.Loader.Replace('timemachine.png', this.dir + "/smolwatson.png");
 
-		const watson = document.createElement("style");
-		watson.innerHTML = `
+		CCSE.AddStyles(`
 		.ameliaWatson {
 			background: url('${this.dir}/watson.png') !important;
 			background-position: 0px 0px !important;
@@ -21,10 +20,23 @@ var AmeliaWatson = {
 			background: url('${this.dir}/watson.png') !important;
 			background-position: -64px 0px !important;
 		}
-		`;
-
-		document.body.appendChild(watson);
+		`);
+		
 		Game.registerHook('check', () => { this.check() });
+		Game.Objects['Time machine'].art.customIconsPic = watsonicons;
+		/*for(var i in Game.buffTypes){ //TODO: This doesn't want to work, until then building buff icons won't be correct.
+			var buff = Game.buffTypes[i];
+			if(buff.name == 'building buff'){
+				CCSE.ReplaceCodeIntoFunction('Game.buffTypes[' + i + '].func',
+					'icon:\[obj.iconColumn,14,\(obj.art.customIconsPic ? obj.art.customIconsPic : 0\)\],',
+					'icon:[obj.id == 11 ? 3 : obj.iconColumn,obj.id == 11 ? 0 : 14,(obj.art.customIconsPic ? obj.art.customIconsPic : 0)],', 0);
+			}
+			else if(buff.name == 'building debuff'){
+				CCSE.ReplaceCodeIntoFunction('Game.buffTypes[' + i + '].func',
+					'icon:\[obj.iconColumn,15,\(obj.art.customIconsPic ? obj.art.customIconsPic : 0\)\],',
+					'icon:[obj.id == 11 ? 4 : obj.iconColumn,obj.id == 11 ? 0 : 15,(obj.art.customIconsPic ? obj.art.customIconsPic : 0)],', 0);
+			}
+		} */
 		Game.customBuildStore.push(() => {
 			/* haha i only know rudimentary html and css so thank you obama prism */
 			document.getElementById("productIcon11").classList.add("ameliaWatson");
@@ -58,7 +70,7 @@ var AmeliaWatson = {
 		if (!shouldRebuild) {
 			if (Game.Objects['Time machine'].pic.length != 3) shouldRebuild = true
 			if (!shouldRebuild && Game.Objects['Time machine'].pic[2] != watsonicons) shouldRebuild = true
-		} 
+		} 
 
 		if (!shouldRebuild) {
 			const upgrades = ['Flux capacitors', 'Time paradox resolver', 'Quantum conundrum', 'Causality enforcer',
@@ -165,3 +177,5 @@ else {
 	if (!CCSE.postLoadHooks) CCSE.postLoadHooks = [];
 	CCSE.postLoadHooks.push(AmeliaWatson.launch);
 }
+
+

@@ -2753,7 +2753,9 @@ Game.Launch=function()
 		Game.customGrandmaNames=[];
 		Game.heralds=0;
 		
-		if (!App) getJson(DataDir+'cookieclickersteam.json',function(r){
+		Game.UpdateHeralds=function()
+		{
+			if (!App) getJson(DataDir+'cookieclickersteam.json',function(r){
 				Game.heralds=r?(parseInt(r.steamPlayers||1)):1;
 				Game.heralds=Math.max(0,Math.min(100,Math.ceil(Game.heralds/100*100)/100));
 				l('heraldsAmount').textContent=Math.floor(Game.heralds);

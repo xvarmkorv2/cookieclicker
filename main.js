@@ -16105,6 +16105,7 @@ Game.Launch = function () {
 		if (Game.T % (Game.fps * 60 * 60) == 0 && Game.T > Game.fps * 10/* && Game.prefs.autoupdate*/) { Game.CheckUpdates();/*Game.GrabData();*/ }
 
 		Game.T++;
+		Game.realT+=(Game.baseFps/Game.fps);
 	}
 
 	/*=====================================================================================

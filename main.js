@@ -13386,298 +13386,335 @@ Game.Launch = function () {
 		*/
 
 		//base buffs
-		new Game.buffType('frenzy', function (time, pow) {
+		new Game.buffType('frenzy',function(time,pow)
+		{
 			return {
-				name: 'Frenzy',
-				desc: loc("Cookie production x%1 for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
-				icon: [10, 14],
-				time: time * Game.fps,
-				add: true,
-				multCpS: pow,
-				aura: 1
+				name:'Frenzy',
+				desc:loc("Cookie production x%1 for %2!",[pow,Game.sayTime(time*Game.fps,-1)]),
+				icon:[10,14],
+				time:time*Game.fps,
+				add:true,
+				multCpS:pow,
+				aura:1
 			};
 		});
-		new Game.buffType('blood frenzy', function (time, pow) {
+		new Game.buffType('blood frenzy',function(time,pow)
+		{
 			return {
-				name: 'Elder frenzy',
-				desc: loc("Cookie production x%1 for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
-				icon: [29, 6],
-				time: time * Game.fps,
-				add: true,
-				multCpS: pow,
-				aura: 1
+				name:'Elder frenzy',
+				desc:loc("Cookie production x%1 for %2!",[pow,Game.sayTime(time*Game.fps,-1)]),
+				icon:[29,6],
+				time:time*Game.fps,
+				add:true,
+				multCpS:pow,
+				aura:1
 			};
 		});
-		new Game.buffType('clot', function (time, pow) {
+		new Game.buffType('clot',function(time,pow)
+		{
 			return {
-				name: 'Clot',
-				desc: loc("Cookie production halved for %1!", Game.sayTime(time * Game.fps, -1)),
-				icon: [15, 5],
-				time: time * Game.fps,
-				add: true,
-				multCpS: pow,
-				aura: 2
+				name:'Clot',
+				desc:loc("Cookie production halved for %1!",Game.sayTime(time*Game.fps,-1)),
+				icon:[15,5],
+				time:time*Game.fps,
+				add:true,
+				multCpS:pow,
+				aura:2
 			};
 		});
-		new Game.buffType('dragon harvest', function (time, pow) {
-			if (Game.Has('Dragon fang')) pow = Math.ceil(pow * 1.1);
+		new Game.buffType('dragon harvest',function(time,pow)
+		{
+			if (Game.Has('Dragon fang')) pow=Math.ceil(pow*1.1);
 			return {
-				name: 'Dragon Harvest',
-				desc: loc("Cookie production x%1 for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
-				icon: [10, 25],
-				time: time * Game.fps,
-				add: true,
-				multCpS: pow,
-				aura: 1
+				name:'Dragon Harvest',
+				desc:loc("Cookie production x%1 for %2!",[pow,Game.sayTime(time*Game.fps,-1)]),
+				icon:[10,25],
+				time:time*Game.fps,
+				add:true,
+				multCpS:pow,
+				aura:1
 			};
 		});
-		new Game.buffType('everything must go', function (time, pow) {
+		new Game.buffType('everything must go',function(time,pow)
+		{
 			return {
-				name: 'Everything must go',
-				desc: loc("All buildings are %1% cheaper for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
-				icon: [17, 6],
-				time: time * Game.fps,
-				add: true,
-				power: pow,
-				aura: 1
+				name:'Everything must go',
+				desc:loc("All buildings are %1% cheaper for %2!",[pow,Game.sayTime(time*Game.fps,-1)]),
+				icon:[17,6],
+				time:time*Game.fps,
+				add:true,
+				power:pow,
+				aura:1
 			};
 		});
-		new Game.buffType('cursed finger', function (time, pow) {
+		new Game.buffType('cursed finger',function(time,pow)
+		{
 			return {
-				name: 'Cursed finger',
-				desc: loc("Cookie production halted for %1,<br>but each click is worth %2 of CpS.", [Game.sayTime(time * Game.fps, -1), Game.sayTime(time * Game.fps, -1)]),
-				icon: [12, 17],
-				time: time * Game.fps,
-				add: true,
-				power: pow,
-				multCpS: 0,
-				aura: 1
+				name:'Cursed finger',
+				desc:loc("Cookie production halted for %1,<br>but each click is worth %2 of CpS.",[Game.sayTime(time*Game.fps,-1),Game.sayTime(time*Game.fps,-1)]),
+				icon:[12,17],
+				time:time*Game.fps,
+				add:true,
+				power:pow,
+				multCpS:0,
+				aura:1
 			};
 		});
-		new Game.buffType('click frenzy', function (time, pow) {
+		new Game.buffType('click frenzy',function(time,pow)
+		{
 			return {
-				name: 'Click frenzy',
-				desc: loc("Clicking power x%1 for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
-				icon: [0, 14],
-				time: time * Game.fps,
-				add: true,
-				multClick: pow,
-				aura: 1
+				name:'Click frenzy',
+				desc:loc("Clicking power x%1 for %2!",[pow,Game.sayTime(time*Game.fps,-1)]),
+				icon:[0,14],
+				time:time*Game.fps,
+				add:true,
+				multClick:pow,
+				aura:1
 			};
 		});
-		new Game.buffType('dragonflight', function (time, pow) {
-			if (Game.Has('Dragon fang')) pow = Math.ceil(pow * 1.1);
+		new Game.buffType('dragonflight',function(time,pow)
+		{
+			if (Game.Has('Dragon fang')) pow=Math.ceil(pow*1.1);
 			return {
-				name: 'Dragonflight',
-				desc: loc("Clicking power x%1 for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
-				icon: [0, 25],
-				time: time * Game.fps,
-				add: true,
-				multClick: pow,
-				aura: 1
+				name:'Dragonflight',
+				desc:loc("Clicking power x%1 for %2!",[pow,Game.sayTime(time*Game.fps,-1)]),
+				icon:[0,25],
+				time:time*Game.fps,
+				add:true,
+				multClick:pow,
+				aura:1
 			};
 		});
-		new Game.buffType('cookie storm', function (time, pow) {
+		new Game.buffType('cookie storm',function(time,pow)
+		{
 			return {
-				name: 'Cookie storm',
-				desc: loc("Cookies everywhere!"),
-				icon: [22, 6],
-				time: time * Game.fps,
-				add: true,
-				power: pow,
-				aura: 1
+				name:'Cookie storm',
+				desc:loc("Cookies everywhere!"),
+				icon:[22,6],
+				time:time*Game.fps,
+				add:true,
+				power:pow,
+				aura:1
 			};
 		});
-		new Game.buffType('building buff', function (time, pow, building) {
-			var obj = Game.ObjectsById[building];
+		new Game.buffType('building buff',function(time,pow,building)
+		{
+			var obj=Game.ObjectsById[building];
 			return {
-				name: Game.goldenCookieBuildingBuffs[obj.name][0],
-				dname: EN ? Game.goldenCookieBuildingBuffs[obj.name][0] : loc("%1 Power!", obj.dname),
-				desc: loc("Your %1 are boosting your CpS!", loc("%1 " + obj.bsingle, LBeautify(obj.amount))) + '<br>' + loc("Cookie production +%1% for %2!", [Beautify(Math.ceil(pow * 100 - 100)), Game.sayTime(time * Game.fps, -1)]),
-				icon: [obj.iconColumn, 14],
-				time: time * Game.fps,
-				add: true,
-				multCpS: pow,
-				aura: 1
+				name:Game.goldenCookieBuildingBuffs[obj.name][0],
+				dname:EN?Game.goldenCookieBuildingBuffs[obj.name][0]:loc("%1 Power!",obj.dname),
+				desc:loc("Your %1 are boosting your CpS!",loc("%1 "+obj.bsingle,LBeautify(obj.amount)))+'<br>'+loc("Cookie production +%1% for %2!",[Beautify(Math.ceil(pow*100-100)),Game.sayTime(time*Game.fps,-1)]),
+				icon:[obj.iconColumn,14],
+				time:time*Game.fps,
+				add:true,
+				multCpS:pow,
+				aura:1
 			};
 		});
-		new Game.buffType('building debuff', function (time, pow, building) {
-			var obj = Game.ObjectsById[building];
+		new Game.buffType('building debuff',function(time,pow,building)
+		{
+			var obj=Game.ObjectsById[building];
 			return {
-				name: Game.goldenCookieBuildingBuffs[obj.name][1],
-				dname: EN ? Game.goldenCookieBuildingBuffs[obj.name][1] : loc("%1 Burden!", obj.dname),
-				desc: loc("Your %1 are rusting your CpS!", loc("%1 " + obj.bsingle, LBeautify(obj.amount))) + '<br>' + loc("Cookie production %1% slower for %2!", [Beautify(Math.ceil(pow * 100 - 100)), Game.sayTime(time * Game.fps, -1)]),
-				icon: [obj.iconColumn, 15],
-				time: time * Game.fps,
-				add: true,
-				multCpS: 1 / pow,
-				aura: 2
+				name:Game.goldenCookieBuildingBuffs[obj.name][1],
+				dname:EN?Game.goldenCookieBuildingBuffs[obj.name][1]:loc("%1 Burden!",obj.dname),
+				desc:loc("Your %1 are rusting your CpS!",loc("%1 "+obj.bsingle,LBeautify(obj.amount)))+'<br>'+loc("Cookie production %1% slower for %2!",[Beautify(Math.ceil(pow*100-100)),Game.sayTime(time*Game.fps,-1)]),
+				icon:[obj.iconColumn,15],
+				time:time*Game.fps,
+				add:true,
+				multCpS:1/pow,
+				aura:2
 			};
 		});
-		new Game.buffType('sugar blessing', function (time, pow) {
+		new Game.buffType('sugar blessing',function(time,pow)
+		{
 			return {
-				name: 'Sugar blessing',
-				desc: loc("You find %1% more golden cookies for the next %2.", [10, Game.sayTime(time * Game.fps, -1)]),
-				icon: [29, 16],
-				time: time * Game.fps,
+				name:'Sugar blessing',
+				desc:loc("You find %1% more golden cookies for the next %2.",[10,Game.sayTime(time*Game.fps,-1)]),
+				icon:[29,16],
+				time:time*Game.fps,
 				//add:true
 			};
 		});
-		new Game.buffType('haggler luck', function (time, pow) {
+		new Game.buffType('haggler luck',function(time,pow)
+		{
 			return {
-				name: 'Haggler\'s luck',
-				desc: loc("All upgrades are %1% cheaper for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
-				icon: [25, 11],
-				time: time * Game.fps,
-				power: pow,
-				max: true
+				name:'Haggler\'s luck',
+				desc:loc("All upgrades are %1% cheaper for %2!",[pow,Game.sayTime(time*Game.fps,-1)]),
+				icon:[25,11],
+				time:time*Game.fps,
+				power:pow,
+				max:true
 			};
 		});
-		new Game.buffType('haggler misery', function (time, pow) {
+		new Game.buffType('haggler misery',function(time,pow)
+		{
 			return {
-				name: 'Haggler\'s misery',
-				desc: loc("All upgrades are %1% pricier for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
-				icon: [25, 11],
-				time: time * Game.fps,
-				power: pow,
-				max: true
+				name:'Haggler\'s misery',
+				desc:loc("All upgrades are %1% pricier for %2!",[pow,Game.sayTime(time*Game.fps,-1)]),
+				icon:[25,11],
+				time:time*Game.fps,
+				power:pow,
+				max:true
 			};
 		});
-		new Game.buffType('pixie luck', function (time, pow) {
+		new Game.buffType('pixie luck',function(time,pow)
+		{
 			return {
-				name: 'Crafty pixies',
-				desc: loc("All buildings are %1% cheaper for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
-				icon: [26, 11],
-				time: time * Game.fps,
-				power: pow,
-				max: true
+				name:'Crafty pixies',
+				desc:loc("All buildings are %1% cheaper for %2!",[pow,Game.sayTime(time*Game.fps,-1)]),
+				icon:[26,11],
+				time:time*Game.fps,
+				power:pow,
+				max:true
 			};
 		});
-		new Game.buffType('pixie misery', function (time, pow) {
+		new Game.buffType('pixie misery',function(time,pow)
+		{
 			return {
-				name: 'Nasty goblins',
-				desc: loc("All buildings are %1% pricier for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
-				icon: [26, 11],
-				time: time * Game.fps,
-				power: pow,
-				max: true
+				name:'Nasty goblins',
+				desc:loc("All buildings are %1% pricier for %2!",[pow,Game.sayTime(time*Game.fps,-1)]),
+				icon:[26,11],
+				time:time*Game.fps,
+				power:pow,
+				max:true
 			};
 		});
-		new Game.buffType('magic adept', function (time, pow) {
+		new Game.buffType('magic adept',function(time,pow)
+		{
 			return {
-				name: 'Magic adept',
-				desc: loc("Spells backfire %1 times less for %2.", [pow, Game.sayTime(time * Game.fps, -1)]),
-				icon: [29, 11],
-				time: time * Game.fps,
-				power: pow,
-				max: true
+				name:'Magic adept',
+				desc:loc("Spells backfire %1 times less for %2.",[pow,Game.sayTime(time*Game.fps,-1)]),
+				icon:[29,11],
+				time:time*Game.fps,
+				power:pow,
+				max:true
 			};
 		});
-		new Game.buffType('magic inept', function (time, pow) {
+		new Game.buffType('magic inept',function(time,pow)
+		{
 			return {
-				name: 'Magic inept',
-				desc: loc("Spells backfire %1 times more for %2.", [pow, Game.sayTime(time * Game.fps, -1)]),
-				icon: [29, 11],
-				time: time * Game.fps,
-				power: pow,
-				max: true
+				name:'Magic inept',
+				desc:loc("Spells backfire %1 times more for %2.",[pow,Game.sayTime(time*Game.fps,-1)]),
+				icon:[29,11],
+				time:time*Game.fps,
+				power:pow,
+				max:true
 			};
 		});
-		new Game.buffType('devastation', function (time, pow) {
+		new Game.buffType('devastation',function(time,pow)
+		{
 			return {
-				name: 'Devastation',
-				desc: loc("Clicking power +%1% for %2!", [Math.floor(pow * 100 - 100), Game.sayTime(time * Game.fps, -1)]),
-				icon: [23, 18],
-				time: time * Game.fps,
-				multClick: pow,
-				aura: 1,
-				max: true
+				name:'Devastation',
+				desc:loc("Clicking power +%1% for %2!",[Math.floor(pow*100-100),Game.sayTime(time*Game.fps,-1)]),
+				icon:[23,18],
+				time:time*Game.fps,
+				multClick:pow,
+				aura:1,
+				max:true
 			};
 		});
-		new Game.buffType('sugar frenzy', function (time, pow) {
+		new Game.buffType('sugar frenzy',function(time,pow)
+		{
 			return {
-				name: 'Sugar frenzy',
-				desc: loc("Cookie production x%1 for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
-				icon: [29, 14],
-				time: time * Game.fps,
-				add: true,
-				multCpS: pow,
-				aura: 0
+				name:'Sugar frenzy',
+				desc:loc("Cookie production x%1 for %2!",[pow,Game.sayTime(time*Game.fps,-1)]),
+				icon:[29,14],
+				time:time*Game.fps,
+				add:true,
+				multCpS:pow,
+				aura:0
 			};
 		});
-		new Game.buffType('loan 1', function (time, pow) {
+		new Game.buffType('loan 1',function(time,pow)
+		{
 			return {
-				name: 'Loan 1',
-				dname: loc("Loan %1", 1),
-				desc: loc("Cookie production x%1 for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
-				icon: [1, 33],
-				time: time * Game.fps,
-				power: pow,
-				multCpS: pow,
-				max: true,
-				onDie: function () { if (Game.takeLoan) { Game.takeLoan(1, true); } },
+				name:'Loan 1',
+				dname:loc("Loan %1",1),
+				desc:loc("Cookie production x%1 for %2!",[pow,Game.sayTime(time*Game.fps,-1)]),
+				icon:[1,33],
+				time:time*Game.fps,
+				power:pow,
+				multCpS:pow,
+				max:true,
+				onDie:function(){if (Game.takeLoan) {Game.takeLoan(1,true);}},
 			};
 		});
-		new Game.buffType('loan 1 interest', function (time, pow) {
+		new Game.buffType('loan 1 interest',function(time,pow)
+		{
 			return {
-				name: 'Loan 1 (interest)',
-				dname: loc("Loan %1 (interest)", 1),
-				desc: loc("Cookie production x%1 for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
-				icon: [1, 33],
-				time: time * Game.fps,
-				power: pow,
-				multCpS: pow,
-				max: true
+				name:'Loan 1 (interest)',
+				dname:loc("Loan %1 (interest)",1),
+				desc:loc("Cookie production x%1 for %2!",[pow,Game.sayTime(time*Game.fps,-1)]),
+				icon:[1,33],
+				time:time*Game.fps,
+				power:pow,
+				multCpS:pow,
+				max:true
 			};
 		});
-		new Game.buffType('loan 2', function (time, pow) {
+		new Game.buffType('loan 2',function(time,pow)
+		{
 			return {
-				name: 'Loan 2',
-				dname: loc("Loan %1", 2),
-				desc: loc("Cookie production x%1 for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
-				icon: [1, 33],
-				time: time * Game.fps,
-				power: pow,
-				multCpS: pow,
-				max: true,
-				onDie: function () { if (Game.takeLoan) { Game.takeLoan(2, true); } },
+				name:'Loan 2',
+				dname:loc("Loan %1",2),
+				desc:loc("Cookie production x%1 for %2!",[pow,Game.sayTime(time*Game.fps,-1)]),
+				icon:[1,33],
+				time:time*Game.fps,
+				power:pow,
+				multCpS:pow,
+				max:true,
+				onDie:function(){if (Game.takeLoan) {Game.takeLoan(2,true);}},
 			};
 		});
-		new Game.buffType('loan 2 interest', function (time, pow) {
+		new Game.buffType('loan 2 interest',function(time,pow)
+		{
 			return {
-				name: 'Loan 2 (interest)',
-				dname: loc("Loan %1 (interest)", 2),
-				desc: loc("Cookie production x%1 for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
-				icon: [1, 33],
-				time: time * Game.fps,
-				power: pow,
-				multCpS: pow,
-				max: true
+				name:'Loan 2 (interest)',
+				dname:loc("Loan %1 (interest)",2),
+				desc:loc("Cookie production x%1 for %2!",[pow,Game.sayTime(time*Game.fps,-1)]),
+				icon:[1,33],
+				time:time*Game.fps,
+				power:pow,
+				multCpS:pow,
+				max:true
 			};
 		});
-		new Game.buffType('loan 3', function (time, pow) {
+		new Game.buffType('loan 3',function(time,pow)
+		{
 			return {
-				name: 'Loan 3',
-				dname: loc("Loan %1", 3),
-				desc: loc("Cookie production x%1 for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
-				icon: [1, 33],
-				time: time * Game.fps,
-				power: pow,
-				multCpS: pow,
-				max: true,
-				onDie: function () { if (Game.takeLoan) { Game.takeLoan(3, true); } },
+				name:'Loan 3',
+				dname:loc("Loan %1",3),
+				desc:loc("Cookie production x%1 for %2!",[pow,Game.sayTime(time*Game.fps,-1)]),
+				icon:[1,33],
+				time:time*Game.fps,
+				power:pow,
+				multCpS:pow,
+				max:true,
+				onDie:function(){if (Game.takeLoan) {Game.takeLoan(3,true);}},
 			};
 		});
-		new Game.buffType('loan 3 interest', function (time, pow) {
+		new Game.buffType('loan 3 interest',function(time,pow)
+		{
 			return {
-				name: 'Loan 3 (interest)',
-				dname: loc("Loan %1 (interest)", 3),
-				desc: loc("Cookie production x%1 for %2!", [pow, Game.sayTime(time * Game.fps, -1)]),
-				icon: [1, 33],
-				time: time * Game.fps,
-				power: pow,
-				multCpS: pow,
-				max: true
+				name:'Loan 3 (interest)',
+				dname:loc("Loan %1 (interest)",3),
+				desc:loc("Cookie production x%1 for %2!",[pow,Game.sayTime(time*Game.fps,-1)]),
+				icon:[1,33],
+				time:time*Game.fps,
+				power:pow,
+				multCpS:pow,
+				max:true
+			};
+		});
+		new Game.buffType('gifted out',function(time,pow)
+		{
+			return {
+				name:'Gifted out',
+				desc:loc("Can't send or receive gifts again for %1.",Game.sayTime(time*Game.fps,-1)),
+				icon:[34,6],
+				time:time*Game.fps,
+				power:pow,
+				max:true
 			};
 		});
 

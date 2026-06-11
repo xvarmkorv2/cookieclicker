@@ -14903,7 +14903,7 @@ Game.Launch = function () {
 						Game.Background.fillPattern(Pic(Game.bg), 0, 0, Game.Background.canvas.width, Game.Background.canvas.height, 512, 512, 0, 0);
 						if (Game.bgR > 0) {
 							Game.Background.globalAlpha = Game.bgR;
-							Game.Background.fillPattern(Pic(Game.bgFade + '.jpg'), 0, 0, Game.Background.canvas.width, Game.Background.canvas.height, 512, 512, 0, 0);
+							Game.Background.fillPattern(Pic(Game.bgFade), 0, 0, Game.Background.canvas.width, Game.Background.canvas.height, 512, 512, 0, 0);
 						}
 						Game.Background.globalAlpha = 1;
 						Game.Background.drawImage(Pic('shadedBordersSoft.png'), 0, 0, Game.Background.canvas.width, Game.Background.canvas.height);

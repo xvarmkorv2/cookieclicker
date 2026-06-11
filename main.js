@@ -16355,7 +16355,7 @@ window.onload = function () {
 				},
 				function (next) {
 					if (App && App.loadMods) App.loadMods(next);
-					else if (Mods && Mods.loadMods) Mods.loadMods(next);
+					else if (Mods && Mods.LoadMods) Mods.LoadMods(next);
 					else if (next) next();
 				},
 				function () {

@@ -2088,7 +2088,7 @@ Game.Launch=function()
 			'bunnies.png',
 			'frostedReindeer.png',
 			'goldCookieWreath.png',
-			'wrathCookieWreath.png'
+			'wrathCookieWreath.png',
 			'shine.png',
 			'shineGold.png',
 			'shineRed.png',

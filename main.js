@@ -15449,7 +15449,7 @@ Game.Launch=function()
 						'<div class="optionBox" style="margin-bottom:0px;"><a class="option framed large title" '+Game.clickStr+'="Game.UpgradeSanta();">'+
 							'<div style="display:table-cell;vertical-align:middle;">'+loc("Evolve")+'</div>'+
 							'<div style="display:table-cell;vertical-align:middle;padding:4px 12px;">|</div>'+
-							'<div style="display:table-cell;vertical-align:middle;font-size:65%;">'+loc("sacrifice %1",'<div'+(Game.cookies>moni?'':' style="color:#777;"')+'>'+loc("%1 cookie",LBeautify(moni)))+'</div>')+'</div>'+
+							'<div style="display:table-cell;vertical-align:middle;font-size:65%;">'+loc("sacrifice %1",'<div'+(Game.cookies>moni?'':' style="color:#777;"')+'>'+loc("%1 cookie",))+'</div>')+'</div>'+
 						'</a></div>';
 					}
 				}

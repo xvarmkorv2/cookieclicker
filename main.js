@@ -14817,7 +14817,6 @@ Game.Launch = function () {
 				}
 			}
 			else {
-
 				var goodBuff = 0;
 				var badBuff = 0;
 				for (var i in Game.buffs) {
@@ -14858,7 +14857,7 @@ Game.Launch = function () {
 							Game.bgFade = 'grandmas3';
 						}
 
-						if (Game.bgType != 0 && Game.ascensionMode != 1) {
+						if (Game.bgType!=0 && Game.ascensionMode!=1) {
 							Game.bgR = 0;
 							Game.bg = Game.BGsByChoice[Game.bgType].pic;
 							Game.bgFade = Game.bg;

@@ -1437,15 +1437,15 @@ Game.Launch=function()
 	
 	{
 		Game.updateLog =
-			'<div class="selectable">' +
-			'<div class="section">' + loc("Info") + '</div>' +
-			'<div class="subsection">' +
-			'<div class="title">' + loc("About") + '</div>' +
-			(App ? '<div class="listing" style="font-weight:bold;font-style:italic;opacity:0.5;">' + loc("Note: links will open in your web browser.") + '</div>' : '') +
-			'<div class="listing">' + loc("Cookie Clicker is a javascript game by %1 and %2.", ['<a href="//orteil.dashnet.org" target="_blank">Orteil</a>', '<a href="//dashnet.org" target="_blank">Opti</a>']) + '</div>' +
-			(App?'<div class="listing">'+loc("Music by %1.",'<a href="https://bsky.app/profile/c418.org" target="_blank">C418</a>')+'</div>':'')+ +
+			'<div class="selectable">'+
+			'<div class="section">'+loc("Info")+'</div>'+
+			'<div class="subsection">'+
+			'<div class="title">'+loc("About")+'</div>'+
+			(App?'<div class="listing" style="font-weight:bold;font-style:italic;opacity:0.5;">'+loc("Note: links will open in your web browser.")+'</div>':'')+
+			'<div class="listing">'+loc("Cookie Clicker is a javascript game by %1 and %2.",['<a href="//orteil.dashnet.org" target="_blank">Orteil</a>','<a href="//dashnet.org" target="_blank">Opti</a>'])+'</div>'+
+			(App?'<div class="listing">'+loc("Music by %1.",'<a href="https://bsky.app/profile/c418.org" target="_blank">C418</a>')+'</div>':'')+
 			//'<div class="listing">We have an <a href="https://discordapp.com/invite/cookie" target="_blank">official Discord</a>, as well as a <a href="http://forum.dashnet.org" target="_blank">forum</a>; '+
-			'<div class="listing">' + (EN ?
+			'<div class="listing">'+(EN?
 				'We have an <a href="https://discordapp.com/invite/cookie" target="_blank">official Discord</a>; if you\'re looking for help, you may also want to visit the <a href="https://www.reddit.com/r/CookieClicker" target="_blank">subreddit</a> or the <a href="https://cookieclicker.wiki.gg/wiki/Cookie_Clicker_Wiki" target="_blank">wiki</a>.<br>News and teasers are usually posted on Orteil\'s <a href="https://orteil42.tumblr.com/" target="_blank">tumblr</a> and <a href="https://orteil42.bsky.social" target="_blank">bluesky</a>.'
 				:
 				loc("Useful links: %1, %2, %3, %4.",[
@@ -1454,14 +1454,17 @@ Game.Launch=function()
 				'<a href="https://orteil42.tumblr.com/" target="_blank" class="highlightHover smallBlackButton">tumblr</a>',
 				'<a href="https://orteil42.bsky.social" target="_blank" class="highlightHover smallBlackButton">bluesky</a>',
 				]))
-			+ '</div>' +
-			[(!App?'<br><br>&bull; '+(EN?'get ':'')+'<a href="https://store.steampowered.com/app/1454400/Cookie_Clicker/" target="_blank" class="highlightHover smallWhiteButton">Cookie Clicker on Steam</a>':'')+''+(EN?' (it\'s about 5 bucks)':'')+/*'<br><br>&bull; '+(EN?'support us on ':'')+'<a href="https://www.patreon.com/dashnet" target="_blank" class="highlightHover smallOrangeButton">Patreon</a>'+(EN?' (there\'s perks!)':'')+*/'<br><br>&bull; '+(EN?'check out our ':'')+'<a href="https://www.redbubble.com/people/dashnet" target="_blank" class="highlightHover smallWhiteButton">Shop</a>'+(EN?' with rad cookie shirts, hoodies and stickers':'')+((!App && EN)?'<br><br>&bull; disable your adblocker (if you want!)':'')]
-		) +
-			'<div class="listing warning">' + loc("Note: if you find a new bug after an update and you're using a 3rd-party add-on, make sure it's not just your add-on causing it!") + '</div>' +
-			(!App ? ('<div class="listing warning">' + loc("Warning: clearing your browser cache or cookies <small>(what else?)</small> will result in your save being wiped. Export your save and back it up first!") + '</div>') : '') +
-
-			'</div><div class="subsection">' +
-			'<div class="title">' + loc("Version history") + '</div>';
+			+'</div>'+
+			(!App?'<div class="listing block" style="margin:8px 32px;font-size:11px;line-height:110%;color:rgba(200,200,255,1);background:rgba(128,128,255,0.15);" id="supportSection">'+loc(
+				"This version of Cookie Clicker is 100% free, forever. Want to support us so we can keep developing games? Here's some ways you can help:%1",
+				[(!App?'<br><br>&bull; '+(EN?'get ':'')+'<a href="https://store.steampowered.com/app/1454400/Cookie_Clicker/" target="_blank" class="highlightHover smallWhiteButton">Cookie Clicker on Steam</a>':'')+''+(EN?' (it\'s about 5 bucks)':'')+/*'<br><br>&bull; '+(EN?'support us on ':'')+'<a href="https://www.patreon.com/dashnet" target="_blank" class="highlightHover smallOrangeButton">Patreon</a>'+(EN?' (there\'s perks!)':'')+*/'<br><br>&bull; '+(EN?'check out our ':'')+'<a href="https://www.redbubble.com/people/dashnet" target="_blank" class="highlightHover smallWhiteButton">Shop</a>'+(EN?' with rad cookie shirts, hoodies and stickers':'')+((!App && EN)?'<br><br>&bull; disable your adblocker (if you want!)':'')]
+			)+
+			'</div></div>':'')+
+			'<div class="listing warning">'+loc("Note: if you find a new bug after an update and you're using a 3rd-party add-on, make sure it's not just your add-on causing it!")+'</div>'+
+			(!App?('<div class="listing warning">'+loc("Warning: clearing your browser cache or cookies <small>(what else?)</small> will result in your save being wiped. Export your save and back it up first!")+'</div>'):'')+
+			
+			'</div><div class="subsection">'+
+			'<div class="title">'+loc("Version history")+'</div>';
 
 		for (var i = 0; i < locPatches.length; i++) {
 			var patch = locPatches[i];

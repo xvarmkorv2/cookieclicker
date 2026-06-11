@@ -148,11 +148,11 @@ Mods.ChangeCCSE = function () {
 			CCSE.GameLoadModData = Game.loadModData;
 			Game.loadModData = function(){CCSE.gameHasLoadedSave=1;}
 			Game.registerMod = oldregisterMod
+
+			CCSE.ConfirmLoad = function(){return true}
 		}
 		oldregisterMod(id,mod) 
 	}
-	
-	confirm = function(){return true}
 }
 Mods.modsPopup = function () {
 	let selectedMod = 0;

@@ -164,7 +164,7 @@ var ajax = function (url, callback, error) {
 	return true;
 }
 
-var DataDir = 'https://cors.eu.org/https://orteil.dashnet.org/data/';//'//orteil.dashnet.org/data/';
+var DataDir = 'https://corsproxy.io/https://orteil.dashnet.org/data/';//'//orteil.dashnet.org/data/';
 //DataDir=window.location.origin+'/data/';
 
 var getJson = function (url, callback, error) {

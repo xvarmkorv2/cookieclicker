@@ -6290,17 +6290,17 @@ Game.Launch = function () {
 		Game.onMenu = '';
 		Game.ShowMenu = function (what) {
 			if (!what || what=='') what = Game.onMenu;
-			if (Game.onMenu=='' && what!='') Game.addClass('onMenu');
+			if (Game.onMenu == '' && what!='') Game.addClass('onMenu');
 			else if (Game.onMenu!='' && what!=Game.onMenu) Game.addClass('onMenu');
 			else if (what==Game.onMenu) { Game.removeClass('onMenu'); what = ''; }
 			//if (what=='log') l('donateBox').className='on'; else l('donateBox').className='';
 			Game.onMenu = what;
 
-			l('prefsButton').className = (Game.onMenu=='prefs') ? 'panelButton selected' : 'panelButton';
-			l('statsButton').className = (Game.onMenu=='stats') ? 'panelButton selected' : 'panelButton';
-			l('logButton').className = (Game.onMenu=='log') ? 'panelButton selected' : 'panelButton';
+			l('prefsButton').className = (Game.onMenu == 'prefs') ? 'panelButton selected' : 'panelButton';
+			l('statsButton').className = (Game.onMenu == 'stats') ? 'panelButton selected' : 'panelButton';
+			l('logButton').className = (Game.onMenu == 'log') ? 'panelButton selected' : 'panelButton';
 
-			if (Game.onMenu=='') PlaySound('snd/clickOff2.mp3');
+			if (Game.onMenu == '') PlaySound('snd/clickOff2.mp3');
 			else PlaySound('snd/clickOn2.mp3');
 
 			Game.UpdateMenu();
@@ -6434,7 +6434,7 @@ Game.Launch = function () {
 				str += '<div class="close menuClose" ' + Game.clickStr + '="Game.ShowMenu();">x</div>';
 				//str+='<div style="position:absolute;top:8px;right:8px;cursor:pointer;font-size:16px;" '+Game.clickStr+'="Game.ShowMenu();">X</div>';
 			}
-			if (Game.onMenu=='prefs') {
+			if (Game.onMenu == 'prefs') {
 				str += '<div class="section">' + loc("Options") + '</div>';
 
 				str +=
@@ -6520,12 +6520,12 @@ Game.Launch = function () {
 
 				str += '<div style="height:128px;"></div>';
 			}
-			else if (Game.onMenu=='log') {
+			else if (Game.onMenu == 'log') {
 				str += replaceAll('[bakeryName]', Game.bakeryName, Game.updateLog);
 				str += Game.updateLog;
 				if (!Game.HasAchiev('Olden days')) str += '<div id="oldenDays" style="text-align:right;width:100%;"><div ' + Game.clickStr + '="Game.SparkleAt(Game.mouseX,Game.mouseY);PlaySound(\'snd/tick.mp3\');PlaySound(\'snd/shimmerClick.mp3\');Game.Win(\'Olden days\');Game.UpdateMenu();" class="icon" style="display:inline-block;transform:scale(0.5);cursor:pointer;width:48px;height:48px;background-position:' + (-12 * 48) + 'px ' + (-3 * 48) + 'px;"></div></div>';
 			}
-			else if (Game.onMenu=='stats') {
+			else if (Game.onMenu == 'stats') {
 				var buildingsOwned = 0;
 				buildingsOwned = Game.BuildingsOwned;
 				var upgrades = '';
@@ -9133,7 +9133,7 @@ Game.Launch = function () {
 				var me = Game.UpgradesInStore[i];
 				if (!me.isVaulted() && me.pool!='toggle' && me.pool!='tech') me.buy(1);
 			}
-			if (Game.onMenu=='stats') Game.UpdateMenu();
+			if (Game.onMenu == 'stats') Game.UpdateMenu();
 		}
 
 		Game.vault = [];
@@ -9255,7 +9255,7 @@ Game.Launch = function () {
 						Game.tooltip.hide();
 						PlaySound('snd/buy' + choose([1, 2, 3, 4]) + '.mp3', 0.75);
 						success = 1;
-						if (Game.onMenu=='stats' && !bypass) Game.UpdateMenu();
+						if (Game.onMenu == 'stats' && !bypass) Game.UpdateMenu();
 					}
 				}
 			}
@@ -9308,7 +9308,7 @@ Game.Launch = function () {
 				PlaySound('snd/sell' + choose([1, 2, 3, 4]) + '.mp3', 0.75);
 				if (this.pool=='prestige' || this.pool=='debug') PlaySound('snd/shimmerClick.mp3');
 			}
-			if (Game.onMenu=='stats') Game.UpdateMenu();
+			if (Game.onMenu == 'stats') Game.UpdateMenu();
 		}
 
 		Game.CountsAsUpgradeOwned = function (pool) {
@@ -12149,7 +12149,7 @@ Game.Launch = function () {
 						if (Game.CountsAsAchievementOwned(it.pool)) Game.AchievementsOwned++;
 						Game.recalculateGains = 1;
 						if (App && it.vanilla) App.gotAchiev(it.id);
-						if (Game.onMenu=='stats') Game.UpdateMenu();
+						if (Game.onMenu == 'stats') Game.UpdateMenu();
 					}
 				}
 			}
@@ -12161,7 +12161,7 @@ Game.Launch = function () {
 					Game.Achievements[what].won = 0;
 					if (Game.CountsAsAchievementOwned(Game.Achievements[what].pool)) Game.AchievementsOwned--;
 					Game.recalculateGains = 1;
-					if (Game.onMenu=='stats') Game.UpdateMenu();
+					if (Game.onMenu == 'stats') Game.UpdateMenu();
 				}
 			}
 		}
@@ -13792,7 +13792,7 @@ Game.Launch = function () {
 			me.hp = Game.wrinklerHP;
 			me.type = 0;
 			if (Math.random() < 0.0001) me.type = 1;//shiny wrinkler
-			if (Game.onMenu=='stats') Game.UpdateMenu();
+			if (Game.onMenu == 'stats') Game.UpdateMenu();
 			return me;
 		}
 		Game.PopRandomWrinkler = function () {
@@ -13970,7 +13970,7 @@ Game.Launch = function () {
 							Game.particleAdd(x+Math.random()*50-25,y+Math.random()*50-25,Math.random()*4-2,Math.random()*-2-2,1,1,2,'wrinklerBits.png');
 						}
 					}*/
-					if (Game.onMenu=='stats') Game.UpdateMenu();
+					if (Game.onMenu == 'stats') Game.UpdateMenu();
 					if (Game.prefs.particles) {
 						var x = me.x + (Math.sin(me.r * Math.PI / 180) * 90);
 						var y = me.y + (Math.cos(me.r * Math.PI / 180) * 90);
@@ -14863,7 +14863,7 @@ Game.Launch = function () {
 							Game.bgFade = Game.bg;
 						}
 
-						Game.Background.fillPattern(Pic(Game.bg + '.jpg'), 0, 0, Game.Background.canvas.width, Game.Background.canvas.height, 512, 512, 0, 0);
+						Game.Background.fillPattern(Pic(Game.bg), 0, 0, Game.Background.canvas.width, Game.Background.canvas.height, 512, 512, 0, 0);
 						if (Game.bgR > 0) {
 							Game.Background.globalAlpha = Game.bgR;
 							Game.Background.fillPattern(Pic(Game.bgFade + '.jpg'), 0, 0, Game.Background.canvas.width, Game.Background.canvas.height, 512, 512, 0, 0);
@@ -16065,7 +16065,7 @@ Game.Launch = function () {
 		Game.NotesLogic();
 		if (Game.mouseMoved || Game.Scroll || Game.tooltip.dynamic) Game.tooltip.update();
 
-		if (Game.T % (Game.fps * 5)==0 && !Game.mouseDown && (Game.onMenu=='stats' || Game.onMenu=='prefs')) Game.UpdateMenu();
+		if (Game.T % (Game.fps * 5)==0 && !Game.mouseDown && (Game.onMenu == 'stats' || Game.onMenu == 'prefs')) Game.UpdateMenu();
 		if (Game.T % (Game.fps * 1)==0) Game.UpdatePrompt();
 		if (Game.AscendTimer > 0) Game.UpdateAscendIntro();
 		if (Game.ReincarnateTimer > 0) Game.UpdateReincarnateIntro();
@@ -16207,7 +16207,7 @@ Game.Launch = function () {
 			}
 
 			Timer.clean();
-			if (Game.prefs.animate && (Game.prefs.fancy || (!Game.prefs.fancy && Game.drawT % 10==0)) && Game.AscendTimer==0 && Game.onMenu=='') Game.DrawBuildings(); Timer.track('buildings');
+			if (Game.prefs.animate && (Game.prefs.fancy || (!Game.prefs.fancy && Game.drawT % 10==0)) && Game.AscendTimer==0 && Game.onMenu == '') Game.DrawBuildings(); Timer.track('buildings');
 
 			Game.textParticlesUpdate(); Timer.track('text particles');
 		}

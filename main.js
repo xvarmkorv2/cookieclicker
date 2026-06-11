@@ -11968,8 +11968,6 @@ Game.Launch = function () {
 		}
 
 		Game.santaDrops = ['Increased merriness', 'Improved jolliness', 'A lump of coal', 'An itchy sweater', 'Reindeer baking grounds', 'Weighted sleighs', 'Ho ho ho-flavored frosting', 'Season savings', 'Toy workshop', 'Naughty list', 'Santa\'s bottomless bag', 'Santa\'s helpers', 'Santa\'s legacy', 'Santa\'s milk and cookies'];
-		Game.keepsakes = [];
-		for (var i = 0; i < Game.seasonDrops.length; i++) { Game.keepsakes.push(Game.seasonDrops[i]); }
 
 		Game.GetHowManySantaDrops = function () {
 			var num = 0;
@@ -11988,7 +11986,9 @@ Game.Launch = function () {
 			Game.Upgrades[Game.santaDrops[i]].descFunc=function(){return '<div style="text-align:center;">You currently own <b>'+Game.GetHowManySantaDrops()+'/'+Game.santaDrops.length+'</b> of Santa\'s gifts.</div><div class="line"></div>'+this.ddesc;};
 		}*/
 
-		Game.keepsakes = Game.heartDrops.concat(Game.halloweenDrops).concat(Game.easterEggs).concat(Game.santaDrops).concat(Game.reindeerDrops);
+		Game.seasonDrops = Game.heartDrops.concat(Game.halloweenDrops).concat(Game.easterEggs).concat(Game.santaDrops).concat(Game.reindeerDrops);
+		Game.keepsakes = [];
+		for (var i = 0; i < Game.seasonDrops.length; i++) { Game.keepsakes.push(Game.seasonDrops[i]); }
 
 		Game.saySeasonSwitchUses = function () {
 			if (Game.seasonUses == 0) return loc("You haven't switched seasons this ascension yet.");
